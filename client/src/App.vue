@@ -1,13 +1,17 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
     <router-view/>
+    <dice/>
   </div>
 </template>
 
 <script>
+import Dice from './components/Dice'
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    Dice
+  }
 }
 </script>
 

@@ -1,15 +1,16 @@
+
 <template>
 
-<div><h1>{{ msg }}</h1></div>
+<div><h1>Message is: {{ greeting }}</h1></div>
 
 </template>
 
 <script>
-export default {
-  name: 'Game',
-  data () {
+
+module.exports = {
+  data: function () {
     return {
-      msg: 'Something!'
+      greeting: 'Hello'
     }
   }
 }
