@@ -1,35 +1,50 @@
-
 <template>
-
-<div><h1>Message is: {{ greeting }}</h1></div>
+<div>
+  <div class="diceBox">
+    <div class="dice">{{ $store.state.diceArray[0] }}</div>
+    <div class="dice">{{ $store.state.diceArray[1] }}</div>
+    <div class="dice">{{ $store.state.diceArray[2] }}</div>
+    <div class="dice">{{ $store.state.diceArray[3] }}</div>
+    <div class="dice">{{ $store.state.diceArray[4] }}</div>
+    <!-- Array: {{$store.state.diceArray[0]}}<br-->
+    <!-- firstDice: {{$store.state.firstDiceValue}} -->
+    <button v-on:click="rollDice">Roll {{ $store.state.rollCount }}</button>
+  </div>
+</div>
 
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 
-module.exports = {
-  data: function () {
-    return {
-      greeting: 'Hello'
-    }
-  }
+export default {
+  name: 'Game',
+  computed: mapGetters([
+    'evenOrOdd'
+  ]),
+  methods: mapActions([
+    'rollDice',
+    'increment',
+    'decrement',
+    'incrementIfOdd',
+    'incrementAsync'
+  ])
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
+.diceBox {
+  display: flex;
+  justify-content: center;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+.dice {
+  color: white;
+  line-height: 1.5em;
+  background-color: hsl(174, 72%, 33%);
+  font-size: 1.5em;
+  width:1.5em;
+  height:1.5em;
+  margin-right: .3em;
 }
 </style>
