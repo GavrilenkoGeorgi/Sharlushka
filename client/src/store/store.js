@@ -5,15 +5,18 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-  // count: 2,
+  count: 1,
   // rolled: false,
   // firstDiceValue: 1,
   diceArray: [1, 2, 3, 4, 5],
-  rollCount: 0
+  rolledDice: [],
+  rollCount: 0,
+  numOfDiceToRoll: 5
 }
 
 const getters = {
-  evenOrOdd: state => state.count % 2 === 0 ? 'even' : 'odd'
+  evenOrOdd: state => state.count % 2 === 0 ? 'even' : 'odd',
+  numOfDiceToRoll: state => console.log(state.numOfDiceToRoll)
 }
 
 const mutations = {
@@ -23,6 +26,9 @@ const mutations = {
   decrement (state) {
     state.count--
   },
+  removeDice (state) {
+    state.numOfDiceToRoll--
+  },
   rollDice (state) {
     // console.log(state.diceArray[4])
     // state.firstDiceValue = Math.floor((Math.random() * 6) + 1)
@@ -31,12 +37,14 @@ const mutations = {
     for (let key in state.diceArray) {
       state.diceArray[key] = Math.floor((Math.random() * 6) + 1)
     }
+    console.log(state.diceArray)
   }
 }
 
 const actions = {
   /* increment: (context, payload) => context.commit('increment'), */
   rollDice: ({ commit }) => commit('rollDice'),
+  removeDice: ({ commit }) => commit('removeDice'),
   increment: ({ commit }) => commit('increment'),
   decrement: ({ commit }) => commit('decrement'),
   incrementIfOdd: ({ commit, state }) => {
