@@ -1,17 +1,38 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import store from './store/store'
 
 Vue.use(Vuex)
 
 const state = {
   count: 1,
-  // rolled: false,
-  // firstDiceValue: 1,
-  diceArray: [1, 2, 3, 4, 5],
-  rolledDice: [],
-  rollCount: 0,
-  numOfDiceToRoll: 5
+  score: 0,
+  diceArray: [{
+    value: 1,
+    chosen: false,
+    id: 'first'
+  },
+  {
+    value: 2,
+    chosen: false,
+    id: 'second'
+  },
+  {
+    value: 3,
+    chosen: false,
+    id: 'third'
+  },
+  {
+    value: 4,
+    chosen: false,
+    id: 'fourth'
+  },
+  {
+    value: 5,
+    chosen: false,
+    id: 'fifth'
+  }
+  ],
+  rollCount: 0
 }
 
 const getters = {
@@ -20,24 +41,20 @@ const getters = {
 }
 
 const mutations = {
-  increment (state) {
+  /* increment (state) {
     state.count++
   },
   decrement (state) {
     state.count--
-  },
-  removeDice (state) {
-    state.numOfDiceToRoll--
-  },
+  }, */
   rollDice (state) {
-    // console.log(state.diceArray[4])
-    // state.firstDiceValue = Math.floor((Math.random() * 6) + 1)
-    // state.diceArray[0] = Math.floor((Math.random() * 6) + 1)
-    state.rollCount++
+    console.log(`computing score`)
     for (let key in state.diceArray) {
-      state.diceArray[key] = Math.floor((Math.random() * 6) + 1)
+      if (state.diceArray[key].chosen !== true) {
+        state.diceArray[key].value = Math.floor((Math.random() * 6) + 1)
+      }
     }
-    console.log(state.diceArray)
+    state.rollCount++
   }
 }
 
