@@ -1,6 +1,100 @@
 <template>
 <div>
-  <div class="score">Score is {{$store.state.score}}</div>
+  <table style="width:100%">
+  <tr>
+    <th>Study</th>
+    <th>Player 1</th>
+    <th>Player 2</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>Пара</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Две пары</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Тройник</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Фул</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Каре</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Покер</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Малый</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Большой</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Первый шанс</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Второй шанс</td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+  <div class="score"><!-- Score is {{$store.state.score}}<br-->
+  Computed property score: {{result}}<br>
+  combination array is: {{$store.state.combinationArray}}</div>
   <div class="resultBox" v-on:click="deSelectDice">
     <!--div class="dice" v-for="dice in rolledDice" :key="dice">{{ $store.state.rolledDice[dice-1] }}</div-->
   </div>
@@ -31,7 +125,8 @@ import store from '../store/store'
 export default {
   name: 'Game',
   computed: mapGetters([
-    'evenOrOdd'
+    'evenOrOdd',
+    'result'
   ]),
   methods: {
     ...mapActions([
@@ -53,6 +148,9 @@ export default {
           if (store.state.diceArray[key].id === event.target.id) {
             store.state.diceArray[key].chosen = true
             store.state.score += store.state.diceArray[key].value
+            // console.log(`Current dice id: ${store.state.diceArray[key].id}`)
+            store.state.combinationArray.push(store.state.diceArray[key].value)
+            // console.log(`calculating score`)
           }
         }
       }
@@ -68,6 +166,8 @@ export default {
           if (store.state.diceArray[key].id === event.target.id) {
             store.state.diceArray[key].chosen = false
             store.state.score -= store.state.diceArray[key].value
+            store.state.combinationArray.splice(store.state.combinationArray.findIndex(item => item === store.state.diceArray[key].value), 1)
+            // console.log(`calculating score`)
           }
         }
       }
@@ -91,6 +191,9 @@ export default {
   // console.log(`store is ${store.state.numOfDiceToRoll}`)
   //let diceArray = store.state.diceArray
   //console.log(`Dice array is ${diceArray}`)
+  function calculateScore(){
+    console.log(`Calculating score`)
+  }
 })
  
 // alert('Hello!')
@@ -100,6 +203,13 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    font-size: 0.85em;
+    text-align: left;
+}
+
 .diceBox, .resultBox {
   display: flex;
   justify-content: center;
@@ -108,7 +218,7 @@ export default {
 .dice {
   color: white;
   line-height: 1.5em;
-  background-color: hsl(174, 72%, 33%);
+  background-color: hsl(167, 100%, 30%);
   font-size: 1.5em;
   width:1.5em;
   height:1.5em;

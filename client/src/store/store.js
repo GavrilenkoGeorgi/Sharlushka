@@ -6,6 +6,8 @@ Vue.use(Vuex)
 const state = {
   count: 1,
   score: 0,
+  computedScore: 0,
+  combinationArray: [],
   diceArray: [{
     value: 1,
     chosen: false,
@@ -37,7 +39,11 @@ const state = {
 
 const getters = {
   evenOrOdd: state => state.count % 2 === 0 ? 'even' : 'odd',
-  numOfDiceToRoll: state => console.log(state.numOfDiceToRoll)
+  result: function (state) {
+    let resultArray = state.combinationArray
+    return resultArray
+  }
+  // numOfDiceToRoll: state => console.log(state.numOfDiceToRoll)
 }
 
 const mutations = {
@@ -48,7 +54,7 @@ const mutations = {
     state.count--
   }, */
   rollDice (state) {
-    console.log(`computing score`)
+    // console.log(`computing score`)
     for (let key in state.diceArray) {
       if (state.diceArray[key].chosen !== true) {
         state.diceArray[key].value = Math.floor((Math.random() * 6) + 1)
