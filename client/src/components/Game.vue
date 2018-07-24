@@ -8,7 +8,7 @@
   </tr>
   <tr>
     <td>1</td>
-    <td></td>
+    <td>{{ onesScore }}</td>
     <td></td>
   </tr>
   <tr>
@@ -93,7 +93,6 @@
   </tr>
 </table>
   <div class="score"><!-- Score is {{$store.state.score}}<br-->
-  Computed property score: {{result}}<br>
   combination array is: {{$store.state.combinationArray}}</div>
   <div class="resultBox" v-on:click="deSelectDice">
     <!--div class="dice" v-for="dice in rolledDice" :key="dice">{{ $store.state.rolledDice[dice-1] }}</div-->
@@ -126,7 +125,7 @@ export default {
   name: 'Game',
   computed: mapGetters([
     'evenOrOdd',
-    'result'
+    'onesScore'
   ]),
   methods: {
     ...mapActions([
@@ -191,9 +190,6 @@ export default {
   // console.log(`store is ${store.state.numOfDiceToRoll}`)
   //let diceArray = store.state.diceArray
   //console.log(`Dice array is ${diceArray}`)
-  function calculateScore(){
-    console.log(`Calculating score`)
-  }
 })
  
 // alert('Hello!')

@@ -4,9 +4,10 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-  count: 1,
+  count: 2,
   score: 0,
   computedScore: 0,
+  onesScore: 0,
   combinationArray: [],
   diceArray: [{
     value: 1,
@@ -39,11 +40,25 @@ const state = {
 
 const getters = {
   evenOrOdd: state => state.count % 2 === 0 ? 'even' : 'odd',
+  onesScore: function (state) {
+    for (let key in state.combinationArray) {
+      if (state.combinationArray[key] === 1) {
+        state.onesScore = 'all ones'
+      } else {
+        state.onesScore = 'Not all ones'
+      }
+    }
+    return state.onesScore
+  } /*
   result: function (state) {
-    let resultArray = state.combinationArray
-    return resultArray
-  }
-  // numOfDiceToRoll: state => console.log(state.numOfDiceToRoll)
+    for (let key in state.combinationArray) {
+      if (state.combinationArray[key] === 1) {
+        state.onesScore = 'all ones'
+      } else {
+        state.onesScore = 'Not all ones'
+      }
+    }
+  } */
 }
 
 const mutations = {
