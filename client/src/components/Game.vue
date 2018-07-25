@@ -8,32 +8,32 @@
   </tr>
   <tr>
     <td>1</td>
-    <td>{{ onesScore }}</td>
-    <td></td>
+    <td>{{ $store.state.schoolScore[0].value }}</td>
+    <td>{{ $store.state.count }}</td>
   </tr>
   <tr>
     <td>2</td>
-    <td></td>
+    <td>{{ $store.state.schoolScore[1].value }}</td>
     <td></td>
   </tr>
   <tr>
     <td>3</td>
-    <td></td>
+    <td>{{ $store.state.schoolScore[2].value }}</td>
     <td></td>
   </tr>
   <tr>
     <td>4</td>
-    <td></td>
+    <td>{{ $store.state.schoolScore[3].value }}</td>
     <td></td>
   </tr>
   <tr>
     <td>5</td>
-    <td></td>
+    <td>{{ $store.state.schoolScore[4].value }}</td>
     <td></td>
   </tr>
   <tr>
     <td>6</td>
-    <td></td>
+    <td>{{ $store.state.schoolScore[5].value }}</td>
     <td></td>
   </tr>
   <tr>
@@ -125,7 +125,8 @@ export default {
   name: 'Game',
   computed: mapGetters([
     'evenOrOdd',
-    'onesScore'
+    'onesScore',
+    'twosScore'
   ]),
   methods: {
     ...mapActions([
@@ -146,10 +147,11 @@ export default {
         for (let key in store.state.diceArray) {
           if (store.state.diceArray[key].id === event.target.id) {
             store.state.diceArray[key].chosen = true
-            store.state.score += store.state.diceArray[key].value
+            // store.state.score += store.state.diceArray[key].value
             // console.log(`Current dice id: ${store.state.diceArray[key].id}`)
             store.state.combinationArray.push(store.state.diceArray[key].value)
             // console.log(`calculating score`)
+            store.commit('computeScore')
           }
         }
       }
@@ -164,21 +166,22 @@ export default {
         for (let key in store.state.diceArray) {
           if (store.state.diceArray[key].id === event.target.id) {
             store.state.diceArray[key].chosen = false
-            store.state.score -= store.state.diceArray[key].value
+            // store.state.score -= store.state.diceArray[key].value
             store.state.combinationArray.splice(store.state.combinationArray.findIndex(item => item === store.state.diceArray[key].value), 1)
             // console.log(`calculating score`)
+            store.commit('computeScore')
           }
         }
       }
     }
   },
   data() {
-        return {
-            // fruits: ['apple', 'banana', 'orange'],
-            diceArray: store.state.diceArray.length,
-            // rolledDice: store.state.rolledDice.length
-        };
-    }
+    return {
+        // fruits: ['apple', 'banana', 'orange'],
+        diceArray: store.state.diceArray.length,
+        // rolledDice: store.state.rolledDice.length
+        }
+    },
 }
 
   document.addEventListener('DOMContentLoaded', function (event) {
