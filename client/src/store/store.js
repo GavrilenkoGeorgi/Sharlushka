@@ -4,55 +4,68 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-  count: 2,
   schoolScore: [{
-    value: 'initial'
+    value: '',
+    final: false,
+    id: 'ones'
   },
   {
-    value: 'initial'
+    value: '',
+    final: false,
+    id: 'twos'
+
   },
   {
-    value: 'initial'
+    value: '',
+    final: false,
+    id: 'threes'
   },
   {
-    value: 'initial'
+    value: '',
+    final: false,
+    id: 'fours'
   },
   {
-    value: 'initial'
+    value: '',
+    final: false,
+    id: 'fives'
   },
   {
-    value: 'initial'
+    value: '',
+    final: false,
+    id: 'sixes'
   }],
   onesScore: 'initial',
   twosScore: 0,
   combinationArray: [],
   diceArray: [{
-    value: 1,
-    chosen: true,
+    value: '#',
+    chosen: false,
     id: 'first'
   },
   {
-    value: 2,
+    value: '#',
     chosen: false,
     id: 'second'
   },
   {
-    value: 3,
+    value: '#',
     chosen: false,
     id: 'third'
   },
   {
-    value: 4,
+    value: '#',
     chosen: false,
     id: 'fourth'
   },
   {
-    value: 5,
+    value: '#',
     chosen: false,
     id: 'fifth'
   }
   ],
-  rollCount: 0
+  rollCount: 3,
+  rollButtonDisabled: false
 }
 
 const getters = {
@@ -67,65 +80,87 @@ const mutations = {
     state.count--
   }, */
   computeScore (state) {
-    state.count++
+    // empty array for calculating score in "school"
+    let schoolArray = [[], [], [], [], [], []]
+    // if it is larger than 0, we have at least one dice to calculate
     if (state.combinationArray.length > 0) {
-      let schoolArray = [[], [], [], [], [], []]
-
       for (let key in state.combinationArray) {
+        // maybe a switch would be better for this
         if (state.combinationArray[key] === 1) {
           schoolArray[0].push(state.combinationArray[key])
           // we get array to calculate score for 'ones'
         }
         if (state.combinationArray[key] === 2) {
           schoolArray[1].push(state.combinationArray[key])
-          // we get array to calculate score for 'twos'
+          // for 'twos'
         }
         if (state.combinationArray[key] === 3) {
           schoolArray[2].push(state.combinationArray[key])
-          // we get array to calculate score for 'threes'
+          // for 'threes'
         }
         if (state.combinationArray[key] === 4) {
           schoolArray[3].push(state.combinationArray[key])
-          // we get array to calculate score for 'fourths'
+          // for 'fourths'
         }
         if (state.combinationArray[key] === 5) {
           schoolArray[4].push(state.combinationArray[key])
-          // we get array to calculate score for 'fives'
+          // for 'fives'
         }
         if (state.combinationArray[key] === 6) {
           schoolArray[5].push(state.combinationArray[key])
-          // we get array to calculate score for 'sixes'
+          // for 'sixes'
         }
       }
-      let baseScore = 0
+      // initiate score var
+      let baseScore
       for (let key in schoolArray) {
-        let currentDice = schoolArray[key][0]
-        console.log(`Current dice is: ${currentDice}`)
         // key is _the_ key
+        let currentDice = schoolArray[key][0]
+        // by checking first item we get dice type -- 'ones', 'twos', 'threes'
+        // if it is undefined, i.e. no dice of this type left in the score array
+        // set it to empty to clear results table for this dice
+        if (currentDice === undefined && state.schoolScore[key].final !== true) {
+          state.schoolScore[key].value = ''
+        }
         if (schoolArray[key].length === 3) {
           // we got three equal dice and the score for that is zero points
           baseScore = 0
         } else {
           // array of dice is greater than zero and not equal to three
           baseScore = (schoolArray[key].length - 3) * schoolArray[key][0]
-          console.log(`Result in else ${baseScore}`)
         }
-        if (currentDice) {
+        if (currentDice && state.schoolScore[currentDice - 1].final !== true) {
+          // exists an array with at least one dice in it, set the score
           state.schoolScore[currentDice - 1].value = baseScore
         }
       }
-    } else {
+    } else { // if combination array is empty, clear all temporary calculation results onscreen
       console.log(`ain't got shit, captain`)
+      for (let key in state.schoolScore) {
+        if (state.schoolScore[key].final !== true) {
+          state.schoolScore[key].value = ''
+        }
+      }
     }
   },
   rollDice (state) {
-    // console.log(`computing score`)
     for (let key in state.diceArray) {
       if (state.diceArray[key].chosen !== true) {
         state.diceArray[key].value = Math.floor((Math.random() * 6) + 1)
       }
     }
-    state.rollCount++
+    state.rollCount--
+    if (state.rollCount === 0) {
+      state.rollButtonDisabled = true
+    }
+  },
+  nextTurn (state) {
+    state.rollButtonDisabled = false
+    state.rollCount = 3
+    for (let key in state.diceArray) {
+      state.diceArray[key].value = '#'
+      state.diceArray[key].chosen = false
+    }
   }
 }
 
@@ -137,9 +172,12 @@ const actions = {
   rollDice: ({
     commit
   }) => commit('rollDice'),
-  removeDice: ({
+  /* removeDice: ({
     commit
-  }) => commit('removeDice'),
+  }) => commit('removeDice'), */
+  nextTurn: ({
+    commit
+  }) => commit('nextTurn'),
   increment: ({
     commit
   }) => commit('increment'),

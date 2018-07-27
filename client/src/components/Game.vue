@@ -1,39 +1,39 @@
 <template>
 <div>
-  <table style="width:100%">
+  <table class="results" v-on:click="recordResult" style="width:100%">
   <tr>
     <th>Study</th>
     <th>Player 1</th>
     <th>Player 2</th>
   </tr>
   <tr>
-    <td>1</td>
-    <td>{{ $store.state.schoolScore[0].value }}</td>
-    <td>{{ $store.state.count }}</td>
-  </tr>
-  <tr>
-    <td>2</td>
-    <td>{{ $store.state.schoolScore[1].value }}</td>
+    <td class="combinationName">1</td>
+    <td id="ones" class="result">{{ $store.state.schoolScore[0].value }}</td>
     <td></td>
   </tr>
   <tr>
-    <td>3</td>
-    <td>{{ $store.state.schoolScore[2].value }}</td>
+    <td class="combinationName">2</td>
+    <td id="twos" class="result">{{ $store.state.schoolScore[1].value }}</td>
     <td></td>
   </tr>
   <tr>
-    <td>4</td>
-    <td>{{ $store.state.schoolScore[3].value }}</td>
+    <td class="combinationName">3</td>
+    <td id="threes" class="result">{{ $store.state.schoolScore[2].value }}</td>
     <td></td>
   </tr>
   <tr>
-    <td>5</td>
-    <td>{{ $store.state.schoolScore[4].value }}</td>
+    <td class="combinationName">4</td>
+    <td id="fours" class="result">{{ $store.state.schoolScore[3].value }}</td>
     <td></td>
   </tr>
   <tr>
-    <td>6</td>
-    <td>{{ $store.state.schoolScore[5].value }}</td>
+    <td class="combinationName">5</td>
+    <td id="fives" class="result">{{ $store.state.schoolScore[4].value }}</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td class="combinationName">6</td>
+    <td id="sixes" class="result">{{ $store.state.schoolScore[5].value }}</td>
     <td></td>
   </tr>
   <tr>
@@ -110,14 +110,16 @@
 <!-- div class="diceBox" v-on:click="doThings">
     <div class="dice" v-for="dice in diceArray" :key="dice">{{ $store.state.diceArray[dice-1] }}</div>
 </div -->
-
-  <button v-on:click="rollDice">Roll {{ $store.state.rollCount }}</button>
+  <div class="controls">
+  <button v-on:click="rollDice()" :disabled="$store.state.rollButtonDisabled == true">Roll</button> {{ $store.state.rollCount }} left.
+  <button v-on:click="nextTurn(); clearResultBox()" :disabled="$store.state.rollButtonDisabled == false">Next turn</button>
+  </div>
 </div>
 
 </template>
 
 <script>
-/* eslint-disable */
+
 import { mapGetters, mapActions } from 'vuex'
 import store from '../store/store'
 
@@ -131,6 +133,7 @@ export default {
   methods: {
     ...mapActions([
       'rollDice',
+      'nextTurn',
       'removeDice',
       'increment',
       'decrement',
@@ -147,10 +150,7 @@ export default {
         for (let key in store.state.diceArray) {
           if (store.state.diceArray[key].id === event.target.id) {
             store.state.diceArray[key].chosen = true
-            // store.state.score += store.state.diceArray[key].value
-            // console.log(`Current dice id: ${store.state.diceArray[key].id}`)
             store.state.combinationArray.push(store.state.diceArray[key].value)
-            // console.log(`calculating score`)
             store.commit('computeScore')
           }
         }
@@ -162,53 +162,54 @@ export default {
         let resultBox = document.querySelector('.resultBox')
         resultBox.removeChild(event.target)
         diceBox.appendChild(event.target)
-        
+
         for (let key in store.state.diceArray) {
           if (store.state.diceArray[key].id === event.target.id) {
             store.state.diceArray[key].chosen = false
-            // store.state.score -= store.state.diceArray[key].value
             store.state.combinationArray.splice(store.state.combinationArray.findIndex(item => item === store.state.diceArray[key].value), 1)
-            // console.log(`calculating score`)
             store.commit('computeScore')
           }
         }
       }
+    },
+    clearResultBox (event) {
+      console.log(`Clearing result box`)
+      let diceBox = document.querySelector('.diceBox')
+      let resultBox = document.querySelector('.resultBox')
+      while (resultBox.childNodes.length) {
+        diceBox.appendChild(resultBox.firstChild)
+      }
+      store.state.combinationArray = []
+    },
+    recordResult (event) {
+      if (event.target.className === 'result') {
+        // we clicked on result field
+        const diceIndex = store.state.schoolScore.map(dice => dice.id).indexOf(event.target.id)
+        store.state.schoolScore[diceIndex].final = true
+      }
     }
   },
-  data() {
+  data () {
     return {
-        // fruits: ['apple', 'banana', 'orange'],
-        diceArray: store.state.diceArray.length,
-        // rolledDice: store.state.rolledDice.length
-        }
-    },
+      diceArray: store.state.diceArray.length
+    }
+  }
 }
 
-  document.addEventListener('DOMContentLoaded', function (event) {
+document.addEventListener('DOMContentLoaded', function (event) {
   console.log('DOM fully loaded and parsed')
-  // let diceBox = document.querySelector('.diceBox')
-  // let diceCount = diceBox.childElementCount
-  // console.log(`child element count ${diceCount}`)
-  // console.log(`child element count ${diceCount}`)
-  // console.log(`store is ${store.state.numOfDiceToRoll}`)
-  //let diceArray = store.state.diceArray
-  //console.log(`Dice array is ${diceArray}`)
 })
- 
-// alert('Hello!')
 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-
 table, th, td {
     border: 1px solid black;
     border-collapse: collapse;
     font-size: 0.85em;
     text-align: left;
 }
-
 .diceBox, .resultBox {
   display: flex;
   justify-content: center;
@@ -222,5 +223,14 @@ table, th, td {
   width:1.5em;
   height:1.5em;
   margin-right: .3em;
+}
+.selected {
+  background-color: hsl(36, 100%, 50%);
+}
+.combinationName {
+  color: hsl(167, 100%, 30%);
+  font-weight: 700;
+  width: 7em;
+  text-align: center;
 }
 </style>
