@@ -16,15 +16,16 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+$color-green: hsl(167, 100%, 30%);
 .navigation {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: .5em;
-  background-color: hsl(167, 100%, 30%);
+  background-color: $color-green;
   color: white;
   width: 100%;
-  height: 2.5em;
+  height: 2em;
 }
 .settings-icon {
   height: 1.2em;

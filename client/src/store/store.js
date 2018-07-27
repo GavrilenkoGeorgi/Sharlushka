@@ -4,9 +4,10 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-  schoolScoreTotal: 0,
-  gameTotal: 0,
-  schoolScore: [{
+  schoolScoreTotal: 0, // total school score
+  gameTotal: 0, // total game score
+  schoolTurns: 1, // counter for number of turns to complete school
+  schoolScore: [{ // scool score array
     value: '',
     final: false,
     id: 'ones'
@@ -67,7 +68,8 @@ const state = {
   }
   ],
   rollCount: 3,
-  rollButtonDisabled: false
+  rollButtonDisabled: false,
+  nextTurnButtonDisabled: true
 }
 
 const getters = {
@@ -155,6 +157,11 @@ const mutations = {
     if (state.rollCount === 0) {
       state.rollButtonDisabled = true
     }
+    /*
+    else if (state.schoolTurns === 6 && state.rollCount === 0) {
+      state.rollButtonDisabled = true
+      console.log(`No turns left`)
+    } */
   },
   nextTurn (state) {
     state.rollButtonDisabled = false
@@ -163,6 +170,8 @@ const mutations = {
       state.diceArray[key].value = '#'
       state.diceArray[key].chosen = false
     }
+    state.nextTurnButtonDisabled = true
+    state.schoolTurns++
   }
 }
 

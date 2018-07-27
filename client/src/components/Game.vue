@@ -75,7 +75,7 @@
   </tr>
   <tr>
     <td class="schoolResult">Game total:</td>
-    <td class="result"></td>
+    <td class="result">{{ $store.state.gameTotal}}</td>
   </tr>
 </table>
   <!--div class="score"> combination array is: {{$store.state.combinationArray}}</div-->
@@ -96,8 +96,8 @@
     <div class="dice" v-for="dice in diceArray" :key="dice">{{ $store.state.diceArray[dice-1] }}</div>
 </div -->
   <div class="controls">
-  <button class="gameButton" v-on:click="rollDice()" :disabled="$store.state.rollButtonDisabled == true">Roll</button>
-  <button class="gameButton" v-on:click="nextTurn(); clearResultBox()" :disabled="$store.state.rollButtonDisabled == false">Next turn</button>
+  <button class="gameButton" v-on:click="rollDice()" :disabled="$store.state.rollButtonDisabled == true" :class="{ disabledButton: $store.state.rollButtonDisabled == true}">Roll</button>
+  <button class="gameButton" v-on:click="nextTurn(); clearResultBox()" :disabled="$store.state.nextTurnButtonDisabled == true" :class="{ disabledButton: $store.state.nextTurnButtonDisabled == true}">Next turn</button>
   </div>
 </div>
 
@@ -158,7 +158,7 @@ export default {
       }
     },
     clearResultBox (event) {
-      console.log(`Clearing result box`)
+      // console.log(`Clearing result box`)
       let diceBox = document.querySelector('.diceBox')
       let resultBox = document.querySelector('.resultBox')
       while (resultBox.childNodes.length) {
@@ -167,11 +167,27 @@ export default {
       store.state.combinationArray = []
     },
     recordResult (event) {
-      if (event.target.className === 'result') {
+      if (event.target.className === 'result' && event.target.textContent !== '') {
+        // console.log(`Event target content: ${event.target.textContent}`)
         // we clicked on result field
+        // find the index of the dice to record
         const diceIndex = store.state.schoolScore.map(dice => dice.id).indexOf(event.target.id)
-        store.state.schoolScore[diceIndex].final = true
-        store.state.schoolScoreTotal += store.state.schoolScore[diceIndex].value
+        // set record flag to true and freeze current value
+        // console.log(`Flag is ${store.state.schoolScore[diceIndex].final}`)
+        if (store.state.schoolScore[diceIndex].final !== true) {
+          store.state.schoolScore[diceIndex].final = true
+          // record total score value
+          store.state.schoolScoreTotal += store.state.schoolScore[diceIndex].value
+          // unlock next turn button
+          if (store.state.schoolTurns === 6) {
+            store.state.nextTurnButtonDisabled = true
+            console.log(`No more turns`)
+          } else {
+            store.state.nextTurnButtonDisabled = false
+          }
+        } else {
+          console.log(`You clicked on an empty or recorded field`)
+        }
       }
     }
   },
@@ -193,6 +209,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 $color-green: hsl(167, 100%, 30%);
 $color-orange: hsl(36, 100%, 50%);
 $color-gray: hsl(0, 0%, 85%);
+$color-lightGray: hsl(0, 0%, 95%);
 $color-darkGray: hsl(0, 0%, 50%);
 $color-white: hsl(0, 0%, 100%);
 
@@ -241,7 +258,7 @@ th {
   font-weight: 700;
 }
 .result:hover {
-  background-color: $color-gray;
+  background-color: $color-lightGray;
   cursor: pointer;
 }
 .schoolResult {
@@ -259,7 +276,7 @@ th {
   background: $color-green;
   border: none;
   cursor: pointer;
-  border-radius: .2em;
+  border-radius: .25em;
   font-size: 1.2em;
   color: $color-white;
   padding: .3em;
@@ -268,5 +285,12 @@ th {
 .gameButton:hover {
   box-shadow: 2px 2px 12px $color-darkGray;
 }
-
+.disabledButton {
+  background: $color-gray;
+  color: $color-green;
+  cursor: not-allowed;
+}
+.disabledButton:hover {
+  box-shadow: 0px 0px 0px $color-darkGray;
+}
 </style>
