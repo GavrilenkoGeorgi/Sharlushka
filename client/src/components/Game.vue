@@ -1,99 +1,84 @@
 <template>
 <div>
   <table class="results" v-on:click="recordResult" style="width:100%">
-  <tr>
-    <th>Study</th>
-    <th>Player 1</th>
-    <th>Player 2</th>
-  </tr>
+  <!--tr>
+    <th></th>
+    <th class="currentPlayerName">Anonymous</th>
+  </tr-->
   <tr>
     <td class="combinationName">1</td>
     <td id="ones" class="result">{{ $store.state.schoolScore[0].value }}</td>
-    <td></td>
   </tr>
   <tr>
     <td class="combinationName">2</td>
     <td id="twos" class="result">{{ $store.state.schoolScore[1].value }}</td>
-    <td></td>
   </tr>
   <tr>
     <td class="combinationName">3</td>
     <td id="threes" class="result">{{ $store.state.schoolScore[2].value }}</td>
-    <td></td>
   </tr>
   <tr>
     <td class="combinationName">4</td>
     <td id="fours" class="result">{{ $store.state.schoolScore[3].value }}</td>
-    <td></td>
   </tr>
   <tr>
     <td class="combinationName">5</td>
     <td id="fives" class="result">{{ $store.state.schoolScore[4].value }}</td>
-    <td></td>
   </tr>
   <tr>
     <td class="combinationName">6</td>
     <td id="sixes" class="result">{{ $store.state.schoolScore[5].value }}</td>
-    <td></td>
   </tr>
   <tr>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
+    <td class="schoolResult">School total:</td>
+    <td class="result">{{ $store.state.schoolScoreTotal }}</td>
   </tr>
   <tr>
-    <td>Пара</td>
-    <td></td>
-    <td></td>
+    <td class="combinationName">Пара</td>
+    <td class="result"></td>
   </tr>
   <tr>
-    <td>Две пары</td>
-    <td></td>
-    <td></td>
+    <td class="combinationName">Две пары</td>
+    <td class="result"></td>
   </tr>
   <tr>
-    <td>Тройник</td>
-    <td></td>
-    <td></td>
+    <td class="combinationName">Тройник</td>
+    <td class="result"></td>
   </tr>
   <tr>
-    <td>Фул</td>
-    <td></td>
-    <td></td>
+    <td class="combinationName">Фул</td>
+    <td class="result"></td>
   </tr>
   <tr>
-    <td>Каре</td>
-    <td></td>
-    <td></td>
+    <td class="combinationName">Каре</td>
+    <td class="result"></td>
   </tr>
   <tr>
-    <td>Покер</td>
-    <td></td>
-    <td></td>
+    <td class="combinationName">Покер</td>
+    <td class="result"></td>
   </tr>
   <tr>
-    <td>Малый</td>
-    <td></td>
-    <td></td>
+    <td class="combinationName">Малый</td>
+    <td class="result"></td>
   </tr>
   <tr>
-    <td>Большой</td>
-    <td></td>
-    <td></td>
+    <td class="combinationName">Большой</td>
+    <td class="result"></td>
   </tr>
   <tr>
-    <td>Первый шанс</td>
-    <td></td>
-    <td></td>
+    <td class="combinationName">Первый шанс</td>
+    <td class="result"></td>
   </tr>
   <tr>
-    <td>Второй шанс</td>
-    <td></td>
-    <td></td>
+    <td class="combinationName">Второй шанс</td>
+    <td class="result"></td>
+  </tr>
+  <tr>
+    <td class="schoolResult">Game total:</td>
+    <td class="result"></td>
   </tr>
 </table>
-  <div class="score"><!-- Score is {{$store.state.score}}<br-->
-  combination array is: {{$store.state.combinationArray}}</div>
+  <!--div class="score"> combination array is: {{$store.state.combinationArray}}</div-->
   <div class="resultBox" v-on:click="deSelectDice">
     <!--div class="dice" v-for="dice in rolledDice" :key="dice">{{ $store.state.rolledDice[dice-1] }}</div-->
   </div>
@@ -111,8 +96,8 @@
     <div class="dice" v-for="dice in diceArray" :key="dice">{{ $store.state.diceArray[dice-1] }}</div>
 </div -->
   <div class="controls">
-  <button v-on:click="rollDice()" :disabled="$store.state.rollButtonDisabled == true">Roll</button> {{ $store.state.rollCount }} left.
-  <button v-on:click="nextTurn(); clearResultBox()" :disabled="$store.state.rollButtonDisabled == false">Next turn</button>
+  <button class="gameButton" v-on:click="rollDice()" :disabled="$store.state.rollButtonDisabled == true">Roll</button>
+  <button class="gameButton" v-on:click="nextTurn(); clearResultBox()" :disabled="$store.state.rollButtonDisabled == false">Next turn</button>
   </div>
 </div>
 
@@ -186,6 +171,7 @@ export default {
         // we clicked on result field
         const diceIndex = store.state.schoolScore.map(dice => dice.id).indexOf(event.target.id)
         store.state.schoolScore[diceIndex].final = true
+        store.state.schoolScoreTotal += store.state.schoolScore[diceIndex].value
       }
     }
   },
@@ -204,33 +190,83 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+$color-green: hsl(167, 100%, 30%);
+$color-orange: hsl(36, 100%, 50%);
+$color-gray: hsl(0, 0%, 85%);
+$color-darkGray: hsl(0, 0%, 50%);
+$color-white: hsl(0, 0%, 100%);
+
 table, th, td {
-    border: 1px solid black;
+    border-bottom: 1px solid $color-gray;
     border-collapse: collapse;
     font-size: 0.85em;
-    text-align: left;
+    margin-bottom: .8em;
+}
+th {
+  text-align: center;
 }
 .diceBox, .resultBox {
   display: flex;
   justify-content: center;
-  margin-bottom: 1em;
+  margin-bottom: .5em;
+  height: 2.5em;
 }
 .dice {
-  color: white;
+  color: $color-white;
   line-height: 1.5em;
-  background-color: hsl(167, 100%, 30%);
+  background-color: $color-orange;
   font-size: 1.5em;
   width:1.5em;
   height:1.5em;
   margin-right: .3em;
+  border-radius: .2em;
+}
+.dice:hover {
+  cursor: pointer;
+  box-shadow: 2px 2px 12px $color-darkGray;
 }
 .selected {
-  background-color: hsl(36, 100%, 50%);
+  background-color: $color-orange;
 }
-.combinationName {
-  color: hsl(167, 100%, 30%);
+.combinationName, .schoolResult {
+  color: $color-green;
   font-weight: 700;
-  width: 7em;
-  text-align: center;
+  text-align: right;
+  border-right: 1px solid $color-gray;
+  padding: .2em;
+  width: 8em;
 }
+.result {
+  color: $color-orange;
+  font-weight: 700;
+}
+.result:hover {
+  background-color: $color-gray;
+  cursor: pointer;
+}
+.schoolResult {
+  text-align: right;
+  color: $color-orange;
+}
+.currentPlayerName {
+  color: $color-green;
+}
+.controls {
+  display: flex;
+  justify-content: space-around;
+}
+.gameButton {
+  background: $color-green;
+  border: none;
+  cursor: pointer;
+  border-radius: .2em;
+  font-size: 1.2em;
+  color: $color-white;
+  padding: .3em;
+  width: 6em;
+}
+.gameButton:hover {
+  box-shadow: 2px 2px 12px $color-darkGray;
+}
+
 </style>

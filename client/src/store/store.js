@@ -4,6 +4,8 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
+  schoolScoreTotal: 0,
+  gameTotal: 0,
   schoolScore: [{
     value: '',
     final: false,
@@ -111,14 +113,14 @@ const mutations = {
           // for 'sixes'
         }
       }
-      // initiate score var
+      // initialise score var
       let baseScore
       for (let key in schoolArray) {
         // key is _the_ key
         let currentDice = schoolArray[key][0]
         // by checking first item we get dice type -- 'ones', 'twos', 'threes'
         // if it is undefined, i.e. no dice of this type left in the score array
-        // set it to empty to clear results table for this dice
+        // set it to empty to clear results table for this dice on screen
         if (currentDice === undefined && state.schoolScore[key].final !== true) {
           state.schoolScore[key].value = ''
         }

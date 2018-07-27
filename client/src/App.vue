@@ -3,7 +3,7 @@
     <!-- router-view/ -->
     <Navigation/>
     <div class="content">
-      <div class="info">Player1</div>
+      <div class="info">Anonymous:  {{ $store.state.rollCount }} rolls left.</div>
     <Game/>
     </div>
   </div>
@@ -37,6 +37,13 @@ body{
 .content {
   flex-direction: column;
   justify-content: flex-end;
-  padding: 1em;
+  padding: 0em 1em 0em 1em;
+}
+.info {
+  color: hsl(36, 100%, 50%);
+  font-weight: 500;
+  font-size: 1.2em;
+  vertical-align: middle;
+  margin: .2em 0em .3em 0em;
 }
 </style>
