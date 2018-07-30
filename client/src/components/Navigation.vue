@@ -1,5 +1,5 @@
 <template>
-<div class="navigation"> {{ msg }} <img class="settings-icon" src="../assets/icons/settings-icon.svg" alt="Settings">
+<div class="navigation"><div class="userName">{{ msg }} - {{ $store.state.rollCount }} rolls left.</div><img class="settings-icon" src="../assets/icons/settings-icon.svg" alt="Settings">
 </div>
 </template>
 
@@ -8,7 +8,7 @@ export default {
   name: 'Navigation',
   data () {
     return {
-      msg: 'Name of the game'
+      msg: 'Anonymous'
     }
   }
 }
@@ -17,15 +17,20 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 $color-green: hsl(167, 100%, 30%);
+
 .navigation {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: .5em;
   background-color: $color-green;
   color: white;
+  width: auto;
+  height: 2.4em;
+  text-align: center;
+  padding: 0em .4em 0em .4em;
+}
+.userName {
   width: 100%;
-  height: 2em;
 }
 .settings-icon {
   height: 1.2em;

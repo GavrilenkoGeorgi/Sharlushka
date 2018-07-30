@@ -7,7 +7,7 @@ const state = {
   schoolScoreTotal: 0, // total school score
   gameTotal: 0, // total game score
   schoolTurns: 1, // counter for number of turns to complete school
-  schoolScore: [{ // scool score array
+  schoolScore: [{ // school score array
     value: '',
     final: false,
     id: 'ones'
@@ -37,6 +37,57 @@ const state = {
     value: '',
     final: false,
     id: 'sixes'
+  }],
+  gameScore: [{ // game score array
+    value: 2,
+    final: false,
+    id: 'pair'
+  },
+  {
+    value: 3,
+    final: false,
+    id: 'twoPairs'
+
+  },
+  {
+    value: 8,
+    final: false,
+    id: 'threeOfAKind'
+  },
+  {
+    value: 4,
+    final: false,
+    id: 'full'
+  },
+  {
+    value: 5,
+    final: false,
+    id: 'quads'
+  },
+  {
+    value: 4,
+    final: false,
+    id: 'poker'
+  },
+  {
+    value: 9,
+    final: false,
+    id: 'small'
+  },
+  {
+    value: 12,
+    final: false,
+    id: 'large'
+  },
+  {
+    value: 11,
+    final: false,
+    id: 'firstChance'
+  },
+  {
+    value: 8,
+    final: false,
+    id: 'secondChance'
   }],
   onesScore: 'initial',
   twosScore: 0,

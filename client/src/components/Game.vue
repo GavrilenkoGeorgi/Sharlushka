@@ -1,32 +1,86 @@
 <template>
 <div>
-  <table class="results" v-on:click="recordResult" style="width:100%">
-  <!--tr>
+  <!--ul class="results" v-on:click="recordResult">
+    <li>
+      <span class="combinationName">&#9856;</span>
+      <span id="ones" class="result">{{ $store.state.schoolScore[0].value }}</span>
+    </li>
+    <li>
+      <span class="combinationName">&#9857;</span>
+      <span id="twos" class="result">{{ $store.state.schoolScore[1].value }}</span>
+    </li>
+    <li>
+      <span class="combinationName">&#9858;</span>
+      <span id="threes" class="result">{{ $store.state.schoolScore[2].value }}</span>
+    </li>
+  </ul-->
+  <div class="info"><span>School: {{$store.state.schoolScoreTotal}}</span> <span>Total score: {{$store.state.gameTotal}}</span></div>
+  <div class ="school" v-on:click="recordResult">
+    <div id="ones" class="combinationName">&#9856;</div>
+    <div id="twos" class="combinationName">&#9857;</div>
+    <div id="threes" class="combinationName">&#9858;</div>
+    <div id="fours" class="combinationName">&#9859;</div>
+    <div id="fives" class="combinationName">&#9860;</div>
+    <div id="sixes" class="combinationName">&#9861;</div>
+
+    <div class="combinationResult">{{ $store.state.schoolScore[0].value }}</div>
+    <div class="combinationResult">{{ $store.state.schoolScore[1].value }}</div>
+    <div class="combinationResult">{{ $store.state.schoolScore[2].value }}</div>
+    <div class="combinationResult">{{ $store.state.schoolScore[3].value }}</div>
+    <div class="combinationResult">{{ $store.state.schoolScore[4].value }}</div>
+    <div class="combinationResult">{{ $store.state.schoolScore[5].value }}</div>
+  </div>
+  <!--div class="schoolResult">School total: {{ $store.state.schoolScoreTotal }}</div-->
+
+  <div class ="game">
+    <div class="gameCombination">Pair</div>
+    <div class="gameCombination">Two pairs</div>
+    <div class="combinationResult">{{ $store.state.gameScore[0].value }}</div>
+    <div class="combinationResult">{{ $store.state.gameScore[1].value }}</div>
+    <div class="gameCombination">Three of a kind</div>
+    <div class="gameCombination">Full</div>
+    <div class="combinationResult">{{ $store.state.gameScore[2].value }}</div>
+    <div class="combinationResult">{{ $store.state.gameScore[3].value }}</div>
+    <div class="gameCombination">Quads</div>
+    <div class="gameCombination">Poker</div>
+    <div class="combinationResult">{{ $store.state.gameScore[4].value }}</div>
+    <div class="combinationResult">{{ $store.state.gameScore[5].value }}</div>
+    <div class="gameCombination">Small</div>
+    <div class="gameCombination">Large</div>
+    <div class="combinationResult">{{ $store.state.gameScore[6].value }}</div>
+    <div class="combinationResult">{{ $store.state.gameScore[7].value }}</div>
+    <div class="gameCombination">First Chance</div>
+    <div class="gameCombination">Second Chance</div>
+    <div class="combinationResult">{{ $store.state.gameScore[8].value }}</div>
+    <div class="combinationResult">{{ $store.state.gameScore[9].value }}</div>
+  </div>
+  <!--table class="results" v-on:click="recordResult" style="width:100%">
+  <tr>
     <th></th>
     <th class="currentPlayerName">Anonymous</th>
-  </tr-->
+  </tr>
   <tr>
-    <td class="combinationName">1</td>
+    <td class="combinationName unicodeDice">&#9856;</td>
     <td id="ones" class="result">{{ $store.state.schoolScore[0].value }}</td>
   </tr>
   <tr>
-    <td class="combinationName">2</td>
+    <td class="combinationName unicodeDice">&#9857;</td>
     <td id="twos" class="result">{{ $store.state.schoolScore[1].value }}</td>
   </tr>
   <tr>
-    <td class="combinationName">3</td>
+    <td class="combinationName unicodeDice">&#9858;</td>
     <td id="threes" class="result">{{ $store.state.schoolScore[2].value }}</td>
   </tr>
   <tr>
-    <td class="combinationName">4</td>
+    <td class="combinationName unicodeDice">&#9859;</td>
     <td id="fours" class="result">{{ $store.state.schoolScore[3].value }}</td>
   </tr>
   <tr>
-    <td class="combinationName">5</td>
+    <td class="combinationName unicodeDice">&#9860;</td>
     <td id="fives" class="result">{{ $store.state.schoolScore[4].value }}</td>
   </tr>
   <tr>
-    <td class="combinationName">6</td>
+    <td class="combinationName unicodeDice">&#9861;</td>
     <td id="sixes" class="result">{{ $store.state.schoolScore[5].value }}</td>
   </tr>
   <tr>
@@ -77,7 +131,7 @@
     <td class="schoolResult">Game total:</td>
     <td class="result">{{ $store.state.gameTotal}}</td>
   </tr>
-</table>
+</table-->
   <!--div class="score"> combination array is: {{$store.state.combinationArray}}</div-->
   <div class="resultBox" v-on:click="deSelectDice">
     <!--div class="dice" v-for="dice in rolledDice" :key="dice">{{ $store.state.rolledDice[dice-1] }}</div-->
@@ -167,8 +221,37 @@ export default {
       store.state.combinationArray = []
     },
     recordResult (event) {
-      if (event.target.className === 'result' && event.target.textContent !== '') {
+      const diceIndex = store.state.schoolScore.map(dice => dice.id).indexOf(event.target.id)
+      if (event.target.className === 'combinationName' && store.state.schoolScore[diceIndex].value !== '') {
+        // we clicked on result field
+        // find the index of the dice to record
+        // const diceIndex = store.state.schoolScore.map(dice => dice.id).indexOf(event.target.id)
+        // set record flag to true and freeze current value
+        // console.log(`Flag is ${store.state.schoolScore[diceIndex].final}`)
+        if (store.state.schoolScore[diceIndex].final !== true) {
+          store.state.schoolScore[diceIndex].final = true
+          // record total score value
+          store.state.schoolScoreTotal += store.state.schoolScore[diceIndex].value
+          // lock roll button
+          store.state.rollButtonDisabled = true
+          // unlock next turn button
+          if (store.state.schoolTurns === 6) {
+            store.state.nextTurnButtonDisabled = true
+            console.log(`No more turns`)
+          } else {
+            store.state.nextTurnButtonDisabled = false
+          }
+        } else {
+          console.log(`You clicked on an empty or recorded field`)
+        }
+      }
+    } /*
+    saveResult (event) {
+      console.log(`${event.target.id}`)
+      // const diceIndex = store.state.schoolScore.map(dice => dice.id).indexOf(event.target.id)
+      if (event.target.className === 'combinationName' && event.target.textContent !== '') {
         // console.log(`Event target content: ${event.target.textContent}`)
+        // console.log(`Event target is: ${event.target}`)
         // we clicked on result field
         // find the index of the dice to record
         const diceIndex = store.state.schoolScore.map(dice => dice.id).indexOf(event.target.id)
@@ -189,7 +272,7 @@ export default {
           console.log(`You clicked on an empty or recorded field`)
         }
       }
-    }
+    } */
   },
   data () {
     return {
@@ -212,15 +295,49 @@ $color-gray: hsl(0, 0%, 85%);
 $color-lightGray: hsl(0, 0%, 95%);
 $color-darkGray: hsl(0, 0%, 50%);
 $color-white: hsl(0, 0%, 100%);
-
-table, th, td {
-    border-bottom: 1px solid $color-gray;
-    border-collapse: collapse;
-    font-size: 0.85em;
-    margin-bottom: .8em;
+.info {
+  display: flex;
+  justify-content: space-around;
+  color: $color-orange;
+  margin: .7em 0em .7em 0em;
 }
-th {
-  text-align: center;
+.game {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 2em 2em 2em 2em 2em 2em 2em 2em 2em 2em;
+  /* background-color: antiquewhite; */
+  color: $color-green;
+  margin-bottom: .7em;
+}
+.school {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 2em 2em;
+  margin-bottom: .7em;
+}
+.combinationName, .combinationResult, .gameCombination {
+  align-self: center;
+  justify-self:center;
+}
+.combinationName {
+  font-size: 2.5em;
+  color: $color-green;
+}
+.combinationName:hover {
+  color: $color-orange;
+  cursor: pointer;
+}
+.combinationResult {
+  font-size: 1.2em;
+  color: $color-orange;
+}
+
+.schoolResult {
+  text-align: right;
+  color: $color-orange;
+}
+.currentPlayerName {
+  color: $color-green;
 }
 .diceBox, .resultBox {
   display: flex;
@@ -245,29 +362,6 @@ th {
 .selected {
   background-color: $color-orange;
 }
-.combinationName, .schoolResult {
-  color: $color-green;
-  font-weight: 700;
-  text-align: right;
-  border-right: 1px solid $color-gray;
-  padding: .2em;
-  width: 8em;
-}
-.result {
-  color: $color-orange;
-  font-weight: 700;
-}
-.result:hover {
-  background-color: $color-lightGray;
-  cursor: pointer;
-}
-.schoolResult {
-  text-align: right;
-  color: $color-orange;
-}
-.currentPlayerName {
-  color: $color-green;
-}
 .controls {
   display: flex;
   justify-content: space-around;
@@ -288,7 +382,7 @@ th {
 .disabledButton {
   background: $color-gray;
   color: $color-green;
-  cursor: not-allowed;
+  cursor: auto;
 }
 .disabledButton:hover {
   box-shadow: 0px 0px 0px $color-darkGray;
