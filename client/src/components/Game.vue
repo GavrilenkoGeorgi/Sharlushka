@@ -1,19 +1,5 @@
 <template>
 <div>
-  <!--ul class="results" v-on:click="recordResult">
-    <li>
-      <span class="combinationName">&#9856;</span>
-      <span id="ones" class="result">{{ $store.state.schoolScore[0].value }}</span>
-    </li>
-    <li>
-      <span class="combinationName">&#9857;</span>
-      <span id="twos" class="result">{{ $store.state.schoolScore[1].value }}</span>
-    </li>
-    <li>
-      <span class="combinationName">&#9858;</span>
-      <span id="threes" class="result">{{ $store.state.schoolScore[2].value }}</span>
-    </li>
-  </ul-->
   <div class="info"><span>School: {{$store.state.schoolScoreTotal}}</span> <span>Total score: {{$store.state.gameTotal}}</span></div>
   <div class ="school" v-on:click="recordResult">
     <div id="ones" class="combinationName">&#9856;</div>
@@ -30,109 +16,34 @@
     <div class="combinationResult">{{ $store.state.schoolScore[4].value }}</div>
     <div class="combinationResult">{{ $store.state.schoolScore[5].value }}</div>
   </div>
-  <!--div class="schoolResult">School total: {{ $store.state.schoolScoreTotal }}</div-->
 
-  <div class ="game">
-    <div class="gameCombination">Pair</div>
-    <div class="gameCombination">Two pairs</div>
+  <div class="game" v-on:click="recordGameResult">
+    <div id="pair" class="gameCombination">Pair</div>
+    <div id="twoPairs" class="gameCombination">Two pairs</div>
     <div class="combinationResult">{{ $store.state.gameScore[0].value }}</div>
     <div class="combinationResult">{{ $store.state.gameScore[1].value }}</div>
-    <div class="gameCombination">Three of a kind</div>
-    <div class="gameCombination">Full</div>
+
+    <div id="threeOfAKind" class="gameCombination">Three of a kind</div>
+    <div id="full" class="gameCombination">Full</div>
     <div class="combinationResult">{{ $store.state.gameScore[2].value }}</div>
     <div class="combinationResult">{{ $store.state.gameScore[3].value }}</div>
-    <div class="gameCombination">Quads</div>
-    <div class="gameCombination">Poker</div>
+
+    <div id="quads" class="gameCombination">Quads</div>
+    <div id="poker" class="gameCombination">Poker</div>
     <div class="combinationResult">{{ $store.state.gameScore[4].value }}</div>
     <div class="combinationResult">{{ $store.state.gameScore[5].value }}</div>
-    <div class="gameCombination">Small</div>
-    <div class="gameCombination">Large</div>
+
+    <div id="small" class="gameCombination">Small</div>
+    <div id="large" class="gameCombination">Large</div>
     <div class="combinationResult">{{ $store.state.gameScore[6].value }}</div>
     <div class="combinationResult">{{ $store.state.gameScore[7].value }}</div>
-    <div class="gameCombination">First Chance</div>
-    <div class="gameCombination">Second Chance</div>
+
+    <div id="firstChance" class="gameCombination">First Chance</div>
+    <div id="secondChance" class="gameCombination">Second Chance</div>
     <div class="combinationResult">{{ $store.state.gameScore[8].value }}</div>
     <div class="combinationResult">{{ $store.state.gameScore[9].value }}</div>
   </div>
-  <!--table class="results" v-on:click="recordResult" style="width:100%">
-  <tr>
-    <th></th>
-    <th class="currentPlayerName">Anonymous</th>
-  </tr>
-  <tr>
-    <td class="combinationName unicodeDice">&#9856;</td>
-    <td id="ones" class="result">{{ $store.state.schoolScore[0].value }}</td>
-  </tr>
-  <tr>
-    <td class="combinationName unicodeDice">&#9857;</td>
-    <td id="twos" class="result">{{ $store.state.schoolScore[1].value }}</td>
-  </tr>
-  <tr>
-    <td class="combinationName unicodeDice">&#9858;</td>
-    <td id="threes" class="result">{{ $store.state.schoolScore[2].value }}</td>
-  </tr>
-  <tr>
-    <td class="combinationName unicodeDice">&#9859;</td>
-    <td id="fours" class="result">{{ $store.state.schoolScore[3].value }}</td>
-  </tr>
-  <tr>
-    <td class="combinationName unicodeDice">&#9860;</td>
-    <td id="fives" class="result">{{ $store.state.schoolScore[4].value }}</td>
-  </tr>
-  <tr>
-    <td class="combinationName unicodeDice">&#9861;</td>
-    <td id="sixes" class="result">{{ $store.state.schoolScore[5].value }}</td>
-  </tr>
-  <tr>
-    <td class="schoolResult">School total:</td>
-    <td class="result">{{ $store.state.schoolScoreTotal }}</td>
-  </tr>
-  <tr>
-    <td class="combinationName">Пара</td>
-    <td class="result"></td>
-  </tr>
-  <tr>
-    <td class="combinationName">Две пары</td>
-    <td class="result"></td>
-  </tr>
-  <tr>
-    <td class="combinationName">Тройник</td>
-    <td class="result"></td>
-  </tr>
-  <tr>
-    <td class="combinationName">Фул</td>
-    <td class="result"></td>
-  </tr>
-  <tr>
-    <td class="combinationName">Каре</td>
-    <td class="result"></td>
-  </tr>
-  <tr>
-    <td class="combinationName">Покер</td>
-    <td class="result"></td>
-  </tr>
-  <tr>
-    <td class="combinationName">Малый</td>
-    <td class="result"></td>
-  </tr>
-  <tr>
-    <td class="combinationName">Большой</td>
-    <td class="result"></td>
-  </tr>
-  <tr>
-    <td class="combinationName">Первый шанс</td>
-    <td class="result"></td>
-  </tr>
-  <tr>
-    <td class="combinationName">Второй шанс</td>
-    <td class="result"></td>
-  </tr>
-  <tr>
-    <td class="schoolResult">Game total:</td>
-    <td class="result">{{ $store.state.gameTotal}}</td>
-  </tr>
-</table-->
-  <!--div class="score"> combination array is: {{$store.state.combinationArray}}</div-->
+
   <div class="resultBox" v-on:click="deSelectDice">
     <!--div class="dice" v-for="dice in rolledDice" :key="dice">{{ $store.state.rolledDice[dice-1] }}</div-->
   </div>
@@ -144,21 +55,14 @@
     <div class="dice" id="fourth">{{ $store.state.diceArray[3].value }}</div>
     <div class="dice" id="fifth">{{ $store.state.diceArray[4].value }}</div>
   </div>
-  <!-- button v-on:click="">Do things</button -->
-  <!--p>{{evenOrOdd}}</p-->
-<!-- div class="diceBox" v-on:click="doThings">
-    <div class="dice" v-for="dice in diceArray" :key="dice">{{ $store.state.diceArray[dice-1] }}</div>
-</div -->
   <div class="controls">
   <button class="gameButton" v-on:click="rollDice()" :disabled="$store.state.rollButtonDisabled == true" :class="{ disabledButton: $store.state.rollButtonDisabled == true}">Roll</button>
   <button class="gameButton" v-on:click="nextTurn(); clearResultBox()" :disabled="$store.state.nextTurnButtonDisabled == true" :class="{ disabledButton: $store.state.nextTurnButtonDisabled == true}">Next turn</button>
   </div>
 </div>
-
 </template>
 
 <script>
-
 import { mapGetters, mapActions } from 'vuex'
 import store from '../store/store'
 
@@ -191,6 +95,7 @@ export default {
             store.state.diceArray[key].chosen = true
             store.state.combinationArray.push(store.state.diceArray[key].value)
             store.commit('computeScore')
+            store.commit('computeGameScore')
           }
         }
       }
@@ -207,6 +112,7 @@ export default {
             store.state.diceArray[key].chosen = false
             store.state.combinationArray.splice(store.state.combinationArray.findIndex(item => item === store.state.diceArray[key].value), 1)
             store.commit('computeScore')
+            store.commit('computeGameScore')
           }
         }
       }
@@ -232,6 +138,32 @@ export default {
           store.state.schoolScore[diceIndex].final = true
           // record total score value
           store.state.schoolScoreTotal += store.state.schoolScore[diceIndex].value
+          // lock roll button
+          store.state.rollButtonDisabled = true
+          // unlock next turn button
+          if (store.state.schoolTurns === 6) {
+            store.state.nextTurnButtonDisabled = true
+            console.log(`No more turns`)
+          } else {
+            store.state.nextTurnButtonDisabled = false
+          }
+        } else {
+          console.log(`You clicked on an empty or recorded field`)
+        }
+      }
+    },
+    recordGameResult (event) {
+      const combinationIndex = store.state.gameScore.map(result => result.id).indexOf(event.target.id)
+      if (event.target.className === 'combinationName' && store.state.schoolScore[combinationIndex].value !== '') {
+        // we clicked on result field
+        // find the index of the dice to record
+        // const diceIndex = store.state.schoolScore.map(dice => dice.id).indexOf(event.target.id)
+        // set record flag to true and freeze current value
+        // console.log(`Flag is ${store.state.schoolScore[diceIndex].final}`)
+        if (store.state.schoolScore[combinationIndex].final !== true) {
+          store.state.schoolScore[combinationIndex].final = true
+          // record total score value
+          store.state.schoolScoreTotal += store.state.schoolScore[combinationIndex].value
           // lock roll button
           store.state.rollButtonDisabled = true
           // unlock next turn button
