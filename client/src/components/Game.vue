@@ -9,39 +9,39 @@
     <div id="fives" class="combinationName">&#9860;</div>
     <div id="sixes" class="combinationName">&#9861;</div>
 
-    <div class="combinationResult">{{ $store.state.schoolScore[0].value }}</div>
-    <div class="combinationResult">{{ $store.state.schoolScore[1].value }}</div>
-    <div class="combinationResult">{{ $store.state.schoolScore[2].value }}</div>
-    <div class="combinationResult">{{ $store.state.schoolScore[3].value }}</div>
-    <div class="combinationResult">{{ $store.state.schoolScore[4].value }}</div>
-    <div class="combinationResult">{{ $store.state.schoolScore[5].value }}</div>
+    <div class="combinationResult">{{ $store.state.scoreArray[0].value }}</div>
+    <div class="combinationResult">{{ $store.state.scoreArray[1].value }}</div>
+    <div class="combinationResult">{{ $store.state.scoreArray[2].value }}</div>
+    <div class="combinationResult">{{ $store.state.scoreArray[3].value }}</div>
+    <div class="combinationResult">{{ $store.state.scoreArray[4].value }}</div>
+    <div class="combinationResult">{{ $store.state.scoreArray[5].value }}</div>
   </div>
 
-  <div class="game" v-on:click="recordGameResult">
-    <div id="pair" class="gameCombination">Pair</div>
-    <div id="twoPairs" class="gameCombination">Two pairs</div>
-    <div class="combinationResult">{{ $store.state.gameScore[0].value }}</div>
-    <div class="combinationResult">{{ $store.state.gameScore[1].value }}</div>
+  <div class="game" v-on:click="recordResult">
+    <div id="pair" class="combinationName text">Pair</div>
+    <div id="twoPairs" class="combinationName text">Two pairs</div>
+    <div class="combinationResult">{{ $store.state.scoreArray[6].value }}</div>
+    <div class="combinationResult">{{ $store.state.scoreArray[7].value }}</div>
 
-    <div id="threeOfAKind" class="gameCombination">Three of a kind</div>
-    <div id="full" class="gameCombination">Full</div>
-    <div class="combinationResult">{{ $store.state.gameScore[2].value }}</div>
-    <div class="combinationResult">{{ $store.state.gameScore[3].value }}</div>
+    <div id="threeOfAKind" class="combinationName text">Three of a kind</div>
+    <div id="full" class="combinationName text">Full</div>
+    <div class="combinationResult">{{ $store.state.scoreArray[8].value }}</div>
+    <div class="combinationResult">{{ $store.state.scoreArray[9].value }}</div>
 
-    <div id="quads" class="gameCombination">Quads</div>
-    <div id="poker" class="gameCombination">Poker</div>
-    <div class="combinationResult">{{ $store.state.gameScore[4].value }}</div>
-    <div class="combinationResult">{{ $store.state.gameScore[5].value }}</div>
+    <div id="quads" class="combinationName text">Quads</div>
+    <div id="poker" class="combinationName text">Poker</div>
+    <div class="combinationResult">{{ $store.state.scoreArray[10].value }}</div>
+    <div class="combinationResult">{{ $store.state.scoreArray[11].value }}</div>
 
-    <div id="small" class="gameCombination">Small</div>
-    <div id="large" class="gameCombination">Large</div>
-    <div class="combinationResult">{{ $store.state.gameScore[6].value }}</div>
-    <div class="combinationResult">{{ $store.state.gameScore[7].value }}</div>
+    <div id="small" class="combinationName text">Small</div>
+    <div id="large" class="combinationName text">Large</div>
+    <div class="combinationResult">{{ $store.state.scoreArray[12].value }}</div>
+    <div class="combinationResult">{{ $store.state.scoreArray[13].value }}</div>
 
-    <div id="firstChance" class="gameCombination">First Chance</div>
-    <div id="secondChance" class="gameCombination">Second Chance</div>
-    <div class="combinationResult">{{ $store.state.gameScore[8].value }}</div>
-    <div class="combinationResult">{{ $store.state.gameScore[9].value }}</div>
+    <div id="firstChance" class="combinationName text">First Chance</div>
+    <div id="secondChance" class="combinationName text">Second Chance</div>
+    <div class="combinationResult">{{ $store.state.scoreArray[14].value }}</div>
+    <div class="combinationResult">{{ $store.state.scoreArray[15].value }}</div>
   </div>
 
   <div class="resultBox" v-on:click="deSelectDice">
@@ -95,7 +95,6 @@ export default {
             store.state.diceArray[key].chosen = true
             store.state.combinationArray.push(store.state.diceArray[key].value)
             store.commit('computeScore')
-            store.commit('computeGameScore')
           }
         }
       }
@@ -112,7 +111,6 @@ export default {
             store.state.diceArray[key].chosen = false
             store.state.combinationArray.splice(store.state.combinationArray.findIndex(item => item === store.state.diceArray[key].value), 1)
             store.commit('computeScore')
-            store.commit('computeGameScore')
           }
         }
       }
@@ -127,84 +125,32 @@ export default {
       store.state.combinationArray = []
     },
     recordResult (event) {
-      const diceIndex = store.state.schoolScore.map(dice => dice.id).indexOf(event.target.id)
-      if (event.target.className === 'combinationName' && store.state.schoolScore[diceIndex].value !== '') {
+      const diceIndex = store.state.scoreArray.map(dice => dice.id).indexOf(event.target.id)
+      if (event.target.className === 'combinationName' && store.state.scoreArray[diceIndex].value !== '') {
         // we clicked on result field
         // find the index of the dice to record
         // const diceIndex = store.state.schoolScore.map(dice => dice.id).indexOf(event.target.id)
         // set record flag to true and freeze current value
         // console.log(`Flag is ${store.state.schoolScore[diceIndex].final}`)
-        if (store.state.schoolScore[diceIndex].final !== true) {
-          store.state.schoolScore[diceIndex].final = true
+        if (store.state.scoreArray[diceIndex].final !== true) {
+          store.state.scoreArray[diceIndex].final = true
           // record total score value
-          store.state.schoolScoreTotal += store.state.schoolScore[diceIndex].value
+          store.state.schoolScoreTotal += store.state.scoreArray[diceIndex].value
           // lock roll button
           store.state.rollButtonDisabled = true
           // unlock next turn button
-          if (store.state.schoolTurns === 6) {
-            store.state.nextTurnButtonDisabled = true
-            console.log(`No more turns`)
-          } else {
-            store.state.nextTurnButtonDisabled = false
+          if (store.state.gameTurns === 6) {
+            console.log(`No more turns in school`)
+            store.state.schoolCompleted = true
+            store.state.gameLocked = false
           }
+          store.state.nextTurnButtonDisabled = false
+          // }
         } else {
           console.log(`You clicked on an empty or recorded field`)
         }
       }
-    },
-    recordGameResult (event) {
-      const combinationIndex = store.state.gameScore.map(result => result.id).indexOf(event.target.id)
-      if (event.target.className === 'combinationName' && store.state.schoolScore[combinationIndex].value !== '') {
-        // we clicked on result field
-        // find the index of the dice to record
-        // const diceIndex = store.state.schoolScore.map(dice => dice.id).indexOf(event.target.id)
-        // set record flag to true and freeze current value
-        // console.log(`Flag is ${store.state.schoolScore[diceIndex].final}`)
-        if (store.state.schoolScore[combinationIndex].final !== true) {
-          store.state.schoolScore[combinationIndex].final = true
-          // record total score value
-          store.state.schoolScoreTotal += store.state.schoolScore[combinationIndex].value
-          // lock roll button
-          store.state.rollButtonDisabled = true
-          // unlock next turn button
-          if (store.state.schoolTurns === 6) {
-            store.state.nextTurnButtonDisabled = true
-            console.log(`No more turns`)
-          } else {
-            store.state.nextTurnButtonDisabled = false
-          }
-        } else {
-          console.log(`You clicked on an empty or recorded field`)
-        }
-      }
-    } /*
-    saveResult (event) {
-      console.log(`${event.target.id}`)
-      // const diceIndex = store.state.schoolScore.map(dice => dice.id).indexOf(event.target.id)
-      if (event.target.className === 'combinationName' && event.target.textContent !== '') {
-        // console.log(`Event target content: ${event.target.textContent}`)
-        // console.log(`Event target is: ${event.target}`)
-        // we clicked on result field
-        // find the index of the dice to record
-        const diceIndex = store.state.schoolScore.map(dice => dice.id).indexOf(event.target.id)
-        // set record flag to true and freeze current value
-        // console.log(`Flag is ${store.state.schoolScore[diceIndex].final}`)
-        if (store.state.schoolScore[diceIndex].final !== true) {
-          store.state.schoolScore[diceIndex].final = true
-          // record total score value
-          store.state.schoolScoreTotal += store.state.schoolScore[diceIndex].value
-          // unlock next turn button
-          if (store.state.schoolTurns === 6) {
-            store.state.nextTurnButtonDisabled = true
-            console.log(`No more turns`)
-          } else {
-            store.state.nextTurnButtonDisabled = false
-          }
-        } else {
-          console.log(`You clicked on an empty or recorded field`)
-        }
-      }
-    } */
+    }
   },
   data () {
     return {
@@ -259,11 +205,13 @@ $color-white: hsl(0, 0%, 100%);
   color: $color-orange;
   cursor: pointer;
 }
+.text {
+  font-size: 1.2em;
+}
 .combinationResult {
   font-size: 1.2em;
   color: $color-orange;
 }
-
 .schoolResult {
   text-align: right;
   color: $color-orange;
