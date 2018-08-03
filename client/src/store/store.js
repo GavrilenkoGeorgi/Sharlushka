@@ -8,7 +8,7 @@ const state = {
   gameTotal: 0, // total game score
   schoolTurns: 1, // counter for number of turns to complete school
   gameTurns: 1, // game turns counter
-  rollCount: 3, // roll counter for the current turn
+  rollCount: 333, // roll counter for the current turn
   schoolCompleted: true, // check if school is completed
   gameLocked: true, // unlock after completing school
   rollButtonDisabled: false,
@@ -200,51 +200,65 @@ const mutations = {
         for (let key in arrayToAnalyse) {
           // key is _the_ key
           let currentDice = arrayToAnalyse[key][0]
-          // check for 'pair' combination
-          if (currentDice && arrayToAnalyse[currentDice - 1].length === 2) {
-            state.scoreArray[6].value = currentDice * 2
-            // check for two pairs
-            pairsArray.push(currentDice)
-            if (pairsArray.length === 2) {
-              state.scoreArray[7].value = (pairsArray[0] * 2) + (pairsArray[1] * 2)
+          if (currentDice) { // start
+            if (arrayToAnalyse[currentDice - 1].length === 2) {
+              pairsArray.push(currentDice)
             }
-          }
-          // check for three of a kind
-          if (currentDice && arrayToAnalyse[currentDice - 1].length === 3) {
-            state.scoreArray[8].value = currentDice * 3
-          }
-          // check for full
-          if (currentDice && arrayToAnalyse[currentDice - 1].length === 3 && pairsArray.length >= 1) {
-            state.scoreArray[9].value = (currentDice * 3) + (pairsArray[0] * 2)
-          }
-          // check for quads
-          if (currentDice && arrayToAnalyse[currentDice - 1].length === 4) {
-            state.scoreArray[10].value = currentDice * 4
-          }
-          // check for poker
-          if (currentDice && arrayToAnalyse[currentDice - 1].length === 5) {
-            state.scoreArray[11].value = (currentDice * 5) + 80
-          }
-          // check for small
-          if (currentDice && arrayToAnalyse[currentDice - 1].length === 1) {
-            // collect all dice
-            smallLargeCheckArray.push(currentDice)
-            // if array is large enough i.e. length equals 5
-            if (smallLargeCheckArray.length === 5) {
-              // calculate result and save it to the corresponding value
-              if (smallLargeCheckArray[0] === 1) {
-                state.scoreArray[12].value = smallLargeCheckArray.reduce(scoreSum)
+            // check for 'pair' combination
+            if (pairsArray.length >= 1 && !state.scoreArray[6].final) {
+              console.log(`Pairs array length ${pairsArray.length}`)
+              if (pairsArray.length === 1) {
+                state.scoreArray[6].value = pairsArray[0] * 2
+              } else if (pairsArray[0] > pairsArray[1]) {
+                state.scoreArray[6].value = pairsArray[0] * 2
               } else {
-                state.scoreArray[13].value = smallLargeCheckArray.reduce(scoreSum)
+                state.scoreArray[6].value = pairsArray[1] * 2
+              }
+              // check for two pairs
+              if (pairsArray.length === 2 && !state.scoreArray[7].final) {
+                state.scoreArray[7].value = (pairsArray[0] * 2) + (pairsArray[1] * 2)
+              } else if (pairsArray.length < 2) {
+                state.scoreArray[7].value = ''
               }
             }
-          }
-          // check for chance
-          let chanceScore = state.combinationArray.reduce(scoreSum)
-          if (currentDice && !state.scoreArray[14].final) {
-            state.scoreArray[14].value = chanceScore
-          } else if (currentDice && !state.scoreArray[15].final) {
-            state.scoreArray[15].value = chanceScore
+            // check for three of a kind
+            if (arrayToAnalyse[currentDice - 1].length === 3 && !state.scoreArray[8].final) {
+              state.scoreArray[8].value = currentDice * 3
+            }
+            // check for full
+            if (arrayToAnalyse[currentDice - 1].length === 3 && pairsArray.length >= 1) {
+              console.log(`full ${arrayToAnalyse}`)
+              state.scoreArray[9].value = (currentDice * 3) + (pairsArray[0] * 2)
+            }
+            // check for quads
+            if (arrayToAnalyse[currentDice - 1].length === 4 && !state.scoreArray[10].final) {
+              state.scoreArray[10].value = currentDice * 4
+            }
+            // check for poker
+            if (arrayToAnalyse[currentDice - 1].length === 5 && !state.scoreArray[11].final) {
+              state.scoreArray[11].value = (currentDice * 5) + 80
+            }
+            // check for small
+            if (arrayToAnalyse[currentDice - 1].length === 1) {
+              // collect all dice
+              smallLargeCheckArray.push(currentDice)
+              // if array is large enough i.e. length equals 5
+              if (smallLargeCheckArray.length === 5) {
+                // calculate result and save it to the corresponding value
+                if (smallLargeCheckArray[0] === 1) {
+                  state.scoreArray[12].value = smallLargeCheckArray.reduce(scoreSum)
+                } else {
+                  state.scoreArray[13].value = smallLargeCheckArray.reduce(scoreSum)
+                }
+              }
+            }
+            // check for chance
+            let chanceScore = state.combinationArray.reduce(scoreSum)
+            if (!state.scoreArray[14].final) {
+              state.scoreArray[14].value = chanceScore
+            } else if (!state.scoreArray[15].final) {
+              state.scoreArray[15].value = chanceScore
+            }
           }
         }
       }
@@ -273,7 +287,7 @@ const mutations = {
     state.turnCompleted = false // set new turn state
     state.gameTurns++ // increment school turn counter
     state.rollButtonDisabled = false // unlock roll button
-    state.rollCount = 3 // set roll count to intial value of three
+    state.rollCount = 333 // set roll count to intial value of three
     for (let key in state.diceArray) {
       state.diceArray[key].value = '#'// reset all dice
       state.diceArray[key].chosen = false
