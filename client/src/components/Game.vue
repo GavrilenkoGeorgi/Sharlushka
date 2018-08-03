@@ -125,17 +125,17 @@ export default {
       store.state.combinationArray = []
     },
     recordResult (event) {
-      const diceIndex = store.state.scoreArray.map(dice => dice.id).indexOf(event.target.id)
-      if (event.target.className === 'combinationName' && store.state.scoreArray[diceIndex].value !== '') {
+      const diceIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(event.target.id)
+      if (/* event.target.className === 'combinationName' && */ store.state.scoreArray[diceIndexInArray].value !== '' && !store.state.turnCompleted) {
+        console.log(`Target id is: ${event.target.id}`)
         // we clicked on result field
-        // find the index of the dice to record
-        // const diceIndex = store.state.schoolScore.map(dice => dice.id).indexOf(event.target.id)
-        // set record flag to true and freeze current value
-        // console.log(`Flag is ${store.state.schoolScore[diceIndex].final}`)
-        if (store.state.scoreArray[diceIndex].final !== true) {
-          store.state.scoreArray[diceIndex].final = true
+        // user decided to save current selected result
+        // set flag to change turn state to 'completed'
+        store.state.turnCompleted = true
+        if (store.state.scoreArray[diceIndexInArray].final !== true) {
+          store.state.scoreArray[diceIndexInArray].final = true
           // record total score value
-          store.state.schoolScoreTotal += store.state.scoreArray[diceIndex].value
+          store.state.schoolScoreTotal += store.state.scoreArray[diceIndexInArray].value
           // lock roll button
           store.state.rollButtonDisabled = true
           // unlock next turn button
@@ -145,13 +145,12 @@ export default {
             store.state.gameLocked = false
           }
           store.state.nextTurnButtonDisabled = false
-          // }
         } else {
           console.log(`You clicked on an empty or recorded field`)
         }
       }
     }
-  },
+  }, // end of methods
   data () {
     return {
       diceArray: store.state.diceArray.length

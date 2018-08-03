@@ -9,10 +9,11 @@ const state = {
   schoolTurns: 1, // counter for number of turns to complete school
   gameTurns: 1, // game turns counter
   rollCount: 3, // roll counter for the current turn
-  schoolCompleted: false, // check if school is completed
+  schoolCompleted: true, // check if school is completed
   gameLocked: true, // unlock after completing school
   rollButtonDisabled: false,
   nextTurnButtonDisabled: true,
+  turnCompleted: false,
   combinationArray: [],
   scoreArray: [{ // school combinations
     value: '',
@@ -131,8 +132,19 @@ const getters = {
 
 const mutations = {
   computeScore (state) {
-    // empty array for calculating score in "school"
+    // empty array for calculating score
     let arrayToAnalyse = [[], [], [], [], [], []]
+    // clear result if there is one dice in the combination array
+    // for any game combination exept chances and school we need at least a pair of dice
+    if (state.combinationArray.length === 1) {
+      // some ugly hardcoded stuff
+      // to clear the range of values in the scoreArray
+      for (let scoreArrayIndex = 6; scoreArrayIndex <= 14; scoreArrayIndex++) {
+        if (state.scoreArray[scoreArrayIndex].final !== true) {
+          state.scoreArray[scoreArrayIndex].value = ''
+        }
+      }
+    }
     // if it is larger than 0, we have at least one dice to calculate
     if (state.combinationArray.length > 0) {
       for (let key in state.combinationArray) {
@@ -168,11 +180,6 @@ const mutations = {
           // key is _the_ key
           let currentDice = arrayToAnalyse[key][0]
           // by checking first item we get dice type -- 'ones', 'twos', 'threes'
-          // if it is undefined, i.e. no dice of this type left in the score array
-          // set it to empty to clear results table for this dice on screen
-          if (currentDice === undefined && state.scoreArray[key].final !== true) {
-            state.scoreArray[key].value = ''
-          }
           if (arrayToAnalyse[key].length === 3) {
             // we got three equal dice and the score for that is zero points
             schoolScore = 0
@@ -193,9 +200,6 @@ const mutations = {
         for (let key in arrayToAnalyse) {
           // key is _the_ key
           let currentDice = arrayToAnalyse[key][0]
-          // if (currentDice === undefined && state.gameScore[key].final !== true) {
-          // state.gameScore[key].value = ''
-          // }
           // check for 'pair' combination
           if (currentDice && arrayToAnalyse[currentDice - 1].length === 2) {
             state.scoreArray[6].value = currentDice * 2
@@ -210,7 +214,7 @@ const mutations = {
             state.scoreArray[8].value = currentDice * 3
           }
           // check for full
-          if (currentDice && arrayToAnalyse[currentDice - 1].length === 3 && pairsArray.length === 1) {
+          if (currentDice && arrayToAnalyse[currentDice - 1].length === 3 && pairsArray.length >= 1) {
             state.scoreArray[9].value = (currentDice * 3) + (pairsArray[0] * 2)
           }
           // check for quads
@@ -247,7 +251,7 @@ const mutations = {
       /* ---------------End of game score calculation--------------- */
     } else { // if combination array is empty, clear all temporary calculation results onscreen
       console.log(`ain't got shit, captain`)
-      for (let key in state.scoreArray) { // this should be one storage array for school and game
+      for (let key in state.scoreArray) { // there should be one storage array for school and game
         if (state.scoreArray[key].final !== true) { // to clear unconfirmed results properly
           state.scoreArray[key].value = ''
         }
@@ -266,12 +270,19 @@ const mutations = {
     }
   },
   nextTurn (state) {
+    state.turnCompleted = false // set new turn state
     state.gameTurns++ // increment school turn counter
     state.rollButtonDisabled = false // unlock roll button
     state.rollCount = 3 // set roll count to intial value of three
     for (let key in state.diceArray) {
       state.diceArray[key].value = '#'// reset all dice
       state.diceArray[key].chosen = false
+    }
+    // clear unsaved results onscreen
+    for (let key in state.scoreArray) {
+      if (!state.scoreArray[key].final) {
+        state.scoreArray[key].value = ''
+      }
     }
     state.nextTurnButtonDisabled = true
   }
