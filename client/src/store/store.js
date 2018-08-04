@@ -6,7 +6,7 @@ Vue.use(Vuex)
 const state = {
   schoolScoreTotal: 0, // total school score
   gameTotal: 0, // total game score
-  schoolTurns: 1, // counter for number of turns to complete school
+  /* schoolTurns: 1, // counter for number of turns to complete school */
   gameTurns: 1, // game turns counter
   rollCount: 3, // roll counter for the current turn
   schoolCompleted: false, // check if school is completed
@@ -179,6 +179,9 @@ const mutations = {
         for (let key in arrayToAnalyse) {
           // key is _the_ key
           let currentDice = arrayToAnalyse[key][0]
+          if (!currentDice && state.scoreArray[key].final !== true) {
+            state.scoreArray[key].value = ''
+          }
           // by checking first item we get dice type -- 'ones', 'twos', 'threes'
           if (arrayToAnalyse[key].length === 3) {
             // we got three equal dice and the score for that is zero points
@@ -305,7 +308,6 @@ const mutations = {
   },
   nextTurn (state) {
     state.turnCompleted = false // set new turn state
-    state.gameTurns++ // increment school turn counter
     state.rollButtonDisabled = false // unlock roll button
     state.rollCount = 3 // set roll count to intial value of three
     for (let key in state.diceArray) {
