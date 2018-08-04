@@ -8,8 +8,8 @@ const state = {
   gameTotal: 0, // total game score
   schoolTurns: 1, // counter for number of turns to complete school
   gameTurns: 1, // game turns counter
-  rollCount: 333, // roll counter for the current turn
-  schoolCompleted: true, // check if school is completed
+  rollCount: 3, // roll counter for the current turn
+  schoolCompleted: false, // check if school is completed
   gameLocked: true, // unlock after completing school
   rollButtonDisabled: false,
   nextTurnButtonDisabled: true,
@@ -44,23 +44,23 @@ const state = {
   {
     value: '',
     final: false,
-    id: 'sixes'
+    id: 'sixes'// 5
   },
   { // game combinations
     value: '',
     final: false,
-    id: 'pair'
+    id: 'pair' // 6
   },
   {
     value: '',
     final: false,
-    id: 'twoPairs'
+    id: 'twoPairs' // 7
 
   },
   {
     value: '',
     final: false,
-    id: 'threeOfAKind'
+    id: 'threeOfAKind' // 8
   },
   {
     value: '',
@@ -195,18 +195,23 @@ const mutations = {
       } else {
         /* ---------------Game score calculation--------------- */
         let pairsArray = []
+        let tripleArray = []
         let smallLargeCheckArray = []
         const scoreSum = (accumulator, currentValue) => accumulator + currentValue
         for (let key in arrayToAnalyse) {
           // key is _the_ key
           let currentDice = arrayToAnalyse[key][0]
           if (currentDice) { // start
+            // collect dice into helper arrays
             if (arrayToAnalyse[currentDice - 1].length === 2) {
               pairsArray.push(currentDice)
             }
+            if (arrayToAnalyse[currentDice - 1].length === 3) {
+              tripleArray.push(currentDice)
+            }
+
             // check for 'pair' combination
             if (pairsArray.length >= 1 && !state.scoreArray[6].final) {
-              console.log(`Pairs array length ${pairsArray.length}`)
               if (pairsArray.length === 1) {
                 state.scoreArray[6].value = pairsArray[0] * 2
               } else if (pairsArray[0] > pairsArray[1]) {
@@ -214,30 +219,45 @@ const mutations = {
               } else {
                 state.scoreArray[6].value = pairsArray[1] * 2
               }
-              // check for two pairs
-              if (pairsArray.length === 2 && !state.scoreArray[7].final) {
-                state.scoreArray[7].value = (pairsArray[0] * 2) + (pairsArray[1] * 2)
-              } else if (pairsArray.length < 2) {
-                state.scoreArray[7].value = ''
-              }
+            } else if (!state.scoreArray[6].final) {
+              state.scoreArray[6].value = ''
             }
+
+            // check for two pairs
+            if (pairsArray.length === 2 && !state.scoreArray[7].final) {
+              state.scoreArray[7].value = (pairsArray[0] * 2) + (pairsArray[1] * 2)
+            } else if (pairsArray.length < 2 && !state.scoreArray[7].final) {
+              state.scoreArray[7].value = ''
+            }
+
             // check for three of a kind
-            if (arrayToAnalyse[currentDice - 1].length === 3 && !state.scoreArray[8].final) {
-              state.scoreArray[8].value = currentDice * 3
+            if (tripleArray.length === 1 && !state.scoreArray[8].final) {
+              state.scoreArray[8].value = tripleArray[0] * 3
+            } else if (!state.scoreArray[8].final) {
+              state.scoreArray[8].value = ''
             }
+
             // check for full
-            if (arrayToAnalyse[currentDice - 1].length === 3 && pairsArray.length >= 1) {
-              console.log(`full ${arrayToAnalyse}`)
-              state.scoreArray[9].value = (currentDice * 3) + (pairsArray[0] * 2)
+            if (tripleArray.length === 1 && pairsArray.length === 1 && !state.scoreArray[9].final) {
+              state.scoreArray[9].value = (tripleArray[0] * 3) + (pairsArray[0] * 2)
+            } else if (!state.scoreArray[9].final) {
+              state.scoreArray[9].value = ''
             }
+
             // check for quads
             if (arrayToAnalyse[currentDice - 1].length === 4 && !state.scoreArray[10].final) {
               state.scoreArray[10].value = currentDice * 4
+            } else if (!state.scoreArray[10].final) {
+              state.scoreArray[10].value = ''
             }
+
             // check for poker
             if (arrayToAnalyse[currentDice - 1].length === 5 && !state.scoreArray[11].final) {
               state.scoreArray[11].value = (currentDice * 5) + 80
+            } else if (!state.scoreArray[11].final) {
+              state.scoreArray[11].value = ''
             }
+
             // check for small
             if (arrayToAnalyse[currentDice - 1].length === 1) {
               // collect all dice
@@ -287,7 +307,7 @@ const mutations = {
     state.turnCompleted = false // set new turn state
     state.gameTurns++ // increment school turn counter
     state.rollButtonDisabled = false // unlock roll button
-    state.rollCount = 333 // set roll count to intial value of three
+    state.rollCount = 3 // set roll count to intial value of three
     for (let key in state.diceArray) {
       state.diceArray[key].value = '#'// reset all dice
       state.diceArray[key].chosen = false

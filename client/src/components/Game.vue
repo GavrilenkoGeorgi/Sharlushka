@@ -160,34 +160,36 @@ export default {
       store.state.combinationArray = []
     },
     recordResult (event) {
-      const diceIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(event.target.id)
-      if (!store.state.scoreArray[diceIndexInArray].final && !store.state.turnCompleted) {
-        // we clicked on result field
-        // user decided to save current selected result
-        event.target.nextElementSibling.classList.remove('blink')
-        // change color of a saved result
-        event.target.nextElementSibling.classList.add('saved')
-        // set flag to change turn state to 'completed'
-        store.state.turnCompleted = true
-        if (store.state.scoreArray[diceIndexInArray].final !== true) {
-          store.state.scoreArray[diceIndexInArray].final = true
-          // record total score value
-          if (!store.state.schoolCompleted) {
-            store.state.schoolScoreTotal += store.state.scoreArray[diceIndexInArray].value
+      if (event.target.className === 'diceIcon' || event.target.className === 'label') {
+        const diceIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(event.target.id)
+        if (!store.state.scoreArray[diceIndexInArray].final && !store.state.turnCompleted) {
+          // we clicked on result field
+          // user decided to save current selected result
+          event.target.nextElementSibling.classList.remove('blink')
+          // change color of a saved result
+          event.target.nextElementSibling.classList.add('saved')
+          // set flag to change turn state to 'completed'
+          store.state.turnCompleted = true
+          if (store.state.scoreArray[diceIndexInArray].final !== true) {
+            store.state.scoreArray[diceIndexInArray].final = true
+            // record total score value
+            if (!store.state.schoolCompleted) {
+              store.state.schoolScoreTotal += store.state.scoreArray[diceIndexInArray].value
+            } else {
+              store.state.gameTotal += store.state.scoreArray[diceIndexInArray].value
+            }
+            // lock roll button
+            store.state.rollButtonDisabled = true
+            // unlock next turn button
+            if (store.state.gameTurns === 6) {
+              console.log(`No more turns in school`)
+              store.state.schoolCompleted = true
+              store.state.gameLocked = false
+            }
+            store.state.nextTurnButtonDisabled = false
           } else {
-            store.state.gameTotal += store.state.scoreArray[diceIndexInArray].value
+            console.log(`You clicked on an empty or recorded field`)
           }
-          // lock roll button
-          store.state.rollButtonDisabled = true
-          // unlock next turn button
-          if (store.state.gameTurns === 6) {
-            console.log(`No more turns in school`)
-            store.state.schoolCompleted = true
-            store.state.gameLocked = false
-          }
-          store.state.nextTurnButtonDisabled = false
-        } else {
-          console.log(`You clicked on an empty or recorded field`)
         }
       }
     }
