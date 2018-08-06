@@ -37,7 +37,9 @@ body{
 }
 .content {
   flex-direction: column;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: center;
+  // justify-content: flex-end;
   padding: 0em 1em 0em 1em;
 }
 </style>

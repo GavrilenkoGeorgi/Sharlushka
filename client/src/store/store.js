@@ -6,10 +6,11 @@ Vue.use(Vuex)
 const state = {
   schoolScoreTotal: 0, // total school score
   gameTotal: 0, // total game score
+  // caclculatedScore: 0,
   /* schoolTurns: 1, // counter for number of turns to complete school */
   gameTurns: 1, // game turns counter
   rollCount: 3, // roll counter for the current turn
-  schoolCompleted: false, // check if school is completed
+  schoolCompleted: true, // check if school is completed
   gameLocked: true, // unlock after completing school
   rollButtonDisabled: false,
   nextTurnButtonDisabled: true,
@@ -135,7 +136,7 @@ const mutations = {
     // empty array for calculating score
     let arrayToAnalyse = [[], [], [], [], [], []]
     // clear result if there is one dice in the combination array
-    // for any game combination exept chances and school we need at least a pair of dice
+    // for any game combination except chances and school we need at least a pair of dice
     if (state.combinationArray.length === 1) {
       // some ugly hardcoded stuff
       // to clear the range of values in the scoreArray
