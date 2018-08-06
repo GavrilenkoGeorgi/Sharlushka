@@ -48,7 +48,7 @@ const state = {
     id: 'sixes'// 5
   },
   { // game combinations
-    value: '',
+    value: [1, 2, 3],
     final: false,
     id: 'pair' // 6
   },
@@ -142,7 +142,7 @@ const mutations = {
       // to clear the range of values in the scoreArray
       for (let scoreArrayIndex = 6; scoreArrayIndex <= 14; scoreArrayIndex++) {
         if (state.scoreArray[scoreArrayIndex].final !== true) {
-          state.scoreArray[scoreArrayIndex].value = ''
+          state.scoreArray[scoreArrayIndex].value = []
         }
       }
     }
@@ -181,7 +181,7 @@ const mutations = {
           // key is _the_ key
           let currentDice = arrayToAnalyse[key][0]
           if (!currentDice && state.scoreArray[key].final !== true) {
-            state.scoreArray[key].value = ''
+            state.scoreArray[key].value = []
           }
           // by checking first item we get dice type -- 'ones', 'twos', 'threes'
           if (arrayToAnalyse[key].length === 3) {
@@ -215,16 +215,18 @@ const mutations = {
             }
 
             // check for 'pair' combination
-            if (pairsArray.length >= 1 && !state.scoreArray[6].final) {
+            if (pairsArray.length >= 1 && /* !state.scoreArray[6].final && */ state.scoreArray[6].value.length < 4) {
               if (pairsArray.length === 1) {
-                state.scoreArray[6].value = pairsArray[0] * 2
+                state.scoreArray[6].value.push(pairsArray[0] * 2)
+                // let temp = state.scoreArray[6].value
+                console.log(`Type of value ${typeof state.scoreArray[6].value}`)
               } else if (pairsArray[0] > pairsArray[1]) {
                 state.scoreArray[6].value = pairsArray[0] * 2
               } else {
                 state.scoreArray[6].value = pairsArray[1] * 2
               }
             } else if (!state.scoreArray[6].final) {
-              state.scoreArray[6].value = ''
+              state.scoreArray[6].value = []
             }
 
             // check for two pairs
@@ -291,7 +293,7 @@ const mutations = {
       console.log(`ain't got shit, captain`)
       for (let key in state.scoreArray) { // there should be one storage array for school and game
         if (state.scoreArray[key].final !== true) { // to clear unconfirmed results properly
-          state.scoreArray[key].value = ''
+          state.scoreArray[key].value = []
         }
       }
     }
@@ -318,7 +320,7 @@ const mutations = {
     // clear unsaved results onscreen
     for (let key in state.scoreArray) {
       if (!state.scoreArray[key].final) {
-        state.scoreArray[key].value = ''
+        state.scoreArray[key].value = []
       }
     }
     state.nextTurnButtonDisabled = true

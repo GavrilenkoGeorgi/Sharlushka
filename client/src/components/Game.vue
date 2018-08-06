@@ -34,9 +34,9 @@
 
       <div class="combination">
         <p id="pair" class="label">Pair</p>
-        <p class="result blink">{{ $store.state.scoreArray[6].value }}</p>
-        <p class="result blink">{{ $store.state.scoreArray[6].value }}</p>
-        <p class="result blink">{{ $store.state.scoreArray[6].value }}</p>
+        <p class="result blink">{{ $store.state.scoreArray[6].value[0] }}</p>
+        <p class="result blink">{{ $store.state.scoreArray[6].value[1] }}</p>
+        <p class="result blink">{{ $store.state.scoreArray[6].value[2] }}</p>
       </div>
 
       <div class="combination">
@@ -167,15 +167,23 @@ export default {
       store.state.combinationArray = []
     },
     recordResult (event) {
+      function getAllBlinkinSiblings (element, parent) {
+        const children = [...parent.children]
+        return children.filter(child => child.classList.contains('blink'))
+      }
+
       if ((event.target.className === 'diceIcon' || event.target.className === 'label') && event.target.nextElementSibling.textContent !== '') {
         const diceIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(event.target.id)
         console.log(`dice index in array to record ${diceIndexInArray}`)
-        if (!store.state.scoreArray[diceIndexInArray].final && !store.state.turnCompleted) {
+        if (store.state.scoreArray[diceIndexInArray].value.length < 4 && !store.state.turnCompleted) {
           // we clicked on result field
           // user decided to save current selected result
-          event.target.nextElementSibling.classList.remove('blink')
+          let children = getAllBlinkinSiblings(event.target, event.target.parentElement)
+          console.log(children[0])
+          children[0].classList.remove('blink')
           // change color of a saved result
-          event.target.nextElementSibling.classList.add('saved')
+          children[0].classList.add('saved')
+          // event.target.nextElementSibling.classList.add('saved')
           // set flag to change turn state to 'completed'
           store.state.turnCompleted = true
           /* if (store.state.scoreArray[diceIndexInArray].final !== true) { */
@@ -312,14 +320,15 @@ $color-white: hsl(0, 0%, 100%);
 .result {
   // font-size: 1.4em;
   padding: 0em .3em 0em .3em;
+  margin: 0em 0em 0em .3em;
   color: $color-darkGray;
   // background-color: yellow;
   width: 2em;
   // height: 100%;
 }
-.result:hover {
-  background-color: yellowgreen;
-}
+// .result:hover {
+// background-color: $color-lightGray;
+// }
 .saved {
   color: $color-orange;
 }
