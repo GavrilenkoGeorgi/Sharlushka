@@ -34,21 +34,20 @@
 
       <div class="combination">
         <p id="pair" class="label">Pair</p>
-        <p class="result blink">{{ $store.state.scoreArray[6].value[0] }}</p>
-        <p class="result blink">{{ $store.state.scoreArray[6].value[1] }}</p>
-        <p class="result blink">{{ $store.state.scoreArray[6].value[2] }}</p>
+        <p class="result blink">{{ $store.state.scoreArray[6].value }}</p>
+        <!--p class="result blink">{{ $store.state.scoreArray[6].value }}</p>
+        <p class="result blink">{{ $store.state.scoreArray[6].value }}</p-->
       </div>
 
       <div class="combination">
         <p id="twoPairs" class="label">Two Pairs</p>
         <p class="result blink">{{ $store.state.scoreArray[7].value }}</p>
-        <p class="result blink">{{ $store.state.scoreArray[7].value }}</p>
-        <p class="result blink">{{ $store.state.scoreArray[7].value }}</p>
+        <!--p class="result blink">{{ $store.state.scoreArray[7].value }}</p>
+        <p class="result blink">{{ $store.state.scoreArray[7].value }}</p-->
       </div>
 
       <div class="combination">
         <p id="threeOfAKind" class="label">Three Of A Kind</p>
-        <p class="result blink">{{ $store.state.scoreArray[8].value }}</p>
         <p class="result blink">{{ $store.state.scoreArray[8].value }}</p>
       </div>
 
