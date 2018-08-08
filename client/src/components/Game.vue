@@ -35,55 +35,81 @@
       <div class="combination">
         <p id="pair" class="label">Pair</p>
         <p class="result blink">{{ $store.state.scoreArray[6].value }}</p>
-        <!--p class="result blink">{{ $store.state.scoreArray[6].value }}</p>
-        <p class="result blink">{{ $store.state.scoreArray[6].value }}</p-->
+        <p class="result saved">{{ $store.state.scoreArray[6].displayValues[0] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[6].displayValues[1] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[6].displayValues[2] }}</p>
       </div>
 
       <div class="combination">
         <p id="twoPairs" class="label">Two Pairs</p>
         <p class="result blink">{{ $store.state.scoreArray[7].value }}</p>
-        <!--p class="result blink">{{ $store.state.scoreArray[7].value }}</p>
-        <p class="result blink">{{ $store.state.scoreArray[7].value }}</p-->
+        <p class="result saved">{{ $store.state.scoreArray[7].displayValues[0] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[7].displayValues[1] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[7].displayValues[2] }}</p>
       </div>
 
       <div class="combination">
         <p id="threeOfAKind" class="label">Three Of A Kind</p>
         <p class="result blink">{{ $store.state.scoreArray[8].value }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[8].displayValues[0] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[8].displayValues[1] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[8].displayValues[2] }}</p>
       </div>
 
       <div class="combination">
         <p id="full" class="label">Full</p>
         <p class="result blink">{{ $store.state.scoreArray[9].value }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[9].displayValues[0] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[9].displayValues[1] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[9].displayValues[2] }}</p>
       </div>
 
       <div class="combination">
         <p id="quads" class="label">Quads</p>
         <p class="result blink">{{ $store.state.scoreArray[10].value }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[10].displayValues[0] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[10].displayValues[1] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[10].displayValues[2] }}</p>
       </div>
 
       <div class="combination">
         <p id="poker" class="label">Poker</p>
         <p class="result blink">{{ $store.state.scoreArray[11].value }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[11].displayValues[0] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[11].displayValues[1] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[11].displayValues[2] }}</p>
       </div>
 
       <div class="combination">
         <p id="small" class="label">Small</p>
         <p class="result blink">{{ $store.state.scoreArray[12].value }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[12].displayValues[0] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[12].displayValues[1] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[12].displayValues[2] }}</p>
       </div>
 
       <div class="combination">
         <p id="large" class="label">Large</p>
         <p class="result blink">{{ $store.state.scoreArray[13].value }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[13].displayValues[0] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[13].displayValues[1] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[13].displayValues[2] }}</p>
       </div>
 
       <div class="combination">
         <p id="firstChance" class="label">First Chance</p>
         <p class="result blink">{{ $store.state.scoreArray[14].value }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[14].displayValues[0] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[14].displayValues[1] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[14].displayValues[2] }}</p>
       </div>
 
       <div class="combination">
         <p id="secondChance" class="label">Second Chance</p>
         <p class="result blink">{{ $store.state.scoreArray[15].value }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[15].displayValues[0] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[15].displayValues[1] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[15].displayValues[2] }}</p>
       </div>
     </div>
     </div>
@@ -166,27 +192,28 @@ export default {
       store.state.combinationArray = []
     },
     recordResult (event) {
+      // not needed?
+      /*
       function getAllBlinkinSiblings (element, parent) {
         const children = [...parent.children]
         return children.filter(child => child.classList.contains('blink'))
-      }
-
+      } */
       if ((event.target.className === 'diceIcon' || event.target.className === 'label') && event.target.nextElementSibling.textContent !== '') {
         const diceIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(event.target.id)
         console.log(`dice index in array to record ${diceIndexInArray}`)
-        if (store.state.scoreArray[diceIndexInArray].value.length < 4 && !store.state.turnCompleted) {
+        if (store.state.scoreArray[diceIndexInArray].displayValues.length < 4 && !store.state.turnCompleted) {
+          console.log(`Saving result`)
           // we clicked on result field
           // user decided to save current selected result
-          let children = getAllBlinkinSiblings(event.target, event.target.parentElement)
-          console.log(children[0])
-          children[0].classList.remove('blink')
-          // change color of a saved result
-          children[0].classList.add('saved')
-          // event.target.nextElementSibling.classList.add('saved')
           // set flag to change turn state to 'completed'
           store.state.turnCompleted = true
-          /* if (store.state.scoreArray[diceIndexInArray].final !== true) { */
-          store.state.scoreArray[diceIndexInArray].final = true
+          // push result into display values array
+          store.state.scoreArray[diceIndexInArray].displayValues.push(store.state.scoreArray[diceIndexInArray].value)
+          // check if it is full to set 'final' flag
+          if (store.state.scoreArray[diceIndexInArray].displayValues.length === 3) {
+            store.state.scoreArray[diceIndexInArray].final = true
+            store.state.scoreArray[diceIndexInArray].value = ''
+          }
           // record total score value
           if (!store.state.schoolCompleted) {
             store.state.schoolScoreTotal += store.state.scoreArray[diceIndexInArray].value
@@ -196,7 +223,6 @@ export default {
           // lock roll button
           store.state.rollButtonDisabled = true
           console.log(`store.state.gameTurns ${store.state.gameTurns}`)
-
           if (store.state.gameTurns === 6) {
             console.log(`School completion check`)
             // check if all results in school are set
@@ -330,6 +356,7 @@ $color-white: hsl(0, 0%, 100%);
 // }
 .saved {
   color: $color-orange;
+  background-color: $color-lightGray;
 }
 .currentPlayerName {
   color: $color-green;

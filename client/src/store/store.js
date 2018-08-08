@@ -25,7 +25,6 @@ const state = {
     value: '',
     final: false,
     id: 'twos'
-
   },
   {
     value: '',
@@ -49,54 +48,64 @@ const state = {
   },
   { // game combinations
     value: '',
+    displayValues: [],
     final: false,
     id: 'pair' // 6
   },
   {
     value: '',
+    displayValues: [],
     final: false,
     id: 'twoPairs' // 7
 
   },
   {
     value: '',
+    displayValues: [],
     final: false,
     id: 'threeOfAKind' // 8
   },
   {
     value: '',
+    displayValues: [],
     final: false,
-    id: 'full'
+    id: 'full' // 9
   },
   {
     value: '',
+    displayValues: [],
     final: false,
-    id: 'quads'
+    id: 'quads' // 10
   },
   {
     value: '',
+    displayValues: [],
     final: false,
-    id: 'poker'
+    id: 'poker' // 11
   },
   {
     value: '',
+    displayValues: [],
     final: false,
-    id: 'small'
+    id: 'small' // 12
   },
   {
     value: '',
+    displayValues: [],
     final: false,
-    id: 'large'
+    id: 'large' // 13
   },
   {
     value: '',
+    displayValues: [],
     final: false,
-    id: 'firstChance'
+    id: 'firstChance' // 14
   },
   {
     value: '',
+    displayValues: [],
     final: false,
-    id: 'secondChance'
+    id: 'secondChance' // 15
   }],
   diceArray: [{
     value: '#',
