@@ -4,28 +4,78 @@
     <span>Game score: {{$store.state.gameTotal}}</span></div>
     <div class="school" v-on:click="recordResult">
       <div class="combination">
-        <p id="ones" class="diceIcon">&#9856;</p>
-        <p class="result blink">{{ $store.state.scoreArray[0].value }}</p>
+        <p id="ones" class="diceIcon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="100" cy="100" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </p>
+        <p class="schoolResult blink">{{ $store.state.scoreArray[0].value }}</p>
       </div>
+
       <div class="combination">
-        <p id="twos" class="diceIcon">&#9857;</p>
-        <p class="result blink">{{ $store.state.scoreArray[1].value }}</p>
+        <p id="twos" class="diceIcon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </p>
+        <p class="schoolResult blink">{{ $store.state.scoreArray[1].value }}</p>
       </div>
+
       <div class="combination">
-        <p id="threes" class="diceIcon">&#9858;</p>
-        <p class="result blink">{{ $store.state.scoreArray[2].value }}</p>
+        <p id="threes" class="diceIcon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="100" cy="100" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </p>
+        <p class="schoolResult blink">{{ $store.state.scoreArray[2].value }}</p>
       </div>
+
       <div class="combination">
-        <p id="fours" class="diceIcon">&#9859;</p>
-        <p class="result blink">{{ $store.state.scoreArray[3].value }}</p>
+        <p id="fours" class="diceIcon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <circle class="diceCircle" cx="150" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </p>
+        <p class="schoolResult blink">{{ $store.state.scoreArray[3].value }}</p>
       </div>
+
       <div class="combination">
-        <p id="fives" class="diceIcon">&#9860;</p>
-        <p class="result blink">{{ $store.state.scoreArray[4].value }}</p>
+        <p id="fives" class="diceIcon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="100" cy="100" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <circle class="diceCircle" cx="150" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </p>
+        <p class="schoolResult blink">{{ $store.state.scoreArray[4].value }}</p>
       </div>
+
       <div class="combination">
-        <p id="sixes" class="diceIcon">&#9861;</p>
-        <p class="result blink">{{ $store.state.scoreArray[5].value }}</p>
+        <p id="sixes" class="diceIcon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="150" cy="100" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <circle class="diceCircle" cx="150" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="100" r="18"/>
+            <circle class="diceCircle" cx="50" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </p>
+        <p class="schoolResult blink">{{ $store.state.scoreArray[5].value }}</p>
       </div>
     </div>
 
@@ -97,19 +147,11 @@
       </div>
 
       <div class="combination">
-        <p id="firstChance" class="label">First Chance</p>
+        <p id="chance" class="label">Chance</p>
         <p class="result blink">{{ $store.state.scoreArray[14].value }}</p>
         <p class="result saved">{{ $store.state.scoreArray[14].displayValues[0] }}</p>
         <p class="result saved">{{ $store.state.scoreArray[14].displayValues[1] }}</p>
         <p class="result saved">{{ $store.state.scoreArray[14].displayValues[2] }}</p>
-      </div>
-
-      <div class="combination">
-        <p id="secondChance" class="label">Second Chance</p>
-        <p class="result blink">{{ $store.state.scoreArray[15].value }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[15].displayValues[0] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[15].displayValues[1] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[15].displayValues[2] }}</p>
       </div>
     </div>
     </div>
@@ -192,20 +234,42 @@ export default {
       store.state.combinationArray = []
     },
     recordResult (event) {
+      // console.log(event.target)
+      // console.log(event.currentTarget)
+      let combinationId
+      if (event.currentTarget.className === 'school') {
+        let combinationParagraphNode = event.target.closest('.diceIcon')
+        combinationId = combinationParagraphNode.id
+      } else if (event.currentTarget.className === 'game') {
+        let combinationParagraphNode = event.target.closest('.label')
+        combinationId = combinationParagraphNode.id
+      } else {
+        console.log(`click harder!`)
+      }
       // not needed?
       /*
       function getAllBlinkinSiblings (element, parent) {
         const children = [...parent.children]
         return children.filter(child => child.classList.contains('blink'))
       } */
-      if ((event.target.className === 'diceIcon' || event.target.className === 'label') && event.target.nextElementSibling.textContent !== '') {
-        const diceIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(event.target.id)
-        console.log(`dice index in array to record ${diceIndexInArray}`)
-        if (store.state.scoreArray[diceIndexInArray].displayValues.length < 4 && !store.state.turnCompleted) {
-          console.log(`Saving result`)
+      const diceIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(combinationId)
+      if (combinationId) {
+        // console.log(`dice index in array to record ${diceIndexInArray}`)
+        // check which result to record, school or game
+        if (!store.state.schoolCompleted) { // record school result
+          store.state.scoreArray[diceIndexInArray].final = true
+          // set flag to change turn state to 'completed'
+          store.state.turnCompleted = true
+          let resultParagraph = document.getElementById(combinationId)
+          console.log(resultParagraph)
+          console.log(resultParagraph.nextElementSibling)
+          resultParagraph.nextElementSibling.classList.remove('blink')
+          resultParagraph.nextElementSibling.classList.add('saved')
+          // event.target.nextElementSibling.classList.remove('blink')
+          // event.target.nextElementSibling.classList.add('saved')
+        } else if (store.state.scoreArray[diceIndexInArray].displayValues.length < 4 && !store.state.turnCompleted) {
           // we clicked on result field
           // user decided to save current selected result
-          // set flag to change turn state to 'completed'
           store.state.turnCompleted = true
           // push result into display values array
           store.state.scoreArray[diceIndexInArray].displayValues.push(store.state.scoreArray[diceIndexInArray].value)
@@ -214,51 +278,68 @@ export default {
             store.state.scoreArray[diceIndexInArray].final = true
             store.state.scoreArray[diceIndexInArray].value = ''
           }
-          // record total score value
-          if (!store.state.schoolCompleted) {
-            store.state.schoolScoreTotal += store.state.scoreArray[diceIndexInArray].value
-          } else {
-            store.state.gameTotal += store.state.scoreArray[diceIndexInArray].value
+        }
+        // record total score value
+        if (!store.state.schoolCompleted) {
+          store.state.schoolScoreTotal += store.state.scoreArray[diceIndexInArray].value
+        } else {
+          store.state.gameTotal += store.state.scoreArray[diceIndexInArray].value
+        }
+        // lock roll button
+        store.state.rollButtonDisabled = true
+        if (store.state.gameTurns === 6) {
+          // console.log(`School completion check`)
+          // check if all results in school are set
+          let schoolCompletedCheck = true
+          for (let index = 0; index <= 5; index++) {
+            // check all fields in school score part of the array
+            if (!store.state.scoreArray[index].final) {
+              // if any of them isn't set, school not completed
+              schoolCompletedCheck = false
+              // console.log(`School is not completed ${schoolCompletedCheck}`)
+            }
           }
-          // lock roll button
-          store.state.rollButtonDisabled = true
-          console.log(`store.state.gameTurns ${store.state.gameTurns}`)
-          if (store.state.gameTurns === 6) {
-            console.log(`School completion check`)
-            // check if all results in school are set
-            let schoolCompletedCheck = true
-            for (let index = 0; index <= 5; index++) {
-              // check all fields in school score part of the array
-              if (!store.state.scoreArray[index].final) {
-                // if any of them isn't set, school not completed
-                schoolCompletedCheck = false
-                console.log(`School is not completed ${schoolCompletedCheck}`)
-              }
-            }
-            console.log(`School completed is ${schoolCompletedCheck}`)
-            if (schoolCompletedCheck) {
-              // set flags
-              store.state.schoolCompleted = true
-              store.state.gameLocked = false
-              // increment game turn counter
-              store.state.gameTurns++
-              // unlock next turn button
-              store.state.nextTurnButtonDisabled = false
-            } else {
-              console.log(`School not completed`)
-              store.state.nextTurnButtonDisabled = true
-            }
-          } else {
+          // console.log(`School completed is ${schoolCompletedCheck}`)
+          if (schoolCompletedCheck) {
+            // set flags
+            store.state.schoolCompleted = true
+            store.state.gameLocked = false
             // increment game turn counter
             store.state.gameTurns++
             // unlock next turn button
             store.state.nextTurnButtonDisabled = false
+          } else {
+            alert(`School not completed`)
+            store.state.nextTurnButtonDisabled = true
           }
         } else {
-          console.log(`You clicked on an empty field`)
+          // increment game turn counter
+          store.state.gameTurns++
+          // unlock next turn button
+          store.state.nextTurnButtonDisabled = false
         }
+        for (let key in store.state.scoreArray) { // there should be one storage array for school and game
+          if (store.state.scoreArray[key].final !== true) { // to clear unconfirmed results properly
+            store.state.scoreArray[key].value = ''
+          }
+        }
+      } else if (event.target.nextElementSibling.textContent === '' && store.state.schoolCompleted) {
+        // if there is no combination to record user can mark one field per turn as cancelled
+        // and it won't be used to calculate score
+        store.state.gameTurns++
+        store.state.turnCompleted = true
+        store.state.scoreArray[diceIndexInArray].displayValues.push(0)
+      } else {
+        // console.log(`You clicked on an empty field`)
+        // console.log(event.target.id)
       }
-    }// end of compute score method
+      // console.log(`store.state.gameTurns ${store.state.gameTurns}`)
+      if (store.state.gameTurns === 33) {
+        store.state.nextTurnButtonDisabled = true
+        console.log(`Game over`)
+        console.log(`Your score is: ${store.state.schoolScoreTotal + store.state.gameTotal}`)
+      }
+    }// end of record result method
   }, // end of methods
   data () {
     return {
@@ -305,6 +386,7 @@ $color-white: hsl(0, 0%, 100%);
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-bottom: 2em;
 }
 .game {
   display: flex;
@@ -343,19 +425,21 @@ $color-white: hsl(0, 0%, 100%);
   padding-right: .3em;
 }
 .result {
-  // font-size: 1.4em;
   padding: 0em .3em 0em .3em;
   margin: 0em 0em 0em .3em;
   color: $color-darkGray;
-  // background-color: yellow;
   width: 2em;
-  // height: 100%;
 }
-// .result:hover {
-// background-color: $color-lightGray;
-// }
+.schoolResult {
+  margin: 0em;
+  padding: 0em;
+  color: $color-darkGray;
+}
 .saved {
   color: $color-orange;
+  // background-color: $color-lightGray;
+}
+.unsaved:hover {
   background-color: $color-lightGray;
 }
 .currentPlayerName {
@@ -366,6 +450,10 @@ $color-white: hsl(0, 0%, 100%);
   justify-content: center;
   margin-bottom: .5em;
   height: 2.5em;
+}
+.resultBox {
+  border-bottom: 1px solid $color-gray;
+  padding-bottom: .2em;
 }
 .dice {
   color: $color-white;
@@ -413,5 +501,21 @@ $color-white: hsl(0, 0%, 100%);
   50% {
     opacity: 0;
   }
+}
+// style for icons
+.diceSvg {
+  fill: none;
+  stroke: $color-green;
+  stroke-width: 10px;
+  fill-rule: evenodd;
+}
+.diceCircle {
+  fill: $color-green;
+}
+svg:hover > .diceSvg{
+  stroke: $color-orange;
+}
+svg:hover > .diceCircle{
+  fill: $color-orange;
 }
 </style>

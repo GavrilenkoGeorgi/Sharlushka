@@ -10,7 +10,7 @@ const state = {
   /* schoolTurns: 1, // counter for number of turns to complete school */
   gameTurns: 1, // game turns counter
   rollCount: 3, // roll counter for the current turn
-  schoolCompleted: true, // check if school is completed
+  schoolCompleted: false, // check if school is completed
   gameLocked: true, // unlock after completing school
   rollButtonDisabled: false,
   nextTurnButtonDisabled: true,
@@ -99,13 +99,7 @@ const state = {
     value: '',
     displayValues: [],
     final: false,
-    id: 'firstChance' // 14
-  },
-  {
-    value: '',
-    displayValues: [],
-    final: false,
-    id: 'secondChance' // 15
+    id: 'chance' // 14
   }],
   diceArray: [{
     value: '#',
@@ -224,8 +218,8 @@ const mutations = {
             }
 
             // check for 'pair' combination
-            console.log(`pairs array[0] is ${pairsArray[0]}`)
-            console.log(`pairs array[1] is ${pairsArray[1]}`)
+            // console.log(`pairs array[0] is ${pairsArray[0]}`)
+            // console.log(`pairs array[1] is ${pairsArray[1]}`)
             if (pairsArray.length >= 1 && !state.scoreArray[6].final /* && state.scoreArray[6].value === '' */) {
               if (pairsArray.length === 1) {
                 state.scoreArray[6].value = (pairsArray[0] * 2)
