@@ -8,12 +8,14 @@ const state = {
   gameTotal: 0, // total game score
   // caclculatedScore: 0,
   /* schoolTurns: 1, // counter for number of turns to complete school */
+  schoolCompleted: false, // check if school is completed
   gameTurns: 1, // game turns counter
   rollCount: 3, // roll counter for the current turn
-  schoolCompleted: false, // check if school is completed
+  gameCheck: false,
   gameLocked: true, // unlock after completing school
   rollButtonDisabled: false,
   nextTurnButtonDisabled: true,
+  nextTurnButtonText: 'Next Turn',
   turnCompleted: false,
   combinationArray: [],
   scoreArray: [{ // school combinations
@@ -285,8 +287,6 @@ const mutations = {
             let chanceScore = state.combinationArray.reduce(scoreSum)
             if (!state.scoreArray[14].final) {
               state.scoreArray[14].value = chanceScore
-            } else if (!state.scoreArray[15].final) {
-              state.scoreArray[15].value = chanceScore
             }
           }
         }
@@ -302,31 +302,67 @@ const mutations = {
     }
   },
   rollDice (state) {
+    state.rollCount--
+    console.log(`Current game turn ${state.gameTurns}`)
     for (let key in state.diceArray) {
       if (state.diceArray[key].chosen !== true) {
         state.diceArray[key].value = Math.floor((Math.random() * 6) + 1)
       }
     }
-    state.rollCount--
     if (state.rollCount === 0) {
       state.rollButtonDisabled = true
     }
-  },
-  nextTurn (state) {
-    state.turnCompleted = false // set new turn state
-    state.rollButtonDisabled = false // unlock roll button
-    state.rollCount = 3 // set roll count to intial value of three
-    for (let key in state.diceArray) {
-      state.diceArray[key].value = '#'// reset all dice
-      state.diceArray[key].chosen = false
-    }
-    // clear unsaved results onscreen
-    for (let key in state.scoreArray) {
-      if (!state.scoreArray[key].final) {
-        state.scoreArray[key].value = ''
+    // console.log(`Turn completed is ${state.turnCompleted}`)
+    if (state.rollCount === 0 && state.gameTurns <= 6 && !state.turnCompleted) {
+      // check if we can record some result, if no -- game over
+      // let emptyId
+      let emptyDice = []
+      for (let index = 0; index <= 5; index++) {
+        // check if all results are set
+        if (state.scoreArray[index].value === '') {
+          // emptyId = state.scoreArray[index].id
+          // console.log(`Empty ID is ${emptyId}`)
+          // console.log(`Index is ${index + 1}`)
+          emptyDice.push(index + 1)
+        }
+      }
+      // console.log(`Empty dice is ${emptyDice}`)
+      for (let value of emptyDice) {
+        // console.log(`Value -- ${value}`)
+        for (let key in state.diceArray) {
+          if (state.diceArray[key].value === value) {
+            console.log(`All ok, one found at ${state.diceArray[key].id} with value ${state.diceArray[key].value}`)
+            state.gameCheck = true
+          }
+        }
       }
     }
-    state.nextTurnButtonDisabled = true
+    if (state.gameTurns <= 6 && state.rollCount === 0 && !state.turnCompleted && !state.gameCheck) {
+      state.nextTurnButtonText = 'Game over'
+      state.nextTurnButtonDisabled = false
+    }
+  },
+  nextTurn (state) {
+    state.gameCheck = false
+    if (!state.gameCheck && /* state.gameTurns <= 6 */ !state.turnCompleted) {
+      alert(`Game over, your score is ${state.schoolScoreTotal}`)
+    } else {
+      state.gameTurns++ // increment turn counter
+      state.turnCompleted = false // set new turn state
+      state.rollButtonDisabled = false // unlock roll button
+      state.rollCount = 3 // set roll count to intial value of three
+      for (let key in state.diceArray) {
+        state.diceArray[key].value = '#'// reset all dice
+        state.diceArray[key].chosen = false
+      }
+      // clear unsaved results onscreen
+      for (let key in state.scoreArray) {
+        if (!state.scoreArray[key].final) {
+          state.scoreArray[key].value = ''
+        }
+      }
+      state.nextTurnButtonDisabled = true
+    }
   }
 } // mutations end
 
