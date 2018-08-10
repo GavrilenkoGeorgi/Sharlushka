@@ -157,12 +157,277 @@
     </div>
     <div class="resultBox" v-on:click="deSelectDice"></div>
 
-    <div class="diceBox" v-on:click="selectDice">
-      <div class="dice" id="first">{{ $store.state.diceArray[0].value }}</div>
-      <div class="dice" id="second">{{ $store.state.diceArray[1].value }}</div>
-      <div class="dice" id="third">{{ $store.state.diceArray[2].value }}</div>
-      <div class="dice" id="fourth">{{ $store.state.diceArray[3].value }}</div>
-      <div class="dice" id="fifth">{{ $store.state.diceArray[4].value }}</div>
+    <div class="diceBox"  v-on:click="selectDice">
+      <!-- first dice -->
+      <div class="dice" id="first">
+        <div v-if="$store.state.diceArray[0].value === 1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="100" cy="100" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[0].value === 2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[0].value === 3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="100" cy="100" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[0].value === 4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <circle class="diceCircle" cx="150" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[0].value === 5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="100" cy="100" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <circle class="diceCircle" cx="150" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[0].value === 6">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="150" cy="100" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <circle class="diceCircle" cx="150" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="100" r="18"/>
+            <circle class="diceCircle" cx="50" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+      </div>
+      <!-- second dice -->
+      <div class="dice" id="second">
+        <div v-if="$store.state.diceArray[1].value === 1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="100" cy="100" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[1].value === 2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[1].value === 3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="100" cy="100" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[1].value === 4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <circle class="diceCircle" cx="150" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[1].value === 5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="100" cy="100" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <circle class="diceCircle" cx="150" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[1].value === 6">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="150" cy="100" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <circle class="diceCircle" cx="150" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="100" r="18"/>
+            <circle class="diceCircle" cx="50" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+      </div>
+      <!-- third dice -->
+      <div class="dice" id="third">
+        <div v-if="$store.state.diceArray[2].value === 1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="100" cy="100" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[2].value === 2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[2].value === 3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="100" cy="100" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[2].value === 4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <circle class="diceCircle" cx="150" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[2].value === 5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="100" cy="100" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <circle class="diceCircle" cx="150" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[2].value === 6">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="150" cy="100" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <circle class="diceCircle" cx="150" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="100" r="18"/>
+            <circle class="diceCircle" cx="50" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+      </div>
+      <!-- fourth dice -->
+      <div class="dice" id="fourth">
+        <div v-if="$store.state.diceArray[3].value === 1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="100" cy="100" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[3].value === 2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[3].value === 3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="100" cy="100" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[3].value === 4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <circle class="diceCircle" cx="150" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[3].value === 5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="100" cy="100" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <circle class="diceCircle" cx="150" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[3].value === 6">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="150" cy="100" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <circle class="diceCircle" cx="150" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="100" r="18"/>
+            <circle class="diceCircle" cx="50" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+      </div>
+      <!-- fifth dice -->
+      <div class="dice" id="fifth">
+        <div v-if="$store.state.diceArray[4].value === 1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="100" cy="100" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[4].value === 2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[4].value === 3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="100" cy="100" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[4].value === 4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <circle class="diceCircle" cx="150" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[4].value === 5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="100" cy="100" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <circle class="diceCircle" cx="150" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+        <div v-if="$store.state.diceArray[4].value === 6">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
+            <circle class="diceCircle" cx="150" cy="100" r="18"/>
+            <circle class="diceCircle" cx="150" cy="50" r="18"/>
+            <circle class="diceCircle" cx="150" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="150" r="18"/>
+            <circle class="diceCircle" cx="50" cy="100" r="18"/>
+            <circle class="diceCircle" cx="50" cy="50" r="18"/>
+            <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          </svg>
+        </div>
+      </div>
     </div>
     <div class="controls">
     <button class="gameButton" v-on:click="rollDice()" :disabled="$store.state.rollButtonDisabled == true" :class="{ disabledButton: $store.state.rollButtonDisabled == true}">Roll</button>
@@ -193,14 +458,15 @@ export default {
       'incrementAsync'
     ]),
     selectDice (event) {
-      if (event.target.className === 'dice') {
+      let elementToAdd = event.target.closest('.dice')
+      if (elementToAdd && elementToAdd.className === 'dice') {
         let diceBox = document.querySelector('.diceBox')
         let resultBox = document.querySelector('.resultBox')
-        diceBox.removeChild(event.target)
-        resultBox.appendChild(event.target)
+        diceBox.removeChild(elementToAdd)
+        resultBox.appendChild(elementToAdd)
 
         for (let key in store.state.diceArray) {
-          if (store.state.diceArray[key].id === event.target.id) {
+          if (store.state.diceArray[key].id === elementToAdd.id) {
             store.state.diceArray[key].chosen = true
             store.state.combinationArray.push(store.state.diceArray[key].value)
             store.commit('computeScore')
@@ -209,14 +475,15 @@ export default {
       }
     },
     deSelectDice (event) {
-      if (event.target.className === 'dice') {
+      let elementToRemove = event.target.closest('.dice')
+      if (elementToRemove && elementToRemove.className === 'dice') {
         let diceBox = document.querySelector('.diceBox')
         let resultBox = document.querySelector('.resultBox')
-        resultBox.removeChild(event.target)
-        diceBox.appendChild(event.target)
+        resultBox.removeChild(elementToRemove)
+        diceBox.appendChild(elementToRemove)
 
         for (let key in store.state.diceArray) {
-          if (store.state.diceArray[key].id === event.target.id) {
+          if (store.state.diceArray[key].id === elementToRemove.id) {
             store.state.diceArray[key].chosen = false
             store.state.combinationArray.splice(store.state.combinationArray.findIndex(item => item === store.state.diceArray[key].value), 1)
             store.commit('computeScore')
@@ -225,7 +492,6 @@ export default {
       }
     },
     clearResultBox (event) {
-      // console.log(`Clearing result box`)
       let diceBox = document.querySelector('.diceBox')
       let resultBox = document.querySelector('.resultBox')
       while (resultBox.childNodes.length) {
@@ -234,9 +500,6 @@ export default {
       store.state.combinationArray = []
     },
     recordResult (event) {
-      // console.log(event.target)
-      // console.log(event.currentTarget)
-      // store.state.turnCompleted = false
       let combinationId // get combination ID from click event
       if (event.currentTarget.className === 'school') {
         let combinationParagraphNode = event.target.closest('.diceIcon')
@@ -251,7 +514,6 @@ export default {
         }
       }
       if (combinationId && !store.state.turnCompleted) { // check if we get some combination ID from user click
-        // console.log(`Combination ID is '${combinationId}'`)
         // if its not undefined get the index of ID in results array
         const combinationIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(combinationId)
         if (store.state.scoreArray[combinationIndexInArray].value !== '' && !store.state.scoreArray[combinationIndexInArray].final) {
@@ -284,11 +546,6 @@ export default {
               store.state.scoreArray[combinationIndexInArray].value = ''
             }
           }
-        /* } else if (store.state.gameTurns <= 6 && !store.state.schoolCompleted) {
-          console.log(`Game over, you could even complete school`)
-          store.state.gameCheck = false
-          store.state.nextTurnButtonText = 'Game Over'
-          store.state.nextTurnButtonDisabled = false */
         } else if (store.state.scoreArray[combinationIndexInArray].value === '' && store.state.schoolCompleted) {
           // if there is no combination to record user can mark one field per turn as cancelled
           // and it won't be used to calculate score
@@ -302,25 +559,6 @@ export default {
         if (store.state.gameTurns === 33 && store.state.turnCompleted) {
           alert(`Game over, your score is ${store.state.schoolScoreTotal + store.state.gameTotal}`)
         }
-        /* ------------------ Check if school is completed ------------------
-        if (store.state.gameTurns === 6 && !store.state.turnCompleted && store.state.rollCount === 0) {
-          let schoolCompletionCheck = true
-          for (let index = 0; index <= 6; index++) {
-            // check if everything in school is set
-            if (store.state.scoreArray[index].final === false) {
-              console.log(`School results needed for ${store.state.scoreArray[index].id}`)
-              schoolCompletionCheck = false
-            }
-          }
-          if (schoolCompletionCheck) { // school completed
-            store.state.schoolCompleted = true
-          } else {
-            store.state.schoolCompleted = false
-            store.nextTurnButtonDisabled = true
-            alert(`You need to complete school to play the game.`)
-          }
-        }
-        ------------------ End of check if school is completed ------------------ */
       }
       // not needed?
       /*
@@ -328,95 +566,6 @@ export default {
         const children = [...parent.children]
         return children.filter(child => child.classList.contains('blink'))
       } */
-      /*
-      const diceIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(combinationId)
-      if (combinationId) {
-        // console.log(`dice index in array to record ${diceIndexInArray}`)
-        // check which result to record, school or game
-        if (!store.state.schoolCompleted && store.state.scoreArray[diceIndexInArray].value !== '') { // record school result
-          store.state.scoreArray[diceIndexInArray].final = true
-          // set flag to change turn state to 'completed'
-          store.state.turnCompleted = true
-          let resultParagraph = document.getElementById(combinationId)
-          console.log(resultParagraph)
-          console.log(resultParagraph.nextElementSibling)
-          resultParagraph.nextElementSibling.classList.remove('blink')
-          resultParagraph.nextElementSibling.classList.add('saved')
-          // event.target.nextElementSibling.classList.remove('blink')
-          // event.target.nextElementSibling.classList.add('saved')
-        } else if (store.state.scoreArray[diceIndexInArray].displayValues.length < 4 && !store.state.turnCompleted) {
-          // we clicked on result field
-          // user decided to save current selected result
-          store.state.turnCompleted = true
-          // push result into display values array
-          store.state.scoreArray[diceIndexInArray].displayValues.push(store.state.scoreArray[diceIndexInArray].value)
-          // check if it is full to set 'final' flag
-          if (store.state.scoreArray[diceIndexInArray].displayValues.length === 3) {
-            store.state.scoreArray[diceIndexInArray].final = true
-            store.state.scoreArray[diceIndexInArray].value = ''
-          }
-        }
-        // record total score value
-        if (!store.state.schoolCompleted) {
-          store.state.schoolScoreTotal += store.state.scoreArray[diceIndexInArray].value
-        } else {
-          store.state.gameTotal += store.state.scoreArray[diceIndexInArray].value
-        }
-        // lock roll button
-        store.state.rollButtonDisabled = true
-        if (store.state.gameTurns === 6) {
-          // console.log(`School completion check`)
-          // check if all results in school are set
-          let schoolCompletedCheck = true
-          for (let index = 0; index <= 5; index++) {
-            // check all fields in school score part of the array
-            if (!store.state.scoreArray[index].final) {
-              // if any of them isn't set, school not completed
-              schoolCompletedCheck = false
-              // console.log(`School is not completed ${schoolCompletedCheck}`)
-            }
-          }
-          // console.log(`School completed is ${schoolCompletedCheck}`)
-          if (schoolCompletedCheck) {
-            // set flags
-            store.state.schoolCompleted = true
-            store.state.gameLocked = false
-            // increment game turn counter
-            store.state.gameTurns++
-            // unlock next turn button
-            store.state.nextTurnButtonDisabled = false
-          } else {
-            alert(`School not completed`)
-            store.state.nextTurnButtonDisabled = true
-          }
-        } else {
-          // increment game turn counter
-          store.state.gameTurns++
-          // unlock next turn button
-          store.state.nextTurnButtonDisabled = false
-        }
-        for (let key in store.state.scoreArray) { // there should be one storage array for school and game
-          if (store.state.scoreArray[key].final !== true) { // to clear unconfirmed results properly
-            store.state.scoreArray[key].value = ''
-          }
-        }
-      } else if (event.target.nextElementSibling.textContent === '' && store.state.schoolCompleted) {
-        // if there is no combination to record user can mark one field per turn as cancelled
-        // and it won't be used to calculate score
-        store.state.gameTurns++
-        store.state.turnCompleted = true
-        store.state.scoreArray[diceIndexInArray].displayValues.push(0)
-      } else {
-        // console.log(`You clicked on an empty field`)
-        // console.log(event.target.id)
-      }
-      // console.log(`store.state.gameTurns ${store.state.gameTurns}`)
-      if (store.state.gameTurns === 33) {
-        store.state.nextTurnButtonDisabled = true
-        console.log(`Game over`)
-        console.log(`Your score is: ${store.state.schoolScoreTotal + store.state.gameTotal}`)
-      }
-      */
     }// end of record result method
   }, // end of methods
   data () {
@@ -534,18 +683,20 @@ $color-white: hsl(0, 0%, 100%);
   padding-bottom: .2em;
 }
 .dice {
-  color: $color-white;
-  line-height: 1.5em;
-  background-color: $color-orange;
-  font-size: 1.5em;
-  width:1.5em;
-  height:1.5em;
-  margin-right: .3em;
-  border-radius: .2em;
+  display: flex;
+  margin-left: .4em;
+  margin-right: .4em;
+  height: auto;
+  animation: diceDisplay 1s linear;
+  // border: 1px solid black;
+}
+@keyframes diceDisplay {
+  0% {
+    opacity: 0;
+  }
 }
 .dice:hover {
   cursor: pointer;
-  box-shadow: 2px 2px 12px $color-darkGray;
 }
 .controls {
   display: flex;
@@ -581,6 +732,18 @@ $color-white: hsl(0, 0%, 100%);
   }
 }
 // style for icons
+.resultBox svg > .diceSvg {
+  stroke: $color-orange;
+}
+.resultBox svg > .diceCircle {
+  fill: $color-orange;
+}
+.resultBox svg:hover > .diceSvg {
+  stroke: $color-green;
+}
+.resultBox svg:hover > .diceCircle {
+  fill: $color-green;
+}
 .diceSvg {
   fill: none;
   stroke: $color-green;

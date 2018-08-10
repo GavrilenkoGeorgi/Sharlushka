@@ -319,7 +319,7 @@ const mutations = {
       let emptyDice = []
       for (let index = 0; index <= 5; index++) {
         // check if all results are set
-        if (state.scoreArray[index].value === '') {
+        if (state.scoreArray[index].value === '' || !state.scoreArray[index].final) {
           // emptyId = state.scoreArray[index].id
           // console.log(`Empty ID is ${emptyId}`)
           // console.log(`Index is ${index + 1}`)
