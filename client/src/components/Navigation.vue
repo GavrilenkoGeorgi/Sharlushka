@@ -1,5 +1,5 @@
 <template>
-<div class="navigation"><div class="userName">{{ msg }} - {{ $store.state.rollCount }} rolls left.</div><img class="settings-icon" src="../assets/icons/settings-icon.svg" alt="Settings">
+<div class="navigation"><div class="userName">{{ msg }}</div><img class="settings-icon" src="../assets/icons/settings-icon.svg" alt="Settings">
 </div>
 </template>
 
@@ -31,6 +31,7 @@ $color-green: hsl(167, 100%, 30%);
 }
 .userName {
   width: 100%;
+  font-size: 1.3em;
 }
 .settings-icon {
   height: 1.2em;

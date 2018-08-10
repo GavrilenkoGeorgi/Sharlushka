@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
+  testMenu: false, // some testing
   schoolScoreTotal: 0, // total school score
   gameTotal: 0, // total game score
   // caclculatedScore: 0,
@@ -220,9 +221,7 @@ const mutations = {
             }
 
             // check for 'pair' combination
-            // console.log(`pairs array[0] is ${pairsArray[0]}`)
-            // console.log(`pairs array[1] is ${pairsArray[1]}`)
-            if (pairsArray.length >= 1 && !state.scoreArray[6].final /* && state.scoreArray[6].value === '' */) {
+            if (pairsArray.length >= 1 && !state.scoreArray[6].final) {
               if (pairsArray.length === 1) {
                 state.scoreArray[6].value = (pairsArray[0] * 2)
               } else if (pairsArray[0] > pairsArray[1]) {
@@ -312,23 +311,16 @@ const mutations = {
     if (state.rollCount === 0) {
       state.rollButtonDisabled = true
     }
-    // console.log(`Turn completed is ${state.turnCompleted}`)
     if (state.rollCount === 0 && state.gameTurns <= 6 && !state.turnCompleted) {
       // check if we can record some result, if no -- game over
-      // let emptyId
       let emptyDice = []
       for (let index = 0; index <= 5; index++) {
         // check if all results are set
         if (state.scoreArray[index].value === '' || !state.scoreArray[index].final) {
-          // emptyId = state.scoreArray[index].id
-          // console.log(`Empty ID is ${emptyId}`)
-          // console.log(`Index is ${index + 1}`)
           emptyDice.push(index + 1)
         }
       }
-      // console.log(`Empty dice is ${emptyDice}`)
       for (let value of emptyDice) {
-        // console.log(`Value -- ${value}`)
         for (let key in state.diceArray) {
           if (state.diceArray[key].value === value) {
             console.log(`All ok, one found at ${state.diceArray[key].id} with value ${state.diceArray[key].value}`)
@@ -344,7 +336,7 @@ const mutations = {
   },
   nextTurn (state) {
     state.gameCheck = false
-    if (!state.gameCheck && /* state.gameTurns <= 6 */ !state.turnCompleted) {
+    if (!state.gameCheck && !state.turnCompleted) {
       alert(`Game over, your score is ${state.schoolScoreTotal}`)
     } else {
       state.gameTurns++ // increment turn counter

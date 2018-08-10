@@ -1,7 +1,5 @@
 <template>
 <div>
-    <div class="info"><span>School: {{$store.state.schoolScoreTotal}}</span>
-    <span>Game score: {{$store.state.gameTotal}}</span></div>
     <div class="school" v-on:click="recordResult">
       <div class="combination">
         <p id="ones" class="diceIcon">
@@ -430,10 +428,22 @@
       </div>
     </div>
     <div class="controls">
-    <button class="gameButton" v-on:click="rollDice()" :disabled="$store.state.rollButtonDisabled == true" :class="{ disabledButton: $store.state.rollButtonDisabled == true}">Roll</button>
-    <button class="gameButton" v-on:click="nextTurn(); clearResultBox()" :disabled="$store.state.nextTurnButtonDisabled == true" :class="{ disabledButton: $store.state.nextTurnButtonDisabled == true}">{{ $store.state.nextTurnButtonText}}</button>
+      <button class="gameButton" v-on:click="rollDice()" :disabled="$store.state.rollButtonDisabled == true" :class="{ disabledButton: $store.state.rollButtonDisabled == true}">Roll</button>
+      <button class="gameButton" v-on:click="nextTurn(); clearResultBox()" :disabled="$store.state.nextTurnButtonDisabled == true" :class="{ disabledButton: $store.state.nextTurnButtonDisabled == true}">{{ $store.state.nextTurnButtonText}}</button>
     </div>
+    <div class="info">
+      <p class="infoItem">School score: <span class="scoreNumDisplay"> {{$store.state.schoolScoreTotal}} </span></p>
+      <p class="infoItem">Game score: <span class="scoreNumDisplay"> {{$store.state.gameTotal}} </span></p>
+      <p class="infoItem" :class="{ blink: $store.state.rollCount <= 1 }">Rolls left: <span class="scoreNumDisplay"> {{ $store.state.rollCount }} </span></p>
+    </div>
+    <div class="endGameMenu" v-if="$store.state.testMenu === true">
+      <p class="finalScore">Your score is {{ $store.state.schoolScoreTotal + $store.state.gameTotal }}</p>
+      <button v-on:click="openMenu">New game</button>
+      <button v-on:click="openMenu">Save Result</button>
+    </div>
+    <button v-on:click="openMenu">Open</button>
 </div>
+
 </template>
 
 <script>
@@ -452,11 +462,20 @@ export default {
       'rollDice',
       'nextTurn',
       'removeDice',
+      'openMenu',
       'increment',
       'decrement',
       'incrementIfOdd',
       'incrementAsync'
     ]),
+    openMenu (event) {
+      if (store.state.testMenu === true) {
+        store.state.testMenu = false
+        console.log(`test menu is ${store.state.testMenu}`)
+      } else {
+        store.state.testMenu = true
+      }
+    },
     selectDice (event) {
       let elementToAdd = event.target.closest('.dice')
       if (elementToAdd && elementToAdd.className === 'dice') {
@@ -587,12 +606,6 @@ $color-gray: hsl(0, 0%, 85%);
 $color-lightGray: hsl(0, 0%, 95%);
 $color-darkGray: hsl(0, 0%, 50%);
 $color-white: hsl(0, 0%, 100%);
-.info {
-  display: flex;
-  justify-content: space-around;
-  color: $color-orange;
-  margin: .7em 0em 0em 0em;
-}
 .content {
   display: flex;
   flex-direction: column;
@@ -605,15 +618,15 @@ $color-white: hsl(0, 0%, 100%);
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  margin-bottom: 1.8em;
-  height: 4em;
+  margin: .8em 0em .8em 0em;
+  height: 3em;
 }
 .gameTable {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
 }
 .game {
   display: flex;
@@ -635,7 +648,6 @@ $color-white: hsl(0, 0%, 100%);
   margin: 0em;
 }
 .diceIcon {
-  font-size: 2.5em;
   color: $color-green;
 }
 .diceIcon:hover, .label:hover {
@@ -651,20 +663,21 @@ $color-white: hsl(0, 0%, 100%);
   text-align: right;
   padding-right: .3em;
 }
+.schoolResult {
+  margin: 0em;
+  padding: 0em;
+  color: $color-darkGray;
+  font-size: 1.2em;
+}
 .result {
   padding: 0em .3em 0em .3em;
   margin: 0em 0em 0em .3em;
   color: $color-darkGray;
   width: 2em;
-}
-.schoolResult {
-  margin: 0em;
-  padding: 0em;
-  color: $color-darkGray;
+  font-size: 1.2em;
 }
 .saved {
   color: $color-orange;
-  // background-color: $color-lightGray;
 }
 .unsaved:hover {
   background-color: $color-lightGray;
@@ -672,15 +685,14 @@ $color-white: hsl(0, 0%, 100%);
 .currentPlayerName {
   color: $color-green;
 }
+.resultBox {
+  margin-bottom: .5em;
+  border-bottom: 1px solid $color-gray;
+}
 .diceBox, .resultBox {
   display: flex;
   justify-content: center;
-  margin-bottom: .5em;
   height: 2.5em;
-}
-.resultBox {
-  border-bottom: 1px solid $color-gray;
-  padding-bottom: .2em;
 }
 .dice {
   display: flex;
@@ -701,6 +713,7 @@ $color-white: hsl(0, 0%, 100%);
 .controls {
   display: flex;
   justify-content: space-around;
+  margin-bottom: .5em;
 }
 .gameButton {
   background: $color-green;
@@ -713,7 +726,7 @@ $color-white: hsl(0, 0%, 100%);
   width: 6em;
 }
 .gameButton:hover {
-  box-shadow: 2px 2px 12px $color-darkGray;
+  box-shadow: 0px 0px 6px $color-green;
 }
 .disabledButton {
   background: $color-gray;
@@ -721,7 +734,8 @@ $color-white: hsl(0, 0%, 100%);
   cursor: auto;
 }
 .disabledButton:hover {
-  box-shadow: 0px 0px 0px $color-darkGray;
+  // box-shadow: none;
+  box-shadow: unset;
 }
 .blink {
   animation: blinker 2.5s linear infinite;
@@ -730,6 +744,25 @@ $color-white: hsl(0, 0%, 100%);
   50% {
     opacity: 0;
   }
+}
+.info {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
+  color: $color-green;
+}
+.infoItem {
+  // border: 1px solid black;
+  margin: .5em .5em .5em .5em;
+  width: 9em;
+}
+.oneMoreRollLeft {
+  color: red;
+}
+.scoreNumDisplay {
+  color:$color-orange;
+  font-size: 1.1em;
 }
 // style for icons
 .resultBox svg > .diceSvg {
@@ -758,5 +791,19 @@ svg:hover > .diceSvg{
 }
 svg:hover > .diceCircle{
   fill: $color-orange;
+}
+// end game menu
+.endGameMenu {
+  position: fixed;
+  top: 9em;
+  left: 35%;
+  // opacity: .8;
+  // right: 50%;
+  width: 14em;
+  // height: 602px;
+  height: 6em;
+  background-color: $color-white;
+  border: 1px solid $color-green;
+  box-shadow: 0px 0px 12px $color-green;
 }
 </style>
