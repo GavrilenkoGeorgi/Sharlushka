@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1>Register</h1>
+    <h1>{{ title }}</h1>
+    <a href="/">Game link</a>
   </div>
 </template>
 
@@ -8,6 +9,7 @@
 export default {
   data () {
     return {
+      title: 'Register'
     }
   }
 }

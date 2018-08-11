@@ -10,7 +10,7 @@ const state = {
   // caclculatedScore: 0,
   /* schoolTurns: 1, // counter for number of turns to complete school */
   schoolCompleted: false, // check if school is completed
-  gameTurns: 1, // game turns counter
+  gameTurns: 32, // game turns counter
   rollCount: 3, // roll counter for the current turn
   gameCheck: false,
   gameLocked: true, // unlock after completing school

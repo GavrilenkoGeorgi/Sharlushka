@@ -1,46 +1,48 @@
 <template>
   <div id="app">
-    <!-- router-view/ -->
-    <Navigation/>
-    <div class="content">
-    <Game/>
-    </div>
+    <!--Navigation/-->
+    <!--Game/-->
+    <router-view/>
   </div>
 </template>
 
 <script>
 // import Hello from './components/Hello'
-import Game from './components/Game'
-import Navigation from './components/Navigation'
+// import Game from './components/Game'
+// import Navigation from './components/Navigation'
+// import Register from './components/Register'
 export default {
-  name: 'App',
-  components: {
-    Game,
-    Navigation
-  }
+  name: 'App' // ,
+  // components: {
+  /* Game, */
+  /* Navigation, */
+  /* Register */
+  // }
 }
 </script>
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:700');
-body{
-  display: flex;
-  justify-content: center;
-  // font-family: Verdana, Geneva, Tahoma, sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  // display: flex;
+  // justify-content: center;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 1em;
 }
 #app {
-  text-align: center;
-  border: 1px solid hsl(167, 100%, 30%);
-  width: 360px;
-  height: 640px;
-}
-.content {
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  display: flex;
+  // flex-direction: column;
   // justify-content: flex-end;
-  padding: 0em 1em 0em 1em;
+  // align-content: flex-end;
+  // align-items: flex-end;
+  // text-align: center;
+  border: 0.063em solid hsl(167, 100%, 30%);
+  // width: 360px;
+  height: 40em; //640 px
 }
 </style>

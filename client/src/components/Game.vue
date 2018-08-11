@@ -438,10 +438,10 @@
     </div>
     <div class="endGameMenu" v-if="$store.state.testMenu === true">
       <p class="finalScore">Your score is {{ $store.state.schoolScoreTotal + $store.state.gameTotal }}</p>
-      <button v-on:click="openMenu">New game</button>
-      <button v-on:click="openMenu">Save Result</button>
+      <button class="menuButton" v-on:click="newGame">New game</button>
+      <button class="menuButton" v-on:click="saveOrRegister">Save Result</button>
     </div>
-    <button v-on:click="openMenu">Open</button>
+    <!--button v-on:click="openMenu">Open</button-->
 </div>
 
 </template>
@@ -463,18 +463,17 @@ export default {
       'nextTurn',
       'removeDice',
       'openMenu',
+      'newGame',
       'increment',
       'decrement',
       'incrementIfOdd',
       'incrementAsync'
     ]),
-    openMenu (event) {
-      if (store.state.testMenu === true) {
-        store.state.testMenu = false
-        console.log(`test menu is ${store.state.testMenu}`)
-      } else {
-        store.state.testMenu = true
-      }
+    newGame (event) {
+      location.reload()
+    },
+    saveOrRegister (event) {
+      window.location.replace('/#/register')
     },
     selectDice (event) {
       let elementToAdd = event.target.closest('.dice')
@@ -576,7 +575,9 @@ export default {
           console.log(`Click harder! Combination ID is ${combinationId}.`)
         }
         if (store.state.gameTurns === 33 && store.state.turnCompleted) {
-          alert(`Game over, your score is ${store.state.schoolScoreTotal + store.state.gameTotal}`)
+          // alert(`Game over, your score is ${store.state.schoolScoreTotal + store.state.gameTotal}`)
+          store.state.nextTurnButtonDisabled = true
+          store.state.testMenu = true
         }
       }
       // not needed?
@@ -589,7 +590,7 @@ export default {
   }, // end of methods
   data () {
     return {
-      diceArray: store.state.diceArray.length
+      title: 'Sharlushka'
     }
   }
 }
@@ -715,7 +716,7 @@ $color-white: hsl(0, 0%, 100%);
   justify-content: space-around;
   margin-bottom: .5em;
 }
-.gameButton {
+.gameButton, .menuButton {
   background: $color-green;
   border: none;
   // cursor: pointer;
@@ -725,7 +726,10 @@ $color-white: hsl(0, 0%, 100%);
   padding: .3em;
   width: 6em;
 }
-.gameButton:hover {
+.menuButton {
+  margin: 0em .3em 0em .3em;
+}
+.gameButton:hover, .menuButton:hover {
   box-shadow: 0px 0px 6px $color-green;
 }
 .disabledButton {
@@ -795,15 +799,19 @@ svg:hover > .diceCircle{
 // end game menu
 .endGameMenu {
   position: fixed;
-  top: 9em;
-  left: 35%;
+  top: 8em;
+  left: 31%;
   // opacity: .8;
   // right: 50%;
-  width: 14em;
+  width: 17.5em;
   // height: 602px;
-  height: 6em;
+  height: 8em;
   background-color: $color-white;
   border: 1px solid $color-green;
   box-shadow: 0px 0px 12px $color-green;
+}
+.finalScore {
+  color: $color-green;
+  font-size: 1.4em;
 }
 </style>
