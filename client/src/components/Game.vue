@@ -1,5 +1,6 @@
 <template>
 <div>
+  <Navigation />
     <div class="school" v-on:click="recordResult">
       <div class="combination">
         <p id="ones" class="diceIcon">
@@ -154,7 +155,7 @@
     </div>
     </div>
     <div class="resultBox" v-on:click="deSelectDice"></div>
-
+    <hr class="faded" />
     <div class="diceBox"  v-on:click="selectDice">
       <!-- first dice -->
       <div class="dice" id="first">
@@ -449,9 +450,13 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import store from '../store/store'
+import Navigation from '../components/Navigation'
 
 export default {
   name: 'Game',
+  components: {
+    Navigation
+  },
   computed: mapGetters([
     'evenOrOdd',
     'onesScore',
@@ -686,10 +691,6 @@ $color-white: hsl(0, 0%, 100%);
 .currentPlayerName {
   color: $color-green;
 }
-.resultBox {
-  margin-bottom: .5em;
-  border-bottom: 1px solid $color-gray;
-}
 .diceBox, .resultBox {
   display: flex;
   justify-content: center;
@@ -758,6 +759,7 @@ $color-white: hsl(0, 0%, 100%);
 }
 .infoItem {
   // border: 1px solid black;
+  text-align: center;
   margin: .5em .5em .5em .5em;
   width: 9em;
 }
@@ -813,5 +815,11 @@ svg:hover > .diceCircle{
 .finalScore {
   color: $color-green;
   font-size: 1.4em;
+}
+.faded {
+  border: 0;
+  height: 0.065em;
+  background-image: linear-gradient(to right, hsla(0, 0%, 65%, 0), hsla(0, 0%, 65%, 0.75), hsla(0, 0%, 65%, 0));
+  margin-bottom: .6em;
 }
 </style>

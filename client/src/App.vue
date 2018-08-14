@@ -23,6 +23,8 @@ export default {
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:700');
+@import "./assets/scss/vars/hamburgers-settings";
+@import "../node_modules/hamburgers/_sass/hamburgers/hamburgers.scss";
 * {
   margin: 0;
   padding: 0;
