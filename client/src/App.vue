@@ -23,8 +23,17 @@ export default {
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:700');
+@import "./assets/scss/index.scss";
 @import "./assets/scss/vars/hamburgers-settings";
 @import "../node_modules/hamburgers/_sass/hamburgers/hamburgers.scss";
+
+$color-green: hsl(167, 100%, 30%);
+$color-orange: hsl(36, 100%, 50%);
+$color-gray: hsl(0, 0%, 85%);
+$color-lightGray: hsl(0, 0%, 95%);
+$color-darkGray: hsl(0, 0%, 50%);
+$color-white: hsl(0, 0%, 100%);
+
 * {
   margin: 0;
   padding: 0;
@@ -43,8 +52,8 @@ body {
   // align-content: flex-end;
   // align-items: flex-end;
   // text-align: center;
-  border: 0.063em solid hsl(167, 100%, 30%);
+  // border: 0.063em solid hsl(167, 100%, 30%);
   // width: 360px;
-  height: 40em; //640 px
+  height: 100vh; //640 px
 }
 </style>

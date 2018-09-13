@@ -81,6 +81,15 @@
     <div class="gameTable">
     <div class="game" v-on:click="recordResult">
 
+      <div class="gameCombination">
+        <p id="pair" class="label" v-on:click="addResultOnScreen">Pair test</p>
+        <p class="blinkingResult">1{{ $store.state.scoreArray[6].value }}</p>
+        <!--p class="result blink">{{ $store.state.scoreArray[6].value }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[6].displayValues[0] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[6].displayValues[1] }}</p>
+        <p class="result saved">{{ $store.state.scoreArray[6].displayValues[2] }}</p-->
+      </div>
+
       <div class="combination">
         <p id="pair" class="label">Pair</p>
         <p class="result blink">{{ $store.state.scoreArray[6].value }}</p>
@@ -579,7 +588,7 @@ export default {
         } else {
           console.log(`Click harder! Combination ID is ${combinationId}.`)
         }
-        if (store.state.gameTurns === 33 && store.state.turnCompleted) {
+        if (store.state.gameTurns === 34 && store.state.turnCompleted) {
           // alert(`Game over, your score is ${store.state.schoolScoreTotal + store.state.gameTotal}`)
           store.state.nextTurnButtonDisabled = true
           store.state.testMenu = true
@@ -591,7 +600,10 @@ export default {
         const children = [...parent.children]
         return children.filter(child => child.classList.contains('blink'))
       } */
-    }// end of record result method
+    }, // end of record result method
+    addResultOnScreen () {
+      console.log(`Adding result`)
+    }
   }, // end of methods
   data () {
     return {
@@ -606,20 +618,21 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+@import "../assets/scss/index.scss";
 $color-green: hsl(167, 100%, 30%);
 $color-orange: hsl(36, 100%, 50%);
 $color-gray: hsl(0, 0%, 85%);
 $color-lightGray: hsl(0, 0%, 95%);
 $color-darkGray: hsl(0, 0%, 50%);
 $color-white: hsl(0, 0%, 100%);
-.content {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid salmon;
+// .content {
+  // display: flex;
+  // flex-direction: column;
+  // border: 1px solid salmon;
   // align-items: center;
    //align-self: flex-start;
   // justify-content: space-around;
-}
+//}
 .school {
   display: flex;
   flex-direction: row;
@@ -641,6 +654,10 @@ $color-white: hsl(0, 0%, 100%);
 }
 .school > .combination {
   width: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   // border: 1px solid black;
 }
 .game > .combination {
@@ -654,7 +671,7 @@ $color-white: hsl(0, 0%, 100%);
   margin: 0em;
 }
 .diceIcon {
-  color: $color-green;
+  color: $color-primary-0;
 }
 .diceIcon:hover, .label:hover {
   color: $color-orange;
@@ -674,6 +691,7 @@ $color-white: hsl(0, 0%, 100%);
   padding: 0em;
   color: $color-darkGray;
   font-size: 1.2em;
+  text-align: center;
 }
 .result {
   padding: 0em .3em 0em .3em;
@@ -689,7 +707,7 @@ $color-white: hsl(0, 0%, 100%);
   background-color: $color-lightGray;
 }
 .currentPlayerName {
-  color: $color-green;
+  color: $color-primary-0;
 }
 .diceBox, .resultBox {
   display: flex;
@@ -718,7 +736,7 @@ $color-white: hsl(0, 0%, 100%);
   margin-bottom: .5em;
 }
 .gameButton, .menuButton {
-  background: $color-green;
+  background: $color-primary-0;
   border: none;
   // cursor: pointer;
   border-radius: .25em;
@@ -731,11 +749,11 @@ $color-white: hsl(0, 0%, 100%);
   margin: 0em .3em 0em .3em;
 }
 .gameButton:hover, .menuButton:hover {
-  box-shadow: 0px 0px 6px $color-green;
+  box-shadow: 0px 0px 6px $color-primary-0;
 }
 .disabledButton {
   background: $color-gray;
-  color: $color-green;
+  color: $color-primary-0;
   cursor: auto;
 }
 .disabledButton:hover {
@@ -755,7 +773,7 @@ $color-white: hsl(0, 0%, 100%);
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-around;
-  color: $color-green;
+  color: $color-primary-0;
 }
 .infoItem {
   // border: 1px solid black;
@@ -778,19 +796,19 @@ $color-white: hsl(0, 0%, 100%);
   fill: $color-orange;
 }
 .resultBox svg:hover > .diceSvg {
-  stroke: $color-green;
+  stroke: $color-primary-0;
 }
 .resultBox svg:hover > .diceCircle {
-  fill: $color-green;
+  fill: $color-primary-0;
 }
 .diceSvg {
   fill: none;
-  stroke: $color-green;
+  stroke: $color-primary-0;
   stroke-width: 10px;
   fill-rule: evenodd;
 }
 .diceCircle {
-  fill: $color-green;
+  fill: $color-primary-0;
 }
 svg:hover > .diceSvg{
   stroke: $color-orange;
@@ -809,11 +827,11 @@ svg:hover > .diceCircle{
   // height: 602px;
   height: 8em;
   background-color: $color-white;
-  border: 1px solid $color-green;
-  box-shadow: 0px 0px 12px $color-green;
+  border: 1px solid $color-primary-0;
+  box-shadow: 0px 0px 12px $color-primary-0;
 }
 .finalScore {
-  color: $color-green;
+  color: $color-primary-0;
   font-size: 1.4em;
 }
 .faded {
