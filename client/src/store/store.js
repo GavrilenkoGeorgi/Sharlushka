@@ -176,7 +176,7 @@ const mutations = {
             arrayToAnalyse[5].push(state.combinationArray[key])
             break
           default:
-            console.log(`Couldn't create array to analyse.`)
+            console.log(`Can't create array to analyse.`)
         }
       }
       /* ---------------School score calculation--------------- */

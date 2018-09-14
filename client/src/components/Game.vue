@@ -3,7 +3,7 @@
   <Navigation />
     <div class="school" v-on:click="recordResult">
       <div class="combination">
-        <p id="ones" class="diceIcon">
+        <p id="ones" class="diceIcon" v-bind:class="{ active:$store.state.scoreArray[0].final }">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
             <circle class="diceCircle" cx="100" cy="100" r="18"/>
             <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
@@ -13,7 +13,7 @@
       </div>
 
       <div class="combination">
-        <p id="twos" class="diceIcon">
+        <p id="twos" class="diceIcon" v-bind:class="{ active:$store.state.scoreArray[1].final }">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
             <circle class="diceCircle" cx="50" cy="150" r="18"/>
             <circle class="diceCircle" cx="150" cy="50" r="18"/>
@@ -24,7 +24,7 @@
       </div>
 
       <div class="combination">
-        <p id="threes" class="diceIcon">
+        <p id="threes" class="diceIcon" v-bind:class="{ active:$store.state.scoreArray[2].final }">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
             <circle class="diceCircle" cx="50" cy="150" r="18"/>
             <circle class="diceCircle" cx="100" cy="100" r="18"/>
@@ -36,7 +36,7 @@
       </div>
 
       <div class="combination">
-        <p id="fours" class="diceIcon">
+        <p id="fours" class="diceIcon" v-bind:class="{ active:$store.state.scoreArray[3].final }">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
             <circle class="diceCircle" cx="150" cy="50" r="18"/>
             <circle class="diceCircle" cx="150" cy="150" r="18"/>
@@ -49,7 +49,7 @@
       </div>
 
       <div class="combination">
-        <p id="fives" class="diceIcon">
+        <p id="fives" class="diceIcon" v-bind:class="{ active:$store.state.scoreArray[4].final }">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
             <circle class="diceCircle" cx="100" cy="100" r="18"/>
             <circle class="diceCircle" cx="150" cy="50" r="18"/>
@@ -63,7 +63,7 @@
       </div>
 
       <div class="combination">
-        <p id="sixes" class="diceIcon">
+        <p id="sixes" class="diceIcon" v-bind:class="{ active:$store.state.scoreArray[5].final }">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
             <circle class="diceCircle" cx="150" cy="100" r="18"/>
             <circle class="diceCircle" cx="150" cy="50" r="18"/>
@@ -82,88 +82,80 @@
     <div class="game" v-on:click="recordResult">
 
       <div class="gameCombination">
-        <p id="pair" class="label" v-on:click="addResultOnScreen">Pair test</p>
-        <p class="blinkingResult">1{{ $store.state.scoreArray[6].value }}</p>
-        <!--p class="result blink">{{ $store.state.scoreArray[6].value }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[6].displayValues[0] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[6].displayValues[1] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[6].displayValues[2] }}</p-->
-      </div>
-
-      <div class="combination">
         <p id="pair" class="label">Pair</p>
-        <p class="result blink">{{ $store.state.scoreArray[6].value }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[6].displayValues[0] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[6].displayValues[1] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[6].displayValues[2] }}</p>
+        <p v-for="value in $store.state.scoreArray[6].displayValues" :key="value" class="result saved">
+          {{ value }}
+        </p>
+        <p v-if="$store.state.scoreArray[6].value" class="result blink">{{ $store.state.scoreArray[6].value }}</p>
       </div>
 
-      <div class="combination">
+      <div class="gameCombination">
         <p id="twoPairs" class="label">Two Pairs</p>
-        <p class="result blink">{{ $store.state.scoreArray[7].value }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[7].displayValues[0] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[7].displayValues[1] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[7].displayValues[2] }}</p>
+        <p v-for="value in $store.state.scoreArray[7].displayValues" :key="value" class="result saved">
+          {{ value }}
+        </p>
+        <p v-if="$store.state.scoreArray[7].value" class="result blink">{{ $store.state.scoreArray[7].value }}</p>
       </div>
 
-      <div class="combination">
+      <div class="gameCombination">
         <p id="threeOfAKind" class="label">Three Of A Kind</p>
-        <p class="result blink">{{ $store.state.scoreArray[8].value }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[8].displayValues[0] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[8].displayValues[1] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[8].displayValues[2] }}</p>
+        <p v-for="value in $store.state.scoreArray[8].displayValues" :key="value" class="result saved">
+          {{ value }}
+        </p>
+        <p v-if="$store.state.scoreArray[8].value" class="result blink">{{ $store.state.scoreArray[8].value }}</p>
       </div>
 
-      <div class="combination">
+      <div class="gameCombination">
         <p id="full" class="label">Full</p>
-        <p class="result blink">{{ $store.state.scoreArray[9].value }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[9].displayValues[0] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[9].displayValues[1] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[9].displayValues[2] }}</p>
+        <p v-for="value in $store.state.scoreArray[9].displayValues" :key="value" class="result saved">
+          {{ value }}
+        </p>
+        <p v-if="$store.state.scoreArray[9].value" class="result blink">{{ $store.state.scoreArray[9].value }}</p>
       </div>
 
-      <div class="combination">
+      <div class="gameCombination">
         <p id="quads" class="label">Quads</p>
-        <p class="result blink">{{ $store.state.scoreArray[10].value }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[10].displayValues[0] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[10].displayValues[1] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[10].displayValues[2] }}</p>
+        <p v-for="value in $store.state.scoreArray[10].displayValues" :key="value" class="result saved">
+          {{ value }}
+        </p>
+        <p v-if="$store.state.scoreArray[10].value" class="result blink">{{ $store.state.scoreArray[10].value }}</p>
       </div>
 
-      <div class="combination">
+      <div class="gameCombination">
         <p id="poker" class="label">Poker</p>
-        <p class="result blink">{{ $store.state.scoreArray[11].value }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[11].displayValues[0] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[11].displayValues[1] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[11].displayValues[2] }}</p>
+        <p v-for="value in $store.state.scoreArray[11].displayValues" :key="value" class="result saved">
+          {{ value }}
+        </p>
+        <p v-if="$store.state.scoreArray[11].value" class="result blink">{{ $store.state.scoreArray[11].value }}</p>
       </div>
 
-      <div class="combination">
+      <div class="gameCombination">
         <p id="small" class="label">Small</p>
-        <p class="result blink">{{ $store.state.scoreArray[12].value }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[12].displayValues[0] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[12].displayValues[1] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[12].displayValues[2] }}</p>
+        <p v-for="value in $store.state.scoreArray[12].displayValues" :key="value" class="result saved">
+          {{ value }}
+        </p>
+        <p v-if="$store.state.scoreArray[12].value" class="result blink">{{ $store.state.scoreArray[12].value }}</p>
       </div>
 
-      <div class="combination">
+      <div class="gameCombination">
         <p id="large" class="label">Large</p>
-        <p class="result blink">{{ $store.state.scoreArray[13].value }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[13].displayValues[0] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[13].displayValues[1] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[13].displayValues[2] }}</p>
+        <p v-for="value in $store.state.scoreArray[13].displayValues" :key="value" class="result saved">
+          {{ value }}
+        </p>
+        <p v-if="$store.state.scoreArray[13].value" class="result blink">{{ $store.state.scoreArray[13].value }}</p>
       </div>
 
-      <div class="combination">
+      <div class="gameCombination">
         <p id="chance" class="label">Chance</p>
-        <p class="result blink">{{ $store.state.scoreArray[14].value }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[14].displayValues[0] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[14].displayValues[1] }}</p>
-        <p class="result saved">{{ $store.state.scoreArray[14].displayValues[2] }}</p>
+        <p v-for="value in $store.state.scoreArray[14].displayValues" :key="value" class="result saved">
+          {{ value }}
+        </p>
+        <p v-if="$store.state.scoreArray[14].value" class="result blink">{{ $store.state.scoreArray[14].value }}</p>
       </div>
-    </div>
-    </div>
-    <div class="resultBox" v-on:click="deSelectDice"></div>
+
+  </div>
+</div>
+  <div class="resultBox" v-on:click="deSelectDice"></div>
     <hr class="faded" />
     <div class="diceBox"  v-on:click="selectDice">
       <!-- first dice -->
@@ -533,18 +525,26 @@ export default {
     },
     recordResult (event) {
       let combinationId // get combination ID from click event
+      console.log(event.target.className)
       if (event.currentTarget.className === 'school') {
         let combinationParagraphNode = event.target.closest('.diceIcon')
         if (combinationParagraphNode) {
           combinationId = combinationParagraphNode.id
         }
       }
-      if (event.currentTarget.className === 'game') {
-        let combinationParagraphNode = event.target.closest('.label')
+      if (event.target.className === 'result blink') {
+        // console.log(event.target.parentNode)
+        // let parent = event.target
+        // let neededParagraph = clickedItem.closest('.label')
+        // console.log(`Paragraph is ${neededParagraph}`)
+        let combinationParagraphNode = event.target.parentNode.firstChild
+        // console.log(`Combination paragraph node: ${combinationParagraphNode}`)
+        // console.log(combinationParagraphNode)
         if (combinationParagraphNode) {
           combinationId = combinationParagraphNode.id
         }
       }
+      console.log(`Hi, am inside record result! combination id is: ${combinationId}`)
       if (combinationId && !store.state.turnCompleted) { // check if we get some combination ID from user click
         // if its not undefined get the index of ID in results array
         const combinationIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(combinationId)
@@ -573,6 +573,10 @@ export default {
             store.state.scoreArray[combinationIndexInArray].displayValues.push(store.state.scoreArray[combinationIndexInArray].value)
             // check if it is full to set 'final' flag
             store.state.gameTotal += store.state.scoreArray[combinationIndexInArray].value
+            // clear result onscreen
+            store.state.scoreArray[combinationIndexInArray].value = ''
+            // just trash it )))
+
             if (store.state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
               store.state.scoreArray[combinationIndexInArray].final = true
               store.state.scoreArray[combinationIndexInArray].value = ''
@@ -588,7 +592,7 @@ export default {
         } else {
           console.log(`Click harder! Combination ID is ${combinationId}.`)
         }
-        if (store.state.gameTurns === 34 && store.state.turnCompleted) {
+        if (store.state.gameTurns === 34 && store.state.turnCompleted) { // change this!
           // alert(`Game over, your score is ${store.state.schoolScoreTotal + store.state.gameTotal}`)
           store.state.nextTurnButtonDisabled = true
           store.state.testMenu = true
@@ -611,9 +615,6 @@ export default {
     }
   }
 }
-document.addEventListener('DOMContentLoaded', function (event) {
-  console.log('DOM fully loaded and parsed')
-})
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -638,14 +639,16 @@ $color-white: hsl(0, 0%, 100%);
   flex-direction: row;
   justify-content: space-around;
   margin: .8em 0em .8em 0em;
+  padding: 0em 2em 0em 2em;
   height: 3em;
 }
 .gameTable {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  // align-items: flex-start;
+  // justify-content: flex-start;
   margin-bottom: 1em;
+  padding: 0em 1em 0em 1em;
 }
 .game {
   display: flex;
@@ -660,32 +663,54 @@ $color-white: hsl(0, 0%, 100%);
   justify-content: center;
   // border: 1px solid black;
 }
+/*
 .game > .combination {
   display: flex;
   flex-direction: row;
   align-items: center;
   // border-bottom: 1px solid red;
   height: 2em;
+} */
+
+.gameCombination {
+  display: flex;
+  p {
+    display: inherit;
+    align-items: center;
+    justify-content: center;
+    background-color: $color-lightGray;
+    // border: 1px solid green;
+    // margin: 0 auto;
+  }
+  .label {
+  color: $color-primary-0;
+  // font-size: 1em;
+  // margin-bottom: .5em;
+  border-right: 1px solid $color-gray;
+  width: 10em;
+  // align-self: flex-start;
+  justify-content: flex-start;
+  padding: .3em;
+  }
+  .result {
+    flex-grow: 1;
+  }
 }
+
 .diceIcon, .result, .label {
   margin: 0em;
 }
 .diceIcon {
   color: $color-primary-0;
 }
-.diceIcon:hover, .label:hover {
+.active {
   color: $color-orange;
+}
+.diceIcon:hover, .label:hover {
+  // color: $color-orange;
   cursor: pointer;
 }
-.label {
-  color: $color-green;
-  // font-size: 1em;
-  // margin-bottom: .5em;
-  border-right: 1px solid $color-gray;
-  width: 8em;
-  text-align: right;
-  padding-right: .3em;
-}
+
 .schoolResult {
   margin: 0em;
   padding: 0em;
@@ -789,6 +814,14 @@ $color-white: hsl(0, 0%, 100%);
   font-size: 1.1em;
 }
 // style for icons
+
+.active svg > .diceSvg {
+  stroke: $color-orange;
+}
+.active svg > .diceCircle {
+  fill: $color-orange;
+}
+
 .resultBox svg > .diceSvg {
   stroke: $color-orange;
 }
@@ -810,10 +843,11 @@ $color-white: hsl(0, 0%, 100%);
 .diceCircle {
   fill: $color-primary-0;
 }
-svg:hover > .diceSvg{
+
+svg:hover > .diceSvg {
   stroke: $color-orange;
 }
-svg:hover > .diceCircle{
+svg:hover > .diceCircle {
   fill: $color-orange;
 }
 // end game menu
