@@ -1,5 +1,5 @@
 <template>
-<div>
+<div id="gameView">
   <Navigation />
     <div class="school" v-on:click="recordResult">
       <div class="combination">
@@ -77,27 +77,27 @@
         <p class="schoolResult blink">{{ $store.state.scoreArray[5].value }}</p>
       </div>
     </div>
-
+        <hr class="faded" />
     <div class="gameTable">
     <div class="game" v-on:click="recordResult">
 
-      <div class="gameCombination">
+      <div class="gameCombination" v-bind:class="{ complete:$store.state.scoreArray[6].final }">
         <p id="pair" class="label">Pair</p>
-        <p v-for="value in $store.state.scoreArray[6].displayValues" :key="value" class="result saved">
+        <p v-for="(value, index) in $store.state.scoreArray[6].displayValues" :key="index" class="result saved">
           {{ value }}
         </p>
         <p v-if="$store.state.scoreArray[6].value" class="result blink">{{ $store.state.scoreArray[6].value }}</p>
       </div>
 
-      <div class="gameCombination">
+      <div class="gameCombination" v-bind:class="{ complete:$store.state.scoreArray[7].final }">
         <p id="twoPairs" class="label">Two Pairs</p>
-        <p v-for="value in $store.state.scoreArray[7].displayValues" :key="value" class="result saved">
+        <p v-for="(value, index) in $store.state.scoreArray[7].displayValues" :key="index" class="result saved">
           {{ value }}
         </p>
         <p v-if="$store.state.scoreArray[7].value" class="result blink">{{ $store.state.scoreArray[7].value }}</p>
       </div>
 
-      <div class="gameCombination">
+      <div class="gameCombination" v-bind:class="{ complete:$store.state.scoreArray[8].final }">
         <p id="threeOfAKind" class="label">Three Of A Kind</p>
         <p v-for="value in $store.state.scoreArray[8].displayValues" :key="value" class="result saved">
           {{ value }}
@@ -105,7 +105,7 @@
         <p v-if="$store.state.scoreArray[8].value" class="result blink">{{ $store.state.scoreArray[8].value }}</p>
       </div>
 
-      <div class="gameCombination">
+      <div class="gameCombination" v-bind:class="{ complete:$store.state.scoreArray[9].final }">
         <p id="full" class="label">Full</p>
         <p v-for="value in $store.state.scoreArray[9].displayValues" :key="value" class="result saved">
           {{ value }}
@@ -113,7 +113,7 @@
         <p v-if="$store.state.scoreArray[9].value" class="result blink">{{ $store.state.scoreArray[9].value }}</p>
       </div>
 
-      <div class="gameCombination">
+      <div class="gameCombination" v-bind:class="{ complete:$store.state.scoreArray[10].final }">
         <p id="quads" class="label">Quads</p>
         <p v-for="value in $store.state.scoreArray[10].displayValues" :key="value" class="result saved">
           {{ value }}
@@ -121,7 +121,7 @@
         <p v-if="$store.state.scoreArray[10].value" class="result blink">{{ $store.state.scoreArray[10].value }}</p>
       </div>
 
-      <div class="gameCombination">
+      <div class="gameCombination" v-bind:class="{ complete:$store.state.scoreArray[11].final }">
         <p id="poker" class="label">Poker</p>
         <p v-for="value in $store.state.scoreArray[11].displayValues" :key="value" class="result saved">
           {{ value }}
@@ -129,7 +129,7 @@
         <p v-if="$store.state.scoreArray[11].value" class="result blink">{{ $store.state.scoreArray[11].value }}</p>
       </div>
 
-      <div class="gameCombination">
+      <div class="gameCombination" v-bind:class="{ complete:$store.state.scoreArray[12].final }">
         <p id="small" class="label">Small</p>
         <p v-for="value in $store.state.scoreArray[12].displayValues" :key="value" class="result saved">
           {{ value }}
@@ -137,7 +137,7 @@
         <p v-if="$store.state.scoreArray[12].value" class="result blink">{{ $store.state.scoreArray[12].value }}</p>
       </div>
 
-      <div class="gameCombination">
+      <div class="gameCombination" v-bind:class="{ complete:$store.state.scoreArray[13].final }">
         <p id="large" class="label">Large</p>
         <p v-for="value in $store.state.scoreArray[13].displayValues" :key="value" class="result saved">
           {{ value }}
@@ -145,7 +145,7 @@
         <p v-if="$store.state.scoreArray[13].value" class="result blink">{{ $store.state.scoreArray[13].value }}</p>
       </div>
 
-      <div class="gameCombination">
+      <div class="gameCombination" v-bind:class="{ complete:$store.state.scoreArray[14].final }">
         <p id="chance" class="label">Chance</p>
         <p v-for="value in $store.state.scoreArray[14].displayValues" :key="value" class="result saved">
           {{ value }}
@@ -156,7 +156,10 @@
   </div>
 </div>
   <div class="resultBox" v-on:click="deSelectDice"></div>
-    <hr class="faded" />
+    <div class="controls">
+      <button class="gameButton" v-on:click="rollDice()" :disabled="$store.state.rollButtonDisabled == true" :class="{ disabledButton: $store.state.rollButtonDisabled == true}">Roll</button>
+      <button class="gameButton" v-on:click="nextTurn(); clearResultBox()" :disabled="$store.state.nextTurnButtonDisabled == true" :class="{ disabledButton: $store.state.nextTurnButtonDisabled == true}">{{ $store.state.nextTurnButtonText}}</button>
+    </div>
     <div class="diceBox"  v-on:click="selectDice">
       <!-- first dice -->
       <div class="dice" id="first">
@@ -429,23 +432,20 @@
         </div>
       </div>
     </div>
-    <div class="controls">
-      <button class="gameButton" v-on:click="rollDice()" :disabled="$store.state.rollButtonDisabled == true" :class="{ disabledButton: $store.state.rollButtonDisabled == true}">Roll</button>
-      <button class="gameButton" v-on:click="nextTurn(); clearResultBox()" :disabled="$store.state.nextTurnButtonDisabled == true" :class="{ disabledButton: $store.state.nextTurnButtonDisabled == true}">{{ $store.state.nextTurnButtonText}}</button>
-    </div>
-    <div class="info">
+    <!--div class="info">
       <p class="infoItem">School score: <span class="scoreNumDisplay"> {{$store.state.schoolScoreTotal}} </span></p>
       <p class="infoItem">Game score: <span class="scoreNumDisplay"> {{$store.state.gameTotal}} </span></p>
       <p class="infoItem" :class="{ blink: $store.state.rollCount <= 1 }">Rolls left: <span class="scoreNumDisplay"> {{ $store.state.rollCount }} </span></p>
-    </div>
-    <div class="endGameMenu" v-if="$store.state.testMenu === true">
-      <p class="finalScore">Your score is {{ $store.state.schoolScoreTotal + $store.state.gameTotal }}</p>
-      <button class="menuButton" v-on:click="newGame">New game</button>
-      <button class="menuButton" v-on:click="saveOrRegister">Save Result</button>
+    </div-->
+    <div class="endGameMenu" v-if="$store.state.endGameMenu === true">
+      <p>Game Over! <br/> Your score is {{ $store.state.schoolScoreTotal + $store.state.gameTotal }}</p>
+      <div class="buttonBox">
+        <button class="menuButton" v-on:click="newGame">New game</button>
+        <button class="menuButton" v-on:click="saveOrRegister">Save Result</button>
+      </div>
     </div>
     <!--button v-on:click="openMenu">Open</button-->
 </div>
-
 </template>
 
 <script>
@@ -525,7 +525,7 @@ export default {
     },
     recordResult (event) {
       let combinationId // get combination ID from click event
-      console.log(event.target.className)
+      // console.log(event.target.className)
       if (event.currentTarget.className === 'school') {
         let combinationParagraphNode = event.target.closest('.diceIcon')
         if (combinationParagraphNode) {
@@ -544,7 +544,12 @@ export default {
           combinationId = combinationParagraphNode.id
         }
       }
-      console.log(`Hi, am inside record result! combination id is: ${combinationId}`)
+      if (event.target.className === 'gameCombination') {
+        // console.log(event.target.className)
+        let combinationParagraphNode = event.target.firstChild
+        combinationId = combinationParagraphNode.id
+      }
+      // console.log(`Hi, am inside record result! combination id is: ${combinationId}`)
       if (combinationId && !store.state.turnCompleted) { // check if we get some combination ID from user click
         // if its not undefined get the index of ID in results array
         const combinationIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(combinationId)
@@ -571,12 +576,17 @@ export default {
             store.state.turnCompleted = true
             // push result into display values array
             store.state.scoreArray[combinationIndexInArray].displayValues.push(store.state.scoreArray[combinationIndexInArray].value)
+            /*
+            // clear result onscreen
+            // store.state.scoreArray[combinationIndexInArray].value = ''
+            // just trash it )))
+            for (let key in store.state.scoreArray) {
+              store.state.scoreArray[key].value = ''
+              // console.log(store.state.scoreArray[key].value)
+            }
+            */
             // check if it is full to set 'final' flag
             store.state.gameTotal += store.state.scoreArray[combinationIndexInArray].value
-            // clear result onscreen
-            store.state.scoreArray[combinationIndexInArray].value = ''
-            // just trash it )))
-
             if (store.state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
               store.state.scoreArray[combinationIndexInArray].final = true
               store.state.scoreArray[combinationIndexInArray].value = ''
@@ -595,7 +605,7 @@ export default {
         if (store.state.gameTurns === 34 && store.state.turnCompleted) { // change this!
           // alert(`Game over, your score is ${store.state.schoolScoreTotal + store.state.gameTotal}`)
           store.state.nextTurnButtonDisabled = true
-          store.state.testMenu = true
+          store.state.endGameMenu = true
         }
       }
       // not needed?
@@ -634,20 +644,30 @@ $color-white: hsl(0, 0%, 100%);
    //align-self: flex-start;
   // justify-content: space-around;
 //}
+
+#gameView {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0em 0em 1em 0em;
+}
+
 .school {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  margin: .8em 0em .8em 0em;
+  align-items: flex-start;
+  // margin: 1.2em 0em .8em 0em;
   padding: 0em 2em 0em 2em;
-  height: 3em;
+  height: 4em;
 }
 .gameTable {
   display: flex;
   flex-direction: column;
   // align-items: flex-start;
   // justify-content: flex-start;
-  margin-bottom: 1em;
+  // margin-bottom: 1em;
   padding: 0em 1em 0em 1em;
 }
 .game {
@@ -678,16 +698,16 @@ $color-white: hsl(0, 0%, 100%);
     display: inherit;
     align-items: center;
     justify-content: center;
-    background-color: $color-lightGray;
+    // background-color: $color-pale-primary;
     // border: 1px solid green;
-    // margin: 0 auto;
+    margin: .1em 0em .1em 0em;
   }
   .label {
   color: $color-primary-0;
-  // font-size: 1em;
+  font-size: 1.2em;
   // margin-bottom: .5em;
-  border-right: 1px solid $color-gray;
-  width: 10em;
+  // border-right: 1px solid $color-gray;
+  width: 9em;
   // align-self: flex-start;
   justify-content: flex-start;
   padding: .3em;
@@ -695,6 +715,10 @@ $color-white: hsl(0, 0%, 100%);
   .result {
     flex-grow: 1;
   }
+}
+
+.complete {
+  background-color: $color-pale-primary;
 }
 
 .diceIcon, .result, .label {
@@ -713,10 +737,12 @@ $color-white: hsl(0, 0%, 100%);
 
 .schoolResult {
   margin: 0em;
-  padding: 0em;
+  width: 100%;
+  padding: .4em 0em 0em 0em;
   color: $color-darkGray;
   font-size: 1.2em;
   text-align: center;
+  // background-color: $color-lightGray;
 }
 .result {
   padding: 0em .3em 0em .3em;
@@ -737,6 +763,7 @@ $color-white: hsl(0, 0%, 100%);
 .diceBox, .resultBox {
   display: flex;
   justify-content: center;
+  align-items: center;
   height: 2.5em;
 }
 .dice {
@@ -758,14 +785,16 @@ $color-white: hsl(0, 0%, 100%);
 .controls {
   display: flex;
   justify-content: space-around;
-  margin-bottom: .5em;
+  // align-self:flex-end;
+  // margin-bottom: .5em;
+  padding: 0em .8em 0em .8em;
 }
 .gameButton, .menuButton {
   background: $color-primary-0;
   border: none;
   // cursor: pointer;
   border-radius: .25em;
-  font-size: 1.2em;
+  font-size: 1.5em;
   color: $color-white;
   padding: .3em;
   width: 6em;
@@ -852,26 +881,35 @@ svg:hover > .diceCircle {
 }
 // end game menu
 .endGameMenu {
-  position: fixed;
-  top: 8em;
-  left: 31%;
-  // opacity: .8;
-  // right: 50%;
-  width: 17.5em;
-  // height: 602px;
-  height: 8em;
-  background-color: $color-white;
-  border: 1px solid $color-primary-0;
-  box-shadow: 0px 0px 12px $color-primary-0;
-}
-.finalScore {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: 100vh;
+  background-color: $color-primary-transparent;
   color: $color-primary-0;
-  font-size: 1.4em;
+  p {
+    color: white;
+    font-size: 1.4em;
+    text-align: center;
+    line-height: 1.6em;
+  }
+  .buttonBox {
+    display: inherit;
+    flex-direction: row;
+  }
+  button {
+    background-color: white;
+    color: inherit;
+  }
 }
+
 .faded {
   border: 0;
   height: 0.065em;
   background-image: linear-gradient(to right, hsla(0, 0%, 65%, 0), hsla(0, 0%, 65%, 0.75), hsla(0, 0%, 65%, 0));
-  margin-bottom: .6em;
+  // margin-bottom: .6em;
 }
 </style>

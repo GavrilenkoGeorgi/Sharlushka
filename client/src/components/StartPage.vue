@@ -32,7 +32,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css?family=Fredericka+the+Great');
+@import "../assets/scss/index.scss";
 
 $color-gray: hsl(0, 0%, 85%);
 $color-orange: hsl(36, 100%, 50%);
@@ -48,8 +48,8 @@ $color-white: hsl(0, 0%, 100%);
 }
 
 .gameName {
-  color: $color-green;
-  font-family: 'Fredericka the Great', cursive;
+  color: $color-primary-0;
+  font-family: $game-name-font;
   font-size: 3.5em;
   margin-top: 1.5em;
 }
@@ -62,7 +62,7 @@ $color-white: hsl(0, 0%, 100%);
   width: 100%;
 }
 .startPageButton {
-  background: $color-green;
+  background: $color-primary-0;
   border: none;
   border-radius: .25em;
   font-size: 1.2em;
@@ -71,7 +71,7 @@ $color-white: hsl(0, 0%, 100%);
   width: 6em;
 }
 .startPageButton:hover{
-  box-shadow: 0px 0px 6px $color-green;
+  box-shadow: 0px 0px 6px $color-primary-0;
 }
 .iconLicense {
   color: $color-gray;

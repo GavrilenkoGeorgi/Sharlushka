@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-  testMenu: false, // some testing
+  endGameMenu: false, // some testing
   schoolScoreTotal: 0, // total school score
   gameTotal: 0, // total game score
   // caclculatedScore: 0,

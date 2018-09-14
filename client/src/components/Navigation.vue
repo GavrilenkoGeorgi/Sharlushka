@@ -8,7 +8,11 @@
         </span>
       </button>
     </div>
-    <div class="userName">{{ msg }}</div>
+    <!--div class="userName">{{ msg }}</div-->
+    <div class="scoreDisplay">
+      <div>Score: {{computedGameScore}}</div>
+      <div>Rolls left: {{rollsLeft}}</div>
+    </div>
   </div>
   <div id="sidenav">
     <div class="blur"></div>
@@ -31,11 +35,21 @@
 </template>
 
 <script>
+import store from '../store/store'
+
 export default {
   name: 'Navigation',
   data () {
     return {
       msg: 'Anonymous'
+    }
+  },
+  computed: {
+    computedGameScore: function () {
+      return store.state.schoolScoreTotal + store.state.gameTotal
+    },
+    rollsLeft: function () {
+      return store.state.rollCount
     }
   },
   methods: {
@@ -73,37 +87,26 @@ $color-darkGray: hsl(0, 0%, 50%);
 $color-white: hsl(0, 0%, 100%);
 
 #navigation {
-  // justify-content: space-between;
   background-color: $color-primary-0;
   box-shadow: 0px 10px 45px -11px rgba(0,0,0,0.75);
   color: white;
-  // width: 100%;
-  // height: 2.8em;
-  // text-align: center;
-  // display: flex;
-  // flex-direction: row;
 }
 
 .toolbar {
   display: flex;
-  // align-items: center;
-  // align-items: stretch;
-  // justify-content: space-around;
-  // align-content: center;
-  // justify-content: center;
+  padding: .3em 0em .3em 0em;
 }
+
 .hamButton {
-  // border: 1px solid lime;
   display: flex;
   align-content: center;
 }
-.userName {
+
+.scoreDisplay {
   width: 100%;
-  font-size: 2.3em;
-  align-self: flex-end;
-  // border: 1px solid lime;
-  text-align: right;
-  padding-right: .45em;
+  font-size: 1.8em;
+  display: flex;
+  justify-content: space-around;
 }
 .settings-icon {
   height: 1.2em;
@@ -117,9 +120,9 @@ button {
     width: 0%;
     position: fixed;
     z-index: 1;
-    top: 2.9em;
+    // top: 2.9em;
     left: 0;
-    opacity: 1;
+    // opacity: 1;
     // background-color: $color-pale-primary;
     overflow-x: hidden; /* Disable horizontal scroll */
     // box-shadow: inset 0px 10px 45px -11px rgba(0,0,0,0.75);
