@@ -9,7 +9,7 @@
             <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
           </svg>
         </p>
-        <p class="schoolResult blink">{{ $store.state.scoreArray[0].value }}</p>
+        <p v-if="$store.state.scoreArray[0].value" class="schoolResult blink">{{ $store.state.scoreArray[0].value }}</p>
       </div>
 
       <div class="combination">
@@ -20,7 +20,7 @@
             <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
           </svg>
         </p>
-        <p class="schoolResult blink">{{ $store.state.scoreArray[1].value }}</p>
+        <p v-if="$store.state.scoreArray[1].value" class="schoolResult blink">{{ $store.state.scoreArray[1].value }}</p>
       </div>
 
       <div class="combination">
@@ -32,7 +32,7 @@
             <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
           </svg>
         </p>
-        <p class="schoolResult blink">{{ $store.state.scoreArray[2].value }}</p>
+        <p v-if="$store.state.scoreArray[2].value" class="schoolResult blink">{{ $store.state.scoreArray[2].value }}</p>
       </div>
 
       <div class="combination">
@@ -45,7 +45,7 @@
             <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
           </svg>
         </p>
-        <p class="schoolResult blink">{{ $store.state.scoreArray[3].value }}</p>
+        <p v-if="$store.state.scoreArray[3].value" class="schoolResult blink">{{ $store.state.scoreArray[3].value }}</p>
       </div>
 
       <div class="combination">
@@ -59,7 +59,7 @@
             <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
           </svg>
         </p>
-        <p class="schoolResult blink">{{ $store.state.scoreArray[4].value }}</p>
+        <p v-if="$store.state.scoreArray[4].value" class="schoolResult blink">{{ $store.state.scoreArray[4].value }}</p>
       </div>
 
       <div class="combination">
@@ -74,7 +74,7 @@
             <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="diceSvg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
           </svg>
         </p>
-        <p class="schoolResult blink">{{ $store.state.scoreArray[5].value }}</p>
+        <p v-if="$store.state.scoreArray[5].value" class="schoolResult blink">{{ $store.state.scoreArray[5].value }}</p>
       </div>
     </div>
         <hr class="faded" />
@@ -99,7 +99,7 @@
 
       <div class="gameCombination" v-bind:class="{ complete:$store.state.scoreArray[8].final }">
         <p id="threeOfAKind" class="label">Three Of A Kind</p>
-        <p v-for="value in $store.state.scoreArray[8].displayValues" :key="value" class="result saved">
+        <p v-for="(value, index) in $store.state.scoreArray[8].displayValues" :key="index" class="result saved">
           {{ value }}
         </p>
         <p v-if="$store.state.scoreArray[8].value" class="result blink">{{ $store.state.scoreArray[8].value }}</p>
@@ -107,7 +107,7 @@
 
       <div class="gameCombination" v-bind:class="{ complete:$store.state.scoreArray[9].final }">
         <p id="full" class="label">Full</p>
-        <p v-for="value in $store.state.scoreArray[9].displayValues" :key="value" class="result saved">
+        <p v-for="(value, index) in $store.state.scoreArray[9].displayValues" :key="index" class="result saved">
           {{ value }}
         </p>
         <p v-if="$store.state.scoreArray[9].value" class="result blink">{{ $store.state.scoreArray[9].value }}</p>
@@ -115,7 +115,7 @@
 
       <div class="gameCombination" v-bind:class="{ complete:$store.state.scoreArray[10].final }">
         <p id="quads" class="label">Quads</p>
-        <p v-for="value in $store.state.scoreArray[10].displayValues" :key="value" class="result saved">
+        <p v-for="(value, index) in $store.state.scoreArray[10].displayValues" :key="index" class="result saved">
           {{ value }}
         </p>
         <p v-if="$store.state.scoreArray[10].value" class="result blink">{{ $store.state.scoreArray[10].value }}</p>
@@ -123,7 +123,7 @@
 
       <div class="gameCombination" v-bind:class="{ complete:$store.state.scoreArray[11].final }">
         <p id="poker" class="label">Poker</p>
-        <p v-for="value in $store.state.scoreArray[11].displayValues" :key="value" class="result saved">
+        <p v-for="(value, index) in $store.state.scoreArray[11].displayValues" :key="index" class="result saved">
           {{ value }}
         </p>
         <p v-if="$store.state.scoreArray[11].value" class="result blink">{{ $store.state.scoreArray[11].value }}</p>
@@ -131,7 +131,7 @@
 
       <div class="gameCombination" v-bind:class="{ complete:$store.state.scoreArray[12].final }">
         <p id="small" class="label">Small</p>
-        <p v-for="value in $store.state.scoreArray[12].displayValues" :key="value" class="result saved">
+        <p v-for="(value, index) in $store.state.scoreArray[12].displayValues" :key="index" class="result saved">
           {{ value }}
         </p>
         <p v-if="$store.state.scoreArray[12].value" class="result blink">{{ $store.state.scoreArray[12].value }}</p>
@@ -139,7 +139,7 @@
 
       <div class="gameCombination" v-bind:class="{ complete:$store.state.scoreArray[13].final }">
         <p id="large" class="label">Large</p>
-        <p v-for="value in $store.state.scoreArray[13].displayValues" :key="value" class="result saved">
+        <p v-for="(value, index) in $store.state.scoreArray[13].displayValues" :key="index" class="result saved">
           {{ value }}
         </p>
         <p v-if="$store.state.scoreArray[13].value" class="result blink">{{ $store.state.scoreArray[13].value }}</p>
@@ -147,7 +147,7 @@
 
       <div class="gameCombination" v-bind:class="{ complete:$store.state.scoreArray[14].final }">
         <p id="chance" class="label">Chance</p>
-        <p v-for="value in $store.state.scoreArray[14].displayValues" :key="value" class="result saved">
+        <p v-for="(value, index) in $store.state.scoreArray[14].displayValues" :key="index" class="result saved">
           {{ value }}
         </p>
         <p v-if="$store.state.scoreArray[14].value" class="result blink">{{ $store.state.scoreArray[14].value }}</p>
@@ -523,9 +523,19 @@ export default {
       }
       store.state.combinationArray = []
     },
+    clearResultOnscreen () {
+      for (let key in store.state.scoreArray) {
+        // just trash it )))
+        if (key < 6 && !store.state.scoreArray[key].final) {
+          store.state.scoreArray[key].value = 0 // school result structure have to be similar to game results
+        } else if (key >= 6) {
+          store.state.scoreArray[key].value = 0
+        }
+      }
+    },
     recordResult (event) {
       let combinationId // get combination ID from click event
-      // console.log(event.target.className)
+      console.log(event.target.id)
       if (event.currentTarget.className === 'school') {
         let combinationParagraphNode = event.target.closest('.diceIcon')
         if (combinationParagraphNode) {
@@ -544,10 +554,11 @@ export default {
           combinationId = combinationParagraphNode.id
         }
       }
-      if (event.target.className === 'gameCombination') {
+      if (event.target.className === 'label') {
         // console.log(event.target.className)
-        let combinationParagraphNode = event.target.firstChild
-        combinationId = combinationParagraphNode.id
+        // let combinationParagraphNode = event.target.firstChild
+        // combinationId = combinationParagraphNode.id
+        combinationId = event.target.id
       }
       // console.log(`Hi, am inside record result! combination id is: ${combinationId}`)
       if (combinationId && !store.state.turnCompleted) { // check if we get some combination ID from user click
@@ -576,16 +587,8 @@ export default {
             store.state.turnCompleted = true
             // push result into display values array
             store.state.scoreArray[combinationIndexInArray].displayValues.push(store.state.scoreArray[combinationIndexInArray].value)
-            /*
-            // clear result onscreen
-            // store.state.scoreArray[combinationIndexInArray].value = ''
-            // just trash it )))
-            for (let key in store.state.scoreArray) {
-              store.state.scoreArray[key].value = ''
-              // console.log(store.state.scoreArray[key].value)
-            }
-            */
-            // check if it is full to set 'final' flag
+
+            // save current game score
             store.state.gameTotal += store.state.scoreArray[combinationIndexInArray].value
             if (store.state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
               store.state.scoreArray[combinationIndexInArray].final = true
@@ -598,15 +601,24 @@ export default {
           store.state.nextTurnButtonDisabled = false
           store.state.rollButtonDisabled = true
           store.state.turnCompleted = true
-          store.state.scoreArray[combinationIndexInArray].displayValues.push(0)
+          if (store.state.scoreArray[combinationIndexInArray].displayValues.length < 3) {
+            store.state.scoreArray[combinationIndexInArray].displayValues.push(0)
+          }
+          // check if it is full of zeroes
+          if (store.state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
+            store.state.scoreArray[combinationIndexInArray].final = true
+          }
         } else {
           console.log(`Click harder! Combination ID is ${combinationId}.`)
         }
-        if (store.state.gameTurns === 34 && store.state.turnCompleted) { // change this!
+        if (store.state.gameTurns === store.state.maxGameTurns && store.state.turnCompleted) { // change this!
           // alert(`Game over, your score is ${store.state.schoolScoreTotal + store.state.gameTotal}`)
           store.state.nextTurnButtonDisabled = true
           store.state.endGameMenu = true
         }
+        // clear results onscreen
+        this.clearResultBox()
+        this.clearResultOnscreen()
       }
       // not needed?
       /*
@@ -730,7 +742,7 @@ $color-white: hsl(0, 0%, 100%);
 .active {
   color: $color-orange;
 }
-.diceIcon:hover, .label:hover {
+.diceIcon:hover {
   // color: $color-orange;
   cursor: pointer;
 }
@@ -750,12 +762,13 @@ $color-white: hsl(0, 0%, 100%);
   color: $color-darkGray;
   width: 2em;
   font-size: 1.2em;
+  cursor: pointer;
+}
+.result:hover {
+  background-color: $color-pale-primary;
 }
 .saved {
   color: $color-orange;
-}
-.unsaved:hover {
-  background-color: $color-lightGray;
 }
 .currentPlayerName {
   color: $color-primary-0;

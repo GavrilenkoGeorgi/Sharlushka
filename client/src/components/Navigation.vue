@@ -94,7 +94,7 @@ $color-white: hsl(0, 0%, 100%);
 
 .toolbar {
   display: flex;
-  padding: .3em 0em .3em 0em;
+  padding: .5em 0em .5em 0em;
 }
 
 .hamButton {
