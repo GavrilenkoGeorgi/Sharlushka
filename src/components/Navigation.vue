@@ -16,6 +16,8 @@
   </div>
   <div id="sidenav">
     <div class="background"></div>
+    <h1 class="user-name">{{ $store.state.currentUserName }}</h1>
+    <h2 v-if="highestScore">Your highest score is: {{ highestScore }}</h2>
     <h3 class="menuItem" v-on:click="openMenuItem">Rules</h3>
     <p class="menuItemText">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam posuere ornare accumsan.
     Proin tristique purus quis imperdiet pulvinar. Interdum et malesuada fames ac ante ipsum primis in faucibus.
@@ -42,8 +44,13 @@ export default {
   name: 'Navigation',
   data () {
     return {
-      msg: 'Anonymous'
+      // userName: '',
+      highestScore: ''
     }
+  },
+  mounted () {
+    // this.userName = localStorage.getItem('userName')
+    this.highestScore = localStorage.getItem('highestScore')
   },
   computed: {
     computedGameScore: function () {

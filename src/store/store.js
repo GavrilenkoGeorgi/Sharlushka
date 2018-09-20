@@ -6,6 +6,7 @@ Vue.use(Vuex)
 const getDefaultState = () => {
   return {
     endGameMenu: false, // some testing
+    currentUserName: '',
     startMenu: true,
     schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score

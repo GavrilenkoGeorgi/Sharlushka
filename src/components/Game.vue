@@ -1,11 +1,21 @@
 <template>
 <div id="gameView">
   <div v-if="$store.state.startMenu" class="startMenu">
-    <p class="gameName">Sharlushka</p>
+    <p class="game-name">Sharlushka</p>
     <img class="startPageDice" src="../assets/icons/startPageDice.svg" alt="Start page dice">
-    <div class="buttonBox">
+    <div class="greeting" v-if="userExists">
+      <p>Hi, {{userName}}</p>
+    </div>
+    <div class="register-form" v-if="registerForm">
+      <form class="new-user">
+        <!--label for="userName">User Name</label-->
+        <input v-model="formValueName" type="text" id="userName" name="newUserName" placeholder="Name">
+      </form>
+    </div>
+    <div class="button-box">
       <button class="menuButton" v-on:click="$store.state.startMenu = false">Play</button>
-      <button class="menuButton">Login</button>
+      <button v-if="!registerForm" class="menuButton" v-on:click="openInput">New user</button>
+      <button v-if="registerForm" class="menuButton" v-on:click="registerUser">Save</button>
     </div>
     <div class="iconLicense">Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
     </div>
@@ -87,7 +97,7 @@
         <p class="schoolResult blink">{{ $store.state.scoreArray[5].value }}</p>
       </div>
     </div>
-        <hr class="faded" />
+        <!--hr class="faded" /-->
     <div class="gameTable">
     <div class="game" v-on:click="recordResult">
 
@@ -443,8 +453,9 @@
       </div>
     </div>
     <div class="endGameMenu" v-if="$store.state.endGameMenu === true">
-      <p>Game Over! <br/> Your score is {{ $store.state.schoolScoreTotal + $store.state.gameTotal }}</p>
-      <div class="buttonBox">
+      <p>Game Over! {{ userName }}<br/> Your score is {{ $store.state.schoolScoreTotal + $store.state.gameTotal }}</p>
+      <p v-if="highestScore">Highest score is {{ highestScore }}</p>
+      <div class="button-box">
         <button class="menuButton" v-on:click="restartGame">New game</button>
         <!--button class="menuButton" v-on:click="saveOrRegister">Save Result</button-->
       </div>
@@ -459,6 +470,17 @@ import Navigation from '../components/Navigation'
 
 export default {
   name: 'Game',
+  data () {
+    return {
+      title: 'Sharlushka',
+      userName: '',
+      highestScore: 0,
+      registerForm: false,
+      userExists: false,
+      loginButtonText: 'New user',
+      formValueName: ''
+    }
+  },
   components: {
     Navigation
   },
@@ -470,6 +492,17 @@ export default {
   mounted () {
     // store.state.startMenu = true
     console.log(`Mounted game view`)
+    let user = localStorage.getItem('userName')
+    console.log(`Hi ${user}`)
+    if (user) {
+      this.userExists = true
+      this.userName = user
+      store.state.currentUserName = user
+    }
+    let highestScore = localStorage.getItem('highestScore')
+    if (highestScore) {
+      this.highestScore = highestScore
+    }
   },
   methods: {
     ...mapActions([
@@ -483,8 +516,29 @@ export default {
       'incrementIfOdd',
       'incrementAsync'
     ]),
+    openInput () {
+      this.registerForm = true
+    },
+    registerUser () {
+      console.log(`Register user`)
+      // localStorage.setItem("userName", "Smith")
+      localStorage.setItem('userName', this.formValueName)
+      this.userName = this.formValueName
+      // this.registerForm = false
+      store.state.startMenu = false
+      // something for navigation
+      store.state.currentUserName = this.userName
+    },
     selectDice (event) {
-      let elementToAdd = event.target.closest('.dice')
+      // let elementToAdd = event.target.closest('.dice')
+
+      // closest doesn't work on andrid 4.1
+      // hence this stuff
+      let parentNode = event.target.parentElement
+      let grandParentNode = parentNode.parentElement
+      let elementToAdd = grandParentNode
+      // end of it
+
       if (elementToAdd && elementToAdd.className === 'dice') {
         let diceBox = document.querySelector('.diceBox')
         let resultBox = document.querySelector('.resultBox')
@@ -616,9 +670,19 @@ export default {
           console.log(`Click harder! Combination ID is ${combinationId}.`)
         }
         if (store.state.gameTurns === store.state.maxGameTurns && store.state.turnCompleted) { // change this!
-          // alert(`Game over, your score is ${store.state.schoolScoreTotal + store.state.gameTotal}`)
+          let score = store.state.schoolScoreTotal + store.state.gameTotal
           store.state.nextTurnButtonDisabled = true
           store.state.endGameMenu = true
+          let highestScore = localStorage.getItem('highestScore')
+          if (!highestScore) {
+            console.log(`Highest score not set, setting it for the first time`)
+            localStorage.setItem('highestScore', score)
+          } else if (score > highestScore) {
+            console.dir(`You got a record! ${score}`)
+            localStorage.setItem('highestScore', score)
+          } else {
+            console.log(`Your score is not so high ${score}`)
+          }
         }
         // clear results onscreen
         this.clearResultBox()
@@ -641,12 +705,7 @@ export default {
     startNewGame (state) {
         Object.assign(state, initialState);
     } */
-  }, // end of methods
-  data () {
-    return {
-      title: 'Sharlushka'
-    }
-  }
+  } // end of methods
 }
 </script>
 
@@ -874,7 +933,7 @@ svg:hover > .diceCircle {
     text-align: center;
     line-height: 1.6em;
   }
-  .buttonBox {
+  .button-box {
     display: inherit;
     flex-direction: row;
   }
@@ -903,7 +962,7 @@ svg:hover > .diceCircle {
   height: 100vh;
 }
 
-.gameName {
+.game-name {
   color: $color-primary-0;
   font-family: $game-name-font;
   font-size: 3.5em;
@@ -912,7 +971,7 @@ svg:hover > .diceCircle {
 .startPageDice {
   height: 13em;
 }
-.buttonBox {
+.button-box {
   display: flex;
   justify-content: space-around;
   width: 100%;
@@ -928,4 +987,37 @@ svg:hover > .diceCircle {
 .iconLicense > a:hover {
   color: $color-orange;
 }
+
+.register-form {
+  display: flex;
+  //align-content: center;
+  justify-content: center;
+  width: 80%;
+  // border: 1px solid red;
+  color: $color-primary-0;
+  // height: 4em;
+}
+
+.new-user {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+.new-user > input {
+  // height: 1em;
+  color: $color-primary-0;
+  font-size: 1.6em;
+  padding: .2em;
+  width: 80%;
+  border-radius: .2em;
+  border: 1px solid $color-primary-2;
+  box-shadow: 0px 0px 10px 1px $color-primary-1;
+}
+
+.greeting {
+  color: $color-primary-0;
+  font-size: 2em;
+}
+
 </style>
