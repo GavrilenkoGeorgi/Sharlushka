@@ -555,7 +555,12 @@ export default {
       }
     },
     deSelectDice (event) {
-      let elementToRemove = event.target.closest('.dice')
+      // let elementToRemove = event.target.closest('.dice')
+
+      let parentNode = event.target.parentElement
+      let grandParentNode = parentNode.parentElement
+      let elementToRemove = grandParentNode
+
       if (elementToRemove && elementToRemove.className === 'dice') {
         let diceBox = document.querySelector('.diceBox')
         let resultBox = document.querySelector('.resultBox')
@@ -592,8 +597,14 @@ export default {
     recordResult (event) {
       let combinationId // get combination ID from click event
       // console.log(event.target.id)
+      console.log(`Event target ->`)
+      console.log(event.currentTarget)
       if (event.currentTarget.className === 'school') {
-        let combinationParagraphNode = event.target.closest('.diceIcon')
+        // let combinationParagraphNode = event.target.closest('.diceIcon')
+        let combinationParagraphNode = event.target.parentNode
+        console.log(event.target)
+        // console.log(`combination paragraph`)
+        // console.log(combinationParagraphNode)
         if (combinationParagraphNode) {
           combinationId = combinationParagraphNode.id
         }
