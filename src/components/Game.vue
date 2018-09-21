@@ -11,17 +11,23 @@
         <!--label for="userName">User Name</label-->
         <input v-model="formValueName" type="text" id="userName" name="newUserName" placeholder="Name">
       </form>
+      <div class="closeButton" v-on:click="formInputControl">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+          <path d="M0 0h24v24H0z" fill="none"/>
+        </svg>
+      </div>
     </div>
     <div class="button-box">
       <button class="menuButton" v-on:click="$store.state.startMenu = false">Play</button>
-      <button v-if="!registerForm" class="menuButton" v-on:click="openInput">New user</button>
+      <button v-if="!registerForm" class="menuButton" v-on:click="formInputControl">{{ loginButtonText }}</button>
       <button v-if="registerForm" class="menuButton" v-on:click="registerUser">Save</button>
     </div>
     <div class="iconLicense">Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
     </div>
   </div>
   <Navigation />
-    <div class="school" v-on:click="recordResult">
+    <div class="school" v-on:click="handleBoardClick">
       <div class="combination">
         <p id="ones" class="diceIcon" v-bind:class="{ active:$store.state.scoreArray[0].final }">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
@@ -99,7 +105,7 @@
     </div>
         <!--hr class="faded" /-->
     <div class="gameTable">
-    <div class="game" v-on:click="recordResult">
+    <div class="game" v-on:click="handleBoardClick">
 
       <div class="gameCombination" v-bind:class="{ complete:$store.state.scoreArray[6].final }">
         <p id="pair" class="label">Pair</p>
@@ -175,7 +181,7 @@
 
   </div>
 </div>
-  <div class="resultBox" v-on:click="deSelectDice"></div>
+  <div class="resultBox" v-bind:class="{ hidden:$store.state.turnCompleted }" v-on:click="deSelectDice"></div>
     <div class="controls">
       <button class="gameButton" v-on:click="rollDice()" :disabled="$store.state.rollButtonDisabled == true" :class="{ disabledButton: $store.state.rollButtonDisabled == true}">Roll</button>
       <button class="gameButton" v-on:click="nextTurn(); clearResultBox()" :disabled="$store.state.nextTurnButtonDisabled == true" :class="{ disabledButton: $store.state.nextTurnButtonDisabled == true}">{{ $store.state.nextTurnButtonText}}</button>
@@ -453,7 +459,7 @@
       </div>
     </div>
     <div class="endGameMenu" v-if="$store.state.endGameMenu === true">
-      <p>Game Over! {{ userName }}<br/> Your score is {{ $store.state.schoolScoreTotal + $store.state.gameTotal }}</p>
+      <p>Game Over, {{ userName }}!<br/> Your score is {{ $store.state.schoolScoreTotal + $store.state.gameTotal }}</p>
       <p v-if="highestScore">Highest score is {{ highestScore }}</p>
       <div class="button-box">
         <button class="menuButton" v-on:click="restartGame">New game</button>
@@ -477,8 +483,9 @@ export default {
       highestScore: 0,
       registerForm: false,
       userExists: false,
-      loginButtonText: 'New user',
-      formValueName: ''
+      loginButtonText: 'Change',
+      formValueName: '',
+      zeroCheck: false
     }
   },
   components: {
@@ -503,6 +510,9 @@ export default {
     if (highestScore) {
       this.highestScore = highestScore
     }
+    if (!this.userExists) {
+      this.loginButtonText = 'New user'
+    }
   },
   methods: {
     ...mapActions([
@@ -516,8 +526,18 @@ export default {
       'incrementIfOdd',
       'incrementAsync'
     ]),
-    openInput () {
-      this.registerForm = true
+    buttonText () {
+      if (!this.userExists) {
+        this.loginButtonText = 'New user'
+      }
+    },
+    formInputControl () {
+      // toggles user name input
+      if (this.registerForm) {
+        this.registerForm = false
+      } else {
+        this.registerForm = true
+      }
     },
     registerUser () {
       console.log(`Register user`)
@@ -529,17 +549,108 @@ export default {
       // something for navigation
       store.state.currentUserName = this.userName
     },
-    selectDice (event) {
-      // let elementToAdd = event.target.closest('.dice')
+    handleBoardClick (event) {
+      console.log(`Handling board click. Event target -->`)
+      console.dir(event.target)
+      // find combinationID
+      // let stop = 10
+      // let temp
+      let idFound = false
+      let scoreId = null
+      let scoreType = null
+      let elementToCheck = event.target // .parentElement
+      while (!idFound && elementToCheck) {
+        if (elementToCheck.classList.contains('combination')) {
+          scoreId = elementToCheck.firstChild.id
+          scoreType = elementToCheck.parentElement.className
+          // console.log(`name: ${elementToCheck.firstChild.id}`)
+          // console.log(`type: ${elementToCheck.parentElement.className}`)
+          // console.log(`Combination is ${scoreId}`)
+          // console.dir(scoreId)
+          idFound = true
+          // return temp
+        } else if (elementToCheck.classList.contains('label')) {
+          scoreId = elementToCheck.id
+          scoreType = elementToCheck.parentElement.className
+          // console.log(`Label is ${scoreId}`)
+          idFound = true
+          // return scoreId
+        } else if (elementToCheck.classList.contains('result')) {
+          // console.log(`Result paragraph`)
+          scoreId = elementToCheck.parentElement.firstChild.id
+          scoreType = elementToCheck.parentElement.className
+          // console.log(scoreId)
+          // console.log(scoreType)
+          // console.log(`Result par label is ${scoreId}`)
+          idFound = true
+        } else {
+          elementToCheck = elementToCheck.parentElement
+        }
+        if (!elementToCheck) {
+          // console.log(`No more parents element is: ${elementToCheck}`)
+          // return idFound
+        }
+        /*
+        if (stop <= 0) {
+          idFound = true
+          console.log(`Error`)
+        }
+        stop--
+        */
+      }
+      if (scoreId && scoreType) {
+        this.newRecordResult(scoreId, scoreType)
+      }
+    },
+    handleDiceClick (element) {
+      // let stop = 10
+      let diceFound = false
+      let elementToCheck = element.parentElement
 
+      while (!diceFound && elementToCheck) {
+        /*
+        if (stop === 0) {
+          console.log(`Thats enough`)
+          diceFound = true
+        }
+        */
+        // console.log(elementToCheck.className)
+        /* if (elementToCheck === null) {
+          console.log(`Parent is ${elementToCheck}`)
+        } else */
+        if (elementToCheck.classList.contains('dice')) {
+          // console.log(`Dice id found: ${elementToCheck.id}`)
+          diceFound = true
+          // console.log(`Stopped by classlist`)
+          return elementToCheck
+        } else {
+          // console.log(`Switching parents`)
+          elementToCheck = elementToCheck.parentElement
+          // this.findIdOfADice(elementToCheck)
+        }
+        // stop--
+        /*
+        if (!elementToCheck) {
+          console.log(`No more parents element is: ${elementToCheck}`)
+        }
+        */
+      }
+    },
+    selectDice (event) {
+      // console.log(`inside select dice`)
+      // let elementToAdd = event.target.closest('.dice')
+      // console.log(event.target)
+      // console.log(event.target.classList)
       // closest doesn't work on andrid 4.1
       // hence this stuff
-      let parentNode = event.target.parentElement
-      let grandParentNode = parentNode.parentElement
-      let elementToAdd = grandParentNode
+      // let parentNode = event.target.parentElement
+      // let grandParentNode = parentNode.parentElement
+      // let elementToAdd = grandParentNode
       // end of it
+      // console.dir(`Result: ${this.handleDiceClick(event.target)}`)
+      let elementToAdd = this.handleDiceClick(event.target)
 
-      if (elementToAdd && elementToAdd.className === 'dice') {
+      if (elementToAdd) {
         let diceBox = document.querySelector('.diceBox')
         let resultBox = document.querySelector('.resultBox')
         diceBox.removeChild(elementToAdd)
@@ -555,13 +666,13 @@ export default {
       }
     },
     deSelectDice (event) {
-      // let elementToRemove = event.target.closest('.dice')
-
+      /*
       let parentNode = event.target.parentElement
       let grandParentNode = parentNode.parentElement
       let elementToRemove = grandParentNode
-
-      if (elementToRemove && elementToRemove.className === 'dice') {
+      */
+      let elementToRemove = this.handleDiceClick(event.target)
+      if (elementToRemove) {
         let diceBox = document.querySelector('.diceBox')
         let resultBox = document.querySelector('.resultBox')
         resultBox.removeChild(elementToRemove)
@@ -579,7 +690,9 @@ export default {
     clearResultBox (event) {
       let diceBox = document.querySelector('.diceBox')
       let resultBox = document.querySelector('.resultBox')
+      // resultBox.style.visibility = 'hidden'
       while (resultBox.childNodes.length) {
+        // resultBox.firstChild.style.display = 'none'
         diceBox.appendChild(resultBox.firstChild)
       }
       store.state.combinationArray = []
@@ -594,10 +707,67 @@ export default {
         }
       }
     },
-    recordResult (event) {
+    newRecordResult (id, type) {
+      // console.log(`recording new result`)
+      let resultType = type
+      let combinationId = id
+      const combinationIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(combinationId)
+
+      if (resultType === 'school' && store.state.scoreArray[combinationIndexInArray].value !== '') {
+        store.state.scoreArray[combinationIndexInArray].final = true
+        store.state.schoolScoreTotal += store.state.scoreArray[combinationIndexInArray].value
+        store.state.rollButtonDisabled = true
+        store.state.nextTurnButtonDisabled = false
+        store.state.turnCompleted = true
+        let resultParagraph = document.getElementById(combinationId)
+        // console.log(`Result paragraph -->`)
+        // console.dir(resultParagraph)
+        resultParagraph.nextElementSibling.classList.remove('blink')
+        resultParagraph.nextElementSibling.classList.add('saved')
+        if (store.state.gameTurns === 6) {
+          store.state.schoolCompleted = true
+        }
+      } else if (resultType === 'gameCombination' && store.state.scoreArray[combinationIndexInArray].value >= 1 && store.state.scoreArray[combinationIndexInArray].displayValues.length < 4) {
+        // console.log(`Recording game result`)
+        store.state.rollButtonDisabled = true
+        store.state.nextTurnButtonDisabled = false
+        store.state.turnCompleted = true
+        // push result into display values array
+        store.state.scoreArray[combinationIndexInArray].displayValues.push(store.state.scoreArray[combinationIndexInArray].value)
+        store.state.gameTotal += store.state.scoreArray[combinationIndexInArray].value
+        if (store.state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
+          store.state.scoreArray[combinationIndexInArray].final = true
+          store.state.scoreArray[combinationIndexInArray].value = ''
+        }
+      } else if (store.state.scoreArray[combinationIndexInArray].value < 1 && store.state.schoolCompleted && store.state.rollCount === 0 && !this.zeroCheck) {
+        // console.log(`Trying to save zero.`)
+        // if there is no combination to record user can mark one field per turn as cancelled
+        // and it won't be used to calculate score
+        // combinationId = event.target.id
+        store.state.nextTurnButtonDisabled = false
+        store.state.rollButtonDisabled = true
+        store.state.turnCompleted = true
+        if (store.state.scoreArray[combinationIndexInArray].displayValues.length < 3) {
+          store.state.scoreArray[combinationIndexInArray].displayValues.push(0)
+          // store.state.scoreArray[combinationIndexInArray].final = true
+          this.zeroCheck = true
+          // console.log(`Saving zero`)
+        }
+        // check if it is full
+        if (store.state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
+          store.state.scoreArray[combinationIndexInArray].final = true
+        }
+      } else {
+        // console.log(`Nothing to record!`)
+      }
+      // this.clearResultBox()
+      this.clearResultOnscreen()
+    },
+    recordResult (id, type) {
+      /*
       let combinationId // get combination ID from click event
       // console.log(event.target.id)
-      console.log(`Event target ->`)
+      console.log(`Record result. Event target ->`)
       console.log(event.currentTarget)
       if (event.currentTarget.className === 'school') {
         // let combinationParagraphNode = event.target.closest('.diceIcon')
@@ -628,12 +798,19 @@ export default {
         combinationId = event.target.id
       }
       // console.log(`Hi, am inside record result! combination id is: ${combinationId}`)
+      */
+      let combinationId = id
+      let scoreType = type
+      console.log(`Score type is ${scoreType}`)
+      // let idType = id.type
+      // console.log(`id.name is: ${id.name}`)
+      // console.log(`id type is ${id.type}`)
       if (combinationId && !store.state.turnCompleted) { // check if we get some combination ID from user click
         // if its not undefined get the index of ID in results array
         const combinationIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(combinationId)
         if (store.state.scoreArray[combinationIndexInArray].value !== '' && !store.state.scoreArray[combinationIndexInArray].final) {
           // it is not empty and we can record some school result on click
-          if (!store.state.schoolCompleted) { // record school result
+          if (!store.state.schoolCompleted && scoreType === 'school') { // record school result
             // set the final flag to true to record current value
             store.state.scoreArray[combinationIndexInArray].final = true
             store.state.schoolScoreTotal += store.state.scoreArray[combinationIndexInArray].value
@@ -641,12 +818,14 @@ export default {
             store.state.nextTurnButtonDisabled = false
             store.state.turnCompleted = true
             let resultParagraph = document.getElementById(combinationId)
+            console.log(`Result paragraph -->`)
+            console.dir(resultParagraph)
             resultParagraph.nextElementSibling.classList.remove('blink')
             resultParagraph.nextElementSibling.classList.add('saved')
             if (store.state.gameTurns === 6) {
               store.state.schoolCompleted = true
             }
-          } else if (store.state.scoreArray[combinationIndexInArray].displayValues.length < 4 && !store.state.turnCompleted) {
+          } else if (store.state.scoreArray[combinationIndexInArray].displayValues.length < 4 && !store.state.turnCompleted && scoreType === 'gameCombination') {
             // we clicked on result field
             // user decided to save current selected result
             store.state.rollButtonDisabled = true
@@ -662,8 +841,8 @@ export default {
               store.state.scoreArray[combinationIndexInArray].value = ''
             }
           }
-        } else if (store.state.scoreArray[combinationIndexInArray].value === '' && store.state.schoolCompleted) {
-          // console.log(`Trying to save zero.`)
+        } else if (store.state.scoreArray[combinationIndexInArray].value === '' && store.state.schoolCompleted && !store.state.gameLocked) {
+          console.log(`Trying to save zero.`)
           // if there is no combination to record user can mark one field per turn as cancelled
           // and it won't be used to calculate score
           // combinationId = event.target.id
@@ -672,6 +851,7 @@ export default {
           store.state.turnCompleted = true
           if (store.state.scoreArray[combinationIndexInArray].displayValues.length < 3) {
             store.state.scoreArray[combinationIndexInArray].displayValues.push(0)
+            console.log(`Saving zero`)
           }
           // check if it is full of zeroes
           if (store.state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
@@ -680,7 +860,7 @@ export default {
         } else {
           console.log(`Click harder! Combination ID is ${combinationId}.`)
         }
-        if (store.state.gameTurns === store.state.maxGameTurns && store.state.turnCompleted) { // change this!
+        if (store.state.gameTurns === store.state.maxGameTurns && store.state.turnCompleted) {
           let score = store.state.schoolScoreTotal + store.state.gameTotal
           store.state.nextTurnButtonDisabled = true
           store.state.endGameMenu = true
@@ -784,10 +964,6 @@ export default {
   background-color: $color-pale-primary;
 }
 
-.diceIcon:hover {
-  cursor: pointer;
-}
-
 .schoolResult {
   margin: 0em;
   width: 100%;
@@ -823,9 +999,21 @@ export default {
   display: flex;
   margin-left: .4em;
   margin-right: .4em;
-  height: auto;
+  // height: auto;
   // animation: diceDisplay 1s linear;
+  // background-color: lime;
+  // z-index: 1;
 }
+
+// .diceIcon {
+  // background-color: lime;
+  // z-index: 1;
+// }
+
+.diceIcon:hover {
+  cursor: pointer;
+}
+
 @keyframes diceDisplay {
   0% {
     opacity: 0;
@@ -977,7 +1165,7 @@ svg:hover > .diceCircle {
   color: $color-primary-0;
   font-family: $game-name-font;
   font-size: 3.5em;
-  margin-top: 1.5em;
+  // margin-top: 1.5em;
 }
 .startPageDice {
   height: 13em;
@@ -991,6 +1179,7 @@ svg:hover > .diceCircle {
   color: $color-primary-1;
   font-size: .6em;
   margin-bottom: 1em;
+  text-align: center;
 }
 .iconLicense > a {
   color: $color-primary-1;
@@ -1003,7 +1192,7 @@ svg:hover > .diceCircle {
   display: flex;
   //align-content: center;
   justify-content: center;
-  width: 80%;
+  width: 100%;
   // border: 1px solid red;
   color: $color-primary-0;
   // height: 4em;
@@ -1013,6 +1202,7 @@ svg:hover > .diceCircle {
   display: flex;
   align-content: center;
   justify-content: center;
+  padding-right: .7em;
 }
 
 .new-user > input {
@@ -1020,7 +1210,7 @@ svg:hover > .diceCircle {
   color: $color-primary-0;
   font-size: 1.6em;
   padding: .2em;
-  width: 80%;
+  width: 100%;
   border-radius: .2em;
   border: 1px solid $color-primary-2;
   box-shadow: 0px 0px 10px 1px $color-primary-1;
@@ -1031,4 +1221,41 @@ svg:hover > .diceCircle {
   font-size: 2em;
 }
 
+.closeButton {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 500px) , screen and (max-height: 300px) {
+    #gameView {
+      padding-bottom: .2em;
+    }
+    .controls {
+      margin-bottom: .3em;
+    }
+    .gameTable {
+      padding: 0em .2em 0em .2em;
+    }
+    .schoolResult {
+      padding: 0;
+    }
+    .gameButton {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6em;
+      // border: 1px solid red;
+      width: 6em;
+      height: auto;
+    }
+    .controls {
+      padding: 0;
+    }
+}
+
+.hidden {
+  visibility: hidden;
+}
 </style>

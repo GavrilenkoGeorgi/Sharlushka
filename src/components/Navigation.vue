@@ -94,7 +94,7 @@ export default {
 
 #navigation {
   background-color: $color-primary-0;
-  box-shadow: 0px 10px 45px -11px rgba(0,0,0,0.75);
+  box-shadow: 0px 10px 45px -11px $color-primary-2;
   color: $color-light;
   margin: 0em 0em 1em 0em;
 }
@@ -173,5 +173,11 @@ button {
 }
 .menuButton:hover {
   box-shadow: 0px 0px 6px $color-primary-0;
+}
+
+@media only screen and (max-width: 500px) , screen and (max-height: 300px) {
+  #navigation {
+    margin-bottom: .3em;
+  }
 }
 </style>
