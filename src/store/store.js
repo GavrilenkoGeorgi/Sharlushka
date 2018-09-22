@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 const getDefaultState = () => {
   return {
+    debug: false,
     endGameMenu: false, // some testing
     currentUserName: '',
     startMenu: true,
@@ -108,7 +109,7 @@ const getDefaultState = () => {
       final: false,
       id: 'chance' // 14
     }],
-    diceArray: [{
+    diceArray: [{ // dice Array
       value: '#',
       chosen: false,
       id: 'first'
@@ -142,9 +143,23 @@ const getDefaultState = () => {
 const state = getDefaultState()
 
 const getters = {
-  evenOrOdd: state => state.count % 2 === 0 ? 'even' : 'odd'
+  evenOrOdd: state => state.count % 2 === 0 ? 'even' : 'odd',
+  debugInfo: function (state) {
+    // console.log(`Debug on`)
+    // console.log(state)
+    for (let key in state.scoreArray) {
+      if (state.scoreArray[key].value !== '') {
+        let info = {
+          name: state.scoreArray[key].id,
+          chosen: state.scoreArray[key].chosen,
+          value: state.scoreArray[key].value
+        }
+        // console.log(info)
+        return info
+      }
+    }
+  }
 }
-
 const mutations = {
   computeScore (state) {
     if (!state.turnCompleted) {
@@ -152,15 +167,17 @@ const mutations = {
       let arrayToAnalyse = [[], [], [], [], [], []]
       // clear result if there is one dice in the combination array
       // for any game combination except chances and school we need at least a pair of dice
-      if (state.combinationArray.length === 1) {
+      /*
+      if (state.combinationArray.length <= 1) {
         // some ugly hardcoded stuff
         // to clear the range of values in the scoreArray
-        for (let scoreArrayIndex = 6; scoreArrayIndex <= 14; scoreArrayIndex++) {
+        for (let scoreArrayIndex = 0; scoreArrayIndex <= 14; scoreArrayIndex++) {
           if (state.scoreArray[scoreArrayIndex].final !== true) {
             state.scoreArray[scoreArrayIndex].value = ''
           }
         }
       }
+      */
       // if it is larger than 0, we have at least one dice to calculate
       if (state.combinationArray.length > 0) {
         for (let key in state.combinationArray) {
@@ -185,7 +202,7 @@ const mutations = {
               arrayToAnalyse[5].push(state.combinationArray[key])
               break
             default:
-              console.log(`Can't create array to analyse.`)
+              // console.log(`Can't create array to analyse.`)
           }
         }
         /* ---------------School score calculation--------------- */
@@ -303,19 +320,21 @@ const mutations = {
           }
         }
         /* ---------------End of game score calculation--------------- */
-      } else { // if combination array is empty, clear all temporary calculation results onscreen
-        console.log(`ain't got shit, captain`)
+      } else if (state.combinationArray.length === 0) { // if combination array is empty, clear all temporary calculation results onscreen
+        // console.log(`ain't got shit, captain`)
         for (let key in state.scoreArray) { // there should be one storage array for school and game
           if (state.scoreArray[key].final !== true) { // to clear unconfirmed results properly
             state.scoreArray[key].value = ''
           }
         }
+      } else {
+        alert(`Error!`)
       }
     }
   },
   rollDice (state) {
     state.rollCount--
-    console.log(`Current game turn ${state.gameTurns}`)
+    // console.log(`Current game turn ${state.gameTurns}`)
     for (let key in state.diceArray) {
       if (state.diceArray[key].chosen !== true) {
         state.diceArray[key].value = Math.floor((Math.random() * 6) + 1)
@@ -336,7 +355,7 @@ const mutations = {
       for (let value of emptyDice) {
         for (let key in state.diceArray) {
           if (state.diceArray[key].value === value) {
-            console.log(`All ok, one found at ${state.diceArray[key].id} with value ${state.diceArray[key].value}`)
+            // console.log(`All ok, one found at ${state.diceArray[key].id} with value ${state.diceArray[key].value}`)
             state.gameCheck = true
           }
         }
@@ -366,6 +385,7 @@ const mutations = {
           state.scoreArray[key].value = ''
         }
       }
+      state.combinationArray = []
       state.nextTurnButtonDisabled = true
     }
   },
