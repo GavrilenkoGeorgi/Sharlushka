@@ -534,7 +534,7 @@ export default {
       'incrementAsync'
     ]),
     parseDebug () {
-      console.log(`This debug info is currently: ${this.debugInfo}`)
+      // console.log(`This debug info is currently: ${this.debugInfo}`)
     },
     buttonText () {
       if (!this.userExists) {
@@ -561,7 +561,7 @@ export default {
     },
     handleBoardClick (event) {
       // console.log(`Handling board click. Event target -->`)
-      console.dir(event.target)
+      // console.dir(event.target)
       // find combinationID
       // let stop = 10
       // let temp
@@ -621,7 +621,7 @@ export default {
 
         while (!diceFound && elementToCheck) {
           if (elementToCheck.classList.contains('dice')) {
-            console.log(`Dice id found: ${elementToCheck.id}`)
+            // console.log(`Dice id found: ${elementToCheck.id}`)
             diceFound = true
             return elementToCheck
           } else {
@@ -631,7 +631,8 @@ export default {
           }
         }
       } else {
-        console.log(`No element to check ${element}`)
+        // console.log(`No element to check ${element}`)
+        return false
       }
     },
     selectDice (event) {
@@ -741,12 +742,12 @@ export default {
       store.state.debug = true
     },
     recordResult (id, type) {
-      console.log(`recording new result`)
+      // console.log(`recording new result`)
       let resultType = type
       let combinationId = id
-      console.log(`Combination ID: ${combinationId}`)
+      // console.log(`Combination ID: ${combinationId}`)
       const combinationIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(combinationId)
-      console.log(`Combination index in array: ${combinationIndexInArray}`)
+      // console.log(`Combination index in array: ${combinationIndexInArray}`)
 
       if (resultType === 'school' && store.state.scoreArray[combinationIndexInArray].value !== '' && !store.state.turnCompleted && !store.state.scoreArray[combinationIndexInArray].final) {
         store.state.scoreArray[combinationIndexInArray].final = true
@@ -779,8 +780,8 @@ export default {
         // this.clearResultInStore()
         this.clearResultBox()
       } else if (store.state.scoreArray[combinationIndexInArray].value === '' && !store.state.scoreArray[combinationIndexInArray].final && store.state.schoolCompleted && store.state.rollCount === 0 && !this.zeroCheck) {
-        console.log(`Trying to save zero.`)
-        console.log(resultType)
+        // console.log(`Trying to save zero.`)
+        // console.log(resultType)
         // if there is no combination to record user can mark one field per turn as cancelled
         // and it won't be used to calculate score
         // combinationId = event.target.id
@@ -800,7 +801,8 @@ export default {
           store.state.scoreArray[combinationIndexInArray].final = true
         }
       } else {
-        console.log(`Nothing to record!`)
+        // console.log(`Nothing to record!`)
+        return false
       }
       if (store.state.gameTurns === store.state.maxGameTurns && store.state.turnCompleted) {
         let score = store.state.schoolScoreTotal + store.state.gameTotal
@@ -811,7 +813,7 @@ export default {
           // console.log(`Highest score not set, setting it for the first time`)
           localStorage.setItem('highestScore', score)
         } else if (score > highestScore) {
-          console.dir(`You got a record! ${score}`)
+          // console.dir(`You got a record! ${score}`)
           localStorage.setItem('highestScore', score)
         } else {
           console.log(`Your score is not so high ${score}`)
@@ -885,7 +887,7 @@ export default {
             store.state.turnCompleted = true
             let resultParagraph = document.getElementById(combinationId)
             // console.log(`Result paragraph -->`)
-            console.dir(resultParagraph)
+            // console.dir(resultParagraph)
             resultParagraph.nextElementSibling.classList.remove('blink')
             resultParagraph.nextElementSibling.classList.add('saved')
             if (store.state.gameTurns === 6) {
@@ -935,7 +937,7 @@ export default {
             // console.log(`Highest score not set, setting it for the first time`)
             localStorage.setItem('highestScore', score)
           } else if (score > highestScore) {
-            console.dir(`You got a record! ${score}`)
+            // console.dir(`You got a record! ${score}`)
             localStorage.setItem('highestScore', score)
           } else {
             console.log(`Your score is not so high ${score}`)
@@ -1038,14 +1040,16 @@ export default {
   margin: 0em;
   width: 100%;
   padding: .4em 0em 0em 0em;
-  color: $color-light-gray;
+  // color: $color-light-gray;
+  color: $color-primary-2;
   font-size: 1.2em;
   text-align: center;
 }
 
 .result {
-  padding: 0em .3em 0em .3em;
-  color: $color-light-gray;
+  padding: 0em .2em 0em .2em;
+  // color: $color-light-gray;
+  color: $color-primary-2;
   width: 2em;
   font-size: 1.2em;
   cursor: pointer;
@@ -1063,15 +1067,17 @@ export default {
 .dice-box-container {
   display: flex;
   justify-content: center;
+  align-items: center;
   // border: 1px solid magenta;
   height: 2.3em;
   margin-bottom: .3em;
 }
-
 .diceBox, .resultBox {
   display: flex;
   justify-content: center;
   align-content: center;
+  align-items: center;
+  padding-top: .125em;
   // height: 2.5em;
   // border: 1px solid magenta;
 }
@@ -1142,7 +1148,7 @@ export default {
 }
 @keyframes blinker {
   50% {
-    opacity: 0;
+    opacity: .2;
   }
 }
 .info {
