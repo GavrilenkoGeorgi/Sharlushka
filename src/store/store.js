@@ -24,6 +24,7 @@ const getDefaultState = () => {
     nextTurnButtonText: 'Next Turn',
     turnCompleted: false,
     combinationArray: [],
+    combinationArrayEmpty: false,
     scoreArray: [{ // school combinations
       value: '',
       final: false,

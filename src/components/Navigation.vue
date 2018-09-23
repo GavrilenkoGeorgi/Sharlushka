@@ -2,7 +2,7 @@
 <div id="navigation">
   <div class="toolbar">
     <div class="hamButton">
-      <button class="hamburger hamburger--collapse" type="button" v-on:click="openMenu">
+      <button class="hamburger hamburger--collapse" type="button" v-on:click="toggleBurger">
         <span class="hamburger-box">
           <span class="hamburger-inner"></span>
         </span>
@@ -15,23 +15,13 @@
     </div>
   </div>
   <div id="sidenav">
-    <div class="background"></div>
-    <h1 class="user-name">{{ $store.state.currentUserName }}</h1>
+    <!--div class="background"></div-->
+    <h1 class="user-name">{{ userName }}</h1>
     <h2 v-if="highestScore">Your highest score is: {{ highestScore }}</h2>
     <h3 class="menuItem" v-on:click="openMenuItem">Rules</h3>
-    <p class="menuItemText">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam posuere ornare accumsan.
-    Proin tristique purus quis imperdiet pulvinar. Interdum et malesuada fames ac ante ipsum primis in faucibus.
-    Nulla facilisi. Nulla facilisi. Aliquam non mi eget mauris sagittis tincidunt. Mauris aliquam nulla a massa
-    vulputate, ac faucibus dui tincidunt. Sed ornare euismod pretium. Mauris vel consectetur lacus. Duis tristique,
-    quam sit amet ultrices luctus, eros risus pharetra ante, facilisis dapibus lorem dui at nulla. Aliquam orci dolor,
-    lacinia sit amet tristique sed, sodales eget libero. Fusce scelerisque nisi elit.</p>
+    <p class="menuItemText">Lorem ipsum dolor sit amet,</p>
     <h3 class="menuItem" v-on:click="openMenuItem">Settings</h3>
-    <p class="menuItemText">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam posuere ornare accumsan.
-    Proin tristique purus quis imperdiet pulvinar. Interdum et malesuada fames ac ante ipsum primis in faucibus.
-    Nulla facilisi. Nulla facilisi. Aliquam non mi eget mauris sagittis tincidunt. Mauris aliquam nulla a massa
-    vulputate, ac faucibus dui tincidunt. Sed ornare euismod pretium. Mauris vel consectetur lacus. Duis tristique,
-    quam sit amet ultrices luctus, eros risus pharetra ante, facilisis dapibus lorem dui at nulla. Aliquam orci dolor,
-    lacinia sit amet tristique sed, sodales eget libero. Fusce scelerisque nisi elit.</p>
+    <p class="menuItemText">Lorem ipsum dolor sit amet,</p>
     <button class="menuButton" v-on:click="restartGame">Restart</button>
   </div>
 </div>
@@ -44,13 +34,14 @@ export default {
   name: 'Navigation',
   data () {
     return {
-      // userName: '',
+      userName: '',
       highestScore: ''
     }
   },
   mounted () {
     // this.userName = localStorage.getItem('userName')
     this.highestScore = localStorage.getItem('highestScore')
+    this.userName = localStorage.getItem('userName')
   },
   computed: {
     computedGameScore: function () {
@@ -61,7 +52,7 @@ export default {
     }
   },
   methods: {
-    openMenu () {
+    toggleBurger () {
       let hamburger = document.querySelector('.hamburger')
       if (hamburger.classList.contains('is-active')) {
         hamburger.classList.remove('is-active')
@@ -79,9 +70,37 @@ export default {
       }
     },
     restartGame (state) {
+      // deselect all dice (remove this)
+      for (let dice in store.state.diceArray) {
+        if (store.state.diceArray[dice].chosen) {
+          store.state.diceArray[dice].chosen = false
+        }
+      }
       store.commit('resetState')
+      this.clearResultBox()
       store.state.startMenu = false
-      this.openMenu()
+      this.userName = localStorage.getItem('userName')
+      this.highestScore = localStorage.getItem('highestScore')
+      this.toggleBurger()
+    },
+    clearResultBox () {
+      let diceBox = document.querySelector('.diceBox')
+      let resultBox = document.querySelector('.resultBox')
+      while (resultBox.childNodes.length) {
+        diceBox.appendChild(resultBox.firstChild)
+      }
+      // and clear all temp results in store
+      for (let key in store.state.scoreArray) {
+        if (!store.state.scoreArray[key].final) {
+          store.state.scoreArray[key].value = ''
+        }
+      }
+      // deselect all dice
+      for (let key in store.state.diceArray) {
+        if (store.state.diceArray[key].chosen) {
+          store.state.diceArray[key].chosen = false
+        }
+      }
     }
   }
 }
@@ -134,15 +153,19 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: $color-primary-transparent;
+    padding-top: 2em;
 }
+/*
 .background {
   position: absolute;
   background-color: $color-primary-transparent;
   width: 100%;
   height: inherit;
   z-index: -1;
+  padding-top: 1em;
 }
-
+*/
 .menuItem {
   margin-top: 1em;
 }
@@ -169,7 +192,7 @@ button {
   width: 6em;
 }
 .menuButton {
-  margin: 0em .3em 0em .3em;
+  margin: 3em .3em 0em .3em;
 }
 .menuButton:hover {
   box-shadow: 0px 0px 6px $color-primary-0;
@@ -180,4 +203,5 @@ button {
     margin-bottom: .3em;
   }
 }
+
 </style>
