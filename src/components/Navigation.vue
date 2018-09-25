@@ -10,8 +10,8 @@
     </div>
     <!--div class="userName">{{ msg }}</div-->
     <div class="scoreDisplay">
-      <div>Score: {{computedGameScore}}</div>
-      <div>Rolls left: {{rollsLeft}}</div>
+      <div>{{userName}}s score: {{computedGameScore}}</div>
+      <!--div>Rolls left: {{rollsLeft}}</div-->
     </div>
   </div>
   <div id="sidenav">
@@ -69,21 +69,27 @@ export default {
         event.target.nextElementSibling.style.maxHeight = '20em'
       }
     },
-    restartGame (state) {
+    restartGame (state) { // remove this
       // deselect all dice (remove this)
+      /*
       for (let dice in store.state.diceArray) {
         if (store.state.diceArray[dice].chosen) {
           store.state.diceArray[dice].chosen = false
         }
       }
-      store.commit('resetState')
+      */
       this.clearResultBox()
-      store.state.startMenu = false
+      // store.state.startMenu = false
+
       this.userName = localStorage.getItem('userName')
       this.highestScore = localStorage.getItem('highestScore')
+      // this.updateMainButtonState()
+      store.commit('resetState')
+      // this.mainButtonText = 'Start'
+      // this.mainButtonDisabled = false
       this.toggleBurger()
     },
-    clearResultBox () {
+    clearResultBox () { // remove this from here
       let diceBox = document.querySelector('.diceBox')
       let resultBox = document.querySelector('.resultBox')
       while (resultBox.childNodes.length) {
@@ -113,14 +119,15 @@ export default {
 
 #navigation {
   background-color: $color-primary-0;
-  box-shadow: 0px 10px 45px -11px $color-primary-2;
+  // box-shadow: 0px 10px 45px -11px $color-primary-2;
+  box-shadow: 0px 1px 5px 0px $color-primary-0;
   color: $color-light;
   margin: 0em 0em 1em 0em;
 }
 
 .toolbar {
   display: flex;
-  padding: .5em 0em .5em 0em;
+  padding: .2em 0em .2em 0em;
 }
 
 .hamButton {
@@ -130,7 +137,7 @@ export default {
 
 .scoreDisplay {
   width: 100%;
-  font-size: 1.8em;
+  font-size: 1.5em;
   display: flex;
   justify-content: space-around;
 }

@@ -182,7 +182,8 @@
     </div>
   </div>
     <div class="dice-box-container">
-      <div class="diceBox"  v-on:click="selectDice">
+      <div class="resultBox" v-bind:class="{ hidden:$store.state.turnCompleted, border: $store.state.combinationArray.length >= 1 }" v-on:click="deSelectDice"></div>
+      <div class="diceBox"  v-on:click="selectDice" v-bind:class="{ hidden:$store.state.turnCompleted }">
         <!-- first dice -->
         <div class="dice" id="first">
           <div v-if="$store.state.diceArray[0].value === 1">
@@ -454,12 +455,12 @@
           </div>
         </div>
       </div> <!--end if diceBox-->
-      <div class="resultBox" v-bind:class="{ hidden:$store.state.turnCompleted, border: $store.state.combinationArray.length >= 1 }" v-on:click="deSelectDice"></div>
+      <div class="main-button" v-on:click="handleMainGameButton" v-bind:class="{ disabled:mainButtonDisabled }">{{ mainButtonText }}</div>
     </div>
-    <div class="controls">
+    <!--div class="controls">
       <button class="gameButton" v-on:click="rollDice()" :disabled="$store.state.rollButtonDisabled == true" :class="{ disabledButton: $store.state.rollButtonDisabled == true}">Roll</button>
       <button class="gameButton" v-on:click="newTurnInit" :disabled="$store.state.nextTurnButtonDisabled == true" :class="{ disabledButton: $store.state.nextTurnButtonDisabled == true}">{{ $store.state.nextTurnButtonText}}</button>
-    </div>
+    </div-->
     <div class="endGameMenu" v-if="$store.state.endGameMenu === true">
       <p>Game Over, {{ userName }}!<br/> Your score is {{ $store.state.schoolScoreTotal + $store.state.gameTotal }}</p>
       <p v-if="highestScore">Highest score is {{ highestScore }}</p>
@@ -491,8 +492,10 @@ export default {
       userExists: false,
       loginButtonText: 'Change',
       formValueName: '',
-      zeroCheck: false
+      // zeroCheck: false,
+      mainButtonText: 'Start',
       // debugCheckForFinal: {}
+      mainButtonDisabled: false
     }
   },
   components: {
@@ -520,6 +523,13 @@ export default {
     if (!this.userExists) {
       this.loginButtonText = 'New user'
     }
+    // main game button initial settings
+    /*
+    if (store.state.gameTurns === 1) {
+      this.mainButtonText = 'Start'
+    }
+    */
+    // this.mainButtonText = 'Start'
   },
   methods: {
     ...mapActions([
@@ -533,6 +543,33 @@ export default {
       'incrementIfOdd',
       'incrementAsync'
     ]),
+    handleMainGameButton () {
+      // console.log(`Main game button clicked`)
+      // this.clearResultBox()
+      if (store.state.rollCount > 0 && !store.state.turnCompleted) {
+        store.commit('rollDice')
+      } else if (store.state.turnCompleted) {
+        // store.commit('nextTurn')
+        this.clearResultBox()
+      } else {
+        console.log(`Record something!`)
+      }
+      this.updateMainButtonState()
+    },
+    updateMainButtonState () {
+      // console.log(`Updating button state`)
+      if (store.state.gameTurns === 1 && store.state.rollCount === 3) {
+        this.mainButtonText = 'Start'
+      } else if (store.state.rollCount > 0 && !store.state.turnCompleted) {
+        this.mainButtonText = `Roll ${store.state.rollCount}`
+      } else if (store.state.rollCount === 0 && !store.state.turnCompleted) {
+        this.mainButtonText = 'Rec!'
+        this.mainButtonDisabled = true
+      } else {
+        this.mainButtonText = 'Turn'
+        this.mainButtonDisabled = false
+      }
+    },
     parseDebug () {
       // console.log(`This debug info is currently: ${this.debugInfo}`)
     },
@@ -658,7 +695,7 @@ export default {
         // console.log(`Click harder!`)
         return false
       }
-      if (elementToAdd) {
+      if (elementToAdd && !store.state.turnCompleted) {
         diceBox.removeChild(elementToAdd)
         resultBox.appendChild(elementToAdd)
       }
@@ -686,7 +723,7 @@ export default {
         // return false
       }
       // store.state.combinationArray.splice(store.state.combinationArray.findIndex(item => item === store.state.diceArray[key].value), 1)
-      if (elementToRemove) {
+      if (elementToRemove && !store.state.turnCompleted) {
         // console.log(`We got element to remove -->`)
         // console.dir(elementToRemove.id)
         resultBox.removeChild(elementToRemove)
@@ -742,22 +779,18 @@ export default {
       store.state.debug = true
     },
     recordResult (id, type) {
-      // console.log(`recording new result`)
+      console.log(`Game turn # ${store.state.gameTurns}`)
       let resultType = type
       let combinationId = id
-      // console.log(`Combination ID: ${combinationId}`)
       const combinationIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(combinationId)
-      // console.log(`Combination index in array: ${combinationIndexInArray}`)
 
       if (resultType === 'school' && store.state.scoreArray[combinationIndexInArray].value !== '' && !store.state.turnCompleted && !store.state.scoreArray[combinationIndexInArray].final) {
         store.state.scoreArray[combinationIndexInArray].final = true
         store.state.schoolScoreTotal += store.state.scoreArray[combinationIndexInArray].value
-        store.state.rollButtonDisabled = true
-        store.state.nextTurnButtonDisabled = false
+        // store.state.rollButtonDisabled = true
+        // store.state.nextTurnButtonDisabled = false
         store.state.turnCompleted = true
         let resultParagraph = document.getElementById(combinationId)
-        // console.log(`Result paragraph -->`)
-        // console.dir(resultParagraph)
         resultParagraph.nextElementSibling.classList.remove('blink')
         resultParagraph.nextElementSibling.classList.add('saved')
         // set school completed to display game score on the board
@@ -765,10 +798,10 @@ export default {
           store.state.schoolCompleted = true
         }
         this.clearResultBox()
+        this.updateMainButtonState()
       } else if (resultType === 'gameCombination' && store.state.scoreArray[combinationIndexInArray].value !== '' && store.state.scoreArray[combinationIndexInArray].displayValues.length < 3 && !store.state.turnCompleted) {
-        // // console.log(`Recording game result`)
-        store.state.rollButtonDisabled = true
-        store.state.nextTurnButtonDisabled = false
+        // store.state.rollButtonDisabled = true
+        // store.state.nextTurnButtonDisabled = false
         store.state.turnCompleted = true
         // push result into display values array
         store.state.scoreArray[combinationIndexInArray].displayValues.push(store.state.scoreArray[combinationIndexInArray].value)
@@ -779,193 +812,67 @@ export default {
         }
         // this.clearResultInStore()
         this.clearResultBox()
-      } else if (store.state.scoreArray[combinationIndexInArray].value === '' && !store.state.scoreArray[combinationIndexInArray].final && store.state.schoolCompleted && store.state.rollCount === 0 && !this.zeroCheck) {
+        this.updateMainButtonState()
+      } else if (!store.state.turnCompleted && store.state.scoreArray[combinationIndexInArray].value === '' && !store.state.scoreArray[combinationIndexInArray].final && store.state.schoolCompleted && store.state.rollCount === 0 && !store.state.zeroCheck) {
         // console.log(`Trying to save zero.`)
         // console.log(resultType)
         // if there is no combination to record user can mark one field per turn as cancelled
         // and it won't be used to calculate score
         // combinationId = event.target.id
-        store.state.nextTurnButtonDisabled = false
-        store.state.rollButtonDisabled = true
-        store.state.turnCompleted = true
+        // store.state.nextTurnButtonDisabled = false
+        // store.state.rollButtonDisabled = true
         if (store.state.scoreArray[combinationIndexInArray].displayValues.length < 3) {
           store.state.scoreArray[combinationIndexInArray].displayValues.push(0)
-          // store.state.scoreArray[combinationIndexInArray].final = true
           // zero saved during this turn
-          this.zeroCheck = true
-          // this.clearResultInStore()
-          // this.clearResultBox()
+          store.state.zeroCheck = true
+          this.clearResultBox()
+          this.updateMainButtonState()
+          store.state.turnCompleted = true
         }
         // check if it is full
         if (store.state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
           store.state.scoreArray[combinationIndexInArray].final = true
         }
       } else {
-        // console.log(`Nothing to record!`)
+        console.log(`Nothing to record!`)
         return false
       }
-      if (store.state.gameTurns === store.state.maxGameTurns && store.state.turnCompleted) {
+      // last checks after recording or not recording result
+      if (store.state.gameTurns === 33 && store.state.turnCompleted) {
+        console.log(`Game Over!`)
         let score = store.state.schoolScoreTotal + store.state.gameTotal
-        store.state.nextTurnButtonDisabled = true
         store.state.endGameMenu = true
         let highestScore = localStorage.getItem('highestScore')
         if (!highestScore) {
           // console.log(`Highest score not set, setting it for the first time`)
           localStorage.setItem('highestScore', score)
         } else if (score > highestScore) {
-          // console.dir(`You got a record! ${score}`)
           localStorage.setItem('highestScore', score)
         } else {
           console.log(`Your score is not so high ${score}`)
         }
+      } else {
+        store.commit('nextTurn')
       }
-      // this.clearResultBox()
-      // this.clearResultInStore()
-    },
-    newTurnInit () {
-      // workaround for android 4.4.2 on FLYIQ4415QUADRAND
-      this.clearResultBox()
-      // user recorded zero on this turn
-      if (this.zeroCheck) {
-        this.zeroCheck = false
-      }
-      store.commit('nextTurn')
-    },
-    oldrecordResult (id, type) {
-      /*
-      let combinationId // get combination ID from click event
-      // // console.log(event.target.id)
-      // console.log(`Record result. Event target ->`)
-      // console.log(event.currentTarget)
-      if (event.currentTarget.className === 'school') {
-        // let combinationParagraphNode = event.target.closest('.diceIcon')
-        let combinationParagraphNode = event.target.parentNode
-        // console.log(event.target)
-        // // console.log(`combination paragraph`)
-        // // console.log(combinationParagraphNode)
-        if (combinationParagraphNode) {
-          combinationId = combinationParagraphNode.id
-        }
-      }
-      if (event.target.className === 'result blink') {
-        // // console.log(event.target.parentNode)
-        // let parent = event.target
-        // let neededParagraph = clickedItem.closest('.label')
-        // // console.log(`Paragraph is ${neededParagraph}`)
-        let combinationParagraphNode = event.target.parentNode.firstChild
-        // // console.log(`Combination paragraph node: ${combinationParagraphNode}`)
-        // // console.log(combinationParagraphNode)
-        if (combinationParagraphNode) {
-          combinationId = combinationParagraphNode.id
-        }
-      }
-      if (event.target.className === 'label') {
-        // // console.log(event.target.className)
-        // let combinationParagraphNode = event.target.firstChild
-        // combinationId = combinationParagraphNode.id
-        combinationId = event.target.id
-      }
-      // // console.log(`Hi, am inside record result! combination id is: ${combinationId}`)
-      */
-      let combinationId = id
-      let scoreType = type
-      // console.log(`Score type is ${scoreType}`)
-      // let idType = id.type
-      // // console.log(`id.name is: ${id.name}`)
-      // // console.log(`id type is ${id.type}`)
-      if (combinationId && !store.state.turnCompleted) { // check if we get some combination ID from user click
-        // if its not undefined get the index of ID in results array
-        const combinationIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(combinationId)
-        if (store.state.scoreArray[combinationIndexInArray].value !== '' && !store.state.scoreArray[combinationIndexInArray].final) {
-          // it is not empty and we can record some school result on click
-          if (!store.state.schoolCompleted && scoreType === 'school') { // record school result
-            // set the final flag to true to record current value
-            store.state.scoreArray[combinationIndexInArray].final = true
-            store.state.schoolScoreTotal += store.state.scoreArray[combinationIndexInArray].value
-            store.state.rollButtonDisabled = true
-            store.state.nextTurnButtonDisabled = false
-            store.state.turnCompleted = true
-            let resultParagraph = document.getElementById(combinationId)
-            // console.log(`Result paragraph -->`)
-            // console.dir(resultParagraph)
-            resultParagraph.nextElementSibling.classList.remove('blink')
-            resultParagraph.nextElementSibling.classList.add('saved')
-            if (store.state.gameTurns === 6) {
-              store.state.schoolCompleted = true
-            }
-          } else if (store.state.scoreArray[combinationIndexInArray].displayValues.length < 4 && !store.state.turnCompleted && scoreType === 'gameCombination') {
-            // we clicked on result field
-            // user decided to save current selected result
-            store.state.rollButtonDisabled = true
-            store.state.nextTurnButtonDisabled = false
-            store.state.turnCompleted = true
-            // push result into display values array
-            store.state.scoreArray[combinationIndexInArray].displayValues.push(store.state.scoreArray[combinationIndexInArray].value)
-
-            // save current game score
-            store.state.gameTotal += store.state.scoreArray[combinationIndexInArray].value
-            if (store.state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
-              store.state.scoreArray[combinationIndexInArray].final = true
-              store.state.scoreArray[combinationIndexInArray].value = ''
-            }
-          }
-        } else if (store.state.scoreArray[combinationIndexInArray].value === '' && store.state.schoolCompleted && !store.state.gameLocked) {
-          // console.log(`Trying to save zero.`)
-          // if there is no combination to record user can mark one field per turn as cancelled
-          // and it won't be used to calculate score
-          // combinationId = event.target.id
-          store.state.nextTurnButtonDisabled = false
-          store.state.rollButtonDisabled = true
-          store.state.turnCompleted = true
-          if (store.state.scoreArray[combinationIndexInArray].displayValues.length < 3) {
-            store.state.scoreArray[combinationIndexInArray].displayValues.push(0)
-            // console.log(`Saving zero`)
-          }
-          // check if it is full of zeroes
-          if (store.state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
-            store.state.scoreArray[combinationIndexInArray].final = true
-          }
-        } else {
-          // console.log(`Click harder! Combination ID is ${combinationId}.`)
-        }
-        if (store.state.gameTurns === store.state.maxGameTurns && store.state.turnCompleted) {
-          let score = store.state.schoolScoreTotal + store.state.gameTotal
-          store.state.nextTurnButtonDisabled = true
-          store.state.endGameMenu = true
-          let highestScore = localStorage.getItem('highestScore')
-          if (!highestScore) {
-            // console.log(`Highest score not set, setting it for the first time`)
-            localStorage.setItem('highestScore', score)
-          } else if (score > highestScore) {
-            // console.dir(`You got a record! ${score}`)
-            localStorage.setItem('highestScore', score)
-          } else {
-            console.log(`Your score is not so high ${score}`)
-          }
-        }
-        // clear results onscreen
-        // this.clearResultBox()
-        // this.debugMode()
-      }
-      // not needed?
-      /*
-      function getAllBlinkinSiblings (element, parent) {
-        const children = [...parent.children]
-        return children.filter(child => child.classList.contains('blink'))
-      } */
     }, // end of record result method
     restartGame (state) {
       // deselect all dice (remove this)
+      /*
       for (let dice in store.state.diceArray) {
         if (store.state.diceArray[dice].chosen) {
           store.state.diceArray[dice].chosen = false
         }
       }
-      store.commit('resetState')
+      */
       this.clearResultBox()
-      store.state.startMenu = false
+      // store.state.startMenu = false
+
       this.userName = localStorage.getItem('userName')
       this.highestScore = localStorage.getItem('highestScore')
+      // this.updateMainButtonState()
+      store.commit('resetState')
+      this.mainButtonText = 'Start'
+      this.mainButtonDisabled = false
       // this.toggleBurger()
     }
   } // end of methods
@@ -982,7 +889,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  padding: 0em 0em 1em 0em;
+  // padding: 0em 0em 1em 0em;
 }
 
 .school {
@@ -1066,24 +973,52 @@ export default {
 
 .dice-box-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  // border: 1px solid magenta;
-  height: 2.3em;
-  margin-bottom: .3em;
+  flex-direction: row;
+  // justify-content: center;
+  // align-items: center;
+  // border: 1px solid lime;
+  // height: 2.3em;
+  //margin-bottom: .3em;
+  // align-self: flex-end;
+  margin-top: 1em;
+  padding: 0em .3em .3em .3em;
 }
 .diceBox, .resultBox {
   display: flex;
   justify-content: center;
   align-content: center;
   align-items: center;
-  padding-top: .125em;
+  padding-top: .15em;
   // height: 2.5em;
   // border: 1px solid magenta;
 }
 
+.main-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4em;
+  height: 2.15em;
+  color: $color-light;
+  font-size: 1.1em;
+  padding: .3em;
+  border-radius: .3em;
+  background-color: $color-primary-0;
+  margin-left: auto; //!
+}
+
+.main-button:hover {
+  box-shadow: 0px 0px 6px $color-primary-0;
+}
+
+.disabled {
+  color: $color-light;
+  background-color: $color-very-red;
+  box-shadow: 0px 0px 6px $color-very-red;
+}
+
 .border {
-    border-left: .2em solid orange;
+    border-right: .2em solid orange;
 }
 
 .dice {
@@ -1213,13 +1148,13 @@ svg:hover > .diceCircle {
 
 // end game menu
 .endGameMenu {
-  // position: fixed;
+  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
   width: 100%;
-  // height: 20em;
+  height: 100vh;
   background-color: $color-primary-transparent;
   color: $color-primary-0;
   p {
@@ -1288,7 +1223,7 @@ svg:hover > .diceCircle {
   display: flex;
   //align-content: center;
   justify-content: center;
-  width: 100%;
+  width: 90%;
   // border: 1px solid red;
   color: $color-primary-0;
   // height: 4em;
@@ -1304,7 +1239,7 @@ svg:hover > .diceCircle {
 .new-user > input {
   // height: 1em;
   color: $color-primary-0;
-  font-size: 1.6em;
+  font-size: 1.4em;
   padding: .2em;
   width: 100%;
   border-radius: .2em;
@@ -1324,9 +1259,9 @@ svg:hover > .diceCircle {
 }
 
 @media only screen and (max-width: 500px) , screen and (max-height: 300px) {
-    #gameView {
-      padding-bottom: .2em;
-    }
+    // #gameView {
+    // padding-bottom: .2em;
+    // }
     .controls {
       margin-bottom: .3em;
     }

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+// import { stat } from 'fs';
 
 Vue.use(Vuex)
 
@@ -7,24 +8,21 @@ const getDefaultState = () => {
   return {
     debug: false,
     endGameMenu: false, // some testing
-    currentUserName: '',
+    currentUserName: '', // remove this from here
     startMenu: true,
     schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score
-    // caclculatedScore: 0,
-    /* schoolTurns: 1, // counter for number of turns to complete school */
     schoolCompleted: false, // check if school is completed
     gameTurns: 1, // game turns counter
     maxGameTurns: 33,
     rollCount: 3, // roll counter for the current turn
-    gameCheck: false,
-    gameLocked: true, // unlocked after completing school
-    rollButtonDisabled: false,
-    nextTurnButtonDisabled: true,
-    nextTurnButtonText: 'Next Turn',
+    gameCheck: false, // to check if there are any combinations left to record
+    zeroCheck: false,
+    // rollButtonDisabled: false,
+    // nextTurnButtonDisabled: true,
+    // nextTurnButtonText: 'Next Turn',
     turnCompleted: false,
     combinationArray: [],
-    combinationArrayEmpty: false,
     scoreArray: [{ // school combinations
       value: '',
       final: false,
@@ -134,9 +132,9 @@ const getDefaultState = () => {
       value: '#',
       chosen: false,
       id: 'fifth'
-    }],
-    onesScore: 'initial', // need to remove this
-    twosScore: 0 // and this
+    }]
+    // onesScore: 'initial', // need to remove this
+    // twosScore: 0 // and this
   }
 }
 
@@ -182,7 +180,7 @@ const mutations = {
       // if it is larger than 0, we have at least one dice to calculate
       if (state.combinationArray.length > 0) {
         for (let key in state.combinationArray) {
-          // fill the 2D array to analyse later
+          // fill the 2D array to analyse it
           switch (state.combinationArray[key]) {
             case 1:
               arrayToAnalyse[0].push(state.combinationArray[key])
@@ -233,10 +231,12 @@ const mutations = {
           /* ---------------Game score calculation--------------- */
           let pairsArray = []
           let tripleArray = []
+          let quadsArray = []
           let smallLargeCheckArray = []
           const scoreSum = (accumulator, currentValue) => accumulator + currentValue
           for (let key in arrayToAnalyse) {
             // key is _the_ key
+            // get the first value form array with current _key_
             let currentDice = arrayToAnalyse[key][0]
             if (currentDice) { // start
               // collect dice into helper arrays
@@ -245,6 +245,9 @@ const mutations = {
               }
               if (arrayToAnalyse[currentDice - 1].length === 3) {
                 tripleArray.push(currentDice)
+              }
+              if (arrayToAnalyse[currentDice - 1].length === 4) {
+                quadsArray.push(currentDice)
               }
 
               // check for 'pair' combination
@@ -282,8 +285,13 @@ const mutations = {
               }
 
               // check for quads
-              if (arrayToAnalyse[currentDice - 1].length === 4 && !state.scoreArray[10].final) {
-                state.scoreArray[10].value = currentDice * 4
+              // very complicated, need to do something about it
+              // if (arrayToAnalyse[currentDice - 1].length === 4 && !state.scoreArray[10].final) {
+              if (quadsArray >= 1 && !state.scoreArray[10].final) {
+                // console.log(`Quads debug quadsArray -->`)
+                // console.log(quadsArray)
+                // state.scoreArray[10].value = currentDice * 4
+                state.scoreArray[10].value = quadsArray[0] * 4
               } else if (!state.scoreArray[10].final) {
                 state.scoreArray[10].value = ''
               }
@@ -341,9 +349,11 @@ const mutations = {
         state.diceArray[key].value = Math.floor((Math.random() * 6) + 1)
       }
     }
+    /*
     if (state.rollCount === 0) {
       state.rollButtonDisabled = true
     }
+    */
     if (state.rollCount === 0 && state.gameTurns <= 6 && !state.turnCompleted) {
       // check if we can record some result, if no -- game over
       let emptyDice = []
@@ -362,19 +372,22 @@ const mutations = {
         }
       }
     }
+    // check if user was able to complete school
     if (state.gameTurns <= 6 && state.rollCount === 0 && !state.turnCompleted && !state.gameCheck) {
-      state.nextTurnButtonText = 'Game over'
-      state.nextTurnButtonDisabled = false
+      // state.nextTurnButtonText = 'Game over'
+      // state.nextTurnButtonDisabled = false
+      state.endGameMenu = true
     }
   },
   nextTurn (state) {
     state.gameCheck = false
+    state.zeroCheck = false
     if (!state.gameCheck && !state.turnCompleted) {
       alert(`Game over, your score is ${state.schoolScoreTotal}`)
     } else {
       state.gameTurns++ // increment turn counter
       state.turnCompleted = false // set new turn state
-      state.rollButtonDisabled = false // unlock roll button
+      // state.rollButtonDisabled = false // unlock roll button
       state.rollCount = 3 // set roll count to intial value of three
       for (let key in state.diceArray) {
         state.diceArray[key].value = '#'// reset all dice
@@ -387,7 +400,7 @@ const mutations = {
         }
       }
       state.combinationArray = []
-      state.nextTurnButtonDisabled = true
+      // state.nextTurnButtonDisabled = true
     }
   },
   resetState (state) {
