@@ -9,9 +9,9 @@
       </button>
     </div>
     <!--div class="userName">{{ msg }}</div-->
-    <div class="scoreDisplay">
-      <div>{{userName}}s score: {{computedGameScore}}</div>
-      <!--div>Rolls left: {{rollsLeft}}</div-->
+    <div class="score-display">
+      <div class="title">{{ title }}</div>
+      <div class="score">{{ computedGameScore }}</div>
     </div>
   </div>
   <div id="sidenav">
@@ -35,11 +35,11 @@ export default {
   data () {
     return {
       userName: '',
-      highestScore: ''
+      highestScore: '',
+      title: 'Sharlushka'
     }
   },
   mounted () {
-    // this.userName = localStorage.getItem('userName')
     this.highestScore = localStorage.getItem('highestScore')
     this.userName = localStorage.getItem('userName')
   },
@@ -70,25 +70,12 @@ export default {
       }
     },
     restartGame (state) { // remove this
-      // deselect all dice (remove this)
-      /*
-      for (let dice in store.state.diceArray) {
-        if (store.state.diceArray[dice].chosen) {
-          store.state.diceArray[dice].chosen = false
-        }
-      }
-      */
-      this.clearResultBox()
-      // store.state.startMenu = false
-
-      this.userName = localStorage.getItem('userName')
-      this.highestScore = localStorage.getItem('highestScore')
-      // this.updateMainButtonState()
-      store.commit('resetState')
-      // this.mainButtonText = 'Start'
-      // this.mainButtonDisabled = false
+      // store.commit('resetState')
       this.toggleBurger()
-    },
+      // hard reset
+      this.$router.go({path: '/game'})
+    }
+    /*
     clearResultBox () { // remove this from here
       let diceBox = document.querySelector('.diceBox')
       let resultBox = document.querySelector('.resultBox')
@@ -107,7 +94,7 @@ export default {
           store.state.diceArray[key].chosen = false
         }
       }
-    }
+    } */
   }
 }
 </script>
@@ -135,11 +122,18 @@ export default {
   align-content: center;
 }
 
-.scoreDisplay {
+.score-display {
+  display: flex;
   width: 100%;
   font-size: 1.5em;
-  display: flex;
-  justify-content: space-around;
+  padding-right: .3em;
+}
+.title {
+  text-align: center;
+  flex-grow: 2;
+}
+.score {
+  margin-left: auto;
 }
 .settings-icon {
   height: 1.2em;

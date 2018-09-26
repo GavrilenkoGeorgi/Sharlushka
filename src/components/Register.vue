@@ -46,6 +46,7 @@ export default {
     saveUserName () {
       localStorage.setItem('userName', this.formValueName)
       this.userName = this.formValueName
+      this.$router.push({path: '/game'})
     }
   }
 }

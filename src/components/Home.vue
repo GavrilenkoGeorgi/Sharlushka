@@ -101,7 +101,7 @@ $color-white: hsl(0, 0%, 100%);
     text-decoration: none;
   }
 }
-.startPageButton:hover{
+.button:hover{
   box-shadow: 0px 0px 6px $color-primary-0;
 }
 .iconLicense {

@@ -7,9 +7,8 @@ Vue.use(Vuex)
 const getDefaultState = () => {
   return {
     debug: false,
-    endGameMenu: false, // some testing
     currentUserName: '', // remove this from here
-    startMenu: false,
+    mainButtonText: 'Start',
     schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score
     schoolCompleted: false, // check if school is completed
@@ -18,9 +17,6 @@ const getDefaultState = () => {
     rollCount: 3, // roll counter for the current turn
     gameCheck: false, // to check if there are any combinations left to record
     zeroCheck: false,
-    // rollButtonDisabled: false,
-    // nextTurnButtonDisabled: true,
-    // nextTurnButtonText: 'Next Turn',
     turnCompleted: false,
     combinationArray: [],
     scoreArray: [{ // school combinations
