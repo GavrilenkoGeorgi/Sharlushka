@@ -1,31 +1,5 @@
 <template>
   <div id="gameView">
-    <div v-if="$store.state.startMenu" class="startMenu">
-      <p class="game-name">Sharlushka</p>
-      <img class="startPageDice" src="../assets/icons/startPageDice.svg" alt="Start page dice">
-      <div class="greeting" v-if="userExists">
-        <p>Hi, {{userName}}</p>
-      </div>
-      <div class="register-form" v-if="registerForm">
-        <form class="new-user">
-          <!--label for="userName">User Name</label-->
-          <input v-model="formValueName" type="text" id="userName" name="newUserName" placeholder="Name">
-        </form>
-        <div class="closeButton" v-on:click="formInputControl">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-            <path d="M0 0h24v24H0z" fill="none"/>
-          </svg>
-        </div>
-      </div>
-      <div class="button-box">
-        <button class="menuButton" v-on:click="$store.state.startMenu = false">Play</button>
-        <button v-if="!registerForm" class="menuButton" v-on:click="formInputControl">{{ loginButtonText }}</button>
-        <button v-if="registerForm" class="menuButton" v-on:click="registerUser">Save</button>
-      </div>
-      <div class="iconLicense">Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
-      </div>
-    </div>
     <Navigation />
       <div class="school" v-on:click="handleBoardClick">
         <div class="combination">
@@ -492,9 +466,7 @@ export default {
       userExists: false,
       loginButtonText: 'Change',
       formValueName: '',
-      // zeroCheck: false,
       mainButtonText: 'Start',
-      // debugCheckForFinal: {}
       mainButtonDisabled: false
     }
   },
@@ -507,10 +479,7 @@ export default {
     'debugInfo'
   ]),
   mounted () {
-    // store.state.startMenu = true
-    // console.log(`Mounted game view`)
     let user = localStorage.getItem('userName')
-    // console.log(`Hi ${user}`)
     if (user) {
       this.userExists = true
       this.userName = user
@@ -523,13 +492,6 @@ export default {
     if (!this.userExists) {
       this.loginButtonText = 'New user'
     }
-    // main game button initial settings
-    /*
-    if (store.state.gameTurns === 1) {
-      this.mainButtonText = 'Start'
-    }
-    */
-    // this.mainButtonText = 'Start'
   },
   methods: {
     ...mapActions([
@@ -544,12 +506,9 @@ export default {
       'incrementAsync'
     ]),
     handleMainGameButton () {
-      // console.log(`Main game button clicked`)
-      // this.clearResultBox()
       if (store.state.rollCount > 0 && !store.state.turnCompleted) {
         store.commit('rollDice')
       } else if (store.state.turnCompleted) {
-        // store.commit('nextTurn')
         this.clearResultBox()
       } else {
         console.log(`Record something!`)
@@ -557,7 +516,6 @@ export default {
       this.updateMainButtonState()
     },
     updateMainButtonState () {
-      // console.log(`Updating button state`)
       if (store.state.gameTurns === 1 && store.state.rollCount === 3) {
         this.mainButtonText = 'Start'
       } else if (store.state.rollCount > 0 && !store.state.turnCompleted) {
@@ -586,22 +544,7 @@ export default {
         this.registerForm = true
       }
     },
-    registerUser () {
-      // console.log(`Register user`)
-      // localStorage.setItem("userName", "Smith")
-      localStorage.setItem('userName', this.formValueName)
-      this.userName = this.formValueName
-      // this.registerForm = false
-      store.state.startMenu = false
-      // something for navigation
-      store.state.currentUserName = this.userName
-    },
     handleBoardClick (event) {
-      // console.log(`Handling board click. Event target -->`)
-      // console.dir(event.target)
-      // find combinationID
-      // let stop = 10
-      // let temp
       let idFound = false
       let scoreId = null
       let scoreType = null
@@ -610,40 +553,21 @@ export default {
         if (elementToCheck.classList.contains('combination')) {
           scoreId = elementToCheck.firstChild.id
           scoreType = elementToCheck.parentElement.className
-          // // console.log(`name: ${elementToCheck.firstChild.id}`)
-          // // console.log(`type: ${elementToCheck.parentElement.className}`)
-          // // console.log(`Combination is ${scoreId}`)
-          // console.dir(scoreId)
           idFound = true
-          // return temp
         } else if (elementToCheck.classList.contains('label')) {
           scoreId = elementToCheck.id
           scoreType = elementToCheck.parentElement.className
-          // // console.log(`Label is ${scoreId}`)
           idFound = true
-          // return scoreId
         } else if (elementToCheck.classList.contains('result')) {
-          // // console.log(`Result paragraph`)
           scoreId = elementToCheck.parentElement.firstChild.id
           scoreType = elementToCheck.parentElement.className
-          // // console.log(scoreId)
-          // // console.log(scoreType)
-          // // console.log(`Result par label is ${scoreId}`)
           idFound = true
         } else {
           elementToCheck = elementToCheck.parentElement
         }
         if (!elementToCheck) {
-          // // console.log(`No more parents element is: ${elementToCheck}`)
-          // return idFound
+          return false
         }
-        /*
-        if (stop <= 0) {
-          idFound = true
-          // console.log(`Error`)
-        }
-        stop--
-        */
       }
       if (scoreId && scoreType) {
         this.recordResult(scoreId, scoreType)
@@ -653,46 +577,24 @@ export default {
       let diceFound = false
       if (element) {
         let elementToCheck = element.parentElement
-        // console.log(`Current parent -->`)
-        // console.dir(elementToCheck)
-
         while (!diceFound && elementToCheck) {
           if (elementToCheck.classList.contains('dice')) {
-            // console.log(`Dice id found: ${elementToCheck.id}`)
             diceFound = true
             return elementToCheck
           } else {
-            // console.log(`Switching parents`)
             elementToCheck = elementToCheck.parentElement
             this.handleDiceClick(elementToCheck)
           }
         }
       } else {
-        // console.log(`No element to check ${element}`)
         return false
       }
     },
     selectDice (event) {
-      // console.log(`inside select dice`)
-      // let elementToAdd = event.target.closest('.dice')
-      // console.log(`Event target -->`)
-      // console.log(event.target.id)
-      // // console.log(`Event current target -->`)
-      // // console.log(event.currentTarget)
-      // // console.log(event.target.classList)
-      // closest doesn't work on andrid 4.1
-      // hence this stuff
-      // let parentNode = event.target.parentElement
-      // let grandParentNode = parentNode.parentElement
-      // let elementToAdd = grandParentNode
-      // end of it
-      // console.dir(`Result: ${this.handleDiceClick(event.target)}`)
       let elementToAdd = this.handleDiceClick(event.target)
-      // console.dir(`Element to add ${elementToAdd}`)
       let diceBox = document.querySelector('.diceBox')
       let resultBox = document.querySelector('.resultBox')
       if (event.target === diceBox) {
-        // console.log(`Click harder!`)
         return false
       }
       if (elementToAdd && !store.state.turnCompleted) {
@@ -702,43 +604,27 @@ export default {
       for (let key in store.state.diceArray) {
         if (store.state.diceArray[key].id === elementToAdd.id) {
           store.state.diceArray[key].chosen = true
-          // console.log(`Dice chosen: ${store.state.diceArray[key].chosen}`)
           store.state.combinationArray.push(store.state.diceArray[key].value)
           store.commit('computeScore')
         }
       }
     },
     deSelectDice (event) {
-      // console.log(event.target)
-      /*
-      let parentNode = event.target.parentElement
-      let grandParentNode = parentNode.parentElement
-      let elementToRemove = grandParentNode
-      */
       let elementToRemove = this.handleDiceClick(event.target)
       let diceBox = document.querySelector('.diceBox')
       let resultBox = document.querySelector('.resultBox')
       if (event.target === resultBox) {
-        console.log(`Result box!`)
-        // return false
+        return false
       }
       // store.state.combinationArray.splice(store.state.combinationArray.findIndex(item => item === store.state.diceArray[key].value), 1)
       if (elementToRemove && !store.state.turnCompleted) {
-        // console.log(`We got element to remove -->`)
-        // console.dir(elementToRemove.id)
         resultBox.removeChild(elementToRemove)
         diceBox.appendChild(elementToRemove)
         // store.state.combinationArray.splice(store.state.combinationArray.findIndex(item => item === store.state.diceArray[key].value), 1)
         for (let key in store.state.diceArray) {
-          // console.log(store.state.diceArray[key].value)
           if (store.state.diceArray[key].id === elementToRemove.id) {
-            // console.log(`Removing dice`)
             store.state.diceArray[key].chosen = false
-            // store.state.diceArray[key].value = ''
             let value = store.state.diceArray[key].value
-            // console.log(`Element to remove value is ${value}`)
-            // console.log(`Index of value to remove`)
-            // console.log(store.state.combinationArray.indexOf(value))
             let indexToRemove = store.state.combinationArray.indexOf(value)
             store.state.combinationArray.splice(indexToRemove, 1)
           }
@@ -765,15 +651,6 @@ export default {
         }
       }
     },
-    /*
-    clearResultInStore () {
-      for (let key in store.state.scoreArray) {
-        if (!store.state.scoreArray[key].final) {
-          store.state.scoreArray[key].value = ''
-        }
-      }
-    },
-    */
     debugMode () {
       // console.log(`Clearing onscreen`)
       store.state.debug = true
@@ -783,12 +660,9 @@ export default {
       let resultType = type
       let combinationId = id
       const combinationIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(combinationId)
-
       if (resultType === 'school' && store.state.scoreArray[combinationIndexInArray].value !== '' && !store.state.turnCompleted && !store.state.scoreArray[combinationIndexInArray].final) {
         store.state.scoreArray[combinationIndexInArray].final = true
         store.state.schoolScoreTotal += store.state.scoreArray[combinationIndexInArray].value
-        // store.state.rollButtonDisabled = true
-        // store.state.nextTurnButtonDisabled = false
         store.state.turnCompleted = true
         let resultParagraph = document.getElementById(combinationId)
         resultParagraph.nextElementSibling.classList.remove('blink')
@@ -800,8 +674,6 @@ export default {
         this.clearResultBox()
         this.updateMainButtonState()
       } else if (resultType === 'gameCombination' && store.state.scoreArray[combinationIndexInArray].value !== '' && store.state.scoreArray[combinationIndexInArray].displayValues.length < 3 && !store.state.turnCompleted) {
-        // store.state.rollButtonDisabled = true
-        // store.state.nextTurnButtonDisabled = false
         store.state.turnCompleted = true
         // push result into display values array
         store.state.scoreArray[combinationIndexInArray].displayValues.push(store.state.scoreArray[combinationIndexInArray].value)
@@ -814,13 +686,8 @@ export default {
         this.clearResultBox()
         this.updateMainButtonState()
       } else if (!store.state.turnCompleted && store.state.scoreArray[combinationIndexInArray].value === '' && !store.state.scoreArray[combinationIndexInArray].final && store.state.schoolCompleted && store.state.rollCount === 0 && !store.state.zeroCheck) {
-        // console.log(`Trying to save zero.`)
-        // console.log(resultType)
         // if there is no combination to record user can mark one field per turn as cancelled
         // and it won't be used to calculate score
-        // combinationId = event.target.id
-        // store.state.nextTurnButtonDisabled = false
-        // store.state.rollButtonDisabled = true
         if (store.state.scoreArray[combinationIndexInArray].displayValues.length < 3) {
           store.state.scoreArray[combinationIndexInArray].displayValues.push(0)
           // zero saved during this turn
@@ -856,17 +723,7 @@ export default {
       }
     }, // end of record result method
     restartGame (state) {
-      // deselect all dice (remove this)
-      /*
-      for (let dice in store.state.diceArray) {
-        if (store.state.diceArray[dice].chosen) {
-          store.state.diceArray[dice].chosen = false
-        }
-      }
-      */
       this.clearResultBox()
-      // store.state.startMenu = false
-
       this.userName = localStorage.getItem('userName')
       this.highestScore = localStorage.getItem('highestScore')
       // this.updateMainButtonState()
@@ -1192,12 +1049,6 @@ svg:hover > .diceCircle {
   height: 100vh;
 }
 
-.game-name {
-  color: $color-primary-0;
-  font-family: $game-name-font;
-  font-size: 3.5em;
-  // margin-top: 1.5em;
-}
 .startPageDice {
   height: 13em;
 }
@@ -1219,43 +1070,9 @@ svg:hover > .diceCircle {
   color: $color-orange;
 }
 
-.register-form {
-  display: flex;
-  //align-content: center;
-  justify-content: center;
-  width: 90%;
-  // border: 1px solid red;
-  color: $color-primary-0;
-  // height: 4em;
-}
-
-.new-user {
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  padding-right: .7em;
-}
-
-.new-user > input {
-  // height: 1em;
-  color: $color-primary-0;
-  font-size: 1.4em;
-  padding: .2em;
-  width: 100%;
-  border-radius: .2em;
-  border: 1px solid $color-primary-2;
-  box-shadow: 0px 0px 10px 1px $color-primary-1;
-}
-
 .greeting {
   color: $color-primary-0;
   font-size: 2em;
-}
-
-.closeButton {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
 }
 
 @media only screen and (max-width: 500px) , screen and (max-height: 300px) {

@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view/>
+    <transition name="custom-classes-transition" mode="out-in" enter-active-class="animated fadeInRight" leave-active-class="animated fadeOutLeft">
+      <router-view/>
+    </transition>
   </div>
 </template>
 
@@ -23,6 +25,7 @@ export default {
 
 <style lang="scss">
 @import "./assets/scss/index.scss";
+@import "../node_modules/animate.css/animate.css";
 @import "../node_modules/hamburgers/_sass/hamburgers/hamburgers.scss";
 
 * {

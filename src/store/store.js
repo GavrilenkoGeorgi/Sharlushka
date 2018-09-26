@@ -9,7 +9,7 @@ const getDefaultState = () => {
     debug: false,
     endGameMenu: false, // some testing
     currentUserName: '', // remove this from here
-    startMenu: true,
+    startMenu: false,
     schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score
     schoolCompleted: false, // check if school is completed
