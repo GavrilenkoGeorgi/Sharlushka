@@ -159,7 +159,7 @@
       <div class="result-box" v-bind:class="{ hidden:$store.state.turnCompleted, border: $store.state.combinationArray.length >= 1 }" v-on:click="deSelectDice"></div>
       <div class="dice-box"  v-on:click="selectDice" v-bind:class="{ hidden:$store.state.turnCompleted }">
         <!-- first dice -->
-        <div class="dice" id="first">
+        <div class="dice animated" id="first">
           <div v-if="$store.state.diceArray[0].value === 1">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
               <circle class="dice-circle" cx="100" cy="100" r="18"/>
@@ -213,7 +213,7 @@
           </div>
         </div>
         <!-- second dice -->
-        <div class="dice" id="second">
+        <div class="dice animated" id="second">
           <div v-if="$store.state.diceArray[1].value === 1">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
               <circle class="dice-circle" cx="100" cy="100" r="18"/>
@@ -267,7 +267,7 @@
           </div>
         </div>
         <!-- third dice -->
-        <div class="dice" id="third">
+        <div class="dice animated" id="third">
           <div v-if="$store.state.diceArray[2].value === 1">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
               <circle class="dice-circle" cx="100" cy="100" r="18"/>
@@ -321,7 +321,7 @@
           </div>
         </div>
         <!-- fourth dice -->
-        <div class="dice" id="fourth">
+        <div class="dice animated" id="fourth">
           <div v-if="$store.state.diceArray[3].value === 1">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
               <circle class="dice-circle" cx="100" cy="100" r="18"/>
@@ -375,7 +375,7 @@
           </div>
         </div>
         <!-- fifth dice -->
-        <div class="dice" id="fifth">
+        <div class="dice animated" id="fifth">
           <div v-if="$store.state.diceArray[4].value === 1">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
               <circle class="dice-circle" cx="100" cy="100" r="18"/>
@@ -429,14 +429,16 @@
           </div>
         </div>
       </div> <!--end if dice-box-->
-      <div class="main-button" v-on:click="handleMainGameButton" v-bind:class="{ disabled:mainButtonDisabled }">{{ mainButtonText }}</div>
+      <div class="main-button animated" v-on:click="handleMainGameButton" v-bind:class="{ disabled:mainButtonDisabled }">{{ mainButtonText }}</div>
     </div>
     <div class="progress-bar">
     </div>
+    <!--div class="debug">{{currentValuesInScoreArray}}</div-->
   </div>
 </template>
 
 <script>
+// import { mapGetters, mapActions } from 'vuex'
 import { mapGetters, mapActions } from 'vuex'
 import store from '../store/store'
 import Navigation from '../components/Navigation'
@@ -453,23 +455,30 @@ export default {
       // loginButtonText: 'Change',
       // formValueName: '',
       mainButtonText: 'Start',
-      mainButtonDisabled: false
+      mainButtonDisabled: false,
+      currentlyHighlightedElement: null
     }
   },
   components: {
     Navigation
   },
-  computed: mapGetters([
-    'evenOrOdd',
-    'onesScore',
-    'debugInfo'
-  ]),
+  computed: {
+    ...mapGetters([
+      'evenOrOdd',
+      'onesScore',
+      'chosenDiceArray',
+      'currentValuesInScoreArray'
+    ])
+  },
   mounted () {
     let highestScore = localStorage.getItem('highestScore')
     if (highestScore) {
       this.highestScore = highestScore
     }
     this.updateMainButtonState()
+    // store.mapGetters.chosenDiceArray
+    // let temp = this.chosenDiceArray()
+    // console.log(store.getters.chosenDiceArray)
     // it a start!
     // this.mainButtonText = store.state.mainButtonText
   },
@@ -497,13 +506,16 @@ export default {
       this.updateMainButtonState()
     },
     updateMainButtonState () {
+      let button = document.querySelector('.main-button')
+      // button.classList.remove('bounce')
       if (store.state.gameTurns === 1 && store.state.rollCount === 3) {
         this.mainButtonText = 'Start'
       } else if (store.state.rollCount > 0 && !store.state.turnCompleted) {
         this.mainButtonText = `Roll ${store.state.rollCount}`
       } else if (store.state.rollCount === 0 && !store.state.turnCompleted) {
-        this.mainButtonText = 'Rec!'
+        this.mainButtonText = 'SAVE'
         this.mainButtonDisabled = true
+        button.classList.add('bounce')
       } else {
         this.mainButtonText = 'Turn'
         this.mainButtonDisabled = false
@@ -517,57 +529,61 @@ export default {
         progressBar.style.width = '66%'
       } else if (store.state.rollCount === 0) {
         progressBar.style.width = '100%'
-        progressBar.style.backgroundColor = '#AA3838'
-        progressBar.style.boxShadow = '0px 1px 10px 0px red'
+        progressBar.classList.add('full')
+      } else if (store.state.rollCount === 3) {
+        progressBar.style.width = '0%'
+        progressBar.classList.remove('full')
+      }
+    },
+    removeCurrentHighlight () {
+      if (this.currentlyHighlightedElement) {
+        // clear current highlights
+        // console.log(`Removing highlight from ->`)
+        // console.log(this.currentlyHighlightedElement.nextSibling)
+        this.currentlyHighlightedElement.nextElementSibling.classList.remove('highest-value')
+        // let elementToRemove = document.querySelector('.highest-value')
+        // elementToRemove.classList.remove('highest-value')
+      } else {
+        return false
       }
     },
     highlightHighestValue () {
-      if (store.state.gameTurns <= 6) {
-        // highlight highest value onscreen
-        let value = -12 // it could be zero but minimun score is -12 on sixes
-        let id = null
-        // clear currently higlighted item
-        let currentlyHighlightedItems = document.querySelectorAll('.highest-value')
-        if (currentlyHighlightedItems) {
-          for (let item of currentlyHighlightedItems) {
-            item.classList.remove('highest-value')
-            item.classList.add('blink')
-          }
-        }
-        for (let key in store.state.scoreArray) {
-          let currentItem = store.state.scoreArray[key]
-          if (!currentItem.final && currentItem.value !== '') {
-            if (currentItem.value >= value) {
-              value = currentItem.value
-              id = currentItem.id
-              let highestValueItem = document.getElementById(id)
-              // highestValueItem.classList.add('highest-value')
-              // highestValueItem.nextElementSibling.classList.add('highest-value')
-              highestValueItem.nextElementSibling.classList.remove('blink')
-              highestValueItem.nextElementSibling.classList.add('highest-value')
-            }
-          }
+      // highlight highest value onscreen
+      this.removeCurrentHighlight()
+      // this.currentlyHighlightedElement = null
+      // console.log(`highlighting highest value`)
+      // console.log(this.currentValuesInScoreArray)
+      let highestScoreCombination = null
+      let highestValue = -12 // minimal combination score on sixes
+      for (let combination of this.currentValuesInScoreArray) {
+        if (combination.value >= highestValue) {
+          highestValue = combination.value
+          highestScoreCombination = combination
+          // console.log(`Highest score combination ${highestScoreCombination.id}`)
         }
       }
-    },
-    parseDebug () {
-      // console.log(`This debug info is currently: ${this.debugInfo}`)
-    },
-    /*
-    buttonText () {
-      if (!this.userExists) {
-        this.loginButtonText = 'New user'
-      }
-    },
-    formInputControl () {
-      // toggles user name input
-      if (this.registerForm) {
-        this.registerForm = false
+      if (highestScoreCombination) {
+        this.currentlyHighlightedElement = document.getElementById(highestScoreCombination.id)
+        // let temp = document.getElementById(highestScoreCombination.id)
+        if (!store.state.schoolCompleted) {
+          // let itemToHighlight = document.getElementById(highestScoreCombination.id)
+          // console.log(`Item to highlight ${this.currentlyHighlightedElement}`)
+          this.currentlyHighlightedElement.nextElementSibling.classList.add('highest-value')
+          // console.log(itemToHighlight.nextElementSibling.classList)
+        } /* else if (store.state.schoolCompleted && this.currentlyHighlightedElement.nextElementSibling) {
+          // this.currentlyHighlightedElement.lastChild.classList.add('highest-value')
+          // console.log(`Currently highlighted item is ->`)
+          // console.dir(this.currentlyHighlightedElement)
+          // this.currentlyHighlightedElement.parentElement.classList.add('highest-value')
+          // console.dir(this.currentlyHighlightedElement.parentElement.lastElementChild)
+          // let gameResultElement = this.currentlyHighlightedElement.parentElement
+          console.dir(this.currentlyHighlightedElement.nextElementSibling)
+          this.currentlyHighlightedElement.parentNode.lastChild.classList.add('highest-value')
+        } */
       } else {
-        this.registerForm = true
+        return false
       }
     },
-    */
     handleBoardClick (event) {
       let idFound = false
       let scoreId = null
@@ -616,6 +632,8 @@ export default {
     },
     selectDice (event) {
       let elementToAdd = this.handleDiceClick(event.target)
+      // elementToAdd.classList.remove('slideOutRight')
+      elementToAdd.classList.add('zoomIn')
       let diceBox = document.querySelector('.dice-box')
       let resultBox = document.querySelector('.result-box')
       if (event.target === diceBox) {
@@ -632,10 +650,12 @@ export default {
           store.commit('computeScore')
         }
       }
-      // this.highlightHighestValue()
+      this.highlightHighestValue()
     },
     deSelectDice (event) {
       let elementToRemove = this.handleDiceClick(event.target)
+      // elementToRemove.classList.remove('slideInRight')
+      // elementToRemove.classList.add('zoomIn')
       let diceBox = document.querySelector('.dice-box')
       let resultBox = document.querySelector('.result-box')
       if (event.target === resultBox) {
@@ -656,7 +676,7 @@ export default {
         }
       }
       store.commit('computeScore')
-      // this.highlightHighestValue()
+      this.highlightHighestValue()
     },
     clearResultBox () {
       let diceBox = document.querySelector('.dice-box')
@@ -678,7 +698,6 @@ export default {
       }
     },
     debugMode () {
-      // console.log(`Clearing onscreen`)
       store.state.debug = true
     },
     recordResult (id, type) {
@@ -699,6 +718,7 @@ export default {
         }
         this.clearResultBox()
         this.updateMainButtonState()
+        this.removeCurrentHighlight()
       } else if (resultType === 'game-combination' && store.state.scoreArray[combinationIndexInArray].value !== '' && store.state.scoreArray[combinationIndexInArray].displayValues.length < 3 && !store.state.turnCompleted) {
         store.state.turnCompleted = true
         // push result into display values array
@@ -711,6 +731,7 @@ export default {
         // this.clearResultInStore()
         this.clearResultBox()
         this.updateMainButtonState()
+        this.removeCurrentHighlight()
       } else if (!store.state.turnCompleted && store.state.scoreArray[combinationIndexInArray].value === '' && !store.state.scoreArray[combinationIndexInArray].final && store.state.schoolCompleted && store.state.rollCount === 0 && !store.state.zeroCheck) {
         // if there is no combination to record user can mark one field per turn as cancelled
         // and it won't be used to calculate score
@@ -720,6 +741,7 @@ export default {
           store.state.zeroCheck = true
           this.clearResultBox()
           this.updateMainButtonState()
+          this.removeCurrentHighlight()
           store.state.turnCompleted = true
         }
         // check if it is full
@@ -747,6 +769,7 @@ export default {
         this.$router.push({ path: '/endgame' })
       } else {
         store.commit('nextTurn')
+        this.updateProgressBar()
       }
     } // end of record result method
   } // end of methods
@@ -756,6 +779,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 @import "../assets/scss/index.scss";
+@import "../../node_modules/animate.css/animate.css";
 @import "../assets/scss/vars/colors.scss";
 
 #gameView {
@@ -867,6 +891,7 @@ export default {
   border-radius: .3em;
   background-color: $color-primary-0;
   margin-left: auto; //!
+  transition: background-color 1.75s;
 }
 
 .main-button:hover {
@@ -925,14 +950,7 @@ export default {
 .result-box svg > circle {
   fill: $color-orange;
 }
-/*
-.result-box svg:hover > .dice-svg {
-  stroke: $color-primary-0;
-}
-.result-box svg:hover > .dice-circle {
-  fill: $color-primary-0;
-}
-*/
+
 .dice-svg {
   fill: none;
   stroke: $color-primary-0;
@@ -976,12 +994,35 @@ svg:hover > .dice-circle {
   color: $color-orange;
 }
 */
-@media only screen and (max-width: 500px) , screen and (max-height: 300px) {
+@media only screen and (max-width: 300px) , screen and (max-height: 500px) {
     .game-table {
       padding: 0em .2em 0em .2em;
     }
     .school-result {
       padding: 0;
+      border: 1px solid red;
+    }
+}
+
+@media only screen and (max-width: 720px) , screen and (max-height: 1280px) {
+    .game-table {
+      padding: 0em 1em 0em 1em;
+    }
+    .school {
+      margin-top: 1em;
+    }
+    .school-result {
+      padding: 0;
+      // border: 1px solid red;
+    }
+    .game-combination {
+      margin-top: .2em;
+    }
+    .dice-box-container {
+      margin-top: auto;
+    }
+    .main-button {
+      font-size: 1.5em;
     }
 }
 
@@ -997,6 +1038,8 @@ svg:hover > .dice-circle {
   color:indigo;
   top:150px;
   opacity: .9;
+  height: 10em;
+  overflow: hidden;
 }
 
 .progress-bar {
@@ -1005,13 +1048,31 @@ svg:hover > .dice-circle {
   box-shadow: 0px 1px 10px 0px $color-primary-4;
   height: .2em;
   width: 0%;
-  transition: width .75s;
+  transition: width 1.75s;
 }
-
+.full {
+  background-color: #AA3838;
+  box-shadow: 0px 1px 10px 0px red;
+}
+/*
 .highest-value {
   // font-size: 2em;
-  color: $color-very-red;
-  text-shadow: 0px 0px 15px $color-very-red-transparent;
+  // color: $color-very-red;
+  // text-shadow: 0px 0px 15px $color-very-red-transparent;
   // border: 1px solid red;
 }
+*/
+.highest-value {
+  color: $color-very-red;
+  text-shadow: 0px 0px 15px $color-very-red-transparent;
+}
+
+/*
+.highest-value svg > .dice-svg {
+  stroke: $color-very-red;
+}
+.highest-value svg > .dice-circle {
+  fill: $color-very-red;
+}
+*/
 </style>

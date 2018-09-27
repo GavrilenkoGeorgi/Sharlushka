@@ -19,8 +19,8 @@ const getDefaultState = () => {
     zeroCheck: false,
     turnCompleted: false,
     combinationArray: [],
-    scoreArray: [{ // school combinations
-      value: '',
+    scoreArray: [{
+      value: '', // school combinations
       final: false,
       id: 'ones'
     },
@@ -129,8 +129,6 @@ const getDefaultState = () => {
       chosen: false,
       id: 'fifth'
     }]
-    // onesScore: 'initial', // need to remove this
-    // twosScore: 0 // and this
   }
 }
 
@@ -153,6 +151,18 @@ const getters = {
         return info
       }
     }
+  },
+  chosenDiceArray: function (state) {
+    // console.log(`Getter test`)
+    return state.diceArray.filter(dice => {
+      return dice.chosen
+    })
+  },
+  currentValuesInScoreArray: function (state) {
+    // console.log(`Current values getter`)
+    return state.scoreArray.filter(score => {
+      return score.value !== '' && !score.final
+    })
   }
 }
 const mutations = {
