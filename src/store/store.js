@@ -169,20 +169,8 @@ const mutations = {
   computeScore (state) {
     if (!state.turnCompleted) {
       // empty array for calculating score
-      let arrayToAnalyse = [[], [], [], [], [], []]
-      // clear result if there is one dice in the combination array
+      let arrayToAnalyse = [[], [], [], [], [], []] // dice are with values from 1 to 6, quantity: 5 pieces
       // for any game combination except chances and school we need at least a pair of dice
-      /*
-      if (state.combinationArray.length <= 1) {
-        // some ugly hardcoded stuff
-        // to clear the range of values in the scoreArray
-        for (let scoreArrayIndex = 0; scoreArrayIndex <= 14; scoreArrayIndex++) {
-          if (state.scoreArray[scoreArrayIndex].final !== true) {
-            state.scoreArray[scoreArrayIndex].value = ''
-          }
-        }
-      }
-      */
       // if it is larger than 0, we have at least one dice to calculate
       if (state.combinationArray.length > 0) {
         for (let key in state.combinationArray) {
@@ -208,6 +196,7 @@ const mutations = {
               break
             default:
               // console.log(`Can't create array to analyse.`)
+              return false
           }
         }
         /* ---------------School score calculation--------------- */
@@ -215,17 +204,20 @@ const mutations = {
           // initialise score var
           let schoolScore
           for (let key in arrayToAnalyse) {
-            // key is _the_ key
+            // key is _the_ key!
+            // by checking first item we get dice type -- 'ones', 'twos', 'threes' ... 'sixes'
             let currentDice = arrayToAnalyse[key][0]
             if (!currentDice && state.scoreArray[key].final !== true) {
-              state.scoreArray[key].value = ''
+              state.scoreArray[key].value = '' // if there is no dice of this kind
             }
-            // by checking first item we get dice type -- 'ones', 'twos', 'threes'
             if (arrayToAnalyse[key].length === 3) {
               // we got three equal dice and the score for that is zero points
               schoolScore = 0
             } else {
               // array of dice is greater than zero and not equal to three
+              // we do this trick. example: we got two sixes, arrayToAnanlyse.["sixes"].length minus 3 is '-1'
+              // multiplied by 6 will score '-6'
+              // if we got 1 dice with value 6 --> array.length is '-2' * 6 equals '-12'
               schoolScore = (arrayToAnalyse[key].length - 3) * arrayToAnalyse[key][0]
             }
             if (currentDice && state.scoreArray[currentDice - 1].final !== true) {
@@ -309,7 +301,7 @@ const mutations = {
                 state.scoreArray[11].value = ''
               }
 
-              // check for small
+              // check for 'small' and 'large' combinations
               if (arrayToAnalyse[currentDice - 1].length === 1) {
                 // collect all dice
                 smallLargeCheckArray.push(currentDice)
@@ -325,11 +317,17 @@ const mutations = {
                     state.scoreArray[13].value = smallLargeCheckArray.reduce(scoreSum)
                   }
                 }
+              } else if (!state.scoreArray[12].final) {
+                state.scoreArray[12].value = ''
+              } else if (!state.scoreArray[13].final) {
+                state.scoreArray[13].value = ''
               }
               // check for chance
               let chanceScore = state.combinationArray.reduce(scoreSum)
               if (!state.scoreArray[14].final) {
                 state.scoreArray[14].value = chanceScore
+              } else if (!state.scoreArray[14].final) {
+                state.scoreArray[14].value = ''
               }
             }
           }

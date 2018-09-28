@@ -1,0 +1,41 @@
+.defs-only {
+  display: none;
+}
+
+symbol {
+  stroke-width: 1.1em;
+  fill: none;
+  circle {
+    stroke-width: .1em;
+  }
+}
+
+.dice {
+  stroke: $color-primary-0;
+  circle {
+    fill: $color-primary-0;
+  }
+}
+
+.dice-chosen {
+  stroke: $color-chosen;
+  circle {
+    fill: $color-chosen;
+  }
+}
+
+/*
+.dice-path {
+  fill: none;
+  stroke: indigo;
+  stroke-width: 1em;
+  fill-rule: evenodd;
+}
+
+.dice-circle {
+  fill: indigo;
+}
+*/
+figure {
+  margin: 0;
+}

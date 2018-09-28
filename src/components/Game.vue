@@ -1,83 +1,63 @@
 <template>
   <div id="gameView">
     <Navigation />
-      <div class="school" v-on:click="handleBoardClick">
-        <div class="combination">
-          <p id="ones" class="dice-icon" v-bind:class="{ active:$store.state.scoreArray[0].final }">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
-              <circle class="dice-circle" cx="100" cy="100" r="18"/>
-              <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="dice-svg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+    <div class="school" v-on:click="handleBoardClick">
+      <figure id="ones" class="combination">
+        <div class="dice-container">
+            <svg class="dice-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
+              <use v-if="$store.state.scoreArray[0].final" xlink:href="#diceOnesSelected" />
+              <use v-else xlink:href="#diceOnes" />
             </svg>
-          </p>
-          <p class="school-result blink">{{ $store.state.scoreArray[0].value }}</p>
         </div>
-
-        <div class="combination">
-          <p id="twos" class="dice-icon" v-bind:class="{ active:$store.state.scoreArray[1].final }">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
-              <circle class="dice-circle" cx="50" cy="150" r="18"/>
-              <circle class="dice-circle" cx="150" cy="50" r="18"/>
-              <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="dice-svg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+        <p class="school-result blink">{{ $store.state.scoreArray[0].value }}</p>
+      </figure>
+      <figure id="twos" class="combination">
+        <div class="dice-container">
+            <svg class="dice-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
+              <use v-if="$store.state.scoreArray[1].final" xlink:href="#diceTwosSelected" />
+              <use v-else xlink:href="#diceTwos" />
             </svg>
-          </p>
-          <p class="school-result blink">{{ $store.state.scoreArray[1].value }}</p>
         </div>
-
-        <div class="combination">
-          <p id="threes" class="dice-icon" v-bind:class="{ active:$store.state.scoreArray[2].final }">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
-              <circle class="dice-circle" cx="50" cy="150" r="18"/>
-              <circle class="dice-circle" cx="100" cy="100" r="18"/>
-              <circle class="dice-circle" cx="150" cy="50" r="18"/>
-              <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="dice-svg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+        <p class="school-result blink">{{ $store.state.scoreArray[1].value }}</p>
+      </figure>
+      <figure id="threes" class="combination">
+        <div class="dice-container">
+            <svg class="dice-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
+              <use v-if="$store.state.scoreArray[2].final" xlink:href="#diceThreesSelected" />
+              <use v-else xlink:href="#diceThrees" />
             </svg>
-          </p>
-          <p class="school-result blink">{{ $store.state.scoreArray[2].value }}</p>
         </div>
-
-        <div class="combination">
-          <p id="fours" class="dice-icon" v-bind:class="{ active:$store.state.scoreArray[3].final }">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
-              <circle class="dice-circle" cx="150" cy="50" r="18"/>
-              <circle class="dice-circle" cx="150" cy="150" r="18"/>
-              <circle class="dice-circle" cx="50" cy="150" r="18"/>
-              <circle class="dice-circle" cx="50" cy="50" r="18"/>
-              <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="dice-svg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+        <p class="school-result blink">{{ $store.state.scoreArray[2].value }}</p>
+      </figure>
+      <figure id="fours" class="combination">
+        <div class="dice-container">
+            <svg class="dice-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
+              <use v-if="$store.state.scoreArray[3].final" xlink:href="#diceFoursSelected" />
+              <use v-else xlink:href="#diceFours" />
             </svg>
-          </p>
-          <p class="school-result blink">{{ $store.state.scoreArray[3].value }}</p>
         </div>
-
-        <div class="combination">
-          <p id="fives" class="dice-icon" v-bind:class="{ active:$store.state.scoreArray[4].final }">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
-              <circle class="dice-circle" cx="100" cy="100" r="18"/>
-              <circle class="dice-circle" cx="150" cy="50" r="18"/>
-              <circle class="dice-circle" cx="150" cy="150" r="18"/>
-              <circle class="dice-circle" cx="50" cy="150" r="18"/>
-              <circle class="dice-circle" cx="50" cy="50" r="18"/>
-              <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="dice-svg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+        <p class="school-result blink">{{ $store.state.scoreArray[3].value }}</p>
+      </figure>
+      <figure id="fives" class="combination">
+        <div class="dice-container">
+            <svg class="dice-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
+              <use v-if="$store.state.scoreArray[4].final" xlink:href="#diceFivesSelected" />
+              <use v-else xlink:href="#diceFives" />
             </svg>
-          </p>
-          <p class="school-result blink">{{ $store.state.scoreArray[4].value }}</p>
         </div>
-
-        <div class="combination">
-          <p id="sixes" class="dice-icon" v-bind:class="{ active:$store.state.scoreArray[5].final }">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
-              <circle class="dice-circle" cx="150" cy="100" r="18"/>
-              <circle class="dice-circle" cx="150" cy="50" r="18"/>
-              <circle class="dice-circle" cx="150" cy="150" r="18"/>
-              <circle class="dice-circle" cx="50" cy="150" r="18"/>
-              <circle class="dice-circle" cx="50" cy="100" r="18"/>
-              <circle class="dice-circle" cx="50" cy="50" r="18"/>
-              <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="dice-svg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+        <p class="school-result blink">{{ $store.state.scoreArray[4].value }}</p>
+      </figure>
+      <figure id="sixes" class="combination">
+        <div class="dice-container">
+            <svg class="dice-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
+              <use v-if="$store.state.scoreArray[5].final" xlink:href="#diceSixesSelected" />
+              <use v-else xlink:href="#diceSixes" />
             </svg>
-          </p>
-          <p class="school-result blink">{{ $store.state.scoreArray[5].value }}</p>
         </div>
-      </div>
-          <!--hr class="faded" /-->
+        <p class="school-result blink">{{ $store.state.scoreArray[5].value }}</p>
+      </figure>
+    </div>
+    <!--hr class="faded" /-->
       <div class="game-table">
       <div class="game" v-on:click="handleBoardClick">
 
@@ -152,14 +132,72 @@
           </p>
           <p v-if="$store.state.scoreArray[14].value" class="result blink">{{ $store.state.scoreArray[14].value }}</p>
         </div>
-
     </div>
   </div>
+  <div>
     <div class="dice-box-container">
-      <div class="result-box" v-bind:class="{ hidden:$store.state.turnCompleted, border: $store.state.combinationArray.length >= 1 }" v-on:click="deSelectDice"></div>
+      <!--div class="result-box" v-bind:class="{ hidden:$store.state.turnCompleted, border: $store.state.combinationArray.length >= 1 }" v-on:click="deSelectDice"></div-->
       <div class="dice-box"  v-on:click="selectDice" v-bind:class="{ hidden:$store.state.turnCompleted }">
         <!-- first dice -->
-        <div class="dice animated" id="first">
+        <div class="dice-container">
+            <svg class="dice-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
+              <use v-if="$store.state.diceArray[0].value === '#'" xlink:href="#diceOnesSelected" />
+              <use v-if="$store.state.diceArray[0].value === 1" xlink:href="#diceOnes" />
+              <use v-if="$store.state.diceArray[0].value === 2" xlink:href="#diceTwos" />
+              <use v-if="$store.state.diceArray[0].value === 3" xlink:href="#diceThrees" />
+              <use v-if="$store.state.diceArray[0].value === 4" xlink:href="#diceFours" />
+              <use v-if="$store.state.diceArray[0].value === 5" xlink:href="#diceFives" />
+              <use v-if="$store.state.diceArray[0].value === 6" xlink:href="#diceSixes" />
+            </svg>
+            <svg class="dice-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
+              <use v-if="$store.state.diceArray[1].value === '#'" xlink:href="#diceOnesSelected" />
+              <use v-if="$store.state.diceArray[1].value === 1" xlink:href="#diceOnes" />
+              <use v-if="$store.state.diceArray[1].value === 2" xlink:href="#diceTwos" />
+              <use v-if="$store.state.diceArray[1].value === 3" xlink:href="#diceThrees" />
+              <use v-if="$store.state.diceArray[1].value === 4" xlink:href="#diceFours" />
+              <use v-if="$store.state.diceArray[1].value === 5" xlink:href="#diceFives" />
+              <use v-if="$store.state.diceArray[1].value === 6" xlink:href="#diceSixes" />
+            </svg>
+            <svg class="dice-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
+              <use v-if="$store.state.diceArray[2].value === '#'" xlink:href="#diceOnesSelected" />
+              <use v-if="$store.state.diceArray[2].value === 1" xlink:href="#diceOnes" />
+              <use v-if="$store.state.diceArray[2].value === 2" xlink:href="#diceTwos" />
+              <use v-if="$store.state.diceArray[2].value === 3" xlink:href="#diceThrees" />
+              <use v-if="$store.state.diceArray[2].value === 4" xlink:href="#diceFours" />
+              <use v-if="$store.state.diceArray[2].value === 5" xlink:href="#diceFives" />
+              <use v-if="$store.state.diceArray[2].value === 6" xlink:href="#diceSixes" />
+            </svg>
+            <!--svg class="dice-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
+              <use v-if="$store.state.diceArray[3].value === '#'" xlink:href="#diceOnesSelected" />
+              <use v-if="$store.state.diceArray[3].value === 1" xlink:href="#diceOnes" />
+              <use v-if="$store.state.diceArray[3].value === 2" xlink:href="#diceTwos" />
+              <use v-if="$store.state.diceArray[3].value === 3" xlink:href="#diceThrees" />
+              <use v-if="$store.state.diceArray[3].value === 4" xlink:href="#diceFours" />
+              <use v-if="$store.state.diceArray[3].value === 5" xlink:href="#diceFives" />
+              <use v-if="$store.state.diceArray[3].value === 6" xlink:href="#diceSixes" />
+            </svg>
+            <svg class="dice-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
+              <use v-if="$store.state.diceArray[4].value === '#'" xlink:href="#diceOnesSelected" />
+              <use v-if="$store.state.diceArray[4].value === 1" xlink:href="#diceOnes" />
+              <use v-if="$store.state.diceArray[4].value === 2" xlink:href="#diceTwos" />
+              <use v-if="$store.state.diceArray[4].value === 3" xlink:href="#diceThrees" />
+              <use v-if="$store.state.diceArray[4].value === 4" xlink:href="#diceFours" />
+              <use v-if="$store.state.diceArray[4].value === 5" xlink:href="#diceFives" />
+              <use v-if="$store.state.diceArray[4].value === 6" xlink:href="#diceSixes" />
+            </svg>
+            <svg class="dice-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
+              <use v-if="$store.state.diceArray[5].value === '#'" xlink:href="#diceOnesSelected" />
+              <use v-if="$store.state.diceArray[5].value === 1" xlink:href="#diceOnes" />
+              <use v-if="$store.state.diceArray[5].value === 2" xlink:href="#diceTwos" />
+              <use v-if="$store.state.diceArray[5].value === 3" xlink:href="#diceThrees" />
+              <use v-if="$store.state.diceArray[5].value === 4" xlink:href="#diceFours" />
+              <use v-if="$store.state.diceArray[5].value === 5" xlink:href="#diceFives" />
+              <use v-if="$store.state.diceArray[5].value === 6" xlink:href="#diceSixes" />
+            </svg-->
+          </div>
+        </div>
+      </div>
+        <!--div class="dice animated" id="first">
           <div v-if="$store.state.diceArray[0].value === 1">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
               <circle class="dice-circle" cx="100" cy="100" r="18"/>
@@ -211,9 +249,9 @@
               <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="dice-svg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
             </svg>
           </div>
-        </div>
+        </div-->
         <!-- second dice -->
-        <div class="dice animated" id="second">
+        <!-- div class="dice animated" id="second">
           <div v-if="$store.state.diceArray[1].value === 1">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
               <circle class="dice-circle" cx="100" cy="100" r="18"/>
@@ -265,9 +303,9 @@
               <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="dice-svg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
             </svg>
           </div>
-        </div>
+        </div-->
         <!-- third dice -->
-        <div class="dice animated" id="third">
+        <!--div class="dice animated" id="third">
           <div v-if="$store.state.diceArray[2].value === 1">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
               <circle class="dice-circle" cx="100" cy="100" r="18"/>
@@ -319,12 +357,12 @@
               <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="dice-svg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
             </svg>
           </div>
-        </div>
+        </div-->
         <!-- fourth dice -->
-        <div class="dice animated" id="fourth">
+        <!--div class="dice animated" id="fourth">
           <div v-if="$store.state.diceArray[3].value === 1">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
-              <circle class="dice-circle" cx="100" cy="100" r="18"/>
+              <circle class="dice" cx="100" cy="100" r="18"/>
               <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="dice-svg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
             </svg>
           </div>
@@ -373,9 +411,9 @@
               <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="dice-svg" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
             </svg>
           </div>
-        </div>
+        </div-->
         <!-- fifth dice -->
-        <div class="dice animated" id="fifth">
+        <!--div class="dice animated" id="fifth">
           <div v-if="$store.state.diceArray[4].value === 1">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
               <circle class="dice-circle" cx="100" cy="100" r="18"/>
@@ -428,12 +466,99 @@
             </svg>
           </div>
         </div>
-      </div> <!--end if dice-box-->
+      </div--> <!--end if dice-box-->
+      </div>
+      <div>
       <div class="main-button animated" v-on:click="handleMainGameButton" v-bind:class="{ disabled:mainButtonDisabled }">{{ mainButtonText }}</div>
     </div>
     <div class="progress-bar">
     </div>
     <!--div class="debug">{{currentValuesInScoreArray}}</div-->
+
+    <!-- SVG icons defs -->
+    <!-- Default icons -->
+    <svg class="defs-only" xmlns="http://www.w3.org/2000/svg">
+      <symbol id="diceOnes" class="dice">
+        <circle cx="100" cy="100" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceTwos" class="dice">
+        <circle cx="50" cy="150" r="18"/>
+        <circle cx="150" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceThrees" class="dice">
+        <circle cx="50" cy="150" r="18"/>
+        <circle cx="100" cy="100" r="18"/>
+        <circle cx="150" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceFours" class="dice">
+        <circle cx="150" cy="50" r="18"/>
+        <circle cx="150" cy="150" r="18"/>
+        <circle cx="50" cy="150" r="18"/>
+        <circle cx="50" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceFives" class="dice">
+        <circle cx="100" cy="100" r="18"/>
+        <circle cx="150" cy="50" r="18"/>
+        <circle cx="150" cy="150" r="18"/>
+        <circle cx="50" cy="150" r="18"/>
+        <circle cx="50" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceSixes" class="dice">
+        <circle cx="150" cy="100" r="18"/>
+        <circle cx="150" cy="50" r="18"/>
+        <circle cx="150" cy="150" r="18"/>
+        <circle cx="50" cy="150" r="18"/>
+        <circle cx="50" cy="100" r="18"/>
+        <circle cx="50" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+<!-- Selected dice icons -->
+      <symbol id="diceOnesSelected" class="dice-chosen">
+        <circle cx="100" cy="100" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceTwosSelected" class="dice-chosen">
+        <circle cx="50" cy="150" r="18"/>
+        <circle cx="150" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceThreesSelected" class="dice-chosen">
+        <circle cx="50" cy="150" r="18"/>
+        <circle cx="100" cy="100" r="18"/>
+        <circle cx="150" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceFoursSelected" class="dice-chosen">
+        <circle cx="150" cy="50" r="18"/>
+        <circle cx="150" cy="150" r="18"/>
+        <circle cx="50" cy="150" r="18"/>
+        <circle cx="50" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceFivesSelected" class="dice-chosen">
+        <circle cx="100" cy="100" r="18"/>
+        <circle cx="150" cy="50" r="18"/>
+        <circle cx="150" cy="150" r="18"/>
+        <circle cx="50" cy="150" r="18"/>
+        <circle cx="50" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceSixesSelected" class="dice-chosen">
+        <circle cx="150" cy="100" r="18"/>
+        <circle cx="150" cy="50" r="18"/>
+        <circle cx="150" cy="150" r="18"/>
+        <circle cx="50" cy="150" r="18"/>
+        <circle cx="50" cy="100" r="18"/>
+        <circle cx="50" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+    </svg>
+    <!-- SVG icons end -->
   </div>
 </template>
 
@@ -449,6 +574,7 @@ export default {
     return {
       title: 'Sharlushka',
       // userName: '',
+      test: false,
       highestScore: 0,
       registerForm: false,
       userExists: false,
@@ -456,7 +582,10 @@ export default {
       // formValueName: '',
       mainButtonText: 'Start',
       mainButtonDisabled: false,
-      currentlyHighlightedElement: null
+      currentlyHighlightedElement: null,
+      diceToDisplay: [
+        { value: '6', chosen: true, id: 'diceSixesSelected' },
+        { value: '5', chosen: false, id: 'second' }]
     }
   },
   components: {
@@ -475,7 +604,7 @@ export default {
     if (highestScore) {
       this.highestScore = highestScore
     }
-    this.updateMainButtonState()
+    // this.updateMainButtonState()
     // store.mapGetters.chosenDiceArray
     // let temp = this.chosenDiceArray()
     // console.log(store.getters.chosenDiceArray)
@@ -494,6 +623,41 @@ export default {
       'incrementIfOdd',
       'incrementAsync'
     ]),
+    handleBoardClick (event) {
+      console.log(`New SVG!`)
+      console.dir(event.target)
+      let idFound = false
+      let scoreId = null
+      let scoreType = null
+      let elementToCheck = event.target // .parentElement?
+
+      while (!idFound && elementToCheck) {
+        if (elementToCheck.classList.contains('combination')) {
+          // scoreId = elementToCheck.firstChild.id
+          scoreId = elementToCheck.id
+          scoreType = elementToCheck.parentElement.className
+          idFound = true
+        } else if (elementToCheck.classList.contains('label')) {
+          scoreId = elementToCheck.id
+          scoreType = elementToCheck.parentElement.className
+          idFound = true
+        } else if (elementToCheck.classList.contains('result')) {
+          scoreId = elementToCheck.parentElement.firstChild.id
+          scoreType = elementToCheck.parentElement.className
+          idFound = true
+        } else {
+          elementToCheck = elementToCheck.parentElement
+        }
+        if (!elementToCheck) {
+          return false
+        }
+      }
+      if (scoreId && scoreType) {
+        console.log(`Score id is: ${scoreId}`)
+        console.log(`Score type is: ${scoreType}`)
+        this.recordResult(scoreId, scoreType)
+      }
+    },
     handleMainGameButton () {
       if (store.state.rollCount > 0 && !store.state.turnCompleted) {
         store.commit('rollDice')
@@ -584,7 +748,7 @@ export default {
         return false
       }
     },
-    handleBoardClick (event) {
+    handleBoardClickOld (event) {
       let idFound = false
       let scoreId = null
       let scoreType = null
@@ -650,7 +814,7 @@ export default {
           store.commit('computeScore')
         }
       }
-      this.highlightHighestValue()
+      // this.highlightHighestValue()
     },
     deSelectDice (event) {
       let elementToRemove = this.handleDiceClick(event.target)
@@ -676,7 +840,7 @@ export default {
         }
       }
       store.commit('computeScore')
-      this.highlightHighestValue()
+      // this.highlightHighestValue()
     },
     clearResultBox () {
       let diceBox = document.querySelector('.dice-box')
@@ -710,8 +874,10 @@ export default {
         store.state.schoolScoreTotal += store.state.scoreArray[combinationIndexInArray].value
         store.state.turnCompleted = true
         let resultParagraph = document.getElementById(combinationId)
-        resultParagraph.nextElementSibling.classList.remove('blink')
-        resultParagraph.nextElementSibling.classList.add('saved')
+        resultParagraph.lastElementChild.classList.remove('blink')
+        resultParagraph.classList.add('saved')
+        // resultParagraph.nextElementSibling.classList.remove('blink')
+        // resultParagraph.nextElementSibling.classList.add('saved')
         // set school completed to display game score on the board
         if (store.state.gameTurns === 6) {
           store.state.schoolCompleted = true
@@ -780,7 +946,7 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/scss/index.scss";
 @import "../../node_modules/animate.css/animate.css";
-@import "../assets/scss/vars/colors.scss";
+// @import "../assets/scss/vars/colors.scss";
 
 #gameView {
   display: flex;
@@ -791,22 +957,26 @@ export default {
 
 .school {
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: flex-start;
-  padding: 0em 2em 0em 2em;
-  height: 4em;
+  // flex-direction: row;
+  // justify-content: center;
+  // align-items: center;
+  // align-items: flex-start;
+  // padding: 0em 2em 0em 2em;
+  // height: 4em;
+  // border: 1px solid green;
+  // height: 3em;
 }
 .game-table {
   display: flex;
   flex-direction: column;
-  padding: 0em 1em 0em 1em;
+  // padding: 0em 1em 0em 1em;
 }
 .game {
   display: flex;
   width: auto;
   flex-direction: column;
 }
+/*
 .school > .combination {
   width: 2em;
   display: flex;
@@ -814,7 +984,7 @@ export default {
   align-items: center;
   justify-content: center;
 }
-
+*/
 .game-combination {
   display: flex;
   p {
@@ -842,8 +1012,9 @@ export default {
 
 .school-result {
   margin: 0em;
-  width: 100%;
-  padding: .4em 0em 0em 0em;
+  // border: 1px solid red;
+  // width: 100%;
+  // padding: .4em 0em 0em 0em;
   // color: $color-light-gray;
   color: $color-primary-2;
   font-size: 1.2em;
@@ -861,10 +1032,17 @@ export default {
 .result:hover {
   background-color: $color-pale-primary;
 }
-.saved {
+.saved .school-result {
   color: $color-orange;
 }
-
+/*
+.dice-container > svg > path {
+  stroke: $color-orange;
+}
+.saved svg > circle {
+  fill: $color-orange;
+}
+*/
 .dice-box-container {
   display: flex;
   flex-direction: row;
@@ -907,7 +1085,7 @@ export default {
 .border {
   border-right: .2em solid orange;
 }
-
+/*
 .dice {
   display: flex;
   margin-left: .4em;
@@ -924,9 +1102,7 @@ export default {
     opacity: 0;
   }
 }
-.dice:hover {
-  cursor: pointer;
-}
+*/
 .blink {
   animation: blinker 2.5s linear infinite;
 }
@@ -937,6 +1113,7 @@ export default {
 }
 
 // style for icons
+/*
 .active svg > .dice-svg {
   stroke: $color-orange;
 }
@@ -949,8 +1126,8 @@ export default {
 }
 .result-box svg > circle {
   fill: $color-orange;
-}
-
+}*/
+/*
 .dice-svg {
   fill: none;
   stroke: $color-primary-0;
@@ -960,6 +1137,7 @@ export default {
 .dice-circle {
   fill: $color-primary-0;
 }
+*/
 /*
 svg:hover > .dice-svg {
   stroke: $color-orange;
@@ -994,6 +1172,7 @@ svg:hover > .dice-circle {
   color: $color-orange;
 }
 */
+/*
 @media only screen and (max-width: 300px) , screen and (max-height: 500px) {
     .game-table {
       padding: 0em .2em 0em .2em;
@@ -1003,28 +1182,43 @@ svg:hover > .dice-circle {
       border: 1px solid red;
     }
 }
-
-@media only screen and (max-width: 720px) , screen and (max-height: 1280px) {
+*/
+@media only screen and (-webkit-min-device-pixel-ratio: 1.6) {
     .game-table {
-      padding: 0em 1em 0em 1em;
+      // padding: 0em 1em 0em 1em;
+      // border: 1px solid red;
     }
     .school {
-      margin-top: 1em;
+      // margin-top: 1em;
     }
     .school-result {
       padding: 0;
       // border: 1px solid red;
     }
     .game-combination {
-      margin-top: .2em;
+      // margin-top: .2em;
     }
     .dice-box-container {
       margin-top: auto;
     }
     .main-button {
-      font-size: 1.5em;
+      // font-size: 1.5em;
     }
+// .dice-icon {
+  /* padding-bottom: 97%; */
+  /* height: 1px; */
+  /* overflow: visible; */
+// }
 }
+
+.dice-container {
+    // display: flex;
+    // text-align: center;
+    // box-sizing: content-box;
+    // width: 70%;
+    padding: 0em .4em 0em .4em;
+    // border: 1px solid green;
+    }
 
 .hidden {
   visibility: hidden;
@@ -1066,7 +1260,23 @@ svg:hover > .dice-circle {
   color: $color-very-red;
   text-shadow: 0px 0px 15px $color-very-red-transparent;
 }
+/*
+.dice-path {
+  fill: none;
+  // stroke: indigo;
+  stroke: indigo;
+  stroke-width: 1em;
+  fill-rule: evenodd;
+}
 
+.dice-icon > circle {
+  fill: $color-orange;
+}
+
+.dice-icon > path {
+  stroke: $color-orange;
+}
+*/
 /*
 .highest-value svg > .dice-svg {
   stroke: $color-very-red;
