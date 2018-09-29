@@ -2,6 +2,36 @@
   <div id="gameView">
     <Navigation />
     <div class="school" v-on:click="handleBoardClick">
+      <svg id="ones" class="school-dice-icon">
+        <use xlink:href="#diceOnes" class="default" x="0" y="0"
+          v-bind:class="{ chosen:$store.state.scoreArray[0].final }"/>
+      </svg>
+      <svg id="twos" class="school-dice-icon">
+        <use xlink:href="#diceTwos" class="default" x="0" y="0"
+          v-bind:class="{ chosen:$store.state.scoreArray[1].final }"/>
+      </svg>
+      <svg id="threes" class="school-dice-icon">
+        <use xlink:href="#diceThrees" class="default" x="0" y="0"
+          v-bind:class="{ chosen:$store.state.scoreArray[2].final }"/>
+      </svg>
+      <svg id="fours" class="school-dice-icon">
+        <use xlink:href="#diceFours" class="default" x="0" y="0"
+          v-bind:class="{ chosen:$store.state.scoreArray[3].final }"/>
+      </svg>
+      <svg id="fives" class="school-dice-icon">
+        <use xlink:href="#diceFives" class="default" x="0" y="0"
+          v-bind:class="{ chosen:$store.state.scoreArray[4].final }"/>
+      </svg>
+      <svg id="sixes" class="school-dice-icon">
+        <use xlink:href="#diceSixes" class="default" x="0" y="0"
+          v-bind:class="{ chosen:$store.state.scoreArray[5].final }"/>
+      </svg>
+    </div>
+    <div class="school-result" v-on:click="handleBoardClick">
+      <div class="new-school-result" v-for="score in this.getSchoolArray" :key="score.id" v-bind:value="score.id">{{ score.value }}</div>
+    </div>
+
+    <!--div class="school" v-on:click="handleBoardClick">
       <figure id="ones" class="combination">
         <div class="dice-container">
             <svg class="dice-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
@@ -56,7 +86,7 @@
         </div>
         <p class="school-result blink">{{ $store.state.scoreArray[5].value }}</p>
       </figure>
-    </div>
+    </div-->
     <!--hr class="faded" /-->
     <!--div class="game-table"-->
       <div class="game" v-on:click="handleBoardClick">
@@ -203,24 +233,6 @@
     <div class="main-button animated" v-on:click="handleMainGameButton" v-bind:class="{ disabled:mainButtonDisabled }">{{ mainButtonText }}</div>
   </div> <!-- End of dice box container -->
   <div class="progress-bar"></div>
-    <svg class="diceXp">
-      <use xlink:href="#diceOnes" class="default" x="0" y="0" />
-    </svg>
-    <svg class="diceXp">
-      <use xlink:href="#diceTwos" class="default" x="0" y="0" />
-    </svg>
-    <svg class="diceXp">
-      <use xlink:href="#diceThrees" class="default" x="0" y="0" />
-    </svg>
-    <svg class="diceXp">
-      <use xlink:href="#diceFours" class="default chosen" x="0" y="0" />
-    </svg>
-    <svg class="diceXp">
-      <use xlink:href="#diceFives" class="default" x="0" y="0" />
-    </svg>
-    <svg class="diceXp">
-      <use xlink:href="#diceSixes" class="default" x="0" y="0" />
-    </svg>
       <!--div class="result-box" v-bind:class="{ hidden:$store.state.turnCompleted, border: $store.state.combinationArray.length >= 1 }" v-on:click="deSelectDice"></div-->
         <!--div class="dice animated" id="first">
           <div v-if="$store.state.diceArray[0].value === 1">
@@ -595,7 +607,7 @@ export default {
     return {
       title: 'Sharlushka',
       // userName: '',
-      test: false,
+      test: true,
       highestScore: 0,
       registerForm: false,
       userExists: false,
@@ -617,7 +629,8 @@ export default {
       'evenOrOdd',
       'onesScore',
       'chosenDiceArray',
-      'currentValuesInScoreArray'
+      'currentValuesInScoreArray',
+      'getSchoolArray'
     ])
   },
   mounted () {
@@ -625,6 +638,8 @@ export default {
     if (highestScore) {
       this.highestScore = highestScore
     }
+    let temp = this.getSchoolArray
+    console.log(temp)
     // this.updateMainButtonState()
     // store.mapGetters.chosenDiceArray
     // let temp = this.chosenDiceArray()
@@ -647,13 +662,16 @@ export default {
     handleBoardClick (event) {
       console.log(`New SVG!`)
       console.dir(event.target)
+      // let newScoreId = event.target.id
+      // console.log(`New score id is: ${newScoreId}`)
       let idFound = false
       let scoreId = null
       let scoreType = null
       let elementToCheck = event.target // .parentElement?
-
+      console.log(`Event target data ->`)
+      console.log(event.target.attributes.value)
       while (!idFound && elementToCheck) {
-        if (elementToCheck.classList.contains('combination')) {
+        if (elementToCheck.classList.contains('school-dice-icon')) {
           // scoreId = elementToCheck.firstChild.id
           scoreId = elementToCheck.id
           scoreType = elementToCheck.parentElement.className
@@ -998,28 +1016,28 @@ export default {
 // @import "../assets/scss/vars/colors.scss";
 
 #gameView {
-  display: flex;
+  // display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
 }
 .school {
   display: flex;
-  .dice-container {
-    // border: 1px solid lime;
-    padding: 0em .5em 0em .5em;
-  }
+  width: 100%;
+  height: auto;
+  padding-top: .3em;
+  // border: 1px solid lime;
 }
 .school-result {
-  margin: 0em;
-  // border: 1px solid red;
-  // width: 100%;
-  // padding: .4em 0em 0em 0em;
-  // color: $color-light-gray;
-  color: $color-primary-2;
-  font-size: 1em;
-  height: 1.2em;
-  text-align: center;
+  display: flex;
+  color: $color-primary-0;
+  // font-family: $text-font;
+  font-weight: 700;
+  div {
+    flex-grow: 1;
+    flex-basis: 0;
+    text-align: center;
+  }
 }
 /*
 .game-table {
@@ -1032,7 +1050,8 @@ export default {
   display: flex;
   width: auto;
   flex-direction: column;
-  margin-top: .7em;
+  margin-top: .5em;
+  padding: 0em .3em 0em .3em;
 }
 
 .game-combination {
@@ -1041,14 +1060,14 @@ export default {
     display: inherit;
     align-items: center;
     justify-content: center;
-    margin: .1em 0em .1em 0em;
+    // margin: .1em 0em .1em 0em;
   }
   .label {
   color: $color-primary-0;
   font-size: 1.2em;
   width: 9em;
   justify-content: flex-start;
-  padding: .3em;
+  // padding: .3em;
   cursor: pointer;
   }
   .result {
@@ -1071,7 +1090,7 @@ export default {
 .result:hover {
   background-color: $color-pale-primary;
 }
-.saved .school-result {
+.saved {
   color: $color-orange;
 }
 

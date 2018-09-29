@@ -109,7 +109,7 @@ export default {
   // box-shadow: 0px 10px 45px -11px $color-primary-2;
   box-shadow: 0px 1px 5px 0px $color-primary-0;
   color: $color-light;
-  margin: 0em 0em 1em 0em;
+  // margin: 0em 0em 1em 0em;
 }
 
 .toolbar {
@@ -197,12 +197,6 @@ button {
 }
 .menuButton:hover {
   box-shadow: 0px 0px 6px $color-primary-0;
-}
-
-@media only screen and (max-width: 500px) , screen and (max-height: 300px) {
-  #navigation {
-    margin-bottom: .3em;
-  }
 }
 
 </style>

@@ -137,6 +137,14 @@ const state = getDefaultState()
 
 const getters = {
   evenOrOdd: state => state.count % 2 === 0 ? 'even' : 'odd',
+  getSchoolArray: function (state) {
+    let index = state.diceArray.length + 1 // Meh...
+    let schoolArray = []
+    for (let iterator = 0; iterator < index; iterator++) {
+      schoolArray.push(state.scoreArray[iterator])
+    }
+    return schoolArray
+  },
   debugInfo: function (state) {
     // console.log(`Debug on`)
     // console.log(state)

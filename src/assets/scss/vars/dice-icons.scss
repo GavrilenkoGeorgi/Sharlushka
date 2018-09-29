@@ -1,15 +1,16 @@
-figure {
-  margin: 0;
+svg {
+  height: 2em;
+  // display: flex;
+  // padding-bottom: 20%;
 }
-
 svg path {
   fill: none;
-  stroke-width: .5em;
+  stroke-width: .9em;
 }
 
 .dice {
-  width: 4em;
-  height: 4em;
+  width: auto;
+  height: auto;
 }
 
 .default {
