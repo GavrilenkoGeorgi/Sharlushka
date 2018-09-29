@@ -58,7 +58,7 @@
       </figure>
     </div>
     <!--hr class="faded" /-->
-      <div class="game-table">
+    <!--div class="game-table"-->
       <div class="game" v-on:click="handleBoardClick">
 
         <div class="game-combination" v-bind:class="{ complete:$store.state.scoreArray[6].final }">
@@ -133,70 +133,95 @@
           <p v-if="$store.state.scoreArray[14].value" class="result blink">{{ $store.state.scoreArray[14].value }}</p>
         </div>
     </div>
-  </div>
-  <div>
-    <div class="dice-box-container">
-      <!--div class="result-box" v-bind:class="{ hidden:$store.state.turnCompleted, border: $store.state.combinationArray.length >= 1 }" v-on:click="deSelectDice"></div-->
-      <div class="dice-box"  v-on:click="selectDice" v-bind:class="{ hidden:$store.state.turnCompleted }">
-        <!-- first dice -->
-        <div class="dice-container">
-            <svg class="dice-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
-              <use v-if="$store.state.diceArray[0].value === '#'" xlink:href="#diceOnesSelected" />
-              <use v-if="$store.state.diceArray[0].value === 1" xlink:href="#diceOnes" />
-              <use v-if="$store.state.diceArray[0].value === 2" xlink:href="#diceTwos" />
-              <use v-if="$store.state.diceArray[0].value === 3" xlink:href="#diceThrees" />
-              <use v-if="$store.state.diceArray[0].value === 4" xlink:href="#diceFours" />
-              <use v-if="$store.state.diceArray[0].value === 5" xlink:href="#diceFives" />
-              <use v-if="$store.state.diceArray[0].value === 6" xlink:href="#diceSixes" />
-            </svg>
-            <svg class="dice-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
-              <use v-if="$store.state.diceArray[1].value === '#'" xlink:href="#diceOnesSelected" />
-              <use v-if="$store.state.diceArray[1].value === 1" xlink:href="#diceOnes" />
-              <use v-if="$store.state.diceArray[1].value === 2" xlink:href="#diceTwos" />
-              <use v-if="$store.state.diceArray[1].value === 3" xlink:href="#diceThrees" />
-              <use v-if="$store.state.diceArray[1].value === 4" xlink:href="#diceFours" />
-              <use v-if="$store.state.diceArray[1].value === 5" xlink:href="#diceFives" />
-              <use v-if="$store.state.diceArray[1].value === 6" xlink:href="#diceSixes" />
-            </svg>
-            <svg class="dice-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
-              <use v-if="$store.state.diceArray[2].value === '#'" xlink:href="#diceOnesSelected" />
-              <use v-if="$store.state.diceArray[2].value === 1" xlink:href="#diceOnes" />
-              <use v-if="$store.state.diceArray[2].value === 2" xlink:href="#diceTwos" />
-              <use v-if="$store.state.diceArray[2].value === 3" xlink:href="#diceThrees" />
-              <use v-if="$store.state.diceArray[2].value === 4" xlink:href="#diceFours" />
-              <use v-if="$store.state.diceArray[2].value === 5" xlink:href="#diceFives" />
-              <use v-if="$store.state.diceArray[2].value === 6" xlink:href="#diceSixes" />
-            </svg>
-            <!--svg class="dice-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
-              <use v-if="$store.state.diceArray[3].value === '#'" xlink:href="#diceOnesSelected" />
-              <use v-if="$store.state.diceArray[3].value === 1" xlink:href="#diceOnes" />
-              <use v-if="$store.state.diceArray[3].value === 2" xlink:href="#diceTwos" />
-              <use v-if="$store.state.diceArray[3].value === 3" xlink:href="#diceThrees" />
-              <use v-if="$store.state.diceArray[3].value === 4" xlink:href="#diceFours" />
-              <use v-if="$store.state.diceArray[3].value === 5" xlink:href="#diceFives" />
-              <use v-if="$store.state.diceArray[3].value === 6" xlink:href="#diceSixes" />
-            </svg>
-            <svg class="dice-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
-              <use v-if="$store.state.diceArray[4].value === '#'" xlink:href="#diceOnesSelected" />
-              <use v-if="$store.state.diceArray[4].value === 1" xlink:href="#diceOnes" />
-              <use v-if="$store.state.diceArray[4].value === 2" xlink:href="#diceTwos" />
-              <use v-if="$store.state.diceArray[4].value === 3" xlink:href="#diceThrees" />
-              <use v-if="$store.state.diceArray[4].value === 4" xlink:href="#diceFours" />
-              <use v-if="$store.state.diceArray[4].value === 5" xlink:href="#diceFives" />
-              <use v-if="$store.state.diceArray[4].value === 6" xlink:href="#diceSixes" />
-            </svg>
-            <svg class="dice-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
-              <use v-if="$store.state.diceArray[5].value === '#'" xlink:href="#diceOnesSelected" />
-              <use v-if="$store.state.diceArray[5].value === 1" xlink:href="#diceOnes" />
-              <use v-if="$store.state.diceArray[5].value === 2" xlink:href="#diceTwos" />
-              <use v-if="$store.state.diceArray[5].value === 3" xlink:href="#diceThrees" />
-              <use v-if="$store.state.diceArray[5].value === 4" xlink:href="#diceFours" />
-              <use v-if="$store.state.diceArray[5].value === 5" xlink:href="#diceFives" />
-              <use v-if="$store.state.diceArray[5].value === 6" xlink:href="#diceSixes" />
-            </svg-->
-          </div>
-        </div>
+  <!--/div-->
+
+  <div class="dice-box-container">
+    <div class="result-box" v-bind:class="{ hidden:$store.state.turnCompleted, border: $store.state.combinationArray.length >= 1 }" v-on:click="deSelectDice"></div>
+    <div class="dice-box"  v-on:click="selectDice" v-bind:class="{ hidden:$store.state.turnCompleted }">
+
+      <div class="dice-container">
+        <svg class="dice-icon" id="first" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
+          <use v-if="$store.state.diceArray[0].value === '#'" xlink:href="#diceOnesSelected" />
+          <use v-if="$store.state.diceArray[0].value === 1" xlink:href="#diceOnes" />
+          <use v-if="$store.state.diceArray[0].value === 2" xlink:href="#diceTwos" />
+          <use v-if="$store.state.diceArray[0].value === 3" xlink:href="#diceThrees" />
+          <use v-if="$store.state.diceArray[0].value === 4" xlink:href="#diceFours" />
+          <use v-if="$store.state.diceArray[0].value === 5" xlink:href="#diceFives" />
+          <use v-if="$store.state.diceArray[0].value === 6" xlink:href="#diceSixes" />
+        </svg>
       </div>
+
+      <div class="dice-container">
+        <svg class="dice-icon" id="second" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
+          <use v-if="$store.state.diceArray[1].value === '#'" xlink:href="#diceOnesSelected" />
+          <use v-if="$store.state.diceArray[1].value === 1" xlink:href="#diceOnes" />
+          <use v-if="$store.state.diceArray[1].value === 2" xlink:href="#diceTwos" />
+          <use v-if="$store.state.diceArray[1].value === 3" xlink:href="#diceThrees" />
+          <use v-if="$store.state.diceArray[1].value === 4" xlink:href="#diceFours" />
+          <use v-if="$store.state.diceArray[1].value === 5" xlink:href="#diceFives" />
+          <use v-if="$store.state.diceArray[1].value === 6" xlink:href="#diceSixes" />
+        </svg>
+      </div>
+
+      <div class="dice-container">
+        <svg class="dice-icon" id="third" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
+          <use v-if="$store.state.diceArray[2].value === '#'" xlink:href="#diceOnesSelected" />
+          <use v-if="$store.state.diceArray[2].value === 1" xlink:href="#diceOnes" />
+          <use v-if="$store.state.diceArray[2].value === 2" xlink:href="#diceTwos" />
+          <use v-if="$store.state.diceArray[2].value === 3" xlink:href="#diceThrees" />
+          <use v-if="$store.state.diceArray[2].value === 4" xlink:href="#diceFours" />
+          <use v-if="$store.state.diceArray[2].value === 5" xlink:href="#diceFives" />
+          <use v-if="$store.state.diceArray[2].value === 6" xlink:href="#diceSixes" />
+        </svg>
+      </div>
+
+      <div class="dice-container">
+        <svg class="dice-icon" id="fourth" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
+          <use v-if="$store.state.diceArray[3].value === '#'" xlink:href="#diceOnesSelected" />
+          <use v-if="$store.state.diceArray[3].value === 1" xlink:href="#diceOnes" />
+          <use v-if="$store.state.diceArray[3].value === 2" xlink:href="#diceTwos" />
+          <use v-if="$store.state.diceArray[3].value === 3" xlink:href="#diceThrees" />
+          <use v-if="$store.state.diceArray[3].value === 4" xlink:href="#diceFours" />
+          <use v-if="$store.state.diceArray[3].value === 5" xlink:href="#diceFives" />
+          <use v-if="$store.state.diceArray[3].value === 6" xlink:href="#diceSixes" />
+        </svg>
+      </div>
+
+      <div class="dice-container">
+        <svg class="dice-icon" id="fifth" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
+          <use v-if="$store.state.diceArray[4].value === '#'" xlink:href="#diceOnesSelected" />
+          <use v-if="$store.state.diceArray[4].value === 1" xlink:href="#diceOnes" />
+          <use v-if="$store.state.diceArray[4].value === 2" xlink:href="#diceTwos" />
+          <use v-if="$store.state.diceArray[4].value === 3" xlink:href="#diceThrees" />
+          <use v-if="$store.state.diceArray[4].value === 4" xlink:href="#diceFours" />
+          <use v-if="$store.state.diceArray[4].value === 5" xlink:href="#diceFives" />
+          <use v-if="$store.state.diceArray[4].value === 6" xlink:href="#diceSixes" />
+        </svg>
+      </div>
+
+    </div> <!-- End of dice-box-->
+    <div class="main-button animated" v-on:click="handleMainGameButton" v-bind:class="{ disabled:mainButtonDisabled }">{{ mainButtonText }}</div>
+  </div> <!-- End of dice box container -->
+  <div class="progress-bar"></div>
+    <svg class="diceXp">
+      <use xlink:href="#diceOnes" class="default" x="0" y="0" />
+    </svg>
+    <svg class="diceXp">
+      <use xlink:href="#diceTwos" class="default" x="0" y="0" />
+    </svg>
+    <svg class="diceXp">
+      <use xlink:href="#diceThrees" class="default" x="0" y="0" />
+    </svg>
+    <svg class="diceXp">
+      <use xlink:href="#diceFours" class="default chosen" x="0" y="0" />
+    </svg>
+    <svg class="diceXp">
+      <use xlink:href="#diceFives" class="default" x="0" y="0" />
+    </svg>
+    <svg class="diceXp">
+      <use xlink:href="#diceSixes" class="default" x="0" y="0" />
+    </svg>
+      <!--div class="result-box" v-bind:class="{ hidden:$store.state.turnCompleted, border: $store.state.combinationArray.length >= 1 }" v-on:click="deSelectDice"></div-->
         <!--div class="dice animated" id="first">
           <div v-if="$store.state.diceArray[0].value === 1">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 200 200">
@@ -466,59 +491,55 @@
             </svg>
           </div>
         </div>
-      </div--> <!--end if dice-box-->
-      </div>
-      <div>
-      <div class="main-button animated" v-on:click="handleMainGameButton" v-bind:class="{ disabled:mainButtonDisabled }">{{ mainButtonText }}</div>
-    </div>
-    <div class="progress-bar">
-    </div>
-    <!--div class="debug">{{currentValuesInScoreArray}}</div-->
+      </div--> <!--end of dice-box-->
+      <!--div>
+    <div class="debug">{{currentValuesInScoreArray}}</div-->
 
     <!-- SVG icons defs -->
     <!-- Default icons -->
-    <svg class="defs-only" xmlns="http://www.w3.org/2000/svg">
-      <symbol id="diceOnes" class="dice">
-        <circle cx="100" cy="100" r="18"/>
+    <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
+      <symbol id="diceOnes" viewBox="0 0 220 220">
+        <circle fill="currentColor" cx="100" cy="100" r="18"/>
         <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
       </symbol>
-      <symbol id="diceTwos" class="dice">
-        <circle cx="50" cy="150" r="18"/>
-        <circle cx="150" cy="50" r="18"/>
+      <symbol id="diceTwos" viewBox="0 0 220 220">
+        <circle fill="currentColor" cx="50" cy="150" r="18"/>
+        <circle fill="currentColor" cx="150" cy="50" r="18"/>
         <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
       </symbol>
-      <symbol id="diceThrees" class="dice">
-        <circle cx="50" cy="150" r="18"/>
-        <circle cx="100" cy="100" r="18"/>
-        <circle cx="150" cy="50" r="18"/>
+      <symbol id="diceThrees" class="dice" viewBox="0 0 220 220">
+        <circle fill="currentColor" cx="50" cy="150" r="18"/>
+        <circle fill="currentColor" cx="100" cy="100" r="18"/>
+        <circle fill="currentColor" cx="150" cy="50" r="18"/>
         <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
       </symbol>
-      <symbol id="diceFours" class="dice">
-        <circle cx="150" cy="50" r="18"/>
-        <circle cx="150" cy="150" r="18"/>
-        <circle cx="50" cy="150" r="18"/>
-        <circle cx="50" cy="50" r="18"/>
+      <symbol id="diceFours" class="dice" viewBox="0 0 220 220">
+        <circle fill="currentColor" cx="150" cy="50" r="18"/>
+        <circle fill="currentColor" cx="150" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="50" r="18"/>
         <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
       </symbol>
-      <symbol id="diceFives" class="dice">
-        <circle cx="100" cy="100" r="18"/>
-        <circle cx="150" cy="50" r="18"/>
-        <circle cx="150" cy="150" r="18"/>
-        <circle cx="50" cy="150" r="18"/>
-        <circle cx="50" cy="50" r="18"/>
+      <symbol id="diceFives" class="dice" viewBox="0 0 220 220">
+        <circle fill="currentColor" cx="100" cy="100" r="18"/>
+        <circle fill="currentColor" cx="150" cy="50" r="18"/>
+        <circle fill="currentColor" cx="150" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="50" r="18"/>
         <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
       </symbol>
-      <symbol id="diceSixes" class="dice">
-        <circle cx="150" cy="100" r="18"/>
-        <circle cx="150" cy="50" r="18"/>
-        <circle cx="150" cy="150" r="18"/>
-        <circle cx="50" cy="150" r="18"/>
-        <circle cx="50" cy="100" r="18"/>
-        <circle cx="50" cy="50" r="18"/>
+      <symbol id="diceSixes" class="dice" viewBox="0 0 220 220">
+        <circle fill="currentColor" cx="150" cy="100" r="18"/>
+        <circle fill="currentColor" cx="150" cy="50" r="18"/>
+        <circle fill="currentColor" cx="150" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="100" r="18"/>
+        <circle fill="currentColor" cx="50" cy="50" r="18"/>
         <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
       </symbol>
+    </svg>
 <!-- Selected dice icons -->
-      <symbol id="diceOnesSelected" class="dice-chosen">
+      <!--symbol id="diceOnesSelected" class="dice-chosen">
         <circle cx="100" cy="100" r="18"/>
         <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
       </symbol>
@@ -556,8 +577,8 @@
         <circle cx="50" cy="100" r="18"/>
         <circle cx="50" cy="50" r="18"/>
         <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
-      </symbol>
-    </svg>
+      </symbol-->
+    <!--/svg-->
     <!-- SVG icons end -->
   </div>
 </template>
@@ -778,34 +799,59 @@ export default {
       }
     },
     handleDiceClick (element) {
-      let diceFound = false
-      if (element) {
-        let elementToCheck = element.parentElement
-        while (!diceFound && elementToCheck) {
-          if (elementToCheck.classList.contains('dice')) {
-            diceFound = true
-            return elementToCheck
-          } else {
-            elementToCheck = elementToCheck.parentElement
-            this.handleDiceClick(elementToCheck)
-          }
+      // console.log(`Inside element to add`)
+      // console.log(`Given element is ->`)
+      // console.dir(element)
+      // console.log(`Element classList ->>`)
+      // console.log(element.classList)
+      // if (element) {
+      // let elementToCheck = element.parentElement
+      // let diceFound = false
+      while (/* !diceFound && */ element) {
+        if (element.classList.contains('dice-icon')) {
+          // diceFound = true
+          // console.log(`Dice id to add -->`)
+          // console.log(element.id)
+          return element
+        } else {
+          element = element.parentElement
+          this.handleDiceClick(element)
         }
+      }
+      /*
       } else {
+        // console.log(`Click harder`)
         return false
       }
+      */
     },
     selectDice (event) {
+      // console.log(`Event target is -->`)
+      // console.log(event.currentTarget)
       let elementToAdd = this.handleDiceClick(event.target)
+      /*
+      if (elementToAdd) {
+        console.log(elementToAdd.id)
+      } else {
+        console.log(`No id found`)
+      }
+      */
       // elementToAdd.classList.remove('slideOutRight')
-      elementToAdd.classList.add('zoomIn')
+      // elementToAdd.classList.add('zoomIn')
+      // console.log(`Inside select dice`)
+      // console.log(elementToAdd.id)
+
       let diceBox = document.querySelector('.dice-box')
       let resultBox = document.querySelector('.result-box')
+      /*
       if (event.target === diceBox) {
         return false
       }
+      */
       if (elementToAdd && !store.state.turnCompleted) {
-        diceBox.removeChild(elementToAdd)
-        resultBox.appendChild(elementToAdd)
+        let diceContainer = elementToAdd.parentElement
+        diceBox.removeChild(diceContainer) // dice-container
+        resultBox.appendChild(diceContainer)
       }
       for (let key in store.state.diceArray) {
         if (store.state.diceArray[key].id === elementToAdd.id) {
@@ -822,13 +868,16 @@ export default {
       // elementToRemove.classList.add('zoomIn')
       let diceBox = document.querySelector('.dice-box')
       let resultBox = document.querySelector('.result-box')
+      /*
       if (event.target === resultBox) {
         return false
       }
+      */
       // store.state.combinationArray.splice(store.state.combinationArray.findIndex(item => item === store.state.diceArray[key].value), 1)
       if (elementToRemove && !store.state.turnCompleted) {
-        resultBox.removeChild(elementToRemove)
-        diceBox.appendChild(elementToRemove)
+        let diceContainer = elementToRemove.parentElement
+        resultBox.removeChild(diceContainer)
+        diceBox.appendChild(diceContainer)
         // store.state.combinationArray.splice(store.state.combinationArray.findIndex(item => item === store.state.diceArray[key].value), 1)
         for (let key in store.state.diceArray) {
           if (store.state.diceArray[key].id === elementToRemove.id) {
@@ -954,37 +1003,38 @@ export default {
   justify-content: space-between;
   width: 100%;
 }
-
 .school {
   display: flex;
-  // flex-direction: row;
-  // justify-content: center;
-  // align-items: center;
-  // align-items: flex-start;
-  // padding: 0em 2em 0em 2em;
-  // height: 4em;
-  // border: 1px solid green;
-  // height: 3em;
+  .dice-container {
+    // border: 1px solid lime;
+    padding: 0em .5em 0em .5em;
+  }
 }
+.school-result {
+  margin: 0em;
+  // border: 1px solid red;
+  // width: 100%;
+  // padding: .4em 0em 0em 0em;
+  // color: $color-light-gray;
+  color: $color-primary-2;
+  font-size: 1em;
+  height: 1.2em;
+  text-align: center;
+}
+/*
 .game-table {
   display: flex;
   flex-direction: column;
   // padding: 0em 1em 0em 1em;
 }
+*/
 .game {
   display: flex;
   width: auto;
   flex-direction: column;
+  margin-top: .7em;
 }
-/*
-.school > .combination {
-  width: 2em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-*/
+
 .game-combination {
   display: flex;
   p {
@@ -1010,17 +1060,6 @@ export default {
   background-color: $color-pale-primary;
 }
 
-.school-result {
-  margin: 0em;
-  // border: 1px solid red;
-  // width: 100%;
-  // padding: .4em 0em 0em 0em;
-  // color: $color-light-gray;
-  color: $color-primary-2;
-  font-size: 1.2em;
-  text-align: center;
-}
-
 .result {
   padding: 0em .2em 0em .2em;
   // color: $color-light-gray;
@@ -1035,40 +1074,45 @@ export default {
 .saved .school-result {
   color: $color-orange;
 }
-/*
-.dice-container > svg > path {
-  stroke: $color-orange;
-}
-.saved svg > circle {
-  fill: $color-orange;
-}
-*/
+
 .dice-box-container {
   display: flex;
   flex-direction: row;
-  margin-top: 1em;
-  padding: 0em .3em .3em .3em;
+  width:100%;
+  // margin-top: 1em;
+  padding: .5em .3em .3em .3em;
+  // border: 1px dotted red;
 }
 .dice-box, .result-box {
   display: flex;
   justify-content: center;
-  align-content: center;
-  align-items: center;
-  padding-top: .15em;
+  // height: 3em;
+  // border: 1px solid red;
+  // width: 100%;
+  // align-content: center;
+  // align-items: center;
+  // padding-top: .15em;
+}
+
+.dice-container {
+  // width: 20%;
+  padding: 0em .4em 0em .4em;
 }
 
 .main-button {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 4em;
-  height: 2.15em;
+  width: 100%;
+  padding-bottom: .1em;
+  // height: 2.15em;
   color: $color-light;
-  font-size: 1.1em;
-  padding: .3em;
+  // font-size: 1.1em;
+  // padding: .3em;
   border-radius: .3em;
   background-color: $color-primary-0;
-  margin-left: auto; //!
+  // margin-left: auto; //!
   transition: background-color 1.75s;
 }
 
@@ -1085,24 +1129,7 @@ export default {
 .border {
   border-right: .2em solid orange;
 }
-/*
-.dice {
-  display: flex;
-  margin-left: .4em;
-  margin-right: .4em;
-  // animation: diceDisplay 1s linear;
-}
 
-.dice-icon:hover {
-  cursor: pointer;
-}
-
-@keyframes diceDisplay {
-  50% {
-    opacity: 0;
-  }
-}
-*/
 .blink {
   animation: blinker 2.5s linear infinite;
 }
@@ -1112,113 +1139,11 @@ export default {
   }
 }
 
-// style for icons
-/*
-.active svg > .dice-svg {
-  stroke: $color-orange;
-}
-.active svg > .dice-circle {
-  fill: $color-orange;
-}
-
-.result-box svg > path {
-  stroke: $color-orange;
-}
-.result-box svg > circle {
-  fill: $color-orange;
-}*/
-/*
-.dice-svg {
-  fill: none;
-  stroke: $color-primary-0;
-  stroke-width: 10px;
-  fill-rule: evenodd;
-}
-.dice-circle {
-  fill: $color-primary-0;
-}
-*/
-/*
-svg:hover > .dice-svg {
-  stroke: $color-orange;
-}
-svg:hover > .dice-circle {
-  fill: $color-orange;
-}
-*/
-
 .faded { // horizontal ruler
   border: 0;
   height: 0.065em;
   background-image: linear-gradient(to right, hsla(0, 0%, 65%, 0), hsla(0, 0%, 65%, 0.75), hsla(0, 0%, 65%, 0));
 }
-/*
-.button-box {
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-}
-
-.iconLicense {
-  color: $color-primary-1;
-  font-size: .6em;
-  margin-bottom: 1em;
-  text-align: center;
-}
-.iconLicense > a {
-  color: $color-primary-1;
-}
-.iconLicense > a:hover {
-  color: $color-orange;
-}
-*/
-/*
-@media only screen and (max-width: 300px) , screen and (max-height: 500px) {
-    .game-table {
-      padding: 0em .2em 0em .2em;
-    }
-    .school-result {
-      padding: 0;
-      border: 1px solid red;
-    }
-}
-*/
-@media only screen and (-webkit-min-device-pixel-ratio: 1.6) {
-    .game-table {
-      // padding: 0em 1em 0em 1em;
-      // border: 1px solid red;
-    }
-    .school {
-      // margin-top: 1em;
-    }
-    .school-result {
-      padding: 0;
-      // border: 1px solid red;
-    }
-    .game-combination {
-      // margin-top: .2em;
-    }
-    .dice-box-container {
-      margin-top: auto;
-    }
-    .main-button {
-      // font-size: 1.5em;
-    }
-// .dice-icon {
-  /* padding-bottom: 97%; */
-  /* height: 1px; */
-  /* overflow: visible; */
-// }
-}
-
-.dice-container {
-    // display: flex;
-    // text-align: center;
-    // box-sizing: content-box;
-    // width: 70%;
-    padding: 0em .4em 0em .4em;
-    // border: 1px solid green;
-    }
 
 .hidden {
   visibility: hidden;
@@ -1244,45 +1169,43 @@ svg:hover > .dice-circle {
   width: 0%;
   transition: width 1.75s;
 }
+
 .full {
   background-color: #AA3838;
   box-shadow: 0px 1px 10px 0px red;
 }
-/*
-.highest-value {
-  // font-size: 2em;
-  // color: $color-very-red;
-  // text-shadow: 0px 0px 15px $color-very-red-transparent;
-  // border: 1px solid red;
-}
-*/
+
 .highest-value {
   color: $color-very-red;
   text-shadow: 0px 0px 15px $color-very-red-transparent;
 }
-/*
-.dice-path {
-  fill: none;
-  // stroke: indigo;
-  stroke: indigo;
-  stroke-width: 1em;
-  fill-rule: evenodd;
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.6) {
+    .game-table {
+      // padding: 0em 1em 0em 1em;
+      // border: 1px solid red;
+    }
+    .school {
+      // margin-top: 1em;
+    }
+    .school-result {
+      padding: 0;
+      // border: 1px solid red;
+    }
+    .game-combination {
+      // margin-top: .2em;
+    }
+    .dice-box-container {
+      // border: 1px solid green;
+    }
+    .main-button {
+      // font-size: 1.5em;
+    }
+// .dice-icon {
+  /* padding-bottom: 97%; */
+  /* height: 1px; */
+  /* overflow: visible; */
+// }
 }
 
-.dice-icon > circle {
-  fill: $color-orange;
-}
-
-.dice-icon > path {
-  stroke: $color-orange;
-}
-*/
-/*
-.highest-value svg > .dice-svg {
-  stroke: $color-very-red;
-}
-.highest-value svg > .dice-circle {
-  fill: $color-very-red;
-}
-*/
 </style>

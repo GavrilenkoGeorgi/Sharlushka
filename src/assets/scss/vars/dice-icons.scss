@@ -1,41 +1,23 @@
-.defs-only {
-  display: none;
+figure {
+  margin: 0;
 }
 
-symbol {
-  stroke-width: 1.1em;
+svg path {
   fill: none;
-  circle {
-    stroke-width: .1em;
-  }
+  stroke-width: .5em;
 }
 
 .dice {
+  width: 4em;
+  height: 4em;
+}
+
+.default {
+  color: $color-primary-0;
   stroke: $color-primary-0;
-  circle {
-    fill: $color-primary-0;
-  }
 }
 
-.dice-chosen {
+.chosen {
+  color: $color-chosen;
   stroke: $color-chosen;
-  circle {
-    fill: $color-chosen;
-  }
-}
-
-/*
-.dice-path {
-  fill: none;
-  stroke: indigo;
-  stroke-width: 1em;
-  fill-rule: evenodd;
-}
-
-.dice-circle {
-  fill: indigo;
-}
-*/
-figure {
-  margin: 0;
 }
