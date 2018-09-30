@@ -11,8 +11,8 @@ const getDefaultState = () => {
     mainButtonText: 'Start',
     schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score
-    schoolCompleted: false, // check if school is completed
-    gameTurns: 1, // game turns counter
+    schoolCompleted: true, // check if school is completed
+    gameTurns: 7, // game turns counter
     maxGameTurns: 33,
     rollCount: 3, // roll counter for the current turn
     gameCheck: false, // to check if there are any combinations left to record
@@ -22,87 +22,101 @@ const getDefaultState = () => {
     scoreArray: [{
       value: '', // school combinations
       final: false,
-      id: 'ones'
+      id: 'ones',
+      icon: 'diceOnes'
     },
     {
       value: '',
       final: false,
-      id: 'twos'
+      id: 'twos',
+      icon: 'diceTwos'
     },
     {
       value: '',
       final: false,
-      id: 'threes'
+      id: 'threes',
+      icon: 'diceThrees'
     },
     {
       value: '',
       final: false,
-      id: 'fours'
+      id: 'fours',
+      icon: 'diceFours'
     },
     {
       value: '',
       final: false,
-      id: 'fives'
+      id: 'fives',
+      icon: 'diceFives'
     },
     {
       value: '',
       final: false,
-      id: 'sixes'// 5
+      id: 'sixes', // 5
+      icon: 'diceSixes'
     },
     { // game combinations
       value: '',
       displayValues: [],
       final: false,
-      id: 'pair' // 6
+      id: 'pair', // 6
+      fullName: 'Pair'
     },
     {
       value: '',
       displayValues: [],
       final: false,
-      id: 'twoPairs' // 7
-
+      id: 'twoPairs', // 7
+      fullName: 'Two Pairs'
     },
     {
       value: '',
       displayValues: [],
       final: false,
-      id: 'threeOfAKind' // 8
+      id: 'threeOfAKind', // 8
+      fullName: 'Three Of A Kind'
     },
     {
       value: '',
       displayValues: [],
       final: false,
-      id: 'full' // 9
+      id: 'full', // 9
+      fullName: 'Full'
     },
     {
       value: '',
       displayValues: [],
       final: false,
-      id: 'quads' // 10
+      id: 'quads',
+      fullName: 'Quads' // 10
     },
     {
       value: '',
       displayValues: [],
       final: false,
-      id: 'poker' // 11
+      id: 'poker',
+      fullName: 'Poker' // 11
     },
     {
       value: '',
       displayValues: [],
       final: false,
-      id: 'small' // 12
+      id: 'small',
+      fullName: 'Small' // 12
     },
     {
       value: '',
       displayValues: [],
       final: false,
-      id: 'large' // 13
+      id: 'large',
+      fullName: 'Large' // 13
     },
     {
       value: '',
       displayValues: [],
       final: false,
-      id: 'chance' // 14
+      id: 'chance',
+      fullName: 'Chance' // 14
     }],
     diceArray: [{ // dice Array
       value: '#',
@@ -138,12 +152,13 @@ const state = getDefaultState()
 const getters = {
   evenOrOdd: state => state.count % 2 === 0 ? 'even' : 'odd',
   getSchoolArray: function (state) {
-    let index = state.diceArray.length + 1 // Meh...
-    let schoolArray = []
-    for (let iterator = 0; iterator < index; iterator++) {
-      schoolArray.push(state.scoreArray[iterator])
-    }
+    let schoolArray = state.scoreArray.slice(0, state.diceArray.length + 1)
     return schoolArray
+  },
+  getCombinationArray: function (state) {
+    // another one for export
+    let combinationArray = state.scoreArray.slice(state.diceArray.length + 1, state.scoreArray.length)
+    return combinationArray
   },
   debugInfo: function (state) {
     // console.log(`Debug on`)
