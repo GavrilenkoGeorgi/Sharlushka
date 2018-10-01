@@ -121,27 +121,32 @@ const getDefaultState = () => {
     diceArray: [{ // dice Array
       value: '#',
       chosen: false,
-      id: 'first'
+      id: 'first',
+      currentIcon: ''
     },
     {
       value: '#',
       chosen: false,
-      id: 'second'
+      id: 'second',
+      currentIcon: ''
     },
     {
       value: '#',
       chosen: false,
-      id: 'third'
+      id: 'third',
+      currentIcon: ''
     },
     {
       value: '#',
       chosen: false,
-      id: 'fourth'
+      id: 'fourth',
+      currentIcon: ''
     },
     {
       value: '#',
       chosen: false,
-      id: 'fifth'
+      id: 'fifth',
+      currentIcon: ''
     }]
   }
 }
@@ -151,6 +156,14 @@ const state = getDefaultState()
 
 const getters = {
   evenOrOdd: state => state.count % 2 === 0 ? 'even' : 'odd',
+  getCurrentGameState: function (state) {
+    let currentGameState = {
+      currentTurn: state.gameTurns,
+      schoolCompleted: state.schoolCompleted
+    }
+    // currentGameState
+    return currentGameState
+  },
   getSchoolArray: function (state) {
     let schoolArray = state.scoreArray.slice(0, state.diceArray.length + 1)
     return schoolArray
@@ -159,6 +172,10 @@ const getters = {
     // another one for export
     let combinationArray = state.scoreArray.slice(state.diceArray.length + 1, state.scoreArray.length)
     return combinationArray
+  },
+  getDiceArray: function (state) {
+    let diceArray = state.diceArray
+    return diceArray
   },
   debugInfo: function (state) {
     // console.log(`Debug on`)
@@ -367,15 +384,28 @@ const mutations = {
         alert(`Error!`)
       }
     }
-  },
+  }, /*
+  setCurrentIcon (state, diceId) {
+    let diceToSet = state.diceArray
+    dice.currentIcon = combinationArray[dice.value - 1].id
+  }, */
   rollDice (state) {
     state.rollCount--
     // console.log(`Current game turn ${state.gameTurns}`)
+    for (let dice of state.diceArray) {
+      if (dice && !dice.chosen) {
+        dice.value = Math.floor((Math.random() * 6) + 1)
+        let iconToSet = state.scoreArray[dice.value - 1].icon
+        Vue.set(dice, 'currentIcon', iconToSet)
+      }
+    }
+    /*
     for (let key in state.diceArray) {
       if (state.diceArray[key].chosen !== true) {
         state.diceArray[key].value = Math.floor((Math.random() * 6) + 1)
       }
     }
+    */
     /*
     if (state.rollCount === 0) {
       state.rollButtonDisabled = true
@@ -437,15 +467,15 @@ const mutations = {
 
 const actions = {
   /* increment: (context, payload) => context.commit('increment'), */
+  setCurrentIcon: ({
+    commit
+  }) => commit('setCurrentIcon'),
   resetGameState: ({
     commit
   }) => commit('resetState'),
   computeScore: ({
     commit
   }) => commit('computeScore'),
-  computeGameScore: ({
-    commit
-  }) => commit('computeGameScore'),
   rollDice: ({
     commit
   }) => commit('rollDice'),

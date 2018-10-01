@@ -15,82 +15,27 @@
     <div class="new-game" v-on:click="handleBoardClick">
       <div class="new-game-combination" v-for="combination in this.getCombinationArray" :key="combination.id" v-bind:id="combination.id">
         <p class="new-game-combination-name">{{ combination.fullName }}</p>
-        <p class="new-game-result" v-if="combination.value">
-          {{ combination.value }}
-        </p>
         <p class="new-game-result" v-for="index in combination.displayValues" :key="index">
           {{ index }}
+        </p>
+        <p class="new-game-result blink" v-if="combination.value">
+          {{ combination.value }}
         </p>
       </div>
     </div>
 
   <div class="dice-box-container">
+    <!-- Result box -->
     <div class="result-box" v-bind:class="{ hidden:$store.state.turnCompleted, border: $store.state.combinationArray.length >= 1 }" v-on:click="deSelectDice"></div>
+    <!-- Dice box -->
     <div class="dice-box"  v-on:click="selectDice" v-bind:class="{ hidden:$store.state.turnCompleted }">
-
-      <div class="dice-container">
-        <svg class="dice-icon" id="first" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
-          <use v-if="$store.state.diceArray[0].value === '#'" xlink:href="#diceOnesSelected" />
-          <use v-if="$store.state.diceArray[0].value === 1" xlink:href="#diceOnes" />
-          <use v-if="$store.state.diceArray[0].value === 2" xlink:href="#diceTwos" />
-          <use v-if="$store.state.diceArray[0].value === 3" xlink:href="#diceThrees" />
-          <use v-if="$store.state.diceArray[0].value === 4" xlink:href="#diceFours" />
-          <use v-if="$store.state.diceArray[0].value === 5" xlink:href="#diceFives" />
-          <use v-if="$store.state.diceArray[0].value === 6" xlink:href="#diceSixes" />
+        <svg class="school-dice-icon" v-for="dice in this.getDiceArray" :key="dice.id" width="2em">
+          <use v-bind="{'xlink:href':'#' + dice.currentIcon}" class="default" x="0" y="0" v-bind:class="{ chosen:dice.final }" ></use>
         </svg>
-      </div>
-
-      <div class="dice-container">
-        <svg class="dice-icon" id="second" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
-          <use v-if="$store.state.diceArray[1].value === '#'" xlink:href="#diceOnesSelected" />
-          <use v-if="$store.state.diceArray[1].value === 1" xlink:href="#diceOnes" />
-          <use v-if="$store.state.diceArray[1].value === 2" xlink:href="#diceTwos" />
-          <use v-if="$store.state.diceArray[1].value === 3" xlink:href="#diceThrees" />
-          <use v-if="$store.state.diceArray[1].value === 4" xlink:href="#diceFours" />
-          <use v-if="$store.state.diceArray[1].value === 5" xlink:href="#diceFives" />
-          <use v-if="$store.state.diceArray[1].value === 6" xlink:href="#diceSixes" />
-        </svg>
-      </div>
-
-      <div class="dice-container">
-        <svg class="dice-icon" id="third" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
-          <use v-if="$store.state.diceArray[2].value === '#'" xlink:href="#diceOnesSelected" />
-          <use v-if="$store.state.diceArray[2].value === 1" xlink:href="#diceOnes" />
-          <use v-if="$store.state.diceArray[2].value === 2" xlink:href="#diceTwos" />
-          <use v-if="$store.state.diceArray[2].value === 3" xlink:href="#diceThrees" />
-          <use v-if="$store.state.diceArray[2].value === 4" xlink:href="#diceFours" />
-          <use v-if="$store.state.diceArray[2].value === 5" xlink:href="#diceFives" />
-          <use v-if="$store.state.diceArray[2].value === 6" xlink:href="#diceSixes" />
-        </svg>
-      </div>
-
-      <div class="dice-container">
-        <svg class="dice-icon" id="fourth" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
-          <use v-if="$store.state.diceArray[3].value === '#'" xlink:href="#diceOnesSelected" />
-          <use v-if="$store.state.diceArray[3].value === 1" xlink:href="#diceOnes" />
-          <use v-if="$store.state.diceArray[3].value === 2" xlink:href="#diceTwos" />
-          <use v-if="$store.state.diceArray[3].value === 3" xlink:href="#diceThrees" />
-          <use v-if="$store.state.diceArray[3].value === 4" xlink:href="#diceFours" />
-          <use v-if="$store.state.diceArray[3].value === 5" xlink:href="#diceFives" />
-          <use v-if="$store.state.diceArray[3].value === 6" xlink:href="#diceSixes" />
-        </svg>
-      </div>
-
-      <div class="dice-container">
-        <svg class="dice-icon" id="fifth" xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 200 210" preserveAspectRatio="xMidYMin slice" width="100%">
-          <use v-if="$store.state.diceArray[4].value === '#'" xlink:href="#diceOnesSelected" />
-          <use v-if="$store.state.diceArray[4].value === 1" xlink:href="#diceOnes" />
-          <use v-if="$store.state.diceArray[4].value === 2" xlink:href="#diceTwos" />
-          <use v-if="$store.state.diceArray[4].value === 3" xlink:href="#diceThrees" />
-          <use v-if="$store.state.diceArray[4].value === 4" xlink:href="#diceFours" />
-          <use v-if="$store.state.diceArray[4].value === 5" xlink:href="#diceFives" />
-          <use v-if="$store.state.diceArray[4].value === 6" xlink:href="#diceSixes" />
-        </svg>
-      </div>
-
-    </div> <!-- End of dice-box-->
+    </div>
     <div class="main-button animated" v-on:click="handleMainGameButton" v-bind:class="{ disabled:mainButtonDisabled }">{{ mainButtonText }}</div>
-  </div> <!-- End of dice box container -->
+  </div>
+  <!-- End of dice box container -->
   <div class="progress-bar"></div>
     <!-- SVG icons defs -->
     <!-- Default icons -->
@@ -175,7 +120,8 @@ export default {
       'chosenDiceArray',
       'currentValuesInScoreArray',
       'getSchoolArray',
-      'getCombinationArray'
+      'getCombinationArray',
+      'getDiceArray'
     ])
   },
   mounted () {
@@ -414,7 +360,7 @@ export default {
     },
     selectDice (event) {
       // console.log(`Event target is -->`)
-      // console.log(event.currentTarget)
+      console.log(event.target)
       let elementToAdd = this.handleDiceClick(event.target)
       /*
       if (elementToAdd) {
@@ -612,6 +558,7 @@ export default {
   // padding: 0em 1em 0em 1em;
 }
 */
+/*
 .game {
   display: flex;
   width: auto;
@@ -640,7 +587,7 @@ export default {
     flex-grow: 1;
   }
 }
-
+*/
 .complete {
   background-color: $color-pale-primary;
 }
@@ -755,7 +702,7 @@ export default {
   transition: width 1.75s;
 }
 
-.full {
+.full { //progress bar
   background-color: #AA3838;
   box-shadow: 0px 1px 10px 0px red;
 }
@@ -764,56 +711,48 @@ export default {
   color: $color-very-red;
   text-shadow: 0px 0px 15px $color-very-red-transparent;
 }
-
+/*
 @media only screen and (-webkit-min-device-pixel-ratio: 1.6) {
-    .game-table {
-      // padding: 0em 1em 0em 1em;
-      // border: 1px solid red;
-    }
-    .school {
-      // margin-top: 1em;
-    }
-    .school-results {
-      padding: 0;
-      // border: 1px solid red;
-    }
-    .game-combination {
-      // margin-top: .2em;
-    }
-    .dice-box-container {
-      // border: 1px solid green;
-    }
-    .main-button {
-      // font-size: 1.5em;
-    }
-// .dice-icon {
-  /* padding-bottom: 97%; */
-  /* height: 1px; */
-  /* overflow: visible; */
-// }
+  .game-table {
+    // padding: 0em 1em 0em 1em;
+    // border: 1px solid red;
+  }
+  .school {
+    // margin-top: 1em;
+  }
+  .school-results {
+    padding: 0;
+    // border: 1px solid red;
+  }
 }
+*/
 .new-game{
   display: flex;
   flex-direction: column;
+  color: $color-primary-3;
+  font-weight: 700;
+  font-size: 1.05em;
+  margin: 0em .2em 0em .2em;
   // flex-basis: 0;
   // border: 1px solid green;
 }
 .new-game-combination {
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
+  margin: .1em 0em .1em 0em;
   // border: 1px solid blue;
 }
 .new-game-combination-name {
+  // flex-grow: 1;
   // border: 1px solid orangered;
-  flex-grow: 3;
-  flex-basis: 0;
+  width: 50%;
 }
 .new-game-result {
   flex-grow: 1;
-  flex-basis: 0;
   text-align: center;
   // border: 1px solid yellow;
-  color: red;
-  font-size: 1.4em;
+  // color: red;
+  // font-size: 1.4em;
 }
 </style>
