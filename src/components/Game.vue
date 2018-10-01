@@ -12,13 +12,13 @@
     </div>
     <!--hr class="faded" /-->
     <!-- Game table -->
-    <div class="new-game" v-on:click="handleBoardClick">
-      <div class="new-game-combination" v-for="combination in this.getCombinationArray" :key="combination.id" v-bind:id="combination.id">
-        <p class="new-game-combination-name">{{ combination.fullName }}</p>
-        <p class="new-game-result" v-for="index in combination.displayValues" :key="index">
+    <div class="game" v-on:click="handleBoardClick">
+      <div class="game-combination" v-for="combination in this.getCombinationArray" :key="combination.id" v-bind:id="combination.id">
+        <p class="game-combination-name">{{ combination.fullName }}</p>
+        <p class="game-result" v-for="index in combination.displayValues" :key="index">
           {{ index }}
         </p>
-        <p class="new-game-result blink" v-if="combination.value">
+        <p class="game-result blink" v-if="combination.value">
           {{ combination.value }}
         </p>
       </div>
@@ -26,10 +26,10 @@
 
   <div class="dice-box-container">
     <!-- Result box -->
-    <div class="result-box" v-bind:class="{ hidden:$store.state.turnCompleted, border: $store.state.combinationArray.length >= 1 }" v-on:click="deSelectDice"></div>
+    <div class="result-box" v-bind:class="{ hidden:$store.state.turnCompleted, border: $store.state.combinationArray.length >= 1 }" v-on:click="selectDice"></div>
     <!-- Dice box -->
     <div class="dice-box"  v-on:click="selectDice" v-bind:class="{ hidden:$store.state.turnCompleted }">
-        <svg class="school-dice-icon" v-for="dice in this.getDiceArray" :key="dice.id" width="2em">
+        <svg class="dice-icon" v-for="dice in this.getDiceArray" :key="dice.id" v-bind:id="dice.id" width="2.3em">
           <use v-bind="{'xlink:href':'#' + dice.currentIcon}" class="default" x="0" y="0" v-bind:class="{ chosen:dice.final }" ></use>
         </svg>
     </div>
@@ -121,7 +121,8 @@ export default {
       'currentValuesInScoreArray',
       'getSchoolArray',
       'getCombinationArray',
-      'getDiceArray'
+      'getDiceArray',
+      'getCurrentGameState'
     ])
   },
   mounted () {
@@ -130,9 +131,9 @@ export default {
       this.highestScore = highestScore
     }
     // let temp = this.getSchoolArray
-    for (let value of this.getCombinationArray) {
-      console.log(value.id)
-    }
+    // for (let value of this.getCombinationArray) {
+    //  console.log(value.id)
+    // }
     // this.updateMainButtonState()
     // store.mapGetters.chosenDiceArray
     // let temp = this.chosenDiceArray()
@@ -149,69 +150,11 @@ export default {
       'newGame',
       'increment',
       'decrement',
+      'computeScore',
+      'setDiceChosenState',
       'incrementIfOdd',
       'incrementAsync'
     ]),
-    handleBoardClick (event) {
-      console.log(`New SVG!`)
-      let idFound = false
-      let scoreId = null
-      let scoreType = null
-      let elementToCheck = event.target // .parentElement?
-
-      if (elementToCheck.classList.contains('school-dice-icon')) {
-        scoreId = elementToCheck.id
-        scoreType = 'school'
-        idFound = true
-      }
-      if (elementToCheck.parentElement.classList.contains('school-dice-icon') || elementToCheck.classList.contains('school-result')) {
-        scoreId = elementToCheck.getAttribute('resultId')
-        scoreType = 'school'
-        idFound = true
-      }
-      if (elementToCheck.classList.contains('game-combination')) {
-        scoreId = elementToCheck.id
-        scoreType = 'game'
-        idFound = true
-      }
-      if (elementToCheck.parentElement.classList.contains('new-game-combination')) {
-        scoreId = elementToCheck.parentElement.id
-        scoreType = 'game'
-        idFound = true
-      }
-      // if ()
-      /*
-      if (elementToCheck)
-      while (!idFound && elementToCheck) {
-        if (!elementToCheck.getAttribute('id')) {
-          // console.log(`testing xor`)
-          // console.log(`Attribute is: ${elementToCheck.getAttribute('id')}`)
-          // console.log(`ClassList is: ${elementToCheck.classList.contains('school-dice-icon')}`)
-          scoreId = elementToCheck.getAttribute('resultId')
-          scoreType = elementToCheck.parentElement.className
-          idFound = true
-        } else if (elementToCheck.classList.contains('label')) {
-          scoreId = elementToCheck.id
-          scoreType = elementToCheck.parentElement.className
-          idFound = true
-        } else if (elementToCheck.classList.contains('result')) {
-          scoreId = elementToCheck.parentElement.firstChild.id
-          scoreType = elementToCheck.parentElement.className
-          idFound = true
-        } else {
-          elementToCheck = elementToCheck.parentElement
-        }
-        if (!elementToCheck) {
-          return false
-        }
-      } */
-      console.log(idFound)
-      if (scoreId && scoreType) {
-        // console.log(`Score id is: ${scoreId}`)
-        // console.log(`Score type is: ${scoreType}`)
-        this.recordResult(scoreId, scoreType)
-      }
-    },
     handleMainGameButton () {
       if (store.state.rollCount > 0 && !store.state.turnCompleted) {
         store.commit('rollDice')
@@ -302,90 +245,83 @@ export default {
         return false
       }
     },
-    handleBoardClickOld (event) {
+    handleBoardClick (event) {
+      console.log(`New SVG!`)
       let idFound = false
       let scoreId = null
-      let scoreType = null
-      let elementToCheck = event.target // .parentElement
+      // let scoreType = null
+      let elementToCheck = event.target // .parentElement?
       while (!idFound && elementToCheck) {
-        if (elementToCheck.classList.contains('combination')) {
-          scoreId = elementToCheck.firstChild.id
-          scoreType = elementToCheck.parentElement.className
-          idFound = true
-        } else if (elementToCheck.classList.contains('label')) {
+        if (elementToCheck.classList.contains('school-dice-icon') ||
+          elementToCheck.classList.contains('dice-icon') ||
+          elementToCheck.classList.contains('game-combination')) {
           scoreId = elementToCheck.id
-          scoreType = elementToCheck.parentElement.className
+          // scoreType = 'school'
           idFound = true
-        } else if (elementToCheck.classList.contains('result')) {
-          scoreId = elementToCheck.parentElement.firstChild.id
-          scoreType = elementToCheck.parentElement.className
+        } else if (elementToCheck.classList.contains('school-result')) {
+          scoreId = elementToCheck.getAttribute('resultId')
           idFound = true
         } else {
           elementToCheck = elementToCheck.parentElement
         }
-        if (!elementToCheck) {
-          return false
-        }
       }
-      if (scoreId && scoreType) {
-        this.recordResult(scoreId, scoreType)
+      /*
+      if (elementToCheck.parentElement.classList.contains('school-dice-icon') || elementToCheck.classList.contains('school-result')) {
+        scoreId = elementToCheck.getAttribute('resultId')
+        // scoreType = 'school'
+        idFound = true
+      }
+      */
+      console.log(idFound)
+      console.log(scoreId)
+      // if (scoreId && scoreType) {
+      if (scoreId) {
+        // console.log(`Score id is: ${scoreId}`)
+        // console.log(`Score type is: ${scoreType}`)
+        // this.recordResult(scoreId, scoreType)
+        this.recordResult(scoreId)
       }
     },
     handleDiceClick (element) {
-      // console.log(`Inside element to add`)
-      // console.log(`Given element is ->`)
-      // console.dir(element)
-      // console.log(`Element classList ->>`)
-      // console.log(element.classList)
-      // if (element) {
-      // let elementToCheck = element.parentElement
-      // let diceFound = false
-      while (/* !diceFound && */ element) {
+      while (element) {
         if (element.classList.contains('dice-icon')) {
-          // diceFound = true
           // console.log(`Dice id to add -->`)
           // console.log(element.id)
           return element
         } else {
           element = element.parentElement
-          this.handleDiceClick(element)
+          if (element) {
+            this.handleDiceClick(element)
+          } else {
+            return false
+          }
         }
       }
-      /*
-      } else {
-        // console.log(`Click harder`)
-        return false
-      }
-      */
     },
     selectDice (event) {
-      // console.log(`Event target is -->`)
-      console.log(event.target)
+      // console.log(`Select dice event target is -->`)
+      // console.log(event.target)
       let elementToAdd = this.handleDiceClick(event.target)
-      /*
-      if (elementToAdd) {
-        console.log(elementToAdd.id)
-      } else {
-        console.log(`No id found`)
-      }
-      */
-      // elementToAdd.classList.remove('slideOutRight')
-      // elementToAdd.classList.add('zoomIn')
-      // console.log(`Inside select dice`)
-      // console.log(elementToAdd.id)
-
+      // store.commit('setDiceChosenState', elementToAdd.id)
+      console.log(`element to add is ${elementToAdd}`)
       let diceBox = document.querySelector('.dice-box')
       let resultBox = document.querySelector('.result-box')
+      if (elementToAdd.parentElement === diceBox && !store.state.turnCompleted) {
+        console.log(`Selecting dice`)
+        diceBox.removeChild(elementToAdd) // dice-container
+        resultBox.appendChild(elementToAdd)
+        store.commit('setDiceChosenState', elementToAdd.id)
+        store.commit('computeScore')
+      } else if (elementToAdd.parentElement === resultBox) {
+        console.log(`Deselecting dice`)
+        resultBox.removeChild(elementToAdd)
+        diceBox.appendChild(elementToAdd) // dice-container
+        store.commit('setDiceChosenState', elementToAdd.id)
+        store.commit('computeScore')
+      }
+      // let diceContainer = elementToAdd.parentElement
+      // store.commit('computeScore')
       /*
-      if (event.target === diceBox) {
-        return false
-      }
-      */
-      if (elementToAdd && !store.state.turnCompleted) {
-        let diceContainer = elementToAdd.parentElement
-        diceBox.removeChild(diceContainer) // dice-container
-        resultBox.appendChild(diceContainer)
-      }
       for (let key in store.state.diceArray) {
         if (store.state.diceArray[key].id === elementToAdd.id) {
           store.state.diceArray[key].chosen = true
@@ -393,10 +329,27 @@ export default {
           store.commit('computeScore')
         }
       }
+      */
       // this.highlightHighestValue()
     },
     deSelectDice (event) {
       let elementToRemove = this.handleDiceClick(event.target)
+      // console.log(`element to add is ${elementToAdd}`)
+      let diceBox = document.querySelector('.dice-box')
+      let resultBox = document.querySelector('.result-box')
+      /*
+      if (event.target === diceBox) {
+        return false
+      }
+      */
+      if (elementToRemove && !store.state.turnCompleted) {
+        // let diceContainer = elementToAdd.parentElement
+        // dice-container
+        resultBox.removeChild(elementToRemove)
+        diceBox.appendChild(elementToRemove)
+      }
+      /*
+      // let elementToRemove = this.handleDiceClick(event.target)
       // elementToRemove.classList.remove('slideInRight')
       // elementToRemove.classList.add('zoomIn')
       let diceBox = document.querySelector('.dice-box')
@@ -407,6 +360,7 @@ export default {
       }
       */
       // store.state.combinationArray.splice(store.state.combinationArray.findIndex(item => item === store.state.diceArray[key].value), 1)
+      /*
       if (elementToRemove && !store.state.turnCompleted) {
         let diceContainer = elementToRemove.parentElement
         resultBox.removeChild(diceContainer)
@@ -420,8 +374,8 @@ export default {
             store.state.combinationArray.splice(indexToRemove, 1)
           }
         }
-      }
-      store.commit('computeScore')
+      } */
+      // store.commit('computeScore')
       // this.highlightHighestValue()
     },
     clearResultBox () {
@@ -446,9 +400,84 @@ export default {
     debugMode () {
       store.state.debug = true
     },
-    recordResult (id, type) {
+    recordResult (id) {
       // console.log(`Game turn # ${store.state.gameTurns}`)
-      let resultType = type
+      // let resultType = type
+      let combinationId = id
+      const combinationIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(combinationId)
+      if (!store.state.schoolCompleted && store.state.scoreArray[combinationIndexInArray].value !== '' && !store.state.turnCompleted && !store.state.scoreArray[combinationIndexInArray].final) {
+        store.state.scoreArray[combinationIndexInArray].final = true
+        store.state.schoolScoreTotal += store.state.scoreArray[combinationIndexInArray].value
+        store.state.turnCompleted = true
+        let resultParagraph = document.getElementById(combinationId)
+        resultParagraph.lastElementChild.classList.remove('blink')
+        resultParagraph.classList.add('saved')
+        // resultParagraph.nextElementSibling.classList.remove('blink')
+        // resultParagraph.nextElementSibling.classList.add('saved')
+        // set school completed to display game score on the board
+        if (store.state.gameTurns === 6) {
+          store.state.schoolCompleted = true
+        }
+        this.clearResultBox()
+        this.updateMainButtonState()
+        this.removeCurrentHighlight()
+      } else if (store.state.scoreArray[combinationIndexInArray].value !== '' && store.state.scoreArray[combinationIndexInArray].displayValues.length < 3 && !store.state.turnCompleted) {
+        store.state.turnCompleted = true
+        // push result into display values array
+        store.state.scoreArray[combinationIndexInArray].displayValues.push(store.state.scoreArray[combinationIndexInArray].value)
+        store.state.gameTotal += store.state.scoreArray[combinationIndexInArray].value
+        if (store.state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
+          store.state.scoreArray[combinationIndexInArray].final = true
+          store.state.scoreArray[combinationIndexInArray].value = ''
+        }
+        // this.clearResultInStore()
+        this.clearResultBox()
+        this.updateMainButtonState()
+        this.removeCurrentHighlight()
+      } else if (!store.state.turnCompleted && store.state.scoreArray[combinationIndexInArray].value === '' && !store.state.scoreArray[combinationIndexInArray].final && store.state.schoolCompleted && store.state.rollCount === 0 && !store.state.zeroCheck) {
+        // if there is no combination to record user can mark one field per turn as cancelled
+        // and it won't be used to calculate score
+        if (store.state.scoreArray[combinationIndexInArray].displayValues.length < 3) {
+          store.state.scoreArray[combinationIndexInArray].displayValues.push(0)
+          // zero saved during this turn
+          store.state.zeroCheck = true
+          this.clearResultBox()
+          this.updateMainButtonState()
+          this.removeCurrentHighlight()
+          store.state.turnCompleted = true
+        }
+        // check if it is full
+        if (store.state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
+          store.state.scoreArray[combinationIndexInArray].final = true
+        }
+      } else {
+        // console.log(`Nothing to record!`)
+        return false
+      }
+      // last checks after recording or not recording result
+      if (store.state.gameTurns === 33 && store.state.turnCompleted) {
+        // console.log(`Game Over!`)
+        let score = store.state.schoolScoreTotal + store.state.gameTotal
+        // store.state.endGameMenu = true
+        let highestScore = localStorage.getItem('highestScore')
+        if (!highestScore) {
+          // console.log(`Highest score not set, setting it for the first time`)
+          localStorage.setItem('highestScore', score)
+        } else if (score > highestScore) {
+          localStorage.setItem('highestScore', score)
+        } else {
+          console.log(`Your score is not so high ${score}`)
+        }
+        this.$router.push({ path: '/endgame' })
+      } else {
+        store.commit('nextTurn')
+        this.updateProgressBar()
+      }
+    } // end of record result method
+    /*
+    recordResult (id) {
+      // console.log(`Game turn # ${store.state.gameTurns}`)
+      // let resultType = type
       let combinationId = id
       const combinationIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(combinationId)
       if (resultType === 'school' && store.state.scoreArray[combinationIndexInArray].value !== '' && !store.state.turnCompleted && !store.state.scoreArray[combinationIndexInArray].final) {
@@ -519,7 +548,8 @@ export default {
         store.commit('nextTurn')
         this.updateProgressBar()
       }
-    } // end of record result method
+    }, // end of record result method
+    */
   } // end of methods
 }
 </script>
@@ -551,43 +581,6 @@ export default {
   }
 }
 
-/*
-.game-table {
-  display: flex;
-  flex-direction: column;
-  // padding: 0em 1em 0em 1em;
-}
-*/
-/*
-.game {
-  display: flex;
-  width: auto;
-  flex-direction: column;
-  margin-top: .5em;
-  padding: 0em .3em 0em .3em;
-}
-
-.game-combination {
-  display: flex;
-  p {
-    display: inherit;
-    align-items: center;
-    justify-content: center;
-    // margin: .1em 0em .1em 0em;
-  }
-  .label {
-  color: $color-primary-0;
-  font-size: 1.2em;
-  width: 9em;
-  justify-content: flex-start;
-  // padding: .3em;
-  cursor: pointer;
-  }
-  .result {
-    flex-grow: 1;
-  }
-}
-*/
 .complete {
   background-color: $color-pale-primary;
 }
@@ -726,7 +719,7 @@ export default {
   }
 }
 */
-.new-game{
+.game{
   display: flex;
   flex-direction: column;
   color: $color-primary-3;
@@ -736,19 +729,19 @@ export default {
   // flex-basis: 0;
   // border: 1px solid green;
 }
-.new-game-combination {
+.game-combination {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   margin: .1em 0em .1em 0em;
   // border: 1px solid blue;
 }
-.new-game-combination-name {
+.game-combination-name {
   // flex-grow: 1;
   // border: 1px solid orangered;
   width: 50%;
 }
-.new-game-result {
+.game-result {
   flex-grow: 1;
   text-align: center;
   // border: 1px solid yellow;

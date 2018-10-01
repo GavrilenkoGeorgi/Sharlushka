@@ -11,8 +11,8 @@ const getDefaultState = () => {
     mainButtonText: 'Start',
     schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score
-    schoolCompleted: true, // check if school is completed
-    gameTurns: 7, // game turns counter
+    schoolCompleted: false, // check if school is completed
+    gameTurns: 1, // game turns counter
     maxGameTurns: 33,
     rollCount: 3, // roll counter for the current turn
     gameCheck: false, // to check if there are any combinations left to record
@@ -384,11 +384,26 @@ const mutations = {
         alert(`Error!`)
       }
     }
-  }, /*
-  setCurrentIcon (state, diceId) {
-    let diceToSet = state.diceArray
-    dice.currentIcon = combinationArray[dice.value - 1].id
-  }, */
+  },
+  setDiceChosenState (state, diceId) {
+    // let indexOfId = state.diceArray.indexOf(state.diceArray.id === diceId)
+    console.log(`Setting chosen on: ${diceId}`)
+    for (let key in state.diceArray) {
+      if (state.diceArray[key].id === diceId) {
+        if (!state.diceArray[key].chosen) {
+          state.combinationArray.push(state.diceArray[key].value)
+          state.diceArray[key].chosen = true
+          // console.log(`False is ${state.diceArray[key].chosen`)
+        } else {
+          state.diceArray[key].chosen = false
+          let value = state.diceArray[key].value
+          let indexToRemove = state.combinationArray.indexOf(value)
+          state.combinationArray.splice(indexToRemove, 1)
+        }
+      }
+    }
+    // dice.currentIcon = combinationArray[dice.value - 1].id
+  },
   rollDice (state) {
     state.rollCount--
     // console.log(`Current game turn ${state.gameTurns}`)
