@@ -1,18 +1,18 @@
 svg {
-  height: 2em;
-  // display: flex;
-  // padding-bottom: 20%;
+  width: 2.3em;
+  height: 2.3em;
 }
+
 svg path {
   fill: none;
   stroke-width: .9em;
 }
-
+/*
 .dice {
   width: auto;
   height: auto;
 }
-
+*/
 .default {
   color: $color-primary-0;
   stroke: $color-primary-0;

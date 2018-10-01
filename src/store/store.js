@@ -7,6 +7,7 @@ Vue.use(Vuex)
 const getDefaultState = () => {
   return {
     debug: false,
+    diceBoxHidden: true,
     currentUserName: '', // remove this from here
     mainButtonText: 'Start',
     schoolScoreTotal: 0, // total school score
@@ -122,31 +123,31 @@ const getDefaultState = () => {
       value: '#',
       chosen: false,
       id: 'first',
-      currentIcon: ''
+      currentIcon: 'sixes'
     },
     {
       value: '#',
       chosen: false,
       id: 'second',
-      currentIcon: ''
+      currentIcon: 'sixes'
     },
     {
       value: '#',
       chosen: false,
       id: 'third',
-      currentIcon: ''
+      currentIcon: 'sixes'
     },
     {
       value: '#',
       chosen: false,
       id: 'fourth',
-      currentIcon: ''
+      currentIcon: 'sixes'
     },
     {
       value: '#',
       chosen: false,
       id: 'fifth',
-      currentIcon: ''
+      currentIcon: 'sixes'
     }]
   }
 }
@@ -159,7 +160,8 @@ const getters = {
   getCurrentGameState: function (state) {
     let currentGameState = {
       currentTurn: state.gameTurns,
-      schoolCompleted: state.schoolCompleted
+      schoolCompleted: state.schoolCompleted,
+      turnCompleted: state.turnCompleted
     }
     // currentGameState
     return currentGameState
@@ -174,18 +176,18 @@ const getters = {
     return combinationArray
   },
   getDiceArray: function (state) {
-    let diceArray = state.diceArray
-    return diceArray
+    return state.diceArray
   },
   debugInfo: function (state) {
     // console.log(`Debug on`)
     // console.log(state)
-    for (let key in state.scoreArray) {
-      if (state.scoreArray[key].value !== '') {
+    for (let key in state.diceArray) {
+      if (state.diceArray[key].chosen) {
         let info = {
-          name: state.scoreArray[key].id,
-          chosen: state.scoreArray[key].chosen,
-          value: state.scoreArray[key].value
+          // name: state.diceArray[key].id,
+          chosen: state.diceArray[key].chosen,
+          firstDice: state.diceArray[0].chosen
+          // value: state.diceArray[key].value
         }
         // console.log(info)
         return info
@@ -408,10 +410,17 @@ const mutations = {
     state.rollCount--
     // console.log(`Current game turn ${state.gameTurns}`)
     for (let dice of state.diceArray) {
-      if (dice && !dice.chosen) {
-        dice.value = Math.floor((Math.random() * 6) + 1)
-        let iconToSet = state.scoreArray[dice.value - 1].icon
-        Vue.set(dice, 'currentIcon', iconToSet)
+      if (!dice.chosen) {
+        let numbah = Math.floor((Math.random() * 6) + 1)
+        dice.value = numbah
+        dice.currentIcon = state.scoreArray[numbah - 1].icon
+        // dice.currentIcon = 'ones'
+        // state.diceArray[index].currentIcon = state.scoreArray[iterator].icon
+        console.log(`Dice current icon ${dice.currentIcon}`)
+        // console.log(`Score Array is ${state.scoreArray}`)
+        // Vue.set(dice, 'currentIcon', iconToSet)
+        // iconToSet = iconToSet.toString()
+        // console.log(`Icon to set ${state.diceArray[index].currentIcon}`)
       }
     }
     /*
@@ -450,10 +459,12 @@ const mutations = {
       // state.nextTurnButtonDisabled = false
       state.endGameMenu = true
     }
+    state.diceBoxHidden = false
   },
   nextTurn (state) {
     state.gameCheck = false
     state.zeroCheck = false
+    state.diceBoxHidden = true
     if (!state.gameCheck && !state.turnCompleted) {
       alert(`Game over, your score is ${state.schoolScoreTotal}`)
     } else {

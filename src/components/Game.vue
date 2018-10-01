@@ -1,6 +1,50 @@
 <template>
   <div id="gameView">
     <Navigation />
+        <!-- SVG icons defs -->
+    <!-- Default icons -->
+    <!--svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
+      <symbol id="diceOnes" viewBox="-10 -10 220 220">
+        <circle fill="currentColor" cx="100" cy="100" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceTwos" viewBox="-10 -10 220 220">
+        <circle fill="currentColor" cx="50" cy="150" r="18"/>
+        <circle fill="currentColor" cx="150" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceThrees" class="dice" viewBox="-10 -10 220 220">
+        <circle fill="currentColor" cx="50" cy="150" r="18"/>
+        <circle fill="currentColor" cx="100" cy="100" r="18"/>
+        <circle fill="currentColor" cx="150" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceFours" class="dice" viewBox="-10 -10 220 220">
+        <circle fill="currentColor" cx="150" cy="50" r="18"/>
+        <circle fill="currentColor" cx="150" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceFives" class="dice" viewBox="-10 -10 220 220">
+        <circle fill="currentColor" cx="100" cy="100" r="18"/>
+        <circle fill="currentColor" cx="150" cy="50" r="18"/>
+        <circle fill="currentColor" cx="150" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceSixes" class="dice" viewBox="-10 -10 220 220">
+        <circle fill="currentColor" cx="150" cy="100" r="18"/>
+        <circle fill="currentColor" cx="150" cy="50" r="18"/>
+        <circle fill="currentColor" cx="150" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="100" r="18"/>
+        <circle fill="currentColor" cx="50" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+    </svg-->
+    <!-- SVG icons end -->
     <!-- School layout -->
     <div class="school" v-on:click="handleBoardClick">
       <svg class="school-dice-icon" v-for="dice in this.getSchoolArray" :key="dice.id" v-bind:id="dice.id">
@@ -13,10 +57,10 @@
     <!--hr class="faded" /-->
     <!-- Game table -->
     <div class="game" v-on:click="handleBoardClick">
-      <div class="game-combination" v-for="combination in this.getCombinationArray" :key="combination.id" v-bind:id="combination.id">
+      <div class="game-combination" v-for="combination in this.getCombinationArray" :key="combination.id" v-bind:id="combination.id" v-bind:class="{ chosen:combination.final }">
         <p class="game-combination-name">{{ combination.fullName }}</p>
-        <p class="game-result" v-for="index in combination.displayValues" :key="index">
-          {{ index }}
+        <p class="game-result" v-for="(value, index) in combination.displayValues" :key="index">
+          {{ value }}
         </p>
         <p class="game-result blink" v-if="combination.value">
           {{ combination.value }}
@@ -26,61 +70,24 @@
 
   <div class="dice-box-container">
     <!-- Result box -->
-    <div class="result-box" v-bind:class="{ hidden:$store.state.turnCompleted, border: $store.state.combinationArray.length >= 1 }" v-on:click="selectDice"></div>
+    <div class="result-box" v-bind:class="{ hidden:$store.state.diceBoxHidden, border: $store.state.combinationArray.length >= 1 }" v-on:click="selectDice"></div>
     <!-- Dice box -->
-    <div class="dice-box"  v-on:click="selectDice" v-bind:class="{ hidden:$store.state.turnCompleted }">
-        <svg class="dice-icon" v-for="dice in this.getDiceArray" :key="dice.id" v-bind:id="dice.id" width="2.3em">
-          <use v-bind="{'xlink:href':'#' + dice.currentIcon}" class="default" x="0" y="0" v-bind:class="{ chosen:dice.final }" ></use>
+    <div class="dice-box" v-bind:class="{ hidden:$store.state.diceBoxHidden }">
+      <div v-for="dice in this.getDiceArray" :key="dice.id" v-bind:id="dice.id" v-on:click="selectDice">
+        <svg class="dice-icon" fill="none" stroke-width=".7em">
+          <use v-bind="{'xlink:href':'#' + dice.currentIcon}" class="default" x="0" y="0" v-bind:class="{ chosen:dice.chosen }"></use>
         </svg>
+      </div>
+        <!--svg class="dice-icon" v-for="dice in this.getDiceArray" :key="dice.id" v-bind:id="dice.id" fill="none" stroke-width=".5em"-->
+          <!--use v-bind="{'xlink:href':'#' + dice.currentIcon}" class="default" x="0" y="0" v-bind:class="{ chosen:dice.final }" ></use-->
     </div>
     <div class="main-button animated" v-on:click="handleMainGameButton" v-bind:class="{ disabled:mainButtonDisabled }">{{ mainButtonText }}</div>
   </div>
   <!-- End of dice box container -->
   <div class="progress-bar"></div>
-    <!-- SVG icons defs -->
-    <!-- Default icons -->
-    <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
-      <symbol id="diceOnes" viewBox="0 0 220 220">
-        <circle fill="currentColor" cx="100" cy="100" r="18"/>
-        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
-      </symbol>
-      <symbol id="diceTwos" viewBox="0 0 220 220">
-        <circle fill="currentColor" cx="50" cy="150" r="18"/>
-        <circle fill="currentColor" cx="150" cy="50" r="18"/>
-        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
-      </symbol>
-      <symbol id="diceThrees" class="dice" viewBox="0 0 220 220">
-        <circle fill="currentColor" cx="50" cy="150" r="18"/>
-        <circle fill="currentColor" cx="100" cy="100" r="18"/>
-        <circle fill="currentColor" cx="150" cy="50" r="18"/>
-        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
-      </symbol>
-      <symbol id="diceFours" class="dice" viewBox="0 0 220 220">
-        <circle fill="currentColor" cx="150" cy="50" r="18"/>
-        <circle fill="currentColor" cx="150" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="50" r="18"/>
-        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
-      </symbol>
-      <symbol id="diceFives" class="dice" viewBox="0 0 220 220">
-        <circle fill="currentColor" cx="100" cy="100" r="18"/>
-        <circle fill="currentColor" cx="150" cy="50" r="18"/>
-        <circle fill="currentColor" cx="150" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="50" r="18"/>
-        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
-      </symbol>
-      <symbol id="diceSixes" class="dice" viewBox="0 0 220 220">
-        <circle fill="currentColor" cx="150" cy="100" r="18"/>
-        <circle fill="currentColor" cx="150" cy="50" r="18"/>
-        <circle fill="currentColor" cx="150" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="100" r="18"/>
-        <circle fill="currentColor" cx="50" cy="50" r="18"/>
-        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
-      </symbol>
-    </svg>
-    <!-- SVG icons end -->
+  <!--div class="debug">{{debugInfo}}
+    {{clicked}}
+  </div-->
   </div>
 </template>
 
@@ -96,7 +103,7 @@ export default {
     return {
       title: 'Sharlushka',
       // userName: '',
-      test: true,
+      clicked: false,
       highestScore: 0,
       registerForm: false,
       userExists: false,
@@ -117,6 +124,7 @@ export default {
     ...mapGetters([
       'evenOrOdd',
       'onesScore',
+      'debugInfo',
       'chosenDiceArray',
       'currentValuesInScoreArray',
       'getSchoolArray',
@@ -168,6 +176,7 @@ export default {
     },
     updateMainButtonState () {
       let button = document.querySelector('.main-button')
+      this.mainButtonDisabled = false
       // button.classList.remove('bounce')
       if (store.state.gameTurns === 1 && store.state.rollCount === 3) {
         this.mainButtonText = 'Start'
@@ -177,9 +186,11 @@ export default {
         this.mainButtonText = 'SAVE'
         this.mainButtonDisabled = true
         button.classList.add('bounce')
-      } else {
+      } else if (store.state.rollCount === 0 && store.state.turnCompleted) {
         this.mainButtonText = 'Turn'
         this.mainButtonDisabled = false
+      } else {
+        this.mainButtonText = 'Turn'
       }
     },
     updateProgressBar () {
@@ -299,15 +310,18 @@ export default {
       }
     },
     selectDice (event) {
-      // console.log(`Select dice event target is -->`)
-      // console.log(event.target)
-      let elementToAdd = this.handleDiceClick(event.target)
+      this.clicked = true
+      console.log(`Select dice event target is -->`)
+      console.log(event.currentTarget.id)
+      // let elementToAdd = this.handleDiceClick(event.target)
+      let elementToAdd = event.currentTarget
       // store.commit('setDiceChosenState', elementToAdd.id)
-      console.log(`element to add is ${elementToAdd}`)
+      console.log(`element to add is ${elementToAdd.id}`)
       let diceBox = document.querySelector('.dice-box')
       let resultBox = document.querySelector('.result-box')
       if (elementToAdd.parentElement === diceBox && !store.state.turnCompleted) {
         console.log(`Selecting dice`)
+        // let transferElement =
         diceBox.removeChild(elementToAdd) // dice-container
         resultBox.appendChild(elementToAdd)
         store.commit('setDiceChosenState', elementToAdd.id)
@@ -434,7 +448,12 @@ export default {
         this.clearResultBox()
         this.updateMainButtonState()
         this.removeCurrentHighlight()
-      } else if (!store.state.turnCompleted && store.state.scoreArray[combinationIndexInArray].value === '' && !store.state.scoreArray[combinationIndexInArray].final && store.state.schoolCompleted && store.state.rollCount === 0 && !store.state.zeroCheck) {
+      } else if (!store.state.turnCompleted &&
+        store.state.scoreArray[combinationIndexInArray].value === '' &&
+        !store.state.scoreArray[combinationIndexInArray].final &&
+        store.state.schoolCompleted &&
+        store.state.rollCount === 0 &&
+        !store.state.zeroCheck) {
         // if there is no combination to record user can mark one field per turn as cancelled
         // and it won't be used to calculate score
         if (store.state.scoreArray[combinationIndexInArray].displayValues.length < 3) {
@@ -445,11 +464,14 @@ export default {
           this.updateMainButtonState()
           this.removeCurrentHighlight()
           store.state.turnCompleted = true
+          this.mainButtonText = 'Turn'
+          this.mainButtonDisabled = false
         }
         // check if it is full
         if (store.state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
           store.state.scoreArray[combinationIndexInArray].final = true
         }
+        store.state.turnCompleted = true
       } else {
         // console.log(`Nothing to record!`)
         return false
@@ -561,16 +583,17 @@ export default {
 // @import "../assets/scss/vars/colors.scss";
 
 #gameView {
-  // display: flex;
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
 }
 .school {
   display: flex;
+  justify-content: space-around;
   width: 100%;
-  height: auto;
-  padding-top: .3em;
+  // height: 1.5em;
+  // padding-top: .3em;
   color: $color-primary-0;
   font-weight: 700;
   // border: 1px solid lime;
@@ -578,9 +601,9 @@ export default {
     flex-grow: 1;
     flex-basis: 0;
     text-align: center;
+    height: 1em;
   }
 }
-
 .complete {
   background-color: $color-pale-primary;
 }
@@ -603,20 +626,21 @@ export default {
 .dice-box-container {
   display: flex;
   flex-direction: row;
-  width:100%;
+  // align-items: flex-start;
+  height: 3.5em;
+  // width: 80%;
   // margin-top: 1em;
-  padding: .5em .3em .3em .3em;
+  padding: .3em .3em .3em .3em;
   // border: 1px dotted red;
 }
 .dice-box, .result-box {
   display: flex;
-  justify-content: center;
-  // height: 3em;
-  // border: 1px solid red;
-  // width: 100%;
-  // align-content: center;
-  // align-items: center;
-  // padding-top: .15em;
+  align-items: center;
+  // flex-grow: 1;
+  // flex-basis: 0;
+  // width: 75%;
+  // flex-direction: row;
+  // border: 1px dotted green;
 }
 
 .dice-container {
@@ -629,8 +653,9 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  flex-grow: 1;
   padding-bottom: .1em;
+  margin-left: .2em;
   // height: 2.15em;
   color: $color-light;
   // font-size: 1.1em;
@@ -638,7 +663,8 @@ export default {
   border-radius: .3em;
   background-color: $color-primary-0;
   // margin-left: auto; //!
-  transition: background-color 1.75s;
+  transition: all 1.75s;
+  // transition: width 1.75s;
 }
 
 .main-button:hover {
@@ -672,6 +698,7 @@ export default {
 
 .hidden {
   visibility: hidden;
+  display: none;
 }
 
 .debug {
@@ -733,7 +760,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  margin: .1em 0em .1em 0em;
+  margin: .3em 0em .3em 0em;
   // border: 1px solid blue;
 }
 .game-combination-name {
