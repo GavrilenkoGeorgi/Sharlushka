@@ -110,6 +110,7 @@ export default {
   box-shadow: 0px 1px 5px 0px $color-primary-0;
   color: $color-light;
   // margin: 0em 0em 1em 0em;
+  z-index: 3;
 }
 
 .toolbar {
@@ -199,4 +200,15 @@ button {
   box-shadow: 0px 0px 6px $color-primary-0;
 }
 
+@media screen and (max-width: 360px) {
+  .score-display {
+    font-size: 2em;
+  }
+}
+
+@media screen and (max-width: 250px) { // fly iq4415
+  .score-display {
+    font-size: 1.5em;
+  }
+}
 </style>

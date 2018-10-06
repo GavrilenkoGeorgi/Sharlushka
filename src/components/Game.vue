@@ -1,50 +1,6 @@
 <template>
   <div id="gameView">
     <Navigation />
-        <!-- SVG icons defs -->
-    <!-- Default icons -->
-    <!--svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
-      <symbol id="diceOnes" viewBox="-10 -10 220 220">
-        <circle fill="currentColor" cx="100" cy="100" r="18"/>
-        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
-      </symbol>
-      <symbol id="diceTwos" viewBox="-10 -10 220 220">
-        <circle fill="currentColor" cx="50" cy="150" r="18"/>
-        <circle fill="currentColor" cx="150" cy="50" r="18"/>
-        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
-      </symbol>
-      <symbol id="diceThrees" class="dice" viewBox="-10 -10 220 220">
-        <circle fill="currentColor" cx="50" cy="150" r="18"/>
-        <circle fill="currentColor" cx="100" cy="100" r="18"/>
-        <circle fill="currentColor" cx="150" cy="50" r="18"/>
-        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
-      </symbol>
-      <symbol id="diceFours" class="dice" viewBox="-10 -10 220 220">
-        <circle fill="currentColor" cx="150" cy="50" r="18"/>
-        <circle fill="currentColor" cx="150" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="50" r="18"/>
-        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
-      </symbol>
-      <symbol id="diceFives" class="dice" viewBox="-10 -10 220 220">
-        <circle fill="currentColor" cx="100" cy="100" r="18"/>
-        <circle fill="currentColor" cx="150" cy="50" r="18"/>
-        <circle fill="currentColor" cx="150" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="50" r="18"/>
-        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
-      </symbol>
-      <symbol id="diceSixes" class="dice" viewBox="-10 -10 220 220">
-        <circle fill="currentColor" cx="150" cy="100" r="18"/>
-        <circle fill="currentColor" cx="150" cy="50" r="18"/>
-        <circle fill="currentColor" cx="150" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="100" r="18"/>
-        <circle fill="currentColor" cx="50" cy="50" r="18"/>
-        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
-      </symbol>
-    </svg-->
-    <!-- SVG icons end -->
     <!-- School layout -->
     <div class="school" v-on:click="handleBoardClick">
       <svg class="school-dice-icon" v-for="dice in this.getSchoolArray" :key="dice.id" v-bind:id="dice.id">
@@ -57,7 +13,7 @@
     <!--hr class="faded" /-->
     <!-- Game table -->
     <div class="game" v-on:click="handleBoardClick">
-      <div class="game-combination" v-for="combination in this.getCombinationArray" :key="combination.id" v-bind:id="combination.id" v-bind:class="{ chosen:combination.final }">
+      <div class="game-combination" v-for="combination in this.getCombinationArray" :key="combination.id" v-bind:id="combination.id" v-bind:class="{ set:combination.final }">
         <p class="game-combination-name">{{ combination.fullName }}</p>
         <p class="game-result" v-for="(value, index) in combination.displayValues" :key="index">
           {{ value }}
@@ -67,21 +23,22 @@
         </p>
       </div>
     </div>
-
-  <div class="dice-box-container">
-    <!-- Result box -->
-    <div class="result-box" v-bind:class="{ hidden:$store.state.diceBoxHidden, border: $store.state.combinationArray.length >= 1 }" v-on:click="selectDice"></div>
-    <!-- Dice box -->
-    <div class="dice-box" v-bind:class="{ hidden:$store.state.diceBoxHidden }">
-      <div v-for="dice in this.getDiceArray" :key="dice.id" v-bind:id="dice.id" v-on:click="selectDice">
-        <svg class="dice-icon" fill="none" stroke-width=".7em">
-          <use v-bind="{'xlink:href':'#' + dice.currentIcon}" class="default" x="0" y="0" v-bind:class="{ chosen:dice.chosen }"></use>
-        </svg>
+    <div class="dice-controls">
+        <div class="dice-box-container" v-bind:class="{ hidden:$store.state.diceBoxHidden, padding:$store.state.diceBoxHidden }">
+          <!-- Result box -->
+          <div class="result-box" v-bind:class="{ border: $store.state.combinationArray.length >= 1 }" v-on:click="selectDice"></div>
+          <!-- Dice box -->
+          <div class="dice-box">
+            <div v-for="dice in this.getDiceArray" :key="dice.id" v-bind:id="dice.id" v-on:click="selectDice">
+              <svg class="dice-icon"> <!-- fill="none" stroke-width=".7em" in case of flyiq4415-->
+                <use v-bind="{'xlink:href':'#' + dice.currentIcon}" class="default animated fadeInUp" x="0" y="0" v-bind:class="{ chosen:dice.chosen }"></use>
+              </svg>
+            </div>
+          </div>
+          <!--svg class="dice-icon" v-for="dice in this.getDiceArray" :key="dice.id" v-bind:id="dice.id" fill="none" stroke-width=".5em"-->
+            <!--use v-bind="{'xlink:href':'#' + dice.currentIcon}" class="default" x="0" y="0" v-bind:class="{ chosen:dice.final }" ></use-->
       </div>
-        <!--svg class="dice-icon" v-for="dice in this.getDiceArray" :key="dice.id" v-bind:id="dice.id" fill="none" stroke-width=".5em"-->
-          <!--use v-bind="{'xlink:href':'#' + dice.currentIcon}" class="default" x="0" y="0" v-bind:class="{ chosen:dice.final }" ></use-->
-    </div>
-    <div class="main-button animated" v-on:click="handleMainGameButton" v-bind:class="{ disabled:mainButtonDisabled }">{{ mainButtonText }}</div>
+      <div class="main-button animated" v-on:click="handleMainGameButton" v-bind:class="{ disabled:mainButtonDisabled }">{{ mainButtonText }}</div>
   </div>
   <!-- End of dice box container -->
   <div class="progress-bar"></div>
@@ -623,71 +580,9 @@ export default {
   color: $color-orange;
 }
 
-.dice-box-container {
-  display: flex;
-  flex-direction: row;
-  // align-items: flex-start;
-  height: 3.5em;
-  // width: 80%;
-  // margin-top: 1em;
-  padding: .3em .3em .3em .3em;
-  // border: 1px dotted red;
-}
-.dice-box, .result-box {
-  display: flex;
-  align-items: center;
-  // flex-grow: 1;
-  // flex-basis: 0;
-  // width: 75%;
-  // flex-direction: row;
-  // border: 1px dotted green;
-}
-
 .dice-container {
   // width: 20%;
   padding: 0em .4em 0em .4em;
-}
-
-.main-button {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-  padding-bottom: .1em;
-  margin-left: .2em;
-  // height: 2.15em;
-  color: $color-light;
-  // font-size: 1.1em;
-  // padding: .3em;
-  border-radius: .3em;
-  background-color: $color-primary-0;
-  // margin-left: auto; //!
-  transition: all 1.75s;
-  // transition: width 1.75s;
-}
-
-.main-button:hover {
-  box-shadow: 0px 0px 6px $color-primary-0;
-}
-
-.disabled {
-  color: $color-light;
-  background-color: $color-very-red;
-  box-shadow: 0px 0px 6px $color-very-red;
-}
-
-.border {
-  border-right: .2em solid orange;
-}
-
-.blink {
-  animation: blinker 2.5s linear infinite;
-}
-@keyframes blinker {
-  50% {
-    opacity: .2;
-  }
 }
 
 .faded { // horizontal ruler
@@ -696,9 +591,8 @@ export default {
   background-image: linear-gradient(to right, hsla(0, 0%, 65%, 0), hsla(0, 0%, 65%, 0.75), hsla(0, 0%, 65%, 0));
 }
 
-.hidden {
-  visibility: hidden;
-  display: none;
+.result-box-border-hidden {
+  border: 0;
 }
 
 .debug {
@@ -731,48 +625,172 @@ export default {
   color: $color-very-red;
   text-shadow: 0px 0px 15px $color-very-red-transparent;
 }
-/*
-@media only screen and (-webkit-min-device-pixel-ratio: 1.6) {
-  .game-table {
-    // padding: 0em 1em 0em 1em;
-    // border: 1px solid red;
-  }
-  .school {
-    // margin-top: 1em;
-  }
-  .school-results {
-    padding: 0;
-    // border: 1px solid red;
-  }
-}
-*/
-.game{
+// new
+
+.game {
   display: flex;
   flex-direction: column;
-  color: $color-primary-3;
+  color: $color-primary-2;
   font-weight: 700;
-  font-size: 1.05em;
-  margin: 0em .2em 0em .2em;
-  // flex-basis: 0;
   // border: 1px solid green;
+}
+
+.dice-box-container {
+  display: flex;
+  width: 100%;
+  transition: all 1.5s;
+  transition-timing-function: linear;
+  // transition: opacity 3s;
+  opacity: 1;
+  z-index: 1;
+  // padding-left: .3em;
+  // border: 1px dotted red;
+}
+
+.dice-controls {
+  display: flex;
+  flex-direction: row;
+  // padding-left: .3em;
+  // border: 1px solid pink;
+}
+
+.dice-box, .result-box {
+  display: flex;
+  align-items: center;
+  // border: 1px dotted green;
+  div {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.result-box {
+  border-right: .2em solid transparent;
+}
+.dice-box {
+  border-left: .2em solid transparent;
+}
+
+.border {
+  border-right: .2em solid orange;
+}
+
+.hidden {
+  // visibility: hidden;
+  // display: none;
+  width: 0%;
+  opacity: 0;
+}
+
+.padding {
+  padding-left: 0em;
+}
+
+.main-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: .175em;
+  margin: 0em .3em 0em .3em;
+  color: $color-light;
+  border-radius: .4em;
+  background-color: $color-primary-0;
+  width: 100%;
+  // transition: width 1s;
+  // transition-timing-function: ease-out;
+  z-index: 2;
+}
+
+.disabled {
+  color: $color-light;
+  background-color: $color-very-red;
+  box-shadow: 0px 0px 6px $color-very-red;
+}
+
+.blink {
+  color: gray;
+  animation: blinker 2.5s linear infinite;
+}
+@keyframes blinker {
+  50% {
+    opacity: .2;
+  }
+}
+.set {
+  // p {
+  color: $color-orange;
+    background-color: $color-primary-tint;
+  // }
 }
 .game-combination {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  margin: .3em 0em .3em 0em;
+  margin: .1em 0em .1em 0em;
+  padding: .3em;
   // border: 1px solid blue;
 }
+
 .game-combination-name {
-  // flex-grow: 1;
-  // border: 1px solid orangered;
-  width: 50%;
+  width: 60%;
 }
+
 .game-result {
   flex-grow: 1;
   text-align: center;
   // border: 1px solid yellow;
-  // color: red;
-  // font-size: 1.4em;
+  color: $color-orange;
+}
+
+@media screen and (max-width: 360px) {
+  .school {
+    // border: 1px solid pink;
+    svg {
+      width: 3.3em;
+      height: 3.3em;
+    }
+    div {
+      font-size: 2em;
+    }
+  }
+  .game {
+    div {
+      font-size: 1.3em;
+    }
+  }
+  .dice-controls {
+    svg {
+      width: 3em;
+      height: 3em;
+    }
+    margin: 1em 0em 1em 0em;
+  }
+}
+
+@media screen and (max-width: 250px) { // fly iq4415
+    .school {
+      // border: 1px solid pink;
+      margin-top: .3em;
+    svg {
+      width: 2em;
+      height: 2em;
+    }
+    div {
+      font-size: 1em;
+    }
+  }
+  .game {
+    div {
+      font-size: .9em;
+    }
+  }
+  .dice-controls {
+    margin: 0em;
+    svg {
+      width: 2em;
+      height: 2em;
+    }
+    margin: 1em 0em 1em 0em;
+  }
 }
 </style>
