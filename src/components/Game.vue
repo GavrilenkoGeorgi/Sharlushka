@@ -214,7 +214,7 @@ export default {
       }
     },
     handleBoardClick (event) {
-      console.log(`New SVG!`)
+      console.log(`Handle board click`)
       let idFound = false
       let scoreId = null
       // let scoreType = null
@@ -240,8 +240,8 @@ export default {
         idFound = true
       }
       */
-      console.log(idFound)
-      console.log(scoreId)
+      // console.log(idFound)
+      // console.log(scoreId)
       // if (scoreId && scoreType) {
       if (scoreId) {
         // console.log(`Score id is: ${scoreId}`)
@@ -268,23 +268,23 @@ export default {
     },
     selectDice (event) {
       this.clicked = true
-      console.log(`Select dice event target is -->`)
-      console.log(event.currentTarget.id)
+      // console.log(`Select dice event target is -->`)
+      // console.log(event.currentTarget.id)
       // let elementToAdd = this.handleDiceClick(event.target)
       let elementToAdd = event.currentTarget
       // store.commit('setDiceChosenState', elementToAdd.id)
-      console.log(`element to add is ${elementToAdd.id}`)
+      // console.log(`element to add is ${elementToAdd.id}`)
       let diceBox = document.querySelector('.dice-box')
       let resultBox = document.querySelector('.result-box')
       if (elementToAdd.parentElement === diceBox && !store.state.turnCompleted) {
-        console.log(`Selecting dice`)
+        // console.log(`Selecting dice`)
         // let transferElement =
         diceBox.removeChild(elementToAdd) // dice-container
         resultBox.appendChild(elementToAdd)
         store.commit('setDiceChosenState', elementToAdd.id)
         store.commit('computeScore')
       } else if (elementToAdd.parentElement === resultBox) {
-        console.log(`Deselecting dice`)
+        // console.log(`Deselecting dice`)
         resultBox.removeChild(elementToAdd)
         diceBox.appendChild(elementToAdd) // dice-container
         store.commit('setDiceChosenState', elementToAdd.id)
@@ -717,10 +717,8 @@ export default {
   }
 }
 .set {
-  // p {
   color: $color-orange;
-    background-color: $color-primary-tint;
-  // }
+  background-color: $color-primary-tint;
 }
 .game-combination {
   display: flex;
@@ -728,6 +726,7 @@ export default {
   align-items: flex-start;
   margin: .1em 0em .1em 0em;
   padding: .3em;
+  transition: all 4s;
   // border: 1px solid blue;
 }
 

@@ -13,7 +13,7 @@ const getDefaultState = () => {
     schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score
     schoolCompleted: false, // check if school is completed
-    gameTurns: 6, // game turns counter
+    gameTurns: 1, // game turns counter
     maxGameTurns: 33,
     rollCount: 3, // roll counter for the current turn
     gameCheck: false, // to check if there are any combinations left to record
@@ -389,7 +389,7 @@ const mutations = {
   },
   setDiceChosenState (state, diceId) {
     // let indexOfId = state.diceArray.indexOf(state.diceArray.id === diceId)
-    console.log(`Setting chosen on: ${diceId}`)
+    // console.log(`Setting chosen on: ${diceId}`)
     for (let key in state.diceArray) {
       if (state.diceArray[key].id === diceId) {
         if (!state.diceArray[key].chosen) {
@@ -408,33 +408,15 @@ const mutations = {
   },
   rollDice (state) {
     state.rollCount--
-    // console.log(`Current game turn ${state.gameTurns}`)
+    console.log(`Current game turn ${state.gameTurns}`)
     for (let dice of state.diceArray) {
       if (!dice.chosen) {
         let numbah = Math.floor((Math.random() * 6) + 1)
         dice.value = numbah
         dice.currentIcon = state.scoreArray[numbah - 1].icon
-        // dice.currentIcon = 'ones'
-        // state.diceArray[index].currentIcon = state.scoreArray[iterator].icon
-        console.log(`Dice current icon ${dice.currentIcon}`)
-        // console.log(`Score Array is ${state.scoreArray}`)
-        // Vue.set(dice, 'currentIcon', iconToSet)
-        // iconToSet = iconToSet.toString()
-        // console.log(`Icon to set ${state.diceArray[index].currentIcon}`)
       }
     }
-    /*
-    for (let key in state.diceArray) {
-      if (state.diceArray[key].chosen !== true) {
-        state.diceArray[key].value = Math.floor((Math.random() * 6) + 1)
-      }
-    }
-    */
-    /*
-    if (state.rollCount === 0) {
-      state.rollButtonDisabled = true
-    }
-    */
+    // on last roll in school on the sixth turn we check if we can continue
     if (state.rollCount === 0 && state.gameTurns <= 6 && !state.turnCompleted) {
       // check if we can record some result, if no -- game over
       let emptyDice = []
@@ -454,10 +436,12 @@ const mutations = {
       }
     }
     // check if user was able to complete school
-    if (state.gameTurns <= 6 && state.rollCount === 0 && !state.turnCompleted && !state.gameCheck) {
+    if (state.gameTurns === 6 && state.rollCount === 0 && !state.turnCompleted && !state.gameCheck) {
       // state.nextTurnButtonText = 'Game over'
       // state.nextTurnButtonDisabled = false
-      state.endGameMenu = true
+      // state.endGameMenu = true
+      alert(`You can't even finish the school... Score is: ${state.schoolScoreTotal}`)
+      // $router.push({ path: '/endgame' })
     }
     state.diceBoxHidden = false
   },
@@ -465,6 +449,24 @@ const mutations = {
     state.gameCheck = false
     state.zeroCheck = false
     state.diceBoxHidden = true
+    state.gameTurns++ // increment turn counter
+    state.turnCompleted = false // set new turn state
+    // state.rollButtonDisabled = false // unlock roll button
+    state.rollCount = 3 // set roll count to intial value of three
+    for (let key in state.diceArray) {
+      state.diceArray[key].value = '#'// reset all dice
+      state.diceArray[key].chosen = false
+    }
+    state.combinationArray = []
+    // clear unsaved results onscreen
+    /*
+    for (let key in state.scoreArray) {
+      if (!state.scoreArray[key].final) {
+        state.scoreArray[key].value = ''
+      }
+    }
+    */
+    /*
     if (!state.gameCheck && !state.turnCompleted) {
       alert(`Game over, your score is ${state.schoolScoreTotal}`)
     } else {
@@ -484,7 +486,7 @@ const mutations = {
       }
       state.combinationArray = []
       // state.nextTurnButtonDisabled = true
-    }
+    } */
   },
   resetState (state) {
     Object.assign(state, getDefaultState())
