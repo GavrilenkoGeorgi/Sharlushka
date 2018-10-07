@@ -1,21 +1,19 @@
 <template>
 <div id="navigation">
   <div class="toolbar">
-    <div class="hamButton">
-      <button class="hamburger hamburger--collapse" type="button" v-on:click="toggleBurger">
+    <div class="ham-button">
+      <div class="hamburger hamburger--collapse" v-on:click="toggleBurger">
         <span class="hamburger-box">
           <span class="hamburger-inner"></span>
         </span>
-      </button>
+      </div>
     </div>
-    <!--div class="userName">{{ msg }}</div-->
     <div class="score-display">
       <div class="title">{{ title }}</div>
       <div class="score">{{ computedGameScore }}</div>
     </div>
   </div>
   <div id="sidenav">
-    <!--div class="background"></div-->
     <h1 class="user-name">{{ userName }}</h1>
     <h2 v-if="highestScore">Your highest score is: {{ highestScore }}</h2>
     <h3 class="menuItem" v-on:click="openMenuItem">Rules</h3>
@@ -23,9 +21,9 @@
     <h3 class="menuItem" v-on:click="openMenuItem">Settings</h3>
     <p class="menuItemText">Lorem ipsum dolor sit amet,</p>
     <button class="menuButton" v-on:click="restartGame">Restart</button>
-    <div class="debug-info">
+    <!--div class="debug-info">
       This is debug!
-    </div>
+    </div-->
   </div>
 </div>
 </template>
@@ -78,26 +76,6 @@ export default {
       // hard reset
       this.$router.go({path: '/game'})
     }
-    /*
-    clearResultBox () { // remove this from here
-      let diceBox = document.querySelector('.diceBox')
-      let resultBox = document.querySelector('.resultBox')
-      while (resultBox.childNodes.length) {
-        diceBox.appendChild(resultBox.firstChild)
-      }
-      // and clear all temp results in store
-      for (let key in store.state.scoreArray) {
-        if (!store.state.scoreArray[key].final) {
-          store.state.scoreArray[key].value = ''
-        }
-      }
-      // deselect all dice
-      for (let key in store.state.diceArray) {
-        if (store.state.diceArray[key].chosen) {
-          store.state.diceArray[key].chosen = false
-        }
-      }
-    } */
   }
 }
 </script>
@@ -121,9 +99,18 @@ export default {
   padding: .2em 0em .2em 0em;
 }
 
-.hamButton {
+.ham-button {
   display: flex;
   align-content: center;
+  // margin: 0em .6em 0em .6em;
+  // padding: .2em 0em 0em 0em;
+  // height: 2em;
+}
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .score-display {
@@ -142,10 +129,7 @@ export default {
 .settings-icon {
   height: 1.2em;
 }
-button {
-  margin: 0em .6em 0em .6em;
-  padding: .2em 0em 0em 0em;
-}
+
 #sidenav {
     height: 100vh;
     width: 0%;
@@ -211,6 +195,11 @@ button {
 @media screen and (max-width: 40em) {
   .score-display {
     font-size: 2em;
+    // border: 1px solid pink;
+  }
+  .toolbar {
+    display: flex;
+    padding: .4em .1em .4em .1em;
   }
 }
 

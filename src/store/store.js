@@ -1,15 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import { stat } from 'fs';
+import getters from './getters'
 
 Vue.use(Vuex)
 
 const getDefaultState = () => {
   return {
     debug: false,
+    diceRolled: true,
     diceBoxHidden: true,
-    currentUserName: '', // remove this from here
-    // mainButtonText: 'Start',
     schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score
     schoolCompleted: false, // check if school is completed
@@ -152,62 +151,6 @@ const getDefaultState = () => {
   }
 }
 
-// initial state
-const state = getDefaultState()
-
-const getters = {
-  evenOrOdd: state => state.count % 2 === 0 ? 'even' : 'odd',
-  getCurrentGameState: function (state) {
-    let currentGameState = {
-      currentTurn: state.gameTurns,
-      rollsCountForButton: state.rollCount,
-      schoolCompleted: state.schoolCompleted,
-      turnCompleted: state.turnCompleted
-    }
-    // currentGameState
-    return currentGameState
-  },
-  getSchoolArray: function (state) {
-    let schoolArray = state.scoreArray.slice(0, state.diceArray.length + 1)
-    return schoolArray
-  },
-  getCombinationArray: function (state) {
-    // another one for export
-    let combinationArray = state.scoreArray.slice(state.diceArray.length + 1, state.scoreArray.length)
-    return combinationArray
-  },
-  getDiceArray: function (state) {
-    return state.diceArray
-  },
-  debugInfo: function (state) {
-    // console.log(`Debug on`)
-    // console.log(state)
-    for (let key in state.diceArray) {
-      if (state.diceArray[key].chosen) {
-        let info = {
-          // name: state.diceArray[key].id,
-          chosen: state.diceArray[key].chosen,
-          firstDice: state.diceArray[0].chosen
-          // value: state.diceArray[key].value
-        }
-        // console.log(info)
-        return info
-      }
-    }
-  },
-  chosenDiceArray: function (state) {
-    // console.log(`Getter test`)
-    return state.diceArray.filter(dice => {
-      return dice.chosen
-    })
-  },
-  currentValuesInScoreArray: function (state) {
-    // console.log(`Current values getter`)
-    return state.scoreArray.filter(score => {
-      return score.value !== '' && !score.final
-    })
-  }
-}
 const mutations = {
   computeScore (state) {
     if (!state.turnCompleted) {
@@ -389,14 +332,11 @@ const mutations = {
     }
   },
   setDiceChosenState (state, diceId) {
-    // let indexOfId = state.diceArray.indexOf(state.diceArray.id === diceId)
-    // console.log(`Setting chosen on: ${diceId}`)
     for (let key in state.diceArray) {
       if (state.diceArray[key].id === diceId) {
         if (!state.diceArray[key].chosen) {
           state.combinationArray.push(state.diceArray[key].value)
           state.diceArray[key].chosen = true
-          // console.log(`False is ${state.diceArray[key].chosen`)
         } else {
           state.diceArray[key].chosen = false
           let value = state.diceArray[key].value
@@ -405,11 +345,12 @@ const mutations = {
         }
       }
     }
-    // dice.currentIcon = combinationArray[dice.value - 1].id
   },
   rollDice (state) {
+    state.diceRolled = true
     state.rollCount--
-    console.log(`Current game turn ${state.gameTurns}`)
+    state.diceRolled = false
+    // console.log(`Current game turn ${state.gameTurns}`)
     for (let dice of state.diceArray) {
       if (!dice.chosen) {
         let numbah = Math.floor((Math.random() * 6) + 1)
@@ -438,9 +379,6 @@ const mutations = {
     }
     // check if user was able to complete school
     if (state.gameTurns === 6 && state.rollCount === 0 && !state.turnCompleted && !state.gameCheck) {
-      // state.nextTurnButtonText = 'Game over'
-      // state.nextTurnButtonDisabled = false
-      // state.endGameMenu = true
       alert(`You can't even finish the school... Score is: ${state.schoolScoreTotal}`)
       // $router.push({ path: '/endgame' })
     }
@@ -460,34 +398,6 @@ const mutations = {
     }
     state.combinationArray = []
     // clear unsaved results onscreen
-    /*
-    for (let key in state.scoreArray) {
-      if (!state.scoreArray[key].final) {
-        state.scoreArray[key].value = ''
-      }
-    }
-    */
-    /*
-    if (!state.gameCheck && !state.turnCompleted) {
-      alert(`Game over, your score is ${state.schoolScoreTotal}`)
-    } else {
-      state.gameTurns++ // increment turn counter
-      state.turnCompleted = false // set new turn state
-      // state.rollButtonDisabled = false // unlock roll button
-      state.rollCount = 3 // set roll count to intial value of three
-      for (let key in state.diceArray) {
-        state.diceArray[key].value = '#'// reset all dice
-        state.diceArray[key].chosen = false
-      }
-      // clear unsaved results onscreen
-      for (let key in state.scoreArray) {
-        if (!state.scoreArray[key].final) {
-          state.scoreArray[key].value = ''
-        }
-      }
-      state.combinationArray = []
-      // state.nextTurnButtonDisabled = true
-    } */
   },
   resetState (state) {
     Object.assign(state, getDefaultState())
@@ -536,6 +446,9 @@ const actions = {
     })
   }
 }
+
+// initial state
+const state = getDefaultState()
 
 export default new Vuex.Store({
   state,

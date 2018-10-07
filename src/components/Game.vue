@@ -10,7 +10,6 @@
     <div class="school" v-on:click="handleBoardClick">
       <div class="school-result" v-for="result in this.getSchoolArray" :key="result.id" v-bind:resultId="result.id" v-bind:class="{ chosen:result.final }">{{ result.value }}</div>
     </div>
-    <!--hr class="faded" /-->
     <!-- Game table -->
     <div class="game" v-on:click="handleBoardClick">
       <div class="game-combination" v-for="combination in this.getCombinationArray" :key="combination.id" v-bind:id="combination.id" v-bind:class="{ set:combination.final }">
@@ -18,7 +17,7 @@
         <p class="game-result" v-for="(value, index) in combination.displayValues" :key="index">
           {{ value }}
         </p>
-        <p class="game-result blink" v-if="combination.value">
+        <p class="game-result" v-if="combination.value">
           {{ combination.value }}
         </p>
       </div>
@@ -26,19 +25,17 @@
     <div class="dice-controls">
         <div class="dice-box-container" v-bind:class="{ hidden:$store.state.diceBoxHidden }">
           <!-- Result box -->
-          <div class="result-box" v-bind:class="{ border: $store.state.combinationArray.length >= 100 }" v-on:click="selectDice"></div>
+          <div class="result-box" v-on:click="selectDice"></div>
           <!-- Dice box -->
           <div class="dice-box">
             <div v-for="dice in this.getDiceArray" :key="dice.id" v-bind:id="dice.id" v-on:click="selectDice">
-              <svg class="dice-icon" fill="none" stroke-width=".7em"> <!-- fill="none" stroke-width=".7em" in case of flyiq4415-->
+              <svg class="dice-icon" fill="none"> <!-- fill="none" stroke-width=".7em" in case of flyiq4415-->
                 <use v-bind="{'xlink:href':'#' + dice.currentIcon}"
-                  class="default animated fadeInUp" x="0" y="0"
-                  v-bind:class="{ chosen:dice.chosen }"></use>
+                  class="default animated" x="0" y="0"
+                  v-bind:class="{ chosen:dice.chosen, fadeInUp:$store.diceRolled }"></use>
               </svg>
             </div>
           </div>
-          <!--svg class="dice-icon" v-for="dice in this.getDiceArray" :key="dice.id" v-bind:id="dice.id" fill="none" stroke-width=".5em"-->
-            <!--use v-bind="{'xlink:href':'#' + dice.currentIcon}" class="default" x="0" y="0" v-bind:class="{ chosen:dice.final }" ></use-->
       </div>
       <div class="main-button animated" v-on:click="handleMainGameButton"
         v-bind:class="{ save: this.mainButtonState.save, bounce: this.mainButtonState.save }">
@@ -47,10 +44,8 @@
             </div>
 
           <div v-if=" this.mainButtonState.roll && this.getCurrentGameState.rollsCountForButton <= 3 " class="circle-container">
-
             <div v-for="(value, index) in this.getCurrentGameState.rollsCountForButton"
               :key="index" class="roll-circle animated fadeIn"></div>
-
           </div>
 
           <div v-if=" this.mainButtonState.save" class="stop-brick animated fadeIn"></div>
@@ -66,7 +61,6 @@
 </template>
 
 <script>
-// import { mapGetters, mapActions } from 'vuex'
 import { mapGetters, mapActions } from 'vuex'
 import store from '../store/store'
 import Navigation from '../components/Navigation'
@@ -96,7 +90,7 @@ export default {
     }
   },
   watch: {
-    newTurn: function () {
+    newTurn () {
       this.updateMainButtonState()
       this.updateProgressBar()
     }
@@ -132,11 +126,13 @@ export default {
       'decrement',
       'computeScore',
       'setDiceChosenState',
-      'incrementIfOdd',
       'incrementAsync'
     ]),
     handleMainGameButton () {
       if (this.getCurrentGameState.rollsCountForButton > 0 && !this.getCurrentGameState.turnCompleted) {
+        if (!this.diceRolled) {
+          this.diceRolled = true
+        }
         store.commit('rollDice')
         this.updateProgressBar()
         this.updateMainButtonState()
@@ -187,6 +183,8 @@ export default {
         this.mainButtonState.play = false
         this.mainButtonState.save = true
         this.mainButtonState.disabled = true
+        window.navigator.vibrate(200)
+        navigator.vibrate([500, 250, 500, 250, 500, 250, 500, 250, 500, 250, 500])
         button.classList.add('bounce')
       } else {
         return false
@@ -218,8 +216,6 @@ export default {
       // highlight highest value onscreen
       this.removeCurrentHighlight()
       // this.currentlyHighlightedElement = null
-      // console.log(`highlighting highest value`)
-      // console.log(this.currentValuesInScoreArray)
       let highestScoreCombination = null
       let highestValue = -12 // minimal combination score on sixes
       for (let combination of this.currentValuesInScoreArray) {
@@ -252,7 +248,6 @@ export default {
       }
     },
     handleBoardClick (event) {
-      console.log(`Handle board click`)
       let idFound = false
       let scoreId = null
       let elementToCheck = event.target // .parentElement?
@@ -306,7 +301,6 @@ export default {
     },
     deSelectDice (event) {
       let elementToRemove = this.handleDiceClick(event.target)
-      // console.log(`element to add is ${elementToAdd}`)
       let diceBox = document.querySelector('.dice-box')
       let resultBox = document.querySelector('.result-box')
       if (elementToRemove && !store.state.turnCompleted) {
@@ -338,11 +332,12 @@ export default {
       store.state.debug = true
     },
     recordResult (id) {
-      // console.log(`Game turn # ${store.state.gameTurns}`)
-      // let resultType = type
       let combinationId = id
       const combinationIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(combinationId)
-      if (!store.state.schoolCompleted && store.state.scoreArray[combinationIndexInArray].value !== '' && !store.state.turnCompleted && !store.state.scoreArray[combinationIndexInArray].final) {
+      if (!store.state.schoolCompleted &&
+          store.state.scoreArray[combinationIndexInArray].value !== '' &&
+          !store.state.turnCompleted &&
+          !store.state.scoreArray[combinationIndexInArray].final) {
         store.state.scoreArray[combinationIndexInArray].final = true
         store.state.schoolScoreTotal += store.state.scoreArray[combinationIndexInArray].value
         store.state.turnCompleted = true
@@ -418,77 +413,9 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 @import "../assets/scss/index.scss";
 @import "../../node_modules/animate.css/animate.css";
-// @import "../assets/scss/vars/colors.scss";
-
-.complete {
-  background-color: $color-pale-primary;
-}
-
-.result {
-  padding: 0em .2em 0em .2em;
-  // color: $color-light-gray;
-  color: $color-primary-2;
-  width: 2em;
-  font-size: 1.2em;
-  cursor: pointer;
-}
-.result:hover {
-  background-color: $color-pale-primary;
-}
-.saved {
-  color: $color-orange;
-}
-
-.dice-container {
-  // width: 20%;
-  padding: 0em .4em 0em .4em;
-}
-
-.faded { // horizontal ruler
-  border: 0;
-  height: 0.065em;
-  background-image: linear-gradient(to right, hsla(0, 0%, 65%, 0), hsla(0, 0%, 65%, 0.75), hsla(0, 0%, 65%, 0));
-}
-
-.result-box-border-hidden {
-  border: 0;
-}
-
-.debug {
-  background-color: cornflowerblue;
-  position: fixed;
-  z-index: 1;
-  width: 225px;
-  color:indigo;
-  top:150px;
-  opacity: .9;
-  height: 10em;
-  overflow: hidden;
-}
-
-.progress-bar {
-  // border: 1px solid red;
-  background-color: $color-primary-0;
-  box-shadow: 0px 1px 10px 0px $color-primary-4;
-  height: .2em;
-  width: 0%;
-  transition: width 1.75s;
-}
-
-.full { //progress bar
-  background-color: #AA3838;
-  box-shadow: 0px 1px 10px 0px red;
-}
-
-.highest-value {
-  color: $color-very-red;
-  text-shadow: 0px 0px 15px $color-very-red-transparent;
-}
-// new
 
 #gameView {
   display: flex;
@@ -496,7 +423,6 @@ export default {
   justify-content: space-between;
   width: 100%;
 }
-
 .school {
   display: flex;
   justify-content: space-around;
@@ -517,26 +443,56 @@ export default {
   font-weight: 700;
   // border: 1px solid green;
 }
+.game-combination {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin: .1em 0em .1em 0em;
+  padding: .3em;
+  transition: all 1s;
+  // border: 1px solid blue;
+}
+.game-combination-name {
+  width: 60%;
+}
+.game-result {
+  flex-grow: 1;
+  text-align: center;
+  // border: 1px solid yellow;
+}
+.blink {
+  color: gray;
+  animation: blinker 2.5s linear infinite;
+}
+@keyframes blinker {
+  50% {
+    opacity: .2;
+  }
+}
+.set {
+  color: $color-orange;
+  background-color: $color-primary-tint;
+}
+.saved {
+  color: $color-orange;
+}
 
+/* Dice control */
 .dice-box-container {
   display: flex;
   width: 100%;
   transition: all .7s;
   transition-timing-function: linear;
-  // transition: opacity 3s;
   opacity: 1;
   z-index: 1;
-  // padding-left: .3em;
   // border: 1px dotted red;
 }
-
 .dice-controls {
   display: flex;
   flex-direction: row;
   // padding-left: .2em; // change svg viewport
   // border: 1px solid pink;
 }
-
 .dice-box, .result-box {
   display: flex;
   align-items: center;
@@ -546,7 +502,6 @@ export default {
     align-items: center;
   }
 }
-
 .hidden {
   // visibility: hidden;
   // display: none;
@@ -554,10 +509,7 @@ export default {
   opacity: 0;
 }
 
-.padding {
-  padding-left: 0em;
-}
-
+/* main button */
 .main-button {
   display: flex;
   flex-direction: row;
@@ -573,7 +525,6 @@ export default {
   // transition-timing-function: ease-out;
   z-index: 2;
 }
-
 .play-arrow-right {
   // width: 0;
   // height: 0;
@@ -587,7 +538,6 @@ export default {
   align-items: center;
   // border: 1px solid pink;
 }
-
 .roll-circle {
   width: .75em;
   height: .75em;
@@ -608,38 +558,18 @@ export default {
   box-shadow: 0px 0px 6px $color-very-red;
 }
 
-.blink {
-  color: gray;
-  animation: blinker 2.5s linear infinite;
+/*Progress bar */
+.progress-bar {
+  // border: 1px solid red;
+  background-color: $color-primary-0;
+  box-shadow: 0px 1px 10px 0px $color-primary-4;
+  height: .2em;
+  width: 0%;
+  transition: width 1.75s;
 }
-@keyframes blinker {
-  50% {
-    opacity: .2;
-  }
-}
-.set {
-  color: $color-orange;
-  background-color: $color-primary-tint;
-}
-.game-combination {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  margin: .1em 0em .1em 0em;
-  padding: .3em;
-  transition: all 1s;
-  // border: 1px solid blue;
-}
-
-.game-combination-name {
-  width: 60%;
-}
-
-.game-result {
-  flex-grow: 1;
-  text-align: center;
-  // border: 1px solid yellow;
-  color: $color-orange;
+.full { //progress bar
+  background-color: #AA3838;
+  box-shadow: 0px 1px 10px 0px red;
 }
 
 @media screen and (max-width: 40em) { // nokia 5
@@ -667,7 +597,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 20em) { // fly iq4415 (
+@media screen and (max-width: 19em) { // fly iq4415 (
     .school {
       // border: 1px solid pink;
       margin-top: .3em;
@@ -676,21 +606,45 @@ export default {
       height: 2em;
     }
     div {
-      font-size: 1em;
+      font-size: 1.1em;
     }
   }
   .game {
     div {
-      font-size: .9em;
+      font-size: 1.1em;
     }
   }
   .dice-controls {
-    margin: 0em;
+    // margin: 0em;
     svg {
-      width: 1.8em;
-      height: 1.8em;
+      width: 2em;
+      height: 2em;
     }
     margin: 1em 0em 1em 0em;
   }
+  .main-button {
+    height: 2em;
+  }
+  .stop-brick {
+    width: 1em;
+    height: 1em;
+  }
+}
+
+// stuff
+.debug {
+  background-color: cornflowerblue;
+  position: fixed;
+  z-index: 1;
+  width: 225px;
+  color:indigo;
+  top:150px;
+  opacity: .9;
+  height: 10em;
+  overflow: hidden;
+}
+.highest-value {
+  color: $color-very-red;
+  text-shadow: 0px 0px 15px $color-very-red-transparent;
 }
 </style>

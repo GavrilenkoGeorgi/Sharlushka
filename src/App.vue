@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-            <!-- SVG icons defs -->
+  <!-- SVG icons defs -->
     <!-- Default icons -->
     <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
       <symbol id="diceOnes" viewBox="-10 -10 220 220">
@@ -64,7 +64,6 @@ export default {
     }
   }
 }
-// document.addEventListener('deviceready', this.init)
 </script>
 
 <style lang="scss">
