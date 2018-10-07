@@ -92,7 +92,7 @@ export default {
   watch: {
     newTurn () {
       this.updateMainButtonState()
-      this.updateProgressBar()
+      // this.updateProgressBar()
     }
   },
   components: {
@@ -407,6 +407,7 @@ export default {
         this.newTurn = true
         store.commit('nextTurn')
         this.updateMainButtonState()
+        this.updateProgressBar()
       }
     } // end of record result method
   } // end of methods
@@ -597,7 +598,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 19em) { // fly iq4415 (
+@media screen and (max-width: 15em) { // fly iq4415 (
     .school {
       // border: 1px solid pink;
       margin-top: .3em;
@@ -606,12 +607,12 @@ export default {
       height: 2em;
     }
     div {
-      font-size: 1.1em;
+      font-size: 1em;
     }
   }
   .game {
     div {
-      font-size: 1.1em;
+      font-size: 1em;
     }
   }
   .dice-controls {
