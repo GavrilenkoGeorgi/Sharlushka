@@ -24,28 +24,45 @@
       </div>
     </div>
     <div class="dice-controls">
-        <div class="dice-box-container" v-bind:class="{ hidden:$store.state.diceBoxHidden, padding:$store.state.diceBoxHidden }">
+        <div class="dice-box-container" v-bind:class="{ hidden:$store.state.diceBoxHidden }">
           <!-- Result box -->
-          <div class="result-box" v-bind:class="{ border: $store.state.combinationArray.length >= 1 }" v-on:click="selectDice"></div>
+          <div class="result-box" v-bind:class="{ border: $store.state.combinationArray.length >= 100 }" v-on:click="selectDice"></div>
           <!-- Dice box -->
           <div class="dice-box">
             <div v-for="dice in this.getDiceArray" :key="dice.id" v-bind:id="dice.id" v-on:click="selectDice">
-              <svg class="dice-icon"> <!-- fill="none" stroke-width=".7em" in case of flyiq4415-->
-                <use v-bind="{'xlink:href':'#' + dice.currentIcon}" class="default animated fadeInUp" x="0" y="0" v-bind:class="{ chosen:dice.chosen }"></use>
+              <svg class="dice-icon" fill="none" stroke-width=".7em"> <!-- fill="none" stroke-width=".7em" in case of flyiq4415-->
+                <use v-bind="{'xlink:href':'#' + dice.currentIcon}"
+                  class="default animated fadeInUp" x="0" y="0"
+                  v-bind:class="{ chosen:dice.chosen }"></use>
               </svg>
             </div>
           </div>
           <!--svg class="dice-icon" v-for="dice in this.getDiceArray" :key="dice.id" v-bind:id="dice.id" fill="none" stroke-width=".5em"-->
             <!--use v-bind="{'xlink:href':'#' + dice.currentIcon}" class="default" x="0" y="0" v-bind:class="{ chosen:dice.final }" ></use-->
       </div>
-      <div class="main-button animated" v-on:click="handleMainGameButton" v-bind:class="{ disabled:mainButtonDisabled }">{{ mainButtonText }}</div>
-  </div>
+      <div class="main-button animated fadeId" v-on:click="handleMainGameButton"
+        v-bind:class="{ save: this.mainButtonState.save }">
+
+          <div v-if=" this.mainButtonState.play " class="play-arrow-right animated fadeIn">
+            </div>
+
+          <div v-if=" this.mainButtonState.roll && this.getCurrentGameState.rollsCountForButton <= 3 " class="circle-container">
+
+            <div v-for="(value, index) in this.getCurrentGameState.rollsCountForButton"
+              :key="index" class="roll-circle animated fadeIn"></div>
+
+          </div>
+
+          <div v-if=" this.mainButtonState.save" class="stop-brick animated fadeIn"></div>
+      </div>
+    </div>
   <!-- End of dice box container -->
   <div class="progress-bar"></div>
+</div>
   <!--div class="debug">{{debugInfo}}
     {{clicked}}
   </div-->
-  </div>
+
 </template>
 
 <script>
@@ -60,14 +77,21 @@ export default {
     return {
       title: 'Sharlushka',
       // userName: '',
+      test: true,
       clicked: false,
       highestScore: 0,
       registerForm: false,
       userExists: false,
       // loginButtonText: 'Change',
       // formValueName: '',
-      mainButtonText: 'Start',
-      mainButtonDisabled: false,
+      mainButtonState: {
+        play: true,
+        roll: false,
+        save: false,
+        disabled: false
+      },
+      mainButtonText: '',
+      // mainButtonDisabled: false,
       currentlyHighlightedElement: null,
       diceToDisplay: [
         { value: '6', chosen: true, id: 'diceSixesSelected' },
@@ -124,14 +148,18 @@ export default {
       if (store.state.rollCount > 0 && !store.state.turnCompleted) {
         store.commit('rollDice')
         this.updateProgressBar()
+        this.updateMainButtonState()
       } else if (store.state.turnCompleted) {
         this.clearResultBox()
+        this.updateMainButtonState()
       } else {
-        console.log(`Record something!`)
+        this.updateMainButtonState()
+        // console.log(`Record something!`)
+        return false
       }
       this.updateMainButtonState()
     },
-    updateMainButtonState () {
+    updateMainButtonStateBak () {
       let button = document.querySelector('.main-button')
       this.mainButtonDisabled = false
       // button.classList.remove('bounce')
@@ -148,6 +176,38 @@ export default {
         this.mainButtonDisabled = false
       } else {
         this.mainButtonText = 'Turn'
+      }
+    },
+    updateMainButtonState () {
+      let button = document.querySelector('.main-button')
+
+      // this.mainButtonState.play = false
+      if (this.getCurrentGameState.rollsCountForButton === 3 && !this.getCurrentGameState.turnCompleted) {
+        this.mainButtonState.play = true
+        // this.mainButtonState.roll = false
+      } else if (!this.getCurrentGameState.turnCompleted && this.getCurrentGameState.rollsCountForButton <= 2) {
+        // render three circles
+        this.mainButtonState.play = false
+        this.mainButtonState.roll = true
+        // this.mainButtonText = `Roll ${store.state.rollCount}`
+      } else if (this.getCurrentGameState.turnCompleted) {
+        this.mainButtonState.roll = false
+        this.mainButtonState.play = true
+        this.mainButtonState.disabled = false
+      } else if (store.state.rollCount === 0 && !this.getCurrentGameState.turnCompleted) {
+        // this.mainButtonText = 'SAVE'
+        this.mainButtonState.roll = false
+        this.mainButtonState.play = false
+        this.mainButtonState.save = true
+        this.mainButtonState.disabled = true
+        button.classList.add('bounce')
+        console.log(`Bounce!`)
+        /* else if (store.state.rollCount === 0 && store.state.turnCompleted) {
+        this.mainButtonState.save = false
+        this.mainButtonState.play = true
+        this.mainButtonState.disabled = false
+        // this.mainButtonDisabled = false
+      } */
       }
     },
     updateProgressBar () {
@@ -422,7 +482,7 @@ export default {
           this.removeCurrentHighlight()
           store.state.turnCompleted = true
           this.mainButtonText = 'Turn'
-          this.mainButtonDisabled = false
+          this.mainButtonState.disabled = false
         }
         // check if it is full
         if (store.state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
@@ -452,6 +512,7 @@ export default {
         store.commit('nextTurn')
         this.updateProgressBar()
       }
+      this.updateMainButtonState()
     } // end of record result method
     /*
     recordResult (id) {
@@ -539,28 +600,6 @@ export default {
 @import "../../node_modules/animate.css/animate.css";
 // @import "../assets/scss/vars/colors.scss";
 
-#gameView {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 100%;
-}
-.school {
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-  // height: 1.5em;
-  // padding-top: .3em;
-  color: $color-primary-0;
-  font-weight: 700;
-  // border: 1px solid lime;
-  div {
-    flex-grow: 1;
-    flex-basis: 0;
-    text-align: center;
-    height: 1em;
-  }
-}
 .complete {
   background-color: $color-pale-primary;
 }
@@ -627,6 +666,26 @@ export default {
 }
 // new
 
+#gameView {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.school {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  color: $color-primary-2;
+  font-weight: 700;
+  div {
+    flex-grow: 1;
+    flex-basis: 0;
+    text-align: center;
+    height: 1em;
+  }
+}
 .game {
   display: flex;
   flex-direction: column;
@@ -638,7 +697,7 @@ export default {
 .dice-box-container {
   display: flex;
   width: 100%;
-  transition: all 1.5s;
+  transition: all .7s;
   transition-timing-function: linear;
   // transition: opacity 3s;
   opacity: 1;
@@ -650,7 +709,7 @@ export default {
 .dice-controls {
   display: flex;
   flex-direction: row;
-  // padding-left: .3em;
+  // padding-left: .2em; // change svg viewport
   // border: 1px solid pink;
 }
 
@@ -662,17 +721,6 @@ export default {
     display: flex;
     align-items: center;
   }
-}
-
-.result-box {
-  border-right: .2em solid transparent;
-}
-.dice-box {
-  border-left: .2em solid transparent;
-}
-
-.border {
-  border-right: .2em solid orange;
 }
 
 .hidden {
@@ -688,9 +736,10 @@ export default {
 
 .main-button {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding-bottom: .175em;
+  // padding-bottom: .175em;
   margin: 0em .3em 0em .3em;
   color: $color-light;
   border-radius: .4em;
@@ -701,7 +750,35 @@ export default {
   z-index: 2;
 }
 
-.disabled {
+.play-arrow-right {
+  // width: 0;
+  // height: 0;
+  border-top: .75em solid transparent;
+  border-bottom: .75em solid transparent;
+  border-left: 1.25em solid $color-primary-1;
+}
+.circle-container {
+  display: flex;
+  // width: 100%;
+  align-items: center;
+  // border: 1px solid pink;
+}
+
+.roll-circle {
+  width: .75em;
+  height: .75em;
+  margin: .2em;
+  background: $color-primary-1;
+  border-radius: 50%
+}
+.stop-brick {
+  width: 3em;
+  height: 1.25em;
+  margin: .2em;
+  background: $color-light;
+  box-shadow: 0px 0px .4em .05em $color-light;
+}
+.save {
   color: $color-light;
   background-color: $color-very-red;
   box-shadow: 0px 0px 6px $color-very-red;
@@ -726,7 +803,7 @@ export default {
   align-items: flex-start;
   margin: .1em 0em .1em 0em;
   padding: .3em;
-  transition: all 4s;
+  transition: all 1s;
   // border: 1px solid blue;
 }
 
@@ -741,15 +818,15 @@ export default {
   color: $color-orange;
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 40em) { // nokia 5
   .school {
-    // border: 1px solid pink;
+    // border: 1px solid green;
     svg {
-      width: 3.3em;
-      height: 3.3em;
+      width: 3em;
+      height: 3em;
     }
     div {
-      font-size: 2em;
+      font-size: 1.4em;
     }
   }
   .game {
@@ -766,9 +843,9 @@ export default {
   }
 }
 
-@media screen and (max-width: 250px) { // fly iq4415
+@media screen and (max-width: 20em) { // fly iq4415 (
     .school {
-      // border: 1px solid pink;
+      border: 1px solid pink;
       margin-top: .3em;
     svg {
       width: 2em;
@@ -786,8 +863,8 @@ export default {
   .dice-controls {
     margin: 0em;
     svg {
-      width: 2em;
-      height: 2em;
+      width: 1.8em;
+      height: 1.8em;
     }
     margin: 1em 0em 1em 0em;
   }

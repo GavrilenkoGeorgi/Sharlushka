@@ -23,6 +23,9 @@
     <h3 class="menuItem" v-on:click="openMenuItem">Settings</h3>
     <p class="menuItemText">Lorem ipsum dolor sit amet,</p>
     <button class="menuButton" v-on:click="restartGame">Restart</button>
+    <div class="debug-info">
+      This is debug!
+    </div>
   </div>
 </div>
 </template>
@@ -200,13 +203,18 @@ button {
   box-shadow: 0px 0px 6px $color-primary-0;
 }
 
-@media screen and (max-width: 360px) {
+.debug-info {
+  border: 1px solid $color-primary-1;
+  width: 100%;
+}
+
+@media screen and (max-width: 40em) {
   .score-display {
     font-size: 2em;
   }
 }
 
-@media screen and (max-width: 250px) { // fly iq4415
+@media screen and (max-width: 20em) { // fly iq4415
   .score-display {
     font-size: 1.5em;
   }

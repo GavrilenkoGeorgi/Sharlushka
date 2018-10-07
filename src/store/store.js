@@ -9,7 +9,7 @@ const getDefaultState = () => {
     debug: false,
     diceBoxHidden: true,
     currentUserName: '', // remove this from here
-    mainButtonText: 'Start',
+    // mainButtonText: 'Start',
     schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score
     schoolCompleted: false, // check if school is completed
@@ -160,6 +160,7 @@ const getters = {
   getCurrentGameState: function (state) {
     let currentGameState = {
       currentTurn: state.gameTurns,
+      rollsCountForButton: state.rollCount,
       schoolCompleted: state.schoolCompleted,
       turnCompleted: state.turnCompleted
     }
