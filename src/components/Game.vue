@@ -31,7 +31,7 @@
             <div v-for="dice in this.getDiceArray" :key="dice.id" v-bind:id="dice.id" v-on:click="selectDice">
               <svg class="dice-icon" fill="none"> <!-- fill="none" stroke-width=".7em" in case of flyiq4415-->
                 <use v-bind="{'xlink:href':'#' + dice.currentIcon}"
-                  class="default animated" x="0" y="0"
+                  class="default animated fadeInUp" x="0" y="0"
                   v-bind:class="{ chosen:dice.chosen, fadeInUp:$store.diceRolled }"></use>
               </svg>
             </div>
@@ -576,23 +576,19 @@ export default {
 @media screen and (max-width: 40em) { // nokia 5
   .school {
     // border: 1px solid green;
+    margin-top: .6em;
     svg {
       width: 3em;
       height: 3em;
     }
-    div {
-      font-size: 1.4em;
-    }
   }
-  .game {
-    div {
-      font-size: 1.3em;
-    }
+  .game-combination-name {
+    // font-size: 2em;
   }
   .dice-controls {
     svg {
-      width: 3em;
-      height: 3em;
+      width: 2.3em;
+      height: 2.3em;
     }
     margin: 1em 0em 1em 0em;
   }
@@ -618,13 +614,13 @@ export default {
   .dice-controls {
     // margin: 0em;
     svg {
-      width: 1.3em;
-      height: 1.3em;
+      width: 1.5em;
+      height: 1.5em;
     }
     margin: 1em 0em 1em 0em;
   }
   .main-button {
-    height: 2em;
+    height: 1.5em;
   }
   .stop-brick {
     width: 1em;

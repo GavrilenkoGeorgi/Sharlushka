@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="score-display">
-      <div class="title">{{ title }}</div>
+      <div class="game-name">{{ title }}</div>
       <div class="score">{{ computedGameScore }}</div>
     </div>
   </div>
@@ -20,7 +20,10 @@
     <p class="menuItemText">Lorem ipsum dolor sit amet,</p>
     <h3 class="menuItem" v-on:click="openMenuItem">Settings</h3>
     <p class="menuItemText">Lorem ipsum dolor sit amet,</p>
-    <button class="menuButton" v-on:click="restartGame">Restart</button>
+    <!--button class="menuButton" v-on:click="restartGame">Restart</button-->
+    <v-btn v-on:click="restartGame" color="purple" dark class="my-4">
+        <v-icon dark>replay</v-icon>
+    </v-btn>
     <!--div class="debug-info">
       This is debug!
     </div-->
@@ -90,6 +93,7 @@ export default {
   // box-shadow: 0px 10px 45px -11px $color-primary-2;
   box-shadow: 0px 1px 5px 0px $color-primary-0;
   color: $color-light;
+  overflow-x: hidden;
   // margin: 0em 0em 1em 0em;
   z-index: 3;
 }
@@ -119,7 +123,7 @@ export default {
   font-size: 1.5em;
   padding-right: .3em;
 }
-.title {
+.game-name {
   text-align: center;
   flex-grow: 2;
 }

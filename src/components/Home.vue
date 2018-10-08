@@ -1,21 +1,17 @@
 <template>
-  <div class="startPageContent">
-    <p class="gameName">Sharlushka</p>
+  <div id="startPageContent">
+    <span class="game-name">Sharlushka</span>
     <img class="startPageDice" src="../assets/icons/startPageDice.svg" alt="Start page dice">
-    <h2 class="greeting">Hi, {{ userName }}.</h2>
+    <span class="greeting">Hi, {{ userName }}.</span>
     <div class="buttonBox">
-      <div class="ui-button">
-        <router-link to="/game">
-          {{ this.buttons.playBtn.text }}
-        </router-link>
-      </div>
-      <div class="ui-button">
-        <router-link to="/register">
-          {{ this.buttons.newUserBtn.text }}
-        </router-link>
-      </div>
+      <v-btn color="purple" dark to="/game">
+        <v-icon>done</v-icon>
+      </v-btn>
+      <v-btn color="purple" dark to="/register">
+        <v-icon dark>build</v-icon>
+      </v-btn>
     </div>
-    <div class="iconLicense">Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+    <div class="icon-license">Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
     </div>
   </div>
 </template>
@@ -77,15 +73,16 @@ $color-orange: hsl(36, 100%, 50%);
 $color-green: hsl(167, 100%, 30%);
 $color-white: hsl(0, 0%, 100%);
 
-.startPageContent {
+#startPageContent {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  padding: 3em 0em .5em .0em;
 }
 
-.gameName {
+.game-name {
   color: $color-primary-0;
   font-family: $game-name-font;
   font-size: 3.5em;
@@ -99,32 +96,18 @@ $color-white: hsl(0, 0%, 100%);
   justify-content: space-around;
   width: 100%;
 }
-.button {
-  background: $color-primary-0;
-  border: none;
-  border-radius: .25em;
-  font-size: 1.2em;
-  // color: white;
-  padding: .3em;
-  width: 6em;
-  text-align: center;
-  a {
-    color: white;
-    text-decoration: none;
-  }
+.greeting {
+  font-size: 2.3em;
 }
-.button:hover{
-  box-shadow: 0px 0px 6px $color-primary-0;
-}
-.iconLicense {
-  color: $color-gray;
+.icon-license {
+  color: $color-primary-0;
   font-size: .5em;
   margin-bottom: 1em;
 }
-.iconLicense > a {
-  color: $color-gray;
+.icon-license > a {
+  color: $color-primary-1;
 }
-.iconLicense > a:hover {
+.icon-license > a:hover {
   color: $color-orange;
 }
 </style>
