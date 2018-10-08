@@ -1,0 +1,16 @@
+@import '../vars/colors.scss';
+
+.ui-button {
+  // border: 1px solid pink;
+  border-radius: .3em;
+  color: $color-light;
+  font-size: 2em;
+  width: 5em;
+  padding: .2em 0em .2em 0em;
+  text-align: center;
+  background-color: $color-primary-0;
+  a {
+    color: white;
+    text-decoration: none;
+  }
+}

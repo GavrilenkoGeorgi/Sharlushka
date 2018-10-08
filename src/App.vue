@@ -69,7 +69,9 @@ export default {
 <style lang="scss">
 @import "./assets/scss/index.scss";
 @import "../node_modules/animate.css/animate.css";
+// @import '../node_modules/material-icons/css/material-icons.min.css';
 @import "../node_modules/hamburgers/_sass/hamburgers/hamburgers.scss";
+@import '~material-icons/css/material-icons.scss';
 
 * {
   margin: 0;

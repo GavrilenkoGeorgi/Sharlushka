@@ -4,11 +4,15 @@
     <img class="startPageDice" src="../assets/icons/startPageDice.svg" alt="Start page dice">
     <h2 class="greeting">Hi, {{ userName }}.</h2>
     <div class="buttonBox">
-      <div class="button">
-        <router-link to="/game">Play</router-link>
+      <div class="ui-button">
+        <router-link to="/game">
+          {{ this.buttons.playBtn.text }}
+        </router-link>
       </div>
-      <div class="button">
-        <router-link to="/register">{{ registerButtonText }}</router-link>
+      <div class="ui-button">
+        <router-link to="/register">
+          {{ this.buttons.newUserBtn.text }}
+        </router-link>
       </div>
     </div>
     <div class="iconLicense">Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
@@ -24,6 +28,14 @@ export default {
   data () {
     return {
       userName: 'Anonymous',
+      buttons: {
+        playBtn: {
+          text: 'Play'
+        },
+        newUserBtn: {
+          text: 'Change'
+        }
+      },
       userExists: false,
       registerButtonText: 'New User'
     }
@@ -33,12 +45,12 @@ export default {
   ]),
   mounted: function () {
     this.$nextTick(function () {
-      console.log(`Home view mounted`)
+      console.log(`Start page mounted`)
       this.userName = localStorage.getItem('userName')
-      if (this.userName !== 'Anonymous') {
-        console.log(`User name set`)
-      } else {
+      if (this.userName === 'Anonymous') {
         console.log(`User Anonymous`)
+      } else {
+        console.log(`User name is: ${this.userName}`)
       }
     })
   },

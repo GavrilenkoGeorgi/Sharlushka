@@ -169,7 +169,7 @@ export default {
         this.mainButtonState.play = true
       }
       if (this.getCurrentGameState.rollsCountForButton <= 2 && !this.getCurrentGameState.turnCompleted) {
-        // render three circles
+        // render circles
         this.mainButtonState.play = false
         this.mainButtonState.roll = true
       }
@@ -183,8 +183,8 @@ export default {
         this.mainButtonState.play = false
         this.mainButtonState.save = true
         this.mainButtonState.disabled = true
-        window.navigator.vibrate(200)
-        navigator.vibrate([500, 250, 500, 250, 500, 250, 500, 250, 500, 250, 500])
+        // window.navigator.vibrate(200)
+        // navigator.vibrate([500, 250, 500, 250, 500, 250, 500, 250, 500, 250, 500])
         button.classList.add('bounce')
       } else {
         return false
@@ -258,7 +258,7 @@ export default {
           scoreId = elementToCheck.id
           idFound = true
         } else if (elementToCheck.classList.contains('school-result')) {
-          scoreId = elementToCheck.getAttribute('resultId')
+          scoreId = elementToCheck.getAttribute('res ultId')
           idFound = true
         } else {
           elementToCheck = elementToCheck.parentElement
@@ -598,7 +598,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 15em) { // fly iq4415 (
+@media screen and (max-width: 19em) { // fly iq4415 (
     .school {
       // border: 1px solid pink;
       margin-top: .3em;
@@ -618,8 +618,8 @@ export default {
   .dice-controls {
     // margin: 0em;
     svg {
-      width: 2em;
-      height: 2em;
+      width: 1.3em;
+      height: 1.3em;
     }
     margin: 1em 0em 1em 0em;
   }
