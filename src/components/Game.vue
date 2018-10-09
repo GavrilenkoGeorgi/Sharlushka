@@ -8,50 +8,57 @@
       </svg>
     </div>
     <div class="school" v-on:click="handleBoardClick">
-      <div class="school-result" v-for="result in this.getSchoolArray" :key="result.id" v-bind:resultId="result.id" v-bind:class="{ chosen:result.final }">{{ result.value }}</div>
+      <div class="school-result" v-for="result in this.getSchoolArray" :key="result.id"
+        v-bind:resultId="result.id"
+        v-bind:class="{ chosen:result.final }">
+        {{ result.value }}
+      </div>
     </div>
     <!-- Game table -->
     <div class="game" v-on:click="handleBoardClick">
-      <div class="game-combination" v-for="combination in this.getCombinationArray" :key="combination.id" v-bind:id="combination.id" v-bind:class="{ set:combination.final }">
-        <p class="game-combination-name">{{ combination.fullName }}</p>
-        <p class="game-result" v-for="(value, index) in combination.displayValues" :key="index">
+      <div class="game-combination" v-for="combination in this.getCombinationArray" :key="combination.id"
+        v-bind:id="combination.id" v-bind:class="{ set:combination.final }">
+        <div class="game-combination-name">{{ combination.fullName }}</div>
+        <div class="game-result" v-for="(value, index) in combination.displayValues" :key="index">
           {{ value }}
-        </p>
-        <p class="game-result" v-if="combination.value">
+        </div>
+        <div class="game-result blink" v-if="combination.value">
           {{ combination.value }}
-        </p>
+        </div>
       </div>
-    </div>
-    <div class="dice-controls">
-        <div class="dice-box-container" v-bind:class="{ hidden:$store.state.diceBoxHidden }">
+    </div><!-- Game end -->
+    <!--div class="dice-controls"-->
+        <!--div class="dice-box-container" v-bind:class="{ hidden:$store.state.diceBoxHidden }"-->
           <!-- Result box -->
-          <div class="result-box" v-on:click="selectDice"></div>
+          <!--div class="result-box" v-on:click="selectDice"></div-->
           <!-- Dice box -->
-          <div class="dice-box">
+          <!--div class="dice-box">
             <div v-for="dice in this.getDiceArray" :key="dice.id" v-bind:id="dice.id" v-on:click="selectDice">
-              <svg class="dice-icon" fill="none"> <!-- fill="none" stroke-width=".7em" in case of flyiq4415-->
-                <use v-bind="{'xlink:href':'#' + dice.currentIcon}"
+              <svg class="dice-icon" fill="none"--> <!-- fill="none" stroke-width=".7em" in case of flyiq4415-->
+                <!--use v-bind="{'xlink:href':'#' + dice.currentIcon}"
                   class="default animated fadeInUp" x="0" y="0"
                   v-bind:class="{ chosen:dice.chosen, fadeInUp:$store.diceRolled }"></use>
               </svg>
             </div>
           </div>
-      </div>
-      <div class="main-button animated" v-on:click="handleMainGameButton"
-        v-bind:class="{ save: this.mainButtonState.save, bounce: this.mainButtonState.save }">
+      </div-->
+      <div class="dice-controls-container">
+        <DiceBox />
+        <div class="main-button animated" v-on:click="handleMainGameButtonClick"
+          v-bind:class="{ save: this.mainButtonState.save, bounce: this.mainButtonState.save }">
 
-          <div v-if=" this.mainButtonState.play " class="play-arrow-right animated fadeIn">
+            <div v-if=" this.mainButtonState.play " class="play-arrow-right animated fadeIn">
+              </div>
+
+            <div v-if=" this.mainButtonState.roll && this.getCurrentGameState.rollsCountForButton <= 3 " class="circle-container">
+              <div v-for="(value, index) in this.getCurrentGameState.rollsCountForButton"
+                :key="index" class="roll-circle animated fadeIn"></div>
             </div>
 
-          <div v-if=" this.mainButtonState.roll && this.getCurrentGameState.rollsCountForButton <= 3 " class="circle-container">
-            <div v-for="(value, index) in this.getCurrentGameState.rollsCountForButton"
-              :key="index" class="roll-circle animated fadeIn"></div>
-          </div>
-
-          <div v-if=" this.mainButtonState.save" class="stop-brick animated fadeIn"></div>
+            <div v-if=" this.mainButtonState.save" class="stop-brick animated fadeIn"></div>
+        </div>
       </div>
-    </div>
-  <!-- End of dice box container -->
+    <!--/div--><!-- End of dice controls -->
   <div class="progress-bar"></div>
 </div>
   <!--div class="debug">{{debugInfo}}
@@ -64,6 +71,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import store from '../store/store'
 import Navigation from '../components/Navigation'
+import DiceBox from '../components/DiceBox'
 
 export default {
   name: 'Game',
@@ -96,7 +104,8 @@ export default {
     }
   },
   components: {
-    Navigation
+    Navigation,
+    DiceBox
   },
   computed: {
     ...mapGetters([
@@ -128,7 +137,7 @@ export default {
       'setDiceChosenState',
       'incrementAsync'
     ]),
-    handleMainGameButton () {
+    handleMainGameButtonClick () {
       if (this.getCurrentGameState.rollsCountForButton > 0 && !this.getCurrentGameState.turnCompleted) {
         if (!this.diceRolled) {
           this.diceRolled = true
@@ -141,25 +150,6 @@ export default {
         store.commit('nextTurn')
       }
     },
-    updateMainButtonStateBak () {
-      let button = document.querySelector('.main-button')
-      this.mainButtonDisabled = false
-      // button.classList.remove('bounce')
-      if (store.state.gameTurns === 1 && store.state.rollCount === 3) {
-        this.mainButtonText = 'Start'
-      } else if (store.state.rollCount > 0 && !store.state.turnCompleted) {
-        this.mainButtonText = `Roll ${store.state.rollCount}`
-      } else if (store.state.rollCount === 0 && !store.state.turnCompleted) {
-        this.mainButtonText = 'SAVE'
-        this.mainButtonDisabled = true
-        button.classList.add('bounce')
-      } else if (store.state.rollCount === 0 && store.state.turnCompleted) {
-        this.mainButtonText = 'Turn'
-        this.mainButtonDisabled = false
-      } else {
-        this.mainButtonText = 'Turn'
-      }
-    },
     updateMainButtonState () {
       let button = document.querySelector('.main-button')
       this.mainButtonState.play = true
@@ -169,7 +159,7 @@ export default {
         this.mainButtonState.play = true
       }
       if (this.getCurrentGameState.rollsCountForButton <= 2 && !this.getCurrentGameState.turnCompleted) {
-        // render circles
+        // trigger render circles
         this.mainButtonState.play = false
         this.mainButtonState.roll = true
       }
@@ -430,18 +420,27 @@ export default {
   width: 100%;
   color: $color-primary-2;
   font-weight: 700;
+  font-size: 1.1em;
+  // padding-bottom: .8em;
+  // height: 2.3em;
   div {
     flex-grow: 1;
     flex-basis: 0;
     text-align: center;
-    height: 1em;
+    // height: 1em;
   }
+  svg {
+    height: 1.8em;
+  }
+}
+.school-result {
+  margin-top: .3em;
+  height: 1em;
 }
 .game {
   display: flex;
   flex-direction: column;
   color: $color-primary-2;
-  font-weight: 700;
   // border: 1px solid green;
 }
 .game-combination {
@@ -451,14 +450,20 @@ export default {
   margin: .1em 0em .1em 0em;
   padding: .3em;
   transition: all 1s;
+  font-size: 1.1em;
   // border: 1px solid blue;
 }
 .game-combination-name {
   width: 60%;
+  // font-size: .8em;
+  margin-bottom: 0em; // change it to div or something
 }
 .game-result {
   flex-grow: 1;
   text-align: center;
+  margin-bottom: 0em;
+  font-weight: 700;
+  // color: $color-primary-1;
   // border: 1px solid yellow;
 }
 .blink {
@@ -488,26 +493,12 @@ export default {
   z-index: 1;
   // border: 1px dotted red;
 }
-.dice-controls {
+
+.dice-controls-container {
   display: flex;
-  flex-direction: row;
-  // padding-left: .2em; // change svg viewport
+  margin-top: .3em;
+  // height: 2em;
   // border: 1px solid pink;
-}
-.dice-box, .result-box {
-  display: flex;
-  align-items: center;
-  // border: 1px dotted green;
-  div {
-    display: flex;
-    align-items: center;
-  }
-}
-.hidden {
-  // visibility: hidden;
-  // display: none;
-  width: 0%;
-  opacity: 0;
 }
 
 /* main button */
@@ -522,16 +513,18 @@ export default {
   border-radius: .4em;
   background-color: $color-primary-0;
   width: 100%;
-  // transition: width 1s;
+  flex-grow: 1;
+  flex-basis: 0;
+  transition: width 1s;
   // transition-timing-function: ease-out;
   z-index: 2;
 }
 .play-arrow-right {
   // width: 0;
   // height: 0;
-  border-top: .75em solid transparent;
-  border-bottom: .75em solid transparent;
-  border-left: 1.25em solid $color-primary-1;
+  border-top: .55em solid transparent;
+  border-bottom: .55em solid transparent;
+  border-left: .95em solid $color-primary-1;
 }
 .circle-container {
   display: flex;
@@ -547,8 +540,8 @@ export default {
   border-radius: 50%
 }
 .stop-brick {
-  width: 1.25em;
-  height: 1.25em;
+  width: 1em;
+  height: 1em;
   margin: .2em;
   background: $color-light;
   box-shadow: 0px 0px .4em .05em $color-light;
@@ -567,65 +560,11 @@ export default {
   height: .2em;
   width: 0%;
   transition: width 1.75s;
+  margin-top: .3em;
 }
 .full { //progress bar
   background-color: #AA3838;
   box-shadow: 0px 1px 10px 0px red;
-}
-
-@media screen and (max-width: 40em) { // nokia 5
-  .school {
-    // border: 1px solid green;
-    margin-top: .6em;
-    svg {
-      width: 3em;
-      height: 3em;
-    }
-  }
-  .game-combination-name {
-    // font-size: 2em;
-  }
-  .dice-controls {
-    svg {
-      width: 2.3em;
-      height: 2.3em;
-    }
-    margin: 1em 0em 1em 0em;
-  }
-}
-
-@media screen and (max-width: 19em) { // fly iq4415 (
-    .school {
-      // border: 1px solid pink;
-      margin-top: .3em;
-    svg {
-      width: 2em;
-      height: 2em;
-    }
-    div {
-      font-size: 1em;
-    }
-  }
-  .game {
-    div {
-      font-size: 1em;
-    }
-  }
-  .dice-controls {
-    // margin: 0em;
-    svg {
-      width: 1.5em;
-      height: 1.5em;
-    }
-    margin: 1em 0em 1em 0em;
-  }
-  .main-button {
-    height: 1.5em;
-  }
-  .stop-brick {
-    width: 1em;
-    height: 1em;
-  }
 }
 
 // stuff

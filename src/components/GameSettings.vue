@@ -1,28 +1,7 @@
 <template>
 <div id="gameSettings">
-  <div class="toolbar">
-    <div class="score-display">
-      <div class="score">{{ computedGameScore }}</div>
-      <div class="game-name">{{ title }}</div>
-    </div>
-    <div class="ham-button">
-      <div class="hamburger hamburger--collapse" v-on:click="toggleBurger">
-        <span class="hamburger-box">
-          <span class="hamburger-inner"></span>
-        </span>
-      </div>
-    </div>
-  </div> <!-- End of toolbar -->
-  <div id="sidenav" v-bind:class=" { hidden:!test } ">
-    <div class="close-btn" v-on:click="test = false">
-      x
-    </div>
-    <h1 class="user-name">{{ userName }}</h1>
-    <h2 v-if="highestScore">Your highest score is: {{ highestScore }}</h2>
-    <v-btn color="purple" dark v-on:click="restartGame">
-      <v-img :src="require('@/assets/icons/baseline-replay-24px.svg')" contain height="2em"></v-img>
-    </v-btn>
-  </div>
+  <!--div id="sidenav">
+    <h1 class="user-name">{{ userName }}</h1-->
     <!--h2 v-if="highestScore">Your highest score is: {{ highestScore }}</h2>
     <h3 class="menuItem" v-on:click="openMenuItem">Rules</h3>
     <p class="menuItemText">Lorem ipsum dolor sit amet,</p>
@@ -45,7 +24,6 @@ export default {
   name: 'Navigation',
   data () {
     return {
-      test: false,
       userName: '',
       highestScore: '',
       title: 'Sharlushka'
@@ -65,9 +43,6 @@ export default {
   },
   methods: {
     toggleBurger () {
-      console.log(this.test)
-      this.test = true
-      /*
       let hamburger = document.querySelector('.hamburger')
       if (hamburger.classList.contains('is-active')) {
         hamburger.classList.remove('is-active')
@@ -82,13 +57,13 @@ export default {
         event.target.nextElementSibling.style.maxHeight = '0em'
       } else {
         event.target.nextElementSibling.style.maxHeight = '20em'
-      } */
+      }
     },
     restartGame (state) { // remove this
-      store.commit('resetState')
+      // store.commit('resetState')
       this.toggleBurger()
       // hard reset
-      this.$router.push('/')
+      $router.go({path: '/game'})
     }
   }
 }
@@ -99,7 +74,7 @@ export default {
 @import "../assets/scss/index.scss";
 @import "../assets/scss/vars/colors.scss";
 
-.toolbar {
+#navigation {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -139,24 +114,18 @@ export default {
   flex-grow: 2;
 }
 .score {
-  // margin-right: auto;
-  padding-left: .5em;
+  margin-left: auto;
 }
 .settings-icon {
   height: 1.2em;
 }
 
 #sidenav {
-    position: fixed;
-    z-index: 3;
-    left: 0%;
-    top: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    width: 100%;
-    height: 100vh;
+    // height: 100vh;
+    // width: 0%;
+    // position: fixed;
+    z-index: 88;
+    // left: 0;
     // overflow-x: hidden; /* Disable horizontal scroll */
     // transition: 0.5s;
     color: white;
@@ -165,19 +134,7 @@ export default {
     // align-items: center;
     background-color: $color-primary-transparent;
     // padding-top: 2em;
-    transition: 1s ease-in-out;
-    .close-btn {
-      font-size: 1.5em;
-      position: fixed;
-      right: .2em;
-      top: .1em;
-    }
 }
-
-.hidden {
-  transform: translateX(+100%);
-}
-
 /*
 .background {
   position: absolute;

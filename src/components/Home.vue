@@ -5,10 +5,11 @@
     <span class="greeting">Hi, {{ userName }}.</span>
     <div class="buttonBox">
       <v-btn color="purple" dark to="/game">
-        <v-icon>done</v-icon>
+        <!--v-icon>done</v-icon-->
+        <v-img :src="require('@/assets/icons/baseline-done-24px.svg')" contain height="2em"></v-img>
       </v-btn>
       <v-btn color="purple" dark to="/register">
-        <v-icon dark>build</v-icon>
+        <v-img :src="require('@/assets/icons/baseline-build-24px.svg')" contain height="2em"></v-img>
       </v-btn>
     </div>
     <div class="icon-license">Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
@@ -85,7 +86,7 @@ $color-white: hsl(0, 0%, 100%);
 .game-name {
   color: $color-primary-0;
   font-family: $game-name-font;
-  font-size: 3.5em;
+  font-size: 2.5em;
   // margin-top: 1.5em;
 }
 .startPageDice {
@@ -97,11 +98,11 @@ $color-white: hsl(0, 0%, 100%);
   width: 100%;
 }
 .greeting {
-  font-size: 2.3em;
+  font-size: 1.9em;
 }
 .icon-license {
   color: $color-primary-0;
-  font-size: .5em;
+  font-size: .4em;
   margin-bottom: 1em;
 }
 .icon-license > a {

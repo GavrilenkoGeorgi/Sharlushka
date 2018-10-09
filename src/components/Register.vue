@@ -23,7 +23,7 @@
         </form-->
       <!--div class="save-button" @click="saveUserName">{{ saveButtonText }}</div-->
       <v-btn color="purple" dark to="/register" class="my-4" @click="saveUserName">
-        <v-icon dark>done_all</v-icon>
+        <v-img :src="require('@/assets/icons/baseline-done_all-24px.svg')" contain height="2em"></v-img>
       </v-btn>
     </v-layout>
   </v-container>
