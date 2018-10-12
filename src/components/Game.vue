@@ -26,45 +26,25 @@
           {{ combination.value }}
         </div>
       </div>
-    </div><!-- Game end -->
-    <!--div class="dice-controls"-->
-        <!--div class="dice-box-container" v-bind:class="{ hidden:$store.state.diceBoxHidden }"-->
-          <!-- Result box -->
-          <!--div class="result-box" v-on:click="selectDice"></div-->
-          <!-- Dice box -->
-          <!--div class="dice-box">
-            <div v-for="dice in this.getDiceArray" :key="dice.id" v-bind:id="dice.id" v-on:click="selectDice">
-              <svg class="dice-icon" fill="none"--> <!-- fill="none" stroke-width=".7em" in case of flyiq4415-->
-                <!--use v-bind="{'xlink:href':'#' + dice.currentIcon}"
-                  class="default animated fadeInUp" x="0" y="0"
-                  v-bind:class="{ chosen:dice.chosen, fadeInUp:$store.diceRolled }"></use>
-              </svg>
-            </div>
-          </div>
-      </div-->
+    </div>
+    <!-- Dice controls -->
       <div class="dice-controls-container">
         <DiceBox />
+        <!-- Main button -->
         <div class="main-button animated" v-on:click="handleMainGameButtonClick"
           v-bind:class="{ save: this.mainButtonState.save, bounce: this.mainButtonState.save }">
-
             <div v-if=" this.mainButtonState.play " class="play-arrow-right animated fadeIn">
               </div>
-
             <div v-if=" this.mainButtonState.roll && this.getCurrentGameState.rollsCountForButton <= 3 " class="circle-container">
               <div v-for="(value, index) in this.getCurrentGameState.rollsCountForButton"
                 :key="index" class="roll-circle animated fadeIn"></div>
             </div>
-
             <div v-if=" this.mainButtonState.save" class="stop-brick animated fadeIn"></div>
         </div>
       </div>
-    <!--/div--><!-- End of dice controls -->
-  <div class="progress-bar"></div>
-</div>
-  <!--div class="debug">{{debugInfo}}
-    {{clicked}}
-  </div-->
-
+    <!-- End of dice controls -->
+    <div class="progress-bar"></div>
+  </div>
 </template>
 
 <script>

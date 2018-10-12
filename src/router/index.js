@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
 import Register from '@/components/Register'
+import Settings from '@/components/Settings'
 import Game from '@/components/Game'
 import EndGame from '@/components/EndGame'
 
@@ -20,6 +21,11 @@ export default new Router({
       path: '/register',
       name: 'Register',
       component: Register
+    },
+    {
+      path: '/settings',
+      name: 'Settings',
+      component: Settings
     },
     {
       path: '/game',
