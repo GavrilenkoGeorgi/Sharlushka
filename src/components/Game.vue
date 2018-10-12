@@ -28,20 +28,22 @@
       </div>
     </div>
     <!-- Dice controls -->
+      <div class="dice-controls">
       <div class="dice-controls-container">
         <DiceBox />
-        <!-- Main button -->
-        <div class="main-button animated" v-on:click="handleMainGameButtonClick"
-          v-bind:class="{ save: this.mainButtonState.save, bounce: this.mainButtonState.save }">
-            <div v-if=" this.mainButtonState.play " class="play-arrow-right animated fadeIn">
-              </div>
-            <div v-if=" this.mainButtonState.roll && this.getCurrentGameState.rollsCountForButton <= 3 " class="circle-container">
-              <div v-for="(value, index) in this.getCurrentGameState.rollsCountForButton"
-                :key="index" class="roll-circle animated fadeIn"></div>
-            </div>
-            <div v-if=" this.mainButtonState.save" class="stop-brick animated fadeIn"></div>
-        </div>
       </div>
+<!-- Main button -->
+          <div class="main-button animated" v-on:click="handleMainGameButtonClick"
+            v-bind:class="{ save: this.mainButtonState.save, bounce: this.mainButtonState.save }">
+              <div v-if=" this.mainButtonState.play " class="play-arrow-right animated fadeIn">
+                </div>
+              <div v-if=" this.mainButtonState.roll && this.getCurrentGameState.rollsCountForButton <= 3 " class="circle-container">
+                <div v-for="(value, index) in this.getCurrentGameState.rollsCountForButton"
+                  :key="index" class="roll-circle animated fadeIn"></div>
+              </div>
+              <div v-if=" this.mainButtonState.save" class="stop-brick animated fadeIn"></div>
+          </div>
+        </div>
     <!-- End of dice controls -->
     <div class="progress-bar"></div>
   </div>
@@ -414,7 +416,7 @@ export default {
   }
 }
 .school-result {
-  margin-top: .3em;
+  // margin-top: .3em;
   height: 1em;
 }
 .game {
@@ -427,7 +429,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  margin: .1em 0em .1em 0em;
+  // margin: .1em 0em .1em 0em;
   padding: .3em;
   transition: all 1s;
   font-size: 1.1em;
@@ -436,12 +438,10 @@ export default {
 .game-combination-name {
   width: 60%;
   // font-size: .8em;
-  margin-bottom: 0em; // change it to div or something
 }
 .game-result {
   flex-grow: 1;
   text-align: center;
-  margin-bottom: 0em;
   font-weight: 700;
   // color: $color-primary-1;
   // border: 1px solid yellow;
@@ -464,38 +464,46 @@ export default {
 }
 
 /* Dice control */
-.dice-box-container {
+.dice-controls {
   display: flex;
-  width: 100%;
-  transition: all .7s;
-  transition-timing-function: linear;
-  opacity: 1;
-  z-index: 1;
-  // border: 1px dotted red;
+  flex-direction: row;
+  flex-wrap: nowrap;
 }
-
 .dice-controls-container {
-  display: flex;
-  margin-top: .3em;
+  // display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  // flex-grow:
+  width: 70%;
+  // align-items: center;
+  // justify-content: center;
+  // justify-content: space-between;
+  // flex-basis: 3;
+  // margin-top: .3em;
   // height: 2em;
   // border: 1px solid pink;
 }
 
 /* main button */
+
 .main-button {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   // padding-bottom: .175em;
-  margin: 0em .3em 0em .3em;
+  width: 30%;
+  // margin: 0em 0em 0em .3em;
   color: $color-light;
-  border-radius: .4em;
+  border-radius: .25em;
+  margin-right: .3em;
   background-color: $color-primary-0;
-  width: 100%;
-  flex-grow: 1;
-  flex-basis: 0;
-  transition: width 1s;
+  // border: 1px solid lime;
+  // width: 3em;
+  // height: 2em;
+  // flex-grow: 1;
+  // flex-basis: 0;
+  // transition: width 1s;
   // transition-timing-function: ease-out;
   z-index: 2;
 }
@@ -529,7 +537,7 @@ export default {
 .save {
   color: $color-light;
   background-color: $color-very-red;
-  box-shadow: 0px 0px 6px $color-very-red;
+  box-shadow: 0px 0px .3em $color-very-red;
 }
 
 /*Progress bar */
@@ -540,7 +548,7 @@ export default {
   height: .2em;
   width: 0%;
   transition: width 1.75s;
-  margin-top: .3em;
+  // margin-top: .3em;
 }
 .full { //progress bar
   background-color: #AA3838;
@@ -562,5 +570,101 @@ export default {
 .highest-value {
   color: $color-very-red;
   text-shadow: 0px 0px 15px $color-very-red-transparent;
+}
+
+/*
+@media screen and (-webkit-min-device-pixel-ratio: 1.4) and (min-width: 250px) { // fly iq4415 iphone5Se
+  // defaults above
+}
+*/
+
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) {
+  .school {
+    svg {
+      height: 2.5em;
+    }
+  }
+  .school-result {
+    font-size: 1.5em;
+  }
+  .game-combination {
+    font-size: 1.3em;
+  }
+  .game-combination-name {
+    width: 60%;
+  }
+  .game-result {
+    font-weight: 500;
+  }
+
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
+  .school {
+    svg {
+      height: 2.8em;
+    }
+  }
+  .school-result {
+    font-size: 1.5em;
+  }
+  .game-combination {
+    font-size: 1.7em;
+  }
+  .game-combination-name {
+    width: 60%;
+  }
+  .game-result {
+    font-weight: 500;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) {
+  .school {
+    svg {
+      height: 5em;
+    }
+  }
+  .school-result {
+    font-size: 2.5em;
+  }
+  .game-combination {
+    font-size: 2.5em;
+  }
+  .game-combination-name {
+    width: 60%;
+  }
+  .game-result {
+    font-weight: 500;
+  }
+  .game {
+    padding: 0em 3em 0em 3em;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) { // iPadPro
+  .game {
+    padding: 0em 5em 0em 5em;
+  }
+}
+@media screen and (-webkit-min-device-pixel-ratio: 3) and (min-width: 414px) { // iphone678
+  svg {
+    width: 3.5em;
+    height: 3.5em;
+  }
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
+  .school {
+    svg {
+      width: 5em;
+      height: 5em;
+    }
+  }
+  .game {
+    padding: 0em 5em 0em 5em;
+  }
+  .dice-controls {
+    padding: 0em 5em 0em 5em;
+  }
 }
 </style>

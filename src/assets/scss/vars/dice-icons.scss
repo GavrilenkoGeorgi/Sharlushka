@@ -1,24 +1,11 @@
-/*
-svg {
-  width: auto;
-  height: auto;
-}
-*/
 svg path {
   fill: none;
   stroke-width: .9em;
 }
-
 svg circle {
   fill: currentColor;
   // stroke-width: 0em;
 }
-/*
-.dice {
-  width: auto;
-  height: auto;
-}
-*/
 .default {
   color: $color-primary-0;
   stroke: $color-primary-0;
@@ -28,14 +15,3 @@ svg circle {
   color: $color-chosen;
   stroke: $color-chosen;
 }
-/*
-@media screen and (max-width: 250px) {
-  .game-combination {
-    // border: 1px solid pink;
-  }
-  svg {
-    width: 2em;
-    height: 2em;
-  }
-}
-*/

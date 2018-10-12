@@ -9,34 +9,13 @@
     <div class="toolbar">
       <div class="score-display">
         <div class="score">{{ computedGameScore }}</div>
-        <div class="game-name">{{ title }}</div>
+        <div class="game-name"><router-link to="/">{{ title }}</router-link></div>
       </div>
       <router-link class="settings-button" to="/settings">
         <svg class="settings-icon">
           <use xlink:href="#settings"></use>
         </svg>
       </router-link>
-      <!--div class="ham-button">
-        <div class="hamburger hamburger--collapse" v-on:click="toggleBurger" contain height="1.5em">
-          <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-          </span>
-        </div>
-      </div>
-    </div-->
-    <!-- End of toolbar -->
-      <!--h2 v-if="highestScore">Your highest score is: {{ highestScore }}</h2>
-      <h3 class="menuItem" v-on:click="openMenuItem">Rules</h3>
-      <p class="menuItemText">Lorem ipsum dolor sit amet,</p>
-      <h3 class="menuItem" v-on:click="openMenuItem">Settings</h3>
-      <p class="menuItemText">Lorem ipsum dolor sit amet,</p-->
-      <!--button class="menuButton" v-on:click="restartGame">Restart</button-->
-      <!--v-btn v-on:click="restartGame" color="purple" dark class="my-4">
-          <v-icon dark>replay</v-icon>
-      </v-btn-->
-      <!--div class="debug-info">
-        This is debug!
-      </div-->
     </div>
   </div>
 </template>
@@ -65,39 +44,6 @@ export default {
       return store.state.rollCount
     }
   }
-  /*
-  methods: {
-    toggleBurger () {
-      // console.log(this.test)
-      if (this.settingsHidden) {
-        this.settingsHidden = false
-      } else {
-        this.settingsHidden = true
-      }
-      /*
-      let hamburger = document.querySelector('.hamburger')
-      if (hamburger.classList.contains('is-active')) {
-        hamburger.classList.remove('is-active')
-        document.getElementById('sidenav').style.width = '0'
-      } else {
-        hamburger.classList.add('is-active')
-        document.getElementById('sidenav').style.width = '100%'
-      }
-    },
-    openMenuItem (event) {
-      if (event.target.nextElementSibling.style.maxHeight === '20em') {
-        event.target.nextElementSibling.style.maxHeight = '0em'
-      } else {
-        event.target.nextElementSibling.style.maxHeight = '20em'
-      } */
-  /* },
-    restartGame (state) { // remove this
-      store.commit('resetState')
-      this.toggleBurger()
-      // hard reset
-      this.$router.push('/')
-    }
-  } */
 }
 </script>
 
@@ -130,10 +76,46 @@ svg path {
 .game-name {
   text-align: center;
   flex-grow: 2;
+  a {
+    color: white;
+    text-decoration: none;
+  }
 }
 .settings-icon {
   object-fit: cover;
   height: 1em;
   width: 1em;
+}
+
+/*
+@media screen and (-webkit-min-device-pixel-ratio: 1.4) and (min-width: 250px) { // fly iq4415 iphone5Se
+  // defaults above
+}
+*/
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) {
+  .toolbar {
+    font-size: 1.5em;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
+  .toolbar {
+    font-size: 1.5em;
+  }
+}
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) {
+  .toolbar {
+    font-size: 2.5em;
+  }
+}
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) { // iPadPro
+  .toolbar {
+    font-size: 3.5em;
+  }
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
+  .toolbar {
+    font-size: 2em;
+  }
 }
 </style>

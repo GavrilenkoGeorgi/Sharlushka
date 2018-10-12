@@ -1,20 +1,30 @@
 <template>
     <div id="diceControls" v-bind:class="{ hidden:$store.state.diceBoxHidden }">
-    <div class="result-box animated slideInLeft" v-on:click="selectDice">
+    <div class="result-box" v-on:click="selectDice">
     </div>
-    <div class="dice-box animated slideInLeft">
-      <div v-for="dice in this.getDiceArray"
+    <div class="dice-box">
+      <!--div v-for="dice in this.getDiceArray"
         :key="dice.id"
         v-bind:id="dice.id"
         v-on:click="selectDice">
-        <svg class="dice-icon" fill="none"> <!-- fill="none" stroke-width=".7em" in case of flyiq4415-->
+        <svg class="dice-icon" fill="none">
+          <use v-bind="{'xlink:href':'#' + dice.currentIcon}"
+            class="default animated fadeInUp" x="0" y="0"
+            v-bind:class="{ chosen:dice.chosen, fadeInUp:$store.diceRolled }"></use>
+        </svg>
+      </div-->
+      <svg class="dice-icon" v-for="dice in this.getDiceArray"
+        :key="dice.id"
+        v-bind:id="dice.id"
+        v-on:click="selectDice"
+        fill="none">
           <use v-bind="{'xlink:href':'#' + dice.currentIcon}"
             class="default animated fadeInUp" x="0" y="0"
             v-bind:class="{ chosen:dice.chosen, fadeInUp:$store.diceRolled }"></use>
         </svg>
       </div>
     </div>
-    </div>
+<!-- fill="none" stroke-width=".7em" in case of flyiq4415-->
 </template>
 
 <script>
@@ -82,44 +92,96 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/scss/index.scss";
-@import "../../node_modules/animate.css/animate.css";
+// @import "../../node_modules/animate.css/animate.css";
 
 #diceControls {
   display: flex;
-  flex-grow: 2;
-  flex-basis: 0;
-  // width: 100%;
-  transition: all 1s;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  // flex-basis: 1;
+  // width: 70%;
 }
 .dice-box, .result-box {
-  display: flex;
-  flex-grow: 1;
+  // display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  // flex-grow: 1;
   // flex-basis: 0;
-  // align-content: center;
-  // align-items: center;
+  align-content: center;
+  align-items: center;
+  // justify-items: center;
   // border: 1px solid green;
-  // height: 4em;
+  // height: 3em;
+  padding-top: .25em; // wtf
+  // border: 1px solid red;
 }
+
+.result-box {
+  // border: 1px solid blue;
+}
+
 svg {
-  width: 100%;
-  padding-bottom: -100%;
+  width: 2em;
+  // padding-bottom: -100%;
   height: 2em;
-  overflow: hidden;
+  // overflow: hidden;
+  // flex-grow: 1;
 }
 .dice-icon {
+  // object-fit: cover;
+  // flex-grow: 1;
+  // border: 1px solid green;
   // width: 2em;
-  // border: 1px solid red;
-  // width: 100%;
-  width: 100%;
+  // height: 2.5em;
   // padding-bottom: 100%;
   // height: 1px;
-  overflow: visible
+  // overflow: visible
   // padding-bottom: -100%;
 }
 .hidden {
-  // visibility: hidden;
+  visibility: hidden;
   // display: none;
-  width: 0em;
-  opacity: 0;
+  // width: 0em;
+  // opacity: 0;
+}
+
+/*
+@media screen and (-webkit-min-device-pixel-ratio: 1.4) and (min-width: 250px) { // fly iq4415 iphone5Se
+  // defaults above
+}
+*/
+
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) {
+   svg {
+    width: 2.6em;
+    height: 2.6em;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
+  svg {
+    width: 3em;
+    height: 3em;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 3) and (min-width: 414px) { // iphone678
+  svg {
+    width: 3.5em;
+    height: 3.5em;
+  }
+}
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) {
+  svg {
+    width: 6em;
+    height: 6em;
+  }
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
+  svg {
+    width: 5em;
+    height: 5em;
+  }
 }
 </style>

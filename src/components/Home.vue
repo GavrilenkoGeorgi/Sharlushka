@@ -4,12 +4,12 @@
     <img class="startPageDice" src="../assets/icons/startPageDice.svg" alt="Start page dice">
     <span class="greeting">Hi, {{ userName }}.</span>
     <div class="buttonBox">
-      <v-btn color="purple" dark to="/game">
-        <!--v-icon>done</v-icon-->
+      <!-- v-btn :color="{'green': $store.state.gameTurns === 1}" dark to="/game"-->
+      <v-btn color="purple" dark to="/game" v-bind:class="{orange:$store.state.gameTurns > 1}">
         <v-img :src="require('@/assets/icons/baseline-done-24px.svg')" contain height="2em"></v-img>
       </v-btn>
       <v-btn color="purple" dark to="/register">
-        <v-img :src="require('@/assets/icons/baseline-build-24px.svg')" contain height="2em"></v-img>
+        <v-img :src="require('@/assets/icons/baseline-build-24px.svg')" contain height="1.6em"></v-img>
       </v-btn>
     </div>
     <div class="icon-license">Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
