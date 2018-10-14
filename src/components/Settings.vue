@@ -13,7 +13,7 @@
     </svg>
     <h1 class="user-name">{{ userName }}</h1>
     <h2 class="hiscore" v-if="highestScore">{{ hiscoreGreeting }} {{ highestScore }}{{ exclamation }}</h2>
-    <v-btn class="ui-button" color="red accent-4" dark v-on:click="restartGame">
+    <v-btn class="ui-button" large color="red accent-4" dark v-on:click="restartGame">
       <v-img :src="require('@/assets/icons/baseline-replay-24px.svg')" contain height="2em"></v-img>
     </v-btn>
   </div>
@@ -71,8 +71,9 @@ export default {
     font-size: 1em;
   }
   .ui-button {
-    position: absolute;
-    bottom: 4em;
+    margin-top: 5em;
+    // position: absolute;
+    // bottom: 4em;
   }
 }
 
@@ -82,6 +83,7 @@ export default {
   height: 2.3em;
   width: 2.3em;
   align-self: flex-end;
+  margin: 1em;
 }
 .close-icon-path {
   fill: $color-primary-1;

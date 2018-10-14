@@ -64,7 +64,7 @@ svg path {
   color: $color-light;
   line-height: 1.8em;
   padding: 0em .4em 0em .4em;
-  margin-bottom: .4em;
+  margin-bottom: .2em;
   a {
     display: inherit;
   }

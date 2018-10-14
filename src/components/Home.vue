@@ -5,10 +5,10 @@
     <span class="greeting">Hi, {{ userName }}.</span>
     <div class="buttonBox">
       <!-- v-btn :color="{'green': $store.state.gameTurns === 1}" dark to="/game"-->
-      <v-btn color="purple" dark to="/game" v-bind:class="{orange:$store.state.gameTurns > 1}">
+      <v-btn large color="purple" dark to="/game" v-bind:class="{orange:$store.state.gameTurns > 1}">
         <v-img :src="require('@/assets/icons/baseline-done-24px.svg')" contain height="2em"></v-img>
       </v-btn>
-      <v-btn color="purple" dark to="/register">
+      <v-btn large color="purple" dark to="/register">
         <v-img :src="require('@/assets/icons/baseline-build-24px.svg')" contain height="1.6em"></v-img>
       </v-btn>
     </div>
@@ -43,12 +43,15 @@ export default {
   mounted: function () {
     this.$nextTick(function () {
       console.log(`Start page mounted`)
-      this.userName = localStorage.getItem('userName')
-      if (this.userName === 'Anonymous') {
-        console.log(`User Anonymous`)
-      } else {
-        console.log(`User name is: ${this.userName}`)
+      let name = localStorage.getItem('userName')
+      if (name) {
+        console.log(name)
+        // localStorage.setItem('userName')
+        // localStorage.setItem('userName', this.userName)
+        this.userName = name
       }
+      // else {
+      // console.log(`User name is: ${this.userName}`)
     })
   },
   methods: {

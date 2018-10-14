@@ -2,11 +2,13 @@
   <div id="gameView">
     <Navigation />
     <!-- School layout -->
-    <div class="school" v-on:click="handleBoardClick">
-      <svg class="school-dice-icon" v-for="dice in this.getSchoolArray" :key="dice.id" v-bind:id="dice.id">
-        <use v-bind="{'xlink:href':'#' + dice.icon}" class="default" x="0" y="0" v-bind:class="{ chosen:dice.final }" v-bind:resultId="dice.id"></use>
-      </svg>
-    </div>
+    <!-- div class="school-dice-container"-->
+      <div class="school" v-on:click="handleBoardClick">
+        <svg class="school-dice-icon" fill="none" v-for="dice in this.getSchoolArray" :key="dice.id" v-bind:id="dice.id">
+          <use v-bind="{'xlink:href':'#' + dice.icon}" class="default" x="0" y="0" v-bind:class="{ chosen:dice.final }" v-bind:resultId="dice.id"></use>
+        </svg>
+      </div>
+    <!--/div-->
     <div class="school" v-on:click="handleBoardClick">
       <div class="school-result" v-for="result in this.getSchoolArray" :key="result.id"
         v-bind:resultId="result.id"
@@ -14,6 +16,7 @@
         {{ result.value }}
       </div>
     </div>
+    <!-- div class="game-view-box" -->
     <!-- Game table -->
     <div class="game" v-on:click="handleBoardClick">
       <div class="game-combination" v-for="combination in this.getCombinationArray" :key="combination.id"
@@ -29,24 +32,27 @@
     </div>
     <!-- Dice controls -->
       <div class="dice-controls">
-      <div class="dice-controls-container">
-        <DiceBox />
-      </div>
-<!-- Main button -->
-          <div class="main-button animated" v-on:click="handleMainGameButtonClick"
-            v-bind:class="{ save: this.mainButtonState.save, bounce: this.mainButtonState.save }">
-              <div v-if=" this.mainButtonState.play " class="play-arrow-right animated fadeIn">
-                </div>
-              <div v-if=" this.mainButtonState.roll && this.getCurrentGameState.rollsCountForButton <= 3 " class="circle-container">
-                <div v-for="(value, index) in this.getCurrentGameState.rollsCountForButton"
-                  :key="index" class="roll-circle animated fadeIn"></div>
-              </div>
-              <div v-if=" this.mainButtonState.save" class="stop-brick animated fadeIn"></div>
-          </div>
+        <div class="dice-controls-container" v-bind:class="{ bordered:$store.state.diceBoxHidden }">
+          <DiceBox />
         </div>
+<!-- Main button -->
+        <div class="main-button animated" v-on:click="handleMainGameButtonClick"
+          v-bind:class="{ save: this.mainButtonState.save, bounce: this.mainButtonState.save }">
+            <div v-if=" this.mainButtonState.play " class="play-arrow-right animated fadeIn">
+              </div>
+            <div v-if=" this.mainButtonState.roll &&
+              this.getCurrentGameState.rollsCountForButton <= 3 "
+              class="circle-container animated fadeIn">
+              <div v-for="(value, index) in this.getCurrentGameState.rollsCountForButton"
+                :key="index" class="roll-circle animated fadeIn"></div>
+            </div>
+            <div v-if=" this.mainButtonState.save" class="stop-brick animated fadeIn"></div>
+        </div>
+      </div>
     <!-- End of dice controls -->
     <div class="progress-bar"></div>
-  </div>
+    </div>
+  <!-- /div -->
 </template>
 
 <script>
@@ -388,62 +394,59 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/scss/index.scss";
-@import "../../node_modules/animate.css/animate.css";
-
+// @import "../../node_modules/animate.css/animate.css";
 #gameView {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
 }
+.game-view-box {
+  border: 1px solid pink;
+  padding: 0em .4em 0em .4em;
+}
 .school {
   display: flex;
+  // border: 1px solid #AA3838;
   justify-content: space-around;
-  width: 100%;
+  align-content: center;
   color: $color-primary-2;
-  font-weight: 700;
-  font-size: 1.1em;
-  // padding-bottom: .8em;
-  // height: 2.3em;
   div {
     flex-grow: 1;
     flex-basis: 0;
     text-align: center;
-    // height: 1em;
   }
-  svg {
-    height: 1.8em;
+  .school-dice-icon {
+    height: 2.5em;
+    width: 2.5em;
+    padding: .2em;
+  }
+  .school-result {
+    height: 1em;
   }
 }
-.school-result {
-  // margin-top: .3em;
-  height: 1em;
-}
+
 .game {
   display: flex;
   flex-direction: column;
   color: $color-primary-2;
   // border: 1px solid green;
+  padding: 0em .5em 0em .5em;
 }
 .game-combination {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  // margin: .1em 0em .1em 0em;
-  padding: .3em;
-  transition: all 1s;
-  font-size: 1.1em;
+  margin: .3em 0em .3em 0em;
   // border: 1px solid blue;
 }
 .game-combination-name {
   width: 60%;
-  // font-size: .8em;
 }
 .game-result {
   flex-grow: 1;
   text-align: center;
   font-weight: 700;
-  // color: $color-primary-1;
   // border: 1px solid yellow;
 }
 .blink {
@@ -466,22 +469,17 @@ export default {
 /* Dice control */
 .dice-controls {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  // border: 1px solid green;
+  justify-content: space-between;
+  padding: 0em .5em 0em .5em;
 }
 .dice-controls-container {
-  // display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  // flex-grow:
-  width: 70%;
-  // align-items: center;
-  // justify-content: center;
-  // justify-content: space-between;
-  // flex-basis: 3;
-  // margin-top: .3em;
-  // height: 2em;
-  // border: 1px solid pink;
+  margin: 0 auto;
+}
+
+.bordered {
+  // border: 1px solid red;
+  visibility: hidden;
 }
 
 /* main button */
@@ -491,32 +489,18 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  // padding-bottom: .175em;
   width: 30%;
-  // margin: 0em 0em 0em .3em;
   color: $color-light;
   border-radius: .25em;
-  margin-right: .3em;
   background-color: $color-primary-0;
-  // border: 1px solid lime;
-  // width: 3em;
-  // height: 2em;
-  // flex-grow: 1;
-  // flex-basis: 0;
-  // transition: width 1s;
-  // transition-timing-function: ease-out;
-  z-index: 2;
 }
 .play-arrow-right {
-  // width: 0;
-  // height: 0;
   border-top: .55em solid transparent;
   border-bottom: .55em solid transparent;
   border-left: .95em solid $color-primary-1;
 }
 .circle-container {
   display: flex;
-  // width: 100%;
   align-items: center;
   // border: 1px solid pink;
 }
@@ -548,9 +532,9 @@ export default {
   height: .2em;
   width: 0%;
   transition: width 1.75s;
-  // margin-top: .3em;
+  margin-top: .3em;
 }
-.full { //progress bar
+.full { // progress bar
   background-color: #AA3838;
   box-shadow: 0px 1px 10px 0px red;
 }
@@ -572,44 +556,45 @@ export default {
   text-shadow: 0px 0px 15px $color-very-red-transparent;
 }
 
-/*
 @media screen and (-webkit-min-device-pixel-ratio: 1.4) and (min-width: 250px) { // fly iq4415 iphone5Se
   // defaults above
 }
-*/
 
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) {
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) { // iphone 4
   .school {
-    svg {
-      height: 2.5em;
+    .school-dice-icon {
+      height: 3.2em;
+      width: 3.2em;
     }
   }
-  .school-result {
-    font-size: 1.5em;
+  .game {
+    padding: 0em .6em 0em .6em;
+    margin-bottom: .8em;
   }
   .game-combination {
-    font-size: 1.3em;
+    font-size: 1.2em;
+    margin: .3em 0em .3em 0em;
   }
-  .game-combination-name {
-    width: 60%;
-  }
-  .game-result {
-    font-weight: 500;
-  }
-
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
   .school {
-    svg {
-      height: 2.8em;
+    .school-dice-icon {
+      height: 3.5em;
+      width: 3.5em;
+    }
+    .school-result {
+      // height: 2em;
+      font-size: 1.4em;
     }
   }
-  .school-result {
-    font-size: 1.5em;
+  .game {
+    margin: .7em 0em 2.3em 0em;
   }
   .game-combination {
-    font-size: 1.7em;
+    font-size: 1.4em;
+    // border: 1px solid pink;
+    margin: .3em 0em .3em 0em;
   }
   .game-combination-name {
     width: 60%;
@@ -619,14 +604,41 @@ export default {
   }
 }
 
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) {
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 375px) { // iPhone6
+  .game {
+    padding: 0em 1.5em 0em 1.5em;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 2.6) and (min-width: 411px) { // pixel 2
   .school {
-    svg {
-      height: 5em;
+    .school-dice-icon {
+      height: 3.9em;
+      width: 3.9em;
+    }
+    .school-result {
+      font-size: 1.7em;
     }
   }
-  .school-result {
-    font-size: 2.5em;
+  .game-combination {
+    font-size: 1.7em;
+    margin: .3em 0em .3em 0em;
+  }
+  .game-combination-name {
+    width: 60%;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) { //Ipad
+  .school {
+    .school-dice-icon {
+      height: 5.5em;
+      width: 5.5em;
+    }
+    .school-result {
+      font-size: 2.4em;
+      font-weight: 700;
+    }
   }
   .game-combination {
     font-size: 2.5em;
@@ -640,31 +652,96 @@ export default {
   .game {
     padding: 0em 3em 0em 3em;
   }
+  .dice-controls {
+    padding: 0em 1em 1em 1em;
+  }
+  .main-button {
+    border-radius: .8em;
+    background-color: $color-primary-0;
+  }
+  .play-arrow-right {
+    border-top: 1.55em solid transparent;
+    border-bottom: 1.55em solid transparent;
+    border-left: 1.95em solid $color-primary-1;
+  }
+  .circle-container {
+    display: flex;
+    align-items: center;
+    // border: 1px solid pink;
+  }
+  .roll-circle {
+    width: 1.75em;
+    height: 1.75em;
+    margin: .4em;
+    background: $color-primary-1;
+    border-radius: 50%
+  }
+  .stop-brick {
+    width: 3em;
+    height: 2em;
+    margin: .2em;
+    background: $color-light;
+    box-shadow: 0px 0px .6em .07em $color-light;
+  }
+  .save {
+    color: $color-light;
+    background-color: $color-very-red;
+    box-shadow: 0em .1em .6em $color-very-red;
+  }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) { // iPadPro
+  .school {
+    .school-dice-icon {
+      height: 8.5em;
+      width: 8.5em;
+    }
+    .school-result {
+      font-size: 2.4em;
+      font-weight: 700;
+    }
+  }
+  .game-combination {
+    font-size: 3.5em;
+  }
+  .game-combination-name {
+    width: 60%;
+  }
+  .game-result {
+    font-weight: 500;
+  }
   .game {
-    padding: 0em 5em 0em 5em;
+    padding: 0em 3em 0em 3em;
+    // margin: 4em 0em 4em 0em;
+  }
+  .dice-controls {
+    padding: 0em 1em 1em 1em;
+  }
+  .progress-bar {
+    height: .5em;
   }
 }
 @media screen and (-webkit-min-device-pixel-ratio: 3) and (min-width: 414px) { // iphone678
-  svg {
-    width: 3.5em;
-    height: 3.5em;
-  }
 }
-@media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
+
+@media screen and (max-resolution: 96dpi) and (min-width: 700px) { // desktop
   .school {
-    svg {
-      width: 5em;
-      height: 5em;
+    .school-dice-icon {
+      width: 8em;
+      height: 8em;
+      // border: 1px solid orange;
+    }
+    .school-result {
+      font-size: 2.4em;
+      font-weight: 700;
     }
   }
   .game {
     padding: 0em 5em 0em 5em;
+    // border: 1px solid red;
   }
-  .dice-controls {
-    padding: 0em 5em 0em 5em;
+  .game-combination {
+    font-size: 1.9em;
   }
 }
 </style>
