@@ -1,6 +1,7 @@
 <template>
   <div id="gameView">
     <Navigation />
+    <div class="game-view-box">
     <!-- School layout -->
     <!-- div class="school-dice-container"-->
       <div class="school" v-on:click="handleBoardClick">
@@ -32,9 +33,9 @@
     </div>
     <!-- Dice controls -->
       <div class="dice-controls">
-        <div class="dice-controls-container" v-bind:class="{ bordered:$store.state.diceBoxHidden }">
-          <DiceBox />
-        </div>
+        <div class="dice-controls-container">
+          <DiceBox v-bind:class="{ bordered:$store.state.diceBoxHidden }" />
+        <!--/div-->
 <!-- Main button -->
         <div class="main-button animated" v-on:click="handleMainGameButtonClick"
           v-bind:class="{ save: this.mainButtonState.save, bounce: this.mainButtonState.save }">
@@ -48,8 +49,10 @@
             </div>
             <div v-if=" this.mainButtonState.save" class="stop-brick animated fadeIn"></div>
         </div>
+        </div>
       </div>
     <!-- End of dice controls -->
+    </div>
     <div class="progress-bar"></div>
     </div>
   <!-- /div -->
@@ -402,14 +405,14 @@ export default {
   width: 100%;
 }
 .game-view-box {
-  border: 1px solid pink;
+  // border: 1px solid green;
   padding: 0em .4em 0em .4em;
 }
 .school {
   display: flex;
   // border: 1px solid #AA3838;
   justify-content: space-around;
-  align-content: center;
+  // align-content: center;
   color: $color-primary-2;
   div {
     flex-grow: 1;
@@ -420,6 +423,7 @@ export default {
     height: 2.5em;
     width: 2.5em;
     padding: .2em;
+    // position: absolute;
   }
   .school-result {
     height: 1em;
@@ -432,6 +436,7 @@ export default {
   color: $color-primary-2;
   // border: 1px solid green;
   padding: 0em .5em 0em .5em;
+  margin: 1em 0em 1em 0em;
 }
 .game-combination {
   display: flex;
@@ -469,17 +474,27 @@ export default {
 /* Dice control */
 .dice-controls {
   display: flex;
+  flex-direction: row;
   // border: 1px solid green;
   justify-content: space-between;
   padding: 0em .5em 0em .5em;
 }
 .dice-controls-container {
-  margin: 0 auto;
+  display: flex;
+  width: 100%;
+  // flex-direction: row;
+  // flex-wrap: nowrap;
+  // align-content: center;
+  // align-items: center;
+  // justify-content: space-between;
+  // align-items: center;
+  // flex-basis: 0;
 }
 
 .bordered {
   // border: 1px solid red;
   visibility: hidden;
+  // width: 0%;
 }
 
 /* main button */
@@ -489,10 +504,15 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 30%;
+  width: 100%;
+  // position: absolute;
+  // left
+  // flex-grow: 2;
   color: $color-light;
   border-radius: .25em;
   background-color: $color-primary-0;
+  // align-self: flex-start;
+  // margin: 0 auto;
 }
 .play-arrow-right {
   border-top: .55em solid transparent;
@@ -536,7 +556,7 @@ export default {
 }
 .full { // progress bar
   background-color: #AA3838;
-  box-shadow: 0px 1px 10px 0px red;
+  box-shadow: 0em .2em .8em 0em red;
 }
 
 // stuff
@@ -556,9 +576,11 @@ export default {
   text-shadow: 0px 0px 15px $color-very-red-transparent;
 }
 
+/*
 @media screen and (-webkit-min-device-pixel-ratio: 1.4) and (min-width: 250px) { // fly iq4415 iphone5Se
   // defaults above
 }
+*/
 
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) { // iphone 4
   .school {
@@ -573,12 +595,13 @@ export default {
   }
   .game-combination {
     font-size: 1.2em;
-    margin: .3em 0em .3em 0em;
+    // margin: .3em 0em .3em 0em;
   }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
   .school {
+    margin: 0em 0em 1em 0em;
     .school-dice-icon {
       height: 3.5em;
       width: 3.5em;
@@ -594,13 +617,67 @@ export default {
   .game-combination {
     font-size: 1.4em;
     // border: 1px solid pink;
-    margin: .3em 0em .3em 0em;
+    // margin: .3em 0em .3em 0em;
   }
   .game-combination-name {
     width: 60%;
   }
   .game-result {
     font-weight: 500;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) and (orientation: landscape) { // nokia5
+  .game-view-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .school {
+    display: flex;
+    flex-direction: column;
+    // border: 1px solid #AA3838;
+    // justify-content: space-around;
+    // align-content: center;
+    color: $color-primary-2;
+    div {
+      flex-grow: 1;
+      flex-basis: 0;
+      text-align: center;
+    }
+    .school-dice-icon {
+      height: 3em;
+      width: 3em;
+      padding: .2em;
+      // position: absolute;
+    }
+    .school-result {
+      height: 1em;
+      width: 1em;
+      display: inherit;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .game {
+    // border: 1px solid pink;
+    width: 60%;
+    margin: 0;
+  }
+  .game-combination {
+    margin: .1em 0em .1em 0em;
+    // padding: 0em 0em .2em 0em;
+    font-size: 1.5em;
+  }
+  .dice-controls-container {
+    display: flex;
+    flex-direction: column;
+    // border: 1px solid blue;
+    // flex-flow: nowrap;
+  }
+  .main-button {
+    height: 4em;
+    width: 6em;
   }
 }
 

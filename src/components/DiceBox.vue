@@ -91,6 +91,8 @@ export default {
   display: inherit;
   flex-flow: row;
   justify-content: flex-end;
+  align-content: center;
+  align-items: center;
 }
 
 .dice-icon {
@@ -113,8 +115,27 @@ export default {
 
 @media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
   .dice-icon {
-    width: 2.9em;
-    height: 2.9em;
+    // border: 1px solid pink;
+    width: 2.7em;
+    height: 2.7em;
+    margin: 0em .2em 0em .2em;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) and (orientation: landscape) { // nokia5
+  #diceControls {
+    display: flex;
+    flex-direction: column;
+  }
+  .dice-box, .result-box {
+    display: inherit;
+    // flex-flow: row;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .dice-icon {
+    width: 3em;
+    height: 3em;
   }
 }
 

@@ -115,6 +115,7 @@ export default {
   height: 2.3em;
   width: 2.3em;
   align-self: flex-end;
+  margin: 1em;
 }
 .close-icon-path {
   fill: $color-primary-1;

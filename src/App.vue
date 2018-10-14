@@ -93,6 +93,6 @@ body {
 #app {
   display: flex;
   height: 100vh;
-  // transition: all 1s;
+  transition: all 500ms;
 }
 </style>
