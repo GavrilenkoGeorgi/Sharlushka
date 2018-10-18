@@ -1,19 +1,16 @@
 <template>
   <div id="endGame">
-    <!--div class="endGameMenu" v-if="$store.state.endGameMenu === true"-->
     <div class="endGameMenu">
       <p>Game Over, {{ userName }}!<br/> Your score is {{ $store.state.schoolScoreTotal + $store.state.gameTotal }}</p>
       <p v-if="highestScore">Highest score is {{ highestScore }}</p>
       <div class="button-box">
         <button class="button" v-on:click="restartGame">New game</button>
-        <!--button class="menuButton" v-on:click="saveOrRegister">Save Result</button-->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import router from 'vue-router'
 
 export default {
   data () {
