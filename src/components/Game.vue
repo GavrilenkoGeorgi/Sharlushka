@@ -1,26 +1,25 @@
 <template>
-  <div id="gameView">
-    <Navigation />
-    <div class="game-view-box">
-    <!-- School layout -->
-    <!-- div class="school-dice-container"-->
-      <div class="school" v-on:click="handleBoardClick">
+  <v-container fluid pa-0 ma-0 id="gameView">
+    <v-layout column>
+      <v-flex>
+        <Navigation />
+      </v-flex>
+<!-- School layout -->
+      <v-flex xs12 class="school" v-on:click="handleBoardClick">
         <svg class="school-dice-icon" fill="none" v-for="dice in this.getSchoolArray" :key="dice.id" v-bind:id="dice.id">
           <use v-bind="{'xlink:href':'#' + dice.icon}" class="default" x="0" y="0" v-bind:class="{ chosen:dice.final }" v-bind:resultId="dice.id"></use>
         </svg>
-      </div>
-    <!--/div-->
-    <div class="school" v-on:click="handleBoardClick">
+      </v-flex>
+    <v-flex class="school" v-on:click="handleBoardClick">
       <div class="school-result" v-for="result in this.getSchoolArray" :key="result.id"
         v-bind:resultId="result.id"
         v-bind:class="{ chosen:result.final }">
         {{ result.value }}
       </div>
-    </div>
-    <!-- div class="game-view-box" -->
-    <!-- Game table -->
-    <div class="game" v-on:click="handleBoardClick">
-      <div class="game-combination" v-for="combination in this.getCombinationArray" :key="combination.id"
+    </v-flex>
+<!-- Game table -->
+    <v-flex class="game" v-on:click="handleBoardClick">
+      <div class="game-combination py-2" v-for="combination in this.getCombinationArray" :key="combination.id"
         v-bind:id="combination.id" v-bind:class="{ set:combination.final }">
         <div class="game-combination-name">{{ combination.fullName }}</div>
         <div class="game-result" v-for="(value, index) in combination.displayValues" :key="index">
@@ -30,32 +29,30 @@
           {{ combination.value }}
         </div>
       </div>
-    </div>
-    <!-- Dice controls -->
-      <div class="dice-controls">
-        <div class="dice-controls-container">
-          <DiceBox v-bind:class="{ bordered:$store.state.diceBoxHidden }" />
-        <!--/div-->
+    </v-flex>
+<!-- Dice controls -->
+    <v-flex class="dice-controls">
+      <v-flex class="dice-controls-container">
+        <DiceBox v-bind:class="{ bordered:$store.state.diceBoxHidden }" />
 <!-- Main button -->
-        <div class="main-button animated" v-on:click="handleMainGameButtonClick"
-          v-bind:class="{ save: this.mainButtonState.save, bounce: this.mainButtonState.save }">
-            <div v-if=" this.mainButtonState.play " class="play-arrow-right animated fadeIn">
-              </div>
-            <div v-if=" this.mainButtonState.roll &&
-              this.getCurrentGameState.rollsCountForButton <= 3 "
-              class="circle-container animated fadeIn">
-              <div v-for="(value, index) in this.getCurrentGameState.rollsCountForButton"
-                :key="index" class="roll-circle animated fadeIn"></div>
+      <div class="main-button animated" v-on:click="handleMainGameButtonClick"
+        v-bind:class="{ save: this.mainButtonState.save, bounce: this.mainButtonState.save }">
+          <div v-if=" this.mainButtonState.play " class="play-arrow-right animated fadeIn">
             </div>
-            <div v-if=" this.mainButtonState.save" class="stop-brick animated fadeIn"></div>
-        </div>
-        </div>
+          <div v-if=" this.mainButtonState.roll &&
+            this.getCurrentGameState.rollsCountForButton <= 3 "
+            class="circle-container animated fadeIn">
+            <div v-for="(value, index) in this.getCurrentGameState.rollsCountForButton"
+              :key="index" class="roll-circle animated fadeIn"></div>
+          </div>
+          <div v-if=" this.mainButtonState.save" class="stop-brick animated fadeIn"></div>
       </div>
-    <!-- End of dice controls -->
-    </div>
-    <div class="progress-bar"></div>
-    </div>
-  <!-- /div -->
+      </v-flex>
+      </v-flex>
+<!-- End of dice controls -->
+      <v-flex xs12 class="progress-bar pt-1"></v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -164,8 +161,8 @@ export default {
         this.mainButtonState.play = false
         this.mainButtonState.save = true
         this.mainButtonState.disabled = true
-        // window.navigator.vibrate(200)
-        // navigator.vibrate([500, 250, 500, 250, 500, 250, 500, 250, 500, 250, 500])
+        window.navigator.vibrate(200)
+        navigator.vibrate([500, 250, 500, 250, 500, 250, 500, 250, 500, 250, 500])
         button.classList.add('bounce')
       } else {
         return false
@@ -436,13 +433,13 @@ export default {
   color: $color-primary-2;
   // border: 1px solid green;
   padding: 0em .5em 0em .5em;
-  margin: 1em 0em 1em 0em;
+  // margin: 1em 0em 1em 0em;
 }
 .game-combination {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  margin: .3em 0em .3em 0em;
+  // margin: .3em 0em .3em 0em;
   // border: 1px solid blue;
 }
 .game-combination-name {
@@ -552,7 +549,7 @@ export default {
   height: .2em;
   width: 0%;
   transition: width 1.75s;
-  margin-top: .3em;
+  // margin-top: .3em;
 }
 .full { // progress bar
   background-color: #AA3838;
@@ -591,7 +588,7 @@ export default {
   }
   .game {
     padding: 0em .6em 0em .6em;
-    margin-bottom: .8em;
+    // margin-bottom: .8em;
   }
   .game-combination {
     font-size: 1.2em;
@@ -601,7 +598,7 @@ export default {
 
 @media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
   .school {
-    margin: 0em 0em 1em 0em;
+    // margin: 0em 0em 1em 0em;
     .school-dice-icon {
       height: 3.5em;
       width: 3.5em;
@@ -612,7 +609,7 @@ export default {
     }
   }
   .game {
-    margin: .7em 0em 2.3em 0em;
+    // margin: .7em 0em 2.3em 0em;
   }
   .game-combination {
     font-size: 1.4em;
@@ -662,10 +659,10 @@ export default {
   .game {
     // border: 1px solid pink;
     width: 60%;
-    margin: 0;
+    // margin: 0;
   }
   .game-combination {
-    margin: .1em 0em .1em 0em;
+    // margin: .1em 0em .1em 0em;
     // padding: 0em 0em .2em 0em;
     font-size: 1.5em;
   }
@@ -699,7 +696,7 @@ export default {
   }
   .game-combination {
     font-size: 1.7em;
-    margin: .3em 0em .3em 0em;
+    // margin: .3em 0em .3em 0em;
   }
   .game-combination-name {
     width: 60%;

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/components/Home'
+import MainPage from '@/components/MainPage'
 import Register from '@/components/Register'
 import Settings from '@/components/Settings'
 import Game from '@/components/Game'
@@ -15,8 +15,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: Home
+      name: 'MainPage',
+      component: MainPage
     },
     {
       path: '/register',

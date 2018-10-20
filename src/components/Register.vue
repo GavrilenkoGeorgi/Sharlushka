@@ -1,5 +1,5 @@
 <template>
-  <div id="registerPage">
+  <v-container fill-height id="registerPage">
     <!-- icon definition -->
     <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
       <symbol id="registerClose" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
@@ -7,28 +7,36 @@
         <path d="M0 0h24v24H0z"/>
       </symbol>
     </svg>
-      <svg class="ui-icon" @click="$router.go(-1)">
-      <use xlink:href="#registerClose"></use>
-    </svg>
-    <v-layout flex column align-center justify-center>
-    <span class="greeting py-4">{{ greeting }} {{ userName }}</span>
-      <v-form v-model="valid" class="py-4">
-        <v-text-field v-model="name" :rules="nameRules"
-          :counter="10" label="Name" required>
-        </v-text-field>
-        <!--v-text-field v-model="email" :rules="emailRules"
-          label="E-mail" required>
-        </v-text-field-->
-      </v-form>
-        <!--form>
-          <input v-model="formValueName" type="text" id="userName" name="newUserName" placeholder="Name">
-        </form-->
-      <!--div class="save-button" @click="saveUserName">{{ saveButtonText }}</div-->
-      <v-btn color="purple" dark to="/register" class="my-4 disabled" @click="saveUserName" :disabled="!this.valid">
-        <v-img :src="require('@/assets/icons/baseline-done_all-24px.svg')" contain height="2em"></v-img>
-      </v-btn>
+    <v-layout column>
+      <v-flex xs2>
+        <v-layout column align-end>
+          <svg class="ui-icon" @click="$router.go(-1)">
+            <use xlink:href="#registerClose"></use>
+          </svg>
+        </v-layout>
+      </v-flex>
+      <v-layout column align-center>
+        <v-flex d-flex align-end>
+          <h1 class="greeting">{{ greeting }} {{ userName }}</h1>
+        </v-flex>
+        <v-flex d-flex align-end>
+          <v-form v-model="valid">
+            <v-text-field v-model="name" :rules="nameRules"
+              :counter="10" label="Name" required>
+            </v-text-field>
+            <!--v-text-field v-model="email" :rules="emailRules"
+              label="E-mail" required>
+            </v-text-field-->
+          </v-form>
+        </v-flex>
+        <v-flex>
+          <v-btn color="purple" dark to="/register" class="my-4 disabled" @click="saveUserName" :disabled="!this.valid">
+            <v-img :src="require('@/assets/icons/baseline-done_all-24px.svg')" contain height="2em"></v-img>
+          </v-btn>
+        </v-flex>
+      </v-layout>
     </v-layout>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -74,49 +82,10 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/scss/index.scss";
 
-#registerPage {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
 .greeting {
   font-size: 1.8em;
 }
-.close-button {
-  position: fixed;
-  top: .5em;
-  right: .5em;
-  align-items: center;
-  cursor: pointer;
-  // border: 1px solid green;
-}
-.save-button {
-  background: $color-primary-0;
-  border: none;
-  border-radius: .25em;
-  font-size: 1.1em;
-  // color: white;
-  padding: .3em;
-  width: 6em;
-  // height: 1.95em;
-  text-align: center;
-  color: white;
-  a {
-    color: white;
-    text-decoration: none;
-  }
-}
-.save-button:hover {
-  box-shadow: 0px 0px 10px 1px $color-primary-1;
-}
-.ui-icon {
-  object-fit: cover;
-  height: 2.3em;
-  width: 2.3em;
-  align-self: flex-end;
-  margin: 1em;
-}
+
 .close-icon-path {
   fill: $color-primary-1;
 }

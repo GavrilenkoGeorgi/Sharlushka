@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <v-container fill-height fluid ma-0 pa-0 id="app">
   <!-- SVG icons defs -->
     <!-- Default icons -->
     <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
@@ -48,10 +48,15 @@
       </symbol>
     </svg>
     <!-- SVG icons end -->
-    <transition name="custom-classes-transition" mode="out-in" enter-active-class="animated fadeInRight" leave-active-class="animated fadeOutLeft">
-      <router-view />
-    </transition>
-  </div>
+    <v-layout justify-space-between column>
+      <transition name="custom-classes-transition"
+        mode="out-in"
+        enter-active-class="animated fadeInRight"
+        leave-active-class="animated fadeOutLeft">
+        <router-view />
+      </transition>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -74,17 +79,13 @@ export default {
 <style lang="scss">
 @import "./assets/scss/index.scss";
 @import "../node_modules/animate.css/animate.css";
-// @import '../node_modules/material-icons/css/material-icons.min.css';
-// @import "../node_modules/hamburgers/_sass/hamburgers/hamburgers.scss";
-// @import '~material-icons/css/material-icons.scss';
-// @import 'material-design-icons-iconfont/dist/material-design-icons.css';
-
+/*
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
+*/
 body {
   font-family: $text-font;
   font-size: 16px;
@@ -93,6 +94,7 @@ body {
 #app {
   display: flex;
   height: 100vh;
-  transition: all 500ms;
+  // width: 100%;
+  // transition: all 500ms;
 }
 </style>
