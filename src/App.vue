@@ -2,30 +2,30 @@
   <v-container fill-height fluid ma-0 pa-0 id="app">
   <!-- SVG icons defs -->
     <!-- Default icons -->
-    <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
-      <symbol id="diceOnes" viewBox="-10 -10 220 220" preserveAspectRatio="xMidYMid slice">
+    <svg version='1.1' style="display: none;" xmlns="http://www.w3.org/2000/svg">
+      <symbol id="diceOnes" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
         <circle fill="currentColor" cx="100" cy="100" r="18"/>
         <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
       </symbol>
-      <symbol id="diceTwos" viewBox="-10 -10 220 220" preserveAspectRatio="xMidYMid slice">
+      <symbol id="diceTwos" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
         <circle fill="currentColor" cx="50" cy="150" r="18"/>
         <circle fill="currentColor" cx="150" cy="50" r="18"/>
         <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
       </symbol>
-      <symbol id="diceThrees" class="dice" viewBox="-10 -10 220 220" preserveAspectRatio="xMidYMid slice">
+      <symbol id="diceThrees" class="dice" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
         <circle fill="currentColor" cx="50" cy="150" r="18"/>
         <circle fill="currentColor" cx="100" cy="100" r="18"/>
         <circle fill="currentColor" cx="150" cy="50" r="18"/>
         <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
       </symbol>
-      <symbol id="diceFours" class="dice" viewBox="-10 -10 220 220" preserveAspectRatio="xMidYMid slice">
+      <symbol id="diceFours" class="dice" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
         <circle fill="currentColor" cx="150" cy="50" r="18"/>
         <circle fill="currentColor" cx="150" cy="150" r="18"/>
         <circle fill="currentColor" cx="50" cy="150" r="18"/>
         <circle fill="currentColor" cx="50" cy="50" r="18"/>
         <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
       </symbol>
-      <symbol id="diceFives" class="dice" viewBox="-10 -10 220 220" preserveAspectRatio="xMidYMid slice">
+      <symbol id="diceFives" class="dice" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
         <circle fill="currentColor" cx="100" cy="100" r="18"/>
         <circle fill="currentColor" cx="150" cy="50" r="18"/>
         <circle fill="currentColor" cx="150" cy="150" r="18"/>
@@ -33,7 +33,7 @@
         <circle fill="currentColor" cx="50" cy="50" r="18"/>
         <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
       </symbol>
-      <symbol id="diceSixes" class="dice" viewBox="-10 -10 220 220" preserveAspectRatio="xMidYMid slice">
+      <symbol id="diceSixes" class="dice" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
         <circle fill="currentColor" cx="150" cy="100" r="18"/>
         <circle fill="currentColor" cx="150" cy="50" r="18"/>
         <circle fill="currentColor" cx="150" cy="150" r="18"/>
@@ -92,9 +92,10 @@ body {
 }
 
 #app {
-  display: flex;
+  // display: flex;
   height: 100vh;
   // width: 100%;
   // transition: all 500ms;
 }
+
 </style>

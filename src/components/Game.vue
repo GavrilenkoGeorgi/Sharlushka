@@ -1,14 +1,17 @@
 <template>
-  <v-container fluid pa-0 ma-0 id="gameView">
+  <v-container fluid fill-height pa-0 ma-0 id="gameView">
     <v-layout column>
       <v-flex>
         <Navigation />
       </v-flex>
 <!-- School layout -->
-      <v-flex xs12 class="school" v-on:click="handleBoardClick">
-        <svg class="school-dice-icon" fill="none" v-for="dice in this.getSchoolArray" :key="dice.id" v-bind:id="dice.id">
-          <use v-bind="{'xlink:href':'#' + dice.icon}" class="default" x="0" y="0" v-bind:class="{ chosen:dice.final }" v-bind:resultId="dice.id"></use>
-        </svg>
+      <v-flex d-flex align-center class="school" v-on:click="handleBoardClick">
+          <svg class="school-dice-icon" fill="none"
+            v-for="dice in this.getSchoolArray"
+            :key="dice.id"
+            v-bind:id="dice.id">
+            <use v-bind="{'xlink:href':'#' + dice.icon}" class="default" v-bind:class="{ chosen:dice.final }" v-bind:resultId="dice.id"></use>
+          </svg>
       </v-flex>
     <v-flex class="school" v-on:click="handleBoardClick">
       <div class="school-result" v-for="result in this.getSchoolArray" :key="result.id"
@@ -32,25 +35,28 @@
     </v-flex>
 <!-- Dice controls -->
     <v-flex class="dice-controls">
-      <v-flex class="dice-controls-container">
-        <DiceBox v-bind:class="{ bordered:$store.state.diceBoxHidden }" />
-<!-- Main button -->
-      <div class="main-button animated" v-on:click="handleMainGameButtonClick"
-        v-bind:class="{ save: this.mainButtonState.save, bounce: this.mainButtonState.save }">
-          <div v-if=" this.mainButtonState.play " class="play-arrow-right animated fadeIn">
+      <v-layout row>
+        <v-flex xs8 v-bind:class="{ hidden:$store.state.diceBoxHidden }">
+          <DiceBox />
+        </v-flex>
+  <!-- Main button -->
+        <v-flex xs4 class="main-button animated" v-on:click="handleMainGameButtonClick"
+          v-bind:class="{ save: this.mainButtonState.save, bounce: this.mainButtonState.save }">
+            <div v-if=" this.mainButtonState.play " class="play-arrow-right animated fadeIn">
+              </div>
+            <div v-if=" this.mainButtonState.roll &&
+              this.getCurrentGameState.rollsCountForButton <= 3 "
+              class="circle-container animated fadeIn">
+              <div v-for="(value, index) in this.getCurrentGameState.rollsCountForButton"
+                :key="index" class="roll-circle animated fadeIn"></div>
             </div>
-          <div v-if=" this.mainButtonState.roll &&
-            this.getCurrentGameState.rollsCountForButton <= 3 "
-            class="circle-container animated fadeIn">
-            <div v-for="(value, index) in this.getCurrentGameState.rollsCountForButton"
-              :key="index" class="roll-circle animated fadeIn"></div>
-          </div>
-          <div v-if=" this.mainButtonState.save" class="stop-brick animated fadeIn"></div>
-      </div>
-      </v-flex>
+            <div v-if=" this.mainButtonState.save" class="stop-brick animated fadeIn"></div>
+        </v-flex>
+        <!--/v-flex-->
+      </v-layout>
       </v-flex>
 <!-- End of dice controls -->
-      <v-flex xs12 class="progress-bar pt-1"></v-flex>
+      <div class="progress-bar pt-1"></div>
     </v-layout>
   </v-container>
 </template>
@@ -161,8 +167,8 @@ export default {
         this.mainButtonState.play = false
         this.mainButtonState.save = true
         this.mainButtonState.disabled = true
-        window.navigator.vibrate(200)
-        navigator.vibrate([500, 250, 500, 250, 500, 250, 500, 250, 500, 250, 500])
+        // window.navigator.vibrate(200)
+        // navigator.vibrate([500, 250, 500, 250, 500, 250, 500, 250, 500, 250, 500])
         button.classList.add('bounce')
       } else {
         return false
@@ -393,8 +399,146 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/scss/index.scss";
+@import "../assets/scss/vars/colors.scss";
+
+.school {
+  display: flex;
+  justify-content: space-between;
+}
+.school-result {
+  // border: 1px solid pink;
+  width: 100%;
+  text-align: center;
+  font-size: 1.3em;
+  font-weight: 700;
+  height: 1.5em;
+}
+
+.game {
+  //padding: 0em .4em 0em .4em;
+}
+.game-combination {
+  display: flex;
+  flex-direction: row;
+  color: $color-primary-0;
+  // align-items: flex-start;
+  // margin: .3em 0em .3em 0em;
+  // border: 1px solid blue;
+}
+
+.game-combination-name {
+  margin: .1em 0em .1em 0em;
+  padding-left: .5em;
+  font-size: 1.4em;
+  width: 60%;
+}
+
+.game-result {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  // text-align: center;
+  font-weight: 700;
+  font-size: 1.1em;
+  // border: 1px solid yellow;
+}
+.blink {
+  color: gray;
+  animation: blinker 2.5s linear infinite;
+}
+@keyframes blinker {
+  50% {
+    opacity: .2;
+  }
+}
+.set {
+  color: $color-orange;
+  background-color: $color-primary-tint;
+}
+.saved {
+  color: $color-orange;
+}
+
+.dice-controls {
+  // border: 1px solid pink;
+  padding: 0em .2em 0em 0em;
+}
+
+.school-dice-icon {
+  // display: inline-block;
+  // border: 1px solid blue;
+  // position: relative;
+  // padding-bottom: 50%;
+  // vertical-align: middle;
+  // overflow: hidden;
+  height: 3em;
+  // width: 1em;
+}
+
+/* main button */
+.main-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  // width: 100%;
+  color: $color-light;
+  border-radius: .25em;
+  background-color: $color-primary-0;
+}
+.play-arrow-right {
+  border-top: .55em solid transparent;
+  border-bottom: .55em solid transparent;
+  border-left: .95em solid $color-primary-1;
+}
+.circle-container {
+  display: flex;
+  align-items: center;
+  // border: 1px solid pink;
+}
+.roll-circle {
+  width: .75em;
+  height: .75em;
+  margin: .2em;
+  background: $color-primary-1;
+  border-radius: 50%
+}
+.stop-brick {
+  width: 1em;
+  height: 1em;
+  margin: .2em;
+  background: $color-light;
+  box-shadow: 0em 0em .4em .05em $color-light;
+}
+.save {
+  color: $color-light;
+  background-color: $color-very-red;
+  box-shadow: 0em 0em .3em $color-very-red;
+}
+
+.hidden {
+  opacity: 0;
+}
+
+/*Progress bar */
+.progress-bar {
+  // border: 1px solid red;
+  background-color: $color-primary-0;
+  box-shadow: 0px 1px 10px 0px $color-primary-4;
+  height: .1em;
+  width: 0%;
+  transition: width 1.75s;
+  // margin-top: .3em;
+}
+.full { // progress bar
+  background-color: #AA3838;
+  box-shadow: 0em .2em .8em 0em red;
+}
+
+// @import "../assets/scss/index.scss";
 // @import "../../node_modules/animate.css/animate.css";
+/*
 #gameView {
   display: flex;
   flex-direction: column;
@@ -467,8 +611,9 @@ export default {
 .saved {
   color: $color-orange;
 }
-
+*/
 /* Dice control */
+/*
 .dice-controls {
   display: flex;
   flex-direction: row;
@@ -493,9 +638,9 @@ export default {
   visibility: hidden;
   // width: 0%;
 }
-
+*/
 /* main button */
-
+/*
 .main-button {
   display: flex;
   flex-direction: row;
@@ -540,8 +685,9 @@ export default {
   background-color: $color-very-red;
   box-shadow: 0px 0px .3em $color-very-red;
 }
-
+*/
 /*Progress bar */
+/*
 .progress-bar {
   // border: 1px solid red;
   background-color: $color-primary-0;
@@ -572,12 +718,6 @@ export default {
   color: $color-very-red;
   text-shadow: 0px 0px 15px $color-very-red-transparent;
 }
-
-/*
-@media screen and (-webkit-min-device-pixel-ratio: 1.4) and (min-width: 250px) { // fly iq4415 iphone5Se
-  // defaults above
-}
-*/
 
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) { // iphone 4
   .school {
@@ -817,5 +957,5 @@ export default {
   .game-combination {
     font-size: 1.9em;
   }
-}
+} */
 </style>

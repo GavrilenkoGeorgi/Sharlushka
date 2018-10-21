@@ -1,24 +1,25 @@
 <template>
     <div id="diceControls">
-    <div class="result-box" v-on:click="selectDice">
-    </div>
-    <div class="dice-box">
-      <svg class="dice-icon" v-for="dice in this.getDiceArray"
-        :key="dice.id"
-        v-bind:id="dice.id"
-        v-on:click="selectDice"
-        fill="none">
-          <use v-bind="{'xlink:href':'#' + dice.currentIcon}"
-            class="default animated fadeIn" x="0" y="0"
-            v-bind:class="{ chosen:dice.chosen, fadeInUp:$store.diceRolled }"></use>
-        </svg>
-      </div>
+      <!--v-layout id="diceControls" align-center justify-center row fill-height-->
+        <div class="result-box" v-on:click="selectDice">
+        </div>
+        <div align-center class="dice-box">
+          <svg class="dice-icon" v-for="dice in this.getDiceArray"
+            :key="dice.id"
+            v-bind:id="dice.id"
+            v-on:click="selectDice"
+            fill="none">
+              <use v-bind="{'xlink:href':'#' + dice.currentIcon}"
+                class="default animated fadeIn"
+                v-bind:class="{ chosen:dice.chosen, fadeInUp:$store.diceRolled }"></use>
+            </svg>
+          </div>
+      <!--/v-layout-->
     </div>
 <!-- fill="none" stroke-width=".7em" in case of flyiq4415 or firefox-->
 </template>
 
 <script>
-// import { mapGetters, mapActions } from 'vuex'
 import { mapGetters } from 'vuex'
 import store from '../store/store'
 
@@ -81,8 +82,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/scss/index.scss";
+#diceControls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  transition: opacity 1s ease;
+  // border: 1px solid lime;
+}
+.dice-icon {
+  width: 2.7em;
+  height: 2.7em;
+  margin: 0em .1em 0em .1em;
+}
+
+.dice-box, .result-box {
+  // border: 1px solid orange;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  // width: 100%;
+  // align-items: center;
+  // align-content: center;
+  // width: 11em;
+  // align-items: center;
+}
+
+.result-box {
+  justify-content: flex-end;
+  // width: 100%;
+  // min-width: 0em;
+  // border: 1px solid green;
+}
+
+// @import "../assets/scss/index.scss";
 // @import "../../node_modules/animate.css/animate.css";
+/*
 
 #diceControls {
   display: flex;
@@ -95,17 +129,13 @@ export default {
   align-items: center;
 }
 
-.dice-icon {
-  width: 2.3em;
-  height: 2.3em;
-}
-
+*/
 /*
 @media screen and (-webkit-min-device-pixel-ratio: 1.4) and (min-width: 250px) { // fly iq4415 iphone5Se
   // defaults above
 }
 */
-
+/*
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) { // iphone 4
   .dice-icon {
     width: 2.6em;
@@ -171,4 +201,5 @@ export default {
     height: 8em;
   }
 }
+*/
 </style>

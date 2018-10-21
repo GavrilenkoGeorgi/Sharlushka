@@ -21,6 +21,9 @@ export default {
   getDiceArray (state) {
     return state.diceArray
   },
+  getTotalScore (state) {
+    return state.schoolScoreTotal + state.gameTotal
+  },
   debugInfo (state) {
     // console.log(`Debug on`)
     for (let key in state.diceArray) {

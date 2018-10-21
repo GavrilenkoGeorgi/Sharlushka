@@ -63,6 +63,7 @@ export default {
 #gameNavigation {
   // border: 1px solid pink;
   background-color: $color-primary-0;
+  // margin-bottom: .7em;
 }
 .score {
   // border: 1px solid red;
