@@ -5,6 +5,7 @@ import Register from '@/components/Register'
 import Settings from '@/components/Settings'
 import Game from '@/components/Game'
 import EndGame from '@/components/EndGame'
+import Help from '@/components/Help'
 import DiceTemp from '@/components/DiceTemp'
 
 Vue.use(Router)
@@ -37,6 +38,11 @@ export default new Router({
       path: '/endgame',
       name: 'EndGame',
       component: EndGame
+    },
+    {
+      path: '/help',
+      name: 'Help',
+      component: Help
     },
     {
       path: '/dicetemp',

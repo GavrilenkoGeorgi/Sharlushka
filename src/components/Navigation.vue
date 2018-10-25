@@ -83,13 +83,6 @@ export default {
   // text-align: center;
 }
 
-.settings-icon {
-  // border: 1px solid red;
-  // display: flex;
-  // flex-direction: column;
-  // align-content: flex-end;
-}
-
 .settings-icon-path {
   fill: white;
 }

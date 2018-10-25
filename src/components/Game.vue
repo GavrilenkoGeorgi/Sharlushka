@@ -414,9 +414,6 @@ export default {
   height: 1.5em;
 }
 
-.game {
-  //padding: 0em .4em 0em .4em;
-}
 .game-combination {
   display: flex;
   flex-direction: row;

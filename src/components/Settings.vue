@@ -18,11 +18,15 @@
       </v-flex>
       <v-layout column align-center>
         <v-flex>
-          <h1 class="user-name">{{ userName }}</h1>
+          <h1 role="button" @click="$router.push('/help')">Help</h1>
         </v-flex>
-        <v-flex>
-          <h2 class="hi-score" v-if="highestScore">{{ hiscoreGreeting }} {{ highestScore }}{{ exclamation }}</h2>
+        <v-flex class="user-info">
+          <h2 class="user-name">{{ userName }}</h2>
+          <h3 class="hi-score" v-if="highestScore">{{ hiscoreGreeting }} {{ highestScore }}{{ exclamation }}</h3>
         </v-flex>
+        <!--v-flex>
+          <h3 class="hi-score" v-if="highestScore">{{ hiscoreGreeting }} {{ highestScore }}{{ exclamation }}</h3>
+        </v-flex-->
         <v-flex>
           <v-btn class="ui-button" large color="red accent-4" dark v-on:click="restartGame">
             <v-img :src="require('@/assets/icons/baseline-replay-24px.svg')" contain height="2em"></v-img>
@@ -74,4 +78,7 @@ export default {
   fill: $color-primary-1;
 }
 
+.user-info {
+  text-align: center;
+}
 </style>
