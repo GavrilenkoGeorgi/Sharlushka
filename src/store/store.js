@@ -288,7 +288,7 @@ const mutations = {
               }
 
               // check for 'small' and 'large' combinations
-              if (arrayToAnalyse[currentDice - 1].length === 1) {
+              if (arrayToAnalyse[currentDice - 1].length === 1 && (!state.scoreArray[12].final || !state.scoreArray[13].final)) {
                 // collect all dice
                 smallLargeCheckArray.push(currentDice)
                 // if array is large enough i.e. length equals 5
