@@ -1,29 +1,40 @@
 <template>
-  <v-container xs12 sm8 md6 fill-height id="startPageContent">
-    <v-layout column align-center>
-      <v-flex d-flex align-end>
-        <h1 class="game-name">{{ gameName }}</h1>
+  <v-container id="startPageContent">
+    <v-layout row wrap justify-center fill-height>
+      <v-flex xs12 class="game-name">
+        <v-layout align-center justify-end column fill-height>
+        <h1>{{ gameName }}</h1>
+        </v-layout>
       </v-flex>
-      <v-flex d-flex align-center>
+      <v-flex xs8 sm2>
         <!-- img class="startPageDice" src="../assets/icons/startPageDice.svg" alt="Start page dice"-->
-        <v-img :src="require('@/assets/icons/startPageDice.svg')" height="10em" width="10em"></v-img>
+        <v-img :src="require('@/assets/icons/startPageDice.svg')" contain></v-img>
       </v-flex>
-      <v-flex d-flex align-center>
-        <h2 class="greeting">Hi, {{ userName }}.</h2>
+      <v-flex xs12 class="greeting">
+        <h2>Hi, {{ userName }}.</h2>
     </v-flex>
-    <v-flex d-flex align-end class="buttons">
+    <v-flex xs12 class="buttons">
         <!-- v-btn :color="{'green': $store.state.gameTurns === 1}" dark to="/game"-->
-        <v-btn large color="purple" dark to="/game" v-bind:class="{orange:$store.state.gameTurns > 1}">
-          <v-img :src="require('@/assets/icons/baseline-done-24px.svg')" contain height="2em"></v-img>
-        </v-btn>
-        <v-btn large color="purple" dark to="/register">
-          <v-img :src="require('@/assets/icons/baseline-build-24px.svg')" contain height="1.6em"></v-img>
-        </v-btn>
+        <v-layout justify-space-around row>
+          <v-flex xs5 sm4 md2 d-flex>
+            <v-btn large color="purple" dark to="/game" v-bind:class="{orange:$store.state.gameTurns > 1}">
+              <v-img :src="require('@/assets/icons/baseline-done-24px.svg')" contain height="2em"></v-img>
+            </v-btn>
+          </v-flex>
+
+          <v-flex xs5 sm4 md2 d-flex>
+          <v-btn large color="purple" dark to="/register">
+            <v-img :src="require('@/assets/icons/baseline-build-24px.svg')" contain height="1.6em"></v-img>
+          </v-btn>
+          </v-flex>
+        </v-layout>
     </v-flex>
-    <v-flex d-flex align-end class="icon-license">
-      <span>
+    <v-flex class="icon-license">
+      <v-layout align-center justify-end column fill-height>
+        <span>
       Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
-      </span>
+        </span>
+      </v-layout>
     </v-flex>
     </v-layout>
   </v-container>
@@ -82,14 +93,22 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/scss/vars/colors.scss";
 .game-name {
-  font-size: 3em;
+  // font-size: 2em;
+  text-align: center;
   color: $color-primary-0;
+}
+.greeting {
+  text-align: center;
 }
 .buttons {
   width: 100%;
 }
 .icon-license {
+  text-align: center;
   font-size: .55em;
   color: gray;
+}
+.border {
+  border: 1px solid pink;
 }
 </style>
