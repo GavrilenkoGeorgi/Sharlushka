@@ -10,7 +10,7 @@
 <!-- Icon defs end -->
     <v-layout column>
       <v-flex xs2>
-        <v-layout column align-end>
+        <v-layout column align-end> <!-- button needed -->
           <svg class="ui-icon" @click="$router.go(-1)">
             <use xlink:href="#settingsClose"></use>
           </svg>
@@ -18,7 +18,7 @@
       </v-flex>
       <v-layout column align-center>
         <v-flex>
-          <h1 role="button" @click="$router.push('/help')">Help</h1>
+          <h1 role="button" class="help-link" @click="$router.push('/help')">{{ helpTitle }}</h1>
         </v-flex>
         <v-flex class="user-info">
           <h2 class="user-name">{{ userName }}</h2>
@@ -45,6 +45,7 @@ export default {
   data () {
     return {
       userName: '',
+      helpTitle: 'Help!',
       highestScore: '',
       hiscoreGreeting: 'Your highest score is',
       exclamation: '!' // some over-engeneering
@@ -77,8 +78,18 @@ export default {
 .close-icon-path {
   fill: $color-primary-1;
 }
-
 .user-info {
   text-align: center;
+}
+.help-link {
+  color: $color-primary-0;
+  transition: color 600ms;
+}
+.help-link:hover {
+  color: $color-chosen;
+  // text-decoration: underline
+}
+.hi-score {
+  padding-top: .3em;
 }
 </style>

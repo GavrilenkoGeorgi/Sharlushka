@@ -1,6 +1,6 @@
 <template>
-  <v-container fill-height id="gameHelp">
-<!-- Icon definition -->
+  <v-container id="gameHelp">
+<!-- Icon definition remove this -->
     <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
       <symbol id="settingsClose" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
         <path class="close-icon-path" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
@@ -9,108 +9,51 @@
     </svg>
 <!-- Icon defs end -->
     <v-layout column>
-      <v-flex xs2>
+      <v-flex>
         <v-layout column align-end>
           <svg class="ui-icon" @click="$router.go(-1)">
             <use xlink:href="#settingsClose"></use>
           </svg>
         </v-layout>
       </v-flex>
-      <v-layout column align-center>
-        <v-flex>
-          <h1>Rules</h1>
-          <br />
-          <p class="rules-text">
-            {{ overall }}
-          </p>
-          <p class="rules-text">
-            {{ compinationDescr }}
-          </p>
-          <div class="combination-descr">
-            <p>Один кубик с единицей</p>
-            <svg class="help-dice-icon">
-              <use xlink:href="#diceOnes"></use>
-            </svg>
-            <p>
-              -2
+    </v-layout>
+    <v-layout fill-height justify-center>
+      <v-flex xs12 sm10 md8 lg6>
+        <v-layout justify-space-around column>
+        <!--v-flex-->
+            <h1 class="text-xs-right mb-2 rules-heading">{{ rulesHeading }}</h1>
+        <!--/v-flex-->
+        <!--v-flex-->
+          <!--v-layout column-->
+            <p class="rules-text">
+              {{ overall }}
             </p>
-          </div>
-          <div class="combination-descr">
-            <p>Два кубика </p>
-            <div class="icon-box">
-              <svg class="help-dice-icon">
-                <use xlink:href="#diceOnes"></use>
-              </svg>
-              <svg class="help-dice-icon">
-                <use xlink:href="#diceOnes"></use>
-              </svg>
-            </div>
-            <p>
-              -1
+            <p class="rules-text">
+              {{ schoolDescr }}
             </p>
-          </div>
-          <div class="combination-descr">
-            <p>Три</p>
-            <div class="icon-box">
-              <svg class="help-dice-icon">
-                <use xlink:href="#diceOnes"></use>
-              </svg>
-              <svg class="help-dice-icon">
-                <use xlink:href="#diceOnes"></use>
-              </svg>
-              <svg class="help-dice-icon">
-                <use xlink:href="#diceOnes"></use>
-              </svg>
-            </div>
-            <p>
-              0
-            </p>
-          </div>
-          <div class="combination-descr">
-            <p>Четыре</p>
-            <div class="icon-box">
-              <svg class="help-dice-icon">
-                <use xlink:href="#diceOnes"></use>
-              </svg>
-              <svg class="help-dice-icon">
-                <use xlink:href="#diceOnes"></use>
-              </svg>
-              <svg class="help-dice-icon">
-                <use xlink:href="#diceOnes"></use>
-              </svg>
-              <svg class="help-dice-icon">
-                <use xlink:href="#diceOnes"></use>
-              </svg>
-            </div>
-            <p>
-              +1
-            </p>
-          </div>
-          <div class="combination-descr">
-            <p>Пять</p>
-            <div class="icon-box">
-              <svg class="help-dice-icon">
-                <use xlink:href="#diceOnes"></use>
-              </svg>
-              <svg class="help-dice-icon">
-                <use xlink:href="#diceOnes"></use>
-              </svg>
-              <svg class="help-dice-icon">
-                <use xlink:href="#diceOnes"></use>
-              </svg>
-              <svg class="help-dice-icon">
-                <use xlink:href="#diceOnes"></use>
-              </svg>
-              <svg class="help-dice-icon">
-                <use xlink:href="#diceOnes"></use>
-              </svg>
-            </div>
-            <p>
-              +2
-            </p>
-          </div>
+          </v-layout>
+  <!-- Combination descriptions -->
+            <v-flex class="combination-descr"
+                    v-for="(combination, index) in combinationsDescr"
+                    :key="index">
+              <v-layout>
+                <p>
+                  {{ combination.text }}
+                </p>
+                <v-layout justify-end>
+                  <svg class="help-dice-icon"
+                      v-for="index in combination.quantity" :key="index">
+                  <use v-bind="{'xlink:href':'#' + combination.iconId}"></use>
+                </svg>
+                  <p class="score-value">
+                    {{ combination.scoreValue }}
+                  </p>
+                </v-layout>
+              </v-layout>
+            </v-flex>
+          <!--/v-layout-->
         </v-flex>
-      </v-layout>
+      <!--/v-flex-->
     </v-layout>
   </v-container>
 </template>
@@ -128,7 +71,7 @@ export default {
         Первый раз бросаются все пять кубиков. Дополнительно два раза можно
         перебрасывать часть кубиков, оставляя нужные, или перебросить всё заново.
         Можно остановиться на первом или втором результате и сразу его записать.`,
-      compinationDescr: `Школа на примере единиц: требуется выбросить как можно больше едниниц.
+      schoolDescr: `Школа на примере единиц: требуется выбросить как можно больше едниниц.
         Очки считаются так:`,
       temp: `один кубик с единицей -2 очка;
         два кубика -1;
@@ -148,7 +91,18 @@ export default {
       highestScore: '',
       hiscoreGreeting: 'Your highest score is',
       exclamation: '!', // some over-engeneering
-      helpMenuHidden: true
+      helpMenuHidden: true,
+      rulesHeading: 'Правила',
+      combinationsDescr: [
+        { text: 'Один кубик с единицей', iconId: 'diceOnes', quantity: 1, scoreValue: '-2' },
+        { text: 'Два кубика', iconId: 'diceOnes', quantity: 2, scoreValue: '-1' },
+        { text: 'Три', iconId: 'diceOnes', quantity: 3, scoreValue: '0' },
+        { text: 'Четыре', iconId: 'diceOnes', quantity: 4, scoreValue: '+1' },
+        { text: 'Пять', iconId: 'diceOnes', quantity: 5, scoreValue: '+2' },
+        { text: 'Одна шестёрка', iconId: 'diceSixes', quantity: 1, scoreValue: '-12' },
+        { text: 'Три шестёрки', iconId: 'diceSixes', quantity: 3, scoreValue: '0' },
+        { text: 'Пять', iconId: 'diceSixes', quantity: 5, scoreValue: '+12' }
+      ]
     }
   },
   mounted () {
@@ -180,40 +134,65 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss" scoped> // no need for this
 @import "../assets/scss/vars/colors.scss";
+@import "../assets/scss/vars/fonts.scss";
 
 .close-icon-path {
   fill: $color-primary-1;
 }
+
+.rules-heading {
+  font-family: $cyrillic-font;
+}
+
 .rules-text {
   line-height: 1.4em;
+  font-size: 1.1em;
+  text-indent: 1em;
+  font-family: $cyrillic-font;
 }
+
 .help-dice-icon {
   display: block;
   width: 100%;
-  height: 1.4em;
-  width: 1.4em;
+  height: 1.25em;
+  width: 1.25em;
   color: $color-primary-0;
   // stroke-width: 1em;
-  margin: 0em .2em 0em .2em;
+  margin: 0em .15em 0em .15em;
   stroke: $color-primary-0;
 }
-.combination-descr {
-  display: flex;
-  padding: .2em;
-  // justify-content: space-around;
-  // align-items: center;
-  // border: 1px solid red;
-  p {
-    font-size: 1.1em;
-    margin: 0;
-    padding: 0em .3em 0em .3em;
-  }
+
+.score-value {
+  // border: 1px solid green;
+  width: 2em;
+  text-align: right;
+  font-weight: 500;
+  color: $color-chosen;
 }
+
 .icon-box {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.border {
+  border: 1px solid pink;
+}
+
+.combination-descr {
+  font-size: 1.18em;
+  font-family: $cyrillic-font;
+  padding: .2em;
+  p {
+    margin: 0;
+  }
+  transition: background-color 500ms;
+}
+
+.combination-descr:hover {
+  background-color: $color-pale-primary;
 }
 </style>
