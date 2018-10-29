@@ -11,8 +11,8 @@ const getDefaultState = () => {
     diceBoxHidden: true,
     schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score
-    schoolCompleted: false, // check if school is completed
-    gameTurns: 1, // game turns counter
+    schoolCompleted: true, // check if school is completed
+    gameTurns: 7, // game turns counter
     maxGameTurns: 33,
     rollCount: 3, // roll counter for the current turn
     gameCheck: false, // to check if there are any combinations left to record
@@ -286,19 +286,22 @@ const mutations = {
               } else if (!state.scoreArray[11].final) {
                 state.scoreArray[11].value = ''
               }
-
               // check for 'small' and 'large' combinations
-              if (arrayToAnalyse[currentDice - 1].length === 1 && (!state.scoreArray[12].final || !state.scoreArray[13].final)) {
+              if (arrayToAnalyse[currentDice - 1].length === 1) {
                 // collect all dice
                 smallLargeCheckArray.push(currentDice)
                 // if array is large enough i.e. length equals 5
                 if (smallLargeCheckArray.length === 5) {
                   smallLargeCheckArray.sort()
                   // calculate result and save it to the corresponding value
-                  if (smallLargeCheckArray[0] === 1 && smallLargeCheckArray[smallLargeCheckArray.length - 1] === 5) {
+                  if (smallLargeCheckArray[0] === 1 &&
+                      smallLargeCheckArray[smallLargeCheckArray.length - 1] === 5 &&
+                      !state.scoreArray[12].final) {
                     // we got small combination
                     state.scoreArray[12].value = smallLargeCheckArray.reduce(scoreSum)
-                  } else if (smallLargeCheckArray[0] === 2 && smallLargeCheckArray[smallLargeCheckArray.length - 1] === 6) {
+                  } else if (smallLargeCheckArray[0] === 2 &&
+                              smallLargeCheckArray[smallLargeCheckArray.length - 1] === 6 &&
+                              !state.scoreArray[13].final) {
                     // we got large combination
                     state.scoreArray[13].value = smallLargeCheckArray.reduce(scoreSum)
                   }
