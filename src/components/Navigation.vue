@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid pa-1 id="gameNavigation">
+  <v-container pa-1 id="gameNavigation">
     <!-- icon definition -->
     <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
       <symbol id="settings" viewBox="0 0 507.45 507.45" preserveAspectRatio="xMidYMid meet">
@@ -73,7 +73,7 @@ export default {
   // text-align: center;
 }
 .game-name {
-  width: 100%;
+  // width: 100%;
   a {
     color: white;
     font-family: $text-font;

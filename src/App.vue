@@ -1,5 +1,5 @@
 <template>
-  <v-container fill-height fluid ma-0 pa-0 id="app">
+  <v-container ma-0 pa-0 id="app">
   <!-- SVG icons defs -->
     <!-- Default icons -->
     <svg version='1.1' style="display: none;" xmlns="http://www.w3.org/2000/svg">
@@ -48,14 +48,12 @@
       </symbol>
     </svg>
     <!-- SVG icons end -->
-    <v-layout justify-space-between column>
       <transition name="custom-classes-transition"
         mode="out-in"
         enter-active-class="animated fadeInRight"
         leave-active-class="animated fadeOutLeft">
         <router-view />
       </transition>
-    </v-layout>
   </v-container>
 </template>
 

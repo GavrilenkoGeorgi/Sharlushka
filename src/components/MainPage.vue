@@ -1,6 +1,6 @@
 <template>
-  <v-container id="startPageContent">
-    <v-layout row wrap justify-center fill-height>
+  <v-container fill-height id="startPageContent">
+    <v-layout row wrap justify-center>
       <v-flex xs12 class="game-name">
         <v-layout align-center justify-end column fill-height>
         <h1>{{ gameName }}</h1>

@@ -85,33 +85,57 @@ export default {
 #diceControls {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  // justify-content: space-around;
   transition: opacity 1s ease;
+  // width: 100%;
+  border: 1px solid lime;
   // border: 1px solid lime;
 }
 .dice-icon {
   width: 2.7em;
   height: 2.7em;
-  margin: 0em .1em 0em .1em;
+  object-fit: contain;
+  // margin: .3em;
+  // margin: 0em .1em 0em .1em;
+}
+.dice-box {
+  border: 1px solid black;
+  display: flex;
+  width: 100%;
 }
 
 .dice-box, .result-box {
   // border: 1px solid orange;
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  // width: auto;
+  // margin: 0 auto;
+  justify-content: space-around;
   // width: 100%;
-  // align-items: center;
+  align-items: center;
   // align-content: center;
   // width: 11em;
   // align-items: center;
 }
 
 .result-box {
-  justify-content: flex-end;
+  // justify-content: flex-end;
+  display: flex;
   // width: 100%;
-  // min-width: 0em;
-  // border: 1px solid green;
+  // width: 0em;
+  min-width: 0em;
+  border: 1px solid red;
+}
+
+@media screen and (orientation: landscape) { // nokia5
+  #diceControls {
+    // border: 1px solid pink;
+    overflow: hidden;
+    flex-direction: column;
+  }
+  .dice-box, .result-box {
+    flex-direction: column;
+  }
 }
 
 // @import "../assets/scss/index.scss";
