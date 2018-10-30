@@ -1,5 +1,5 @@
 <template>
-  <v-container pa-1 id="gameNavigation">
+  <v-container fill-height pa-1 id="gameNavigation">
     <!-- icon definition -->
     <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
       <symbol id="settings" viewBox="0 0 507.45 507.45" preserveAspectRatio="xMidYMid meet">
@@ -16,7 +16,6 @@
           <router-link to="/">{{ title }}</router-link>
         </v-layout>
       </v-flex>
-      <v-spacer></v-spacer>
       <v-flex class="settings-icon pt-1 pr-1">
         <v-layout justify-end>
           <router-link class="settings-button" to="/settings">
@@ -63,13 +62,14 @@ export default {
 #gameNavigation {
   // border: 1px solid pink;
   background-color: $color-primary-0;
-  // margin-bottom: .7em;
+  // height: 3em;
+  font-size: 2em;
 }
 .score {
   // border: 1px solid red;
   color: white;
   font-family: $text-font;
-  font-size: 1.6em;
+  // font-size: 1.6em;
   // text-align: center;
 }
 .game-name {
@@ -78,15 +78,24 @@ export default {
     color: white;
     font-family: $text-font;
     text-decoration: none;
-    font-size: 1.6em;
+    // font-size: 1.6em;
   }
   // text-align: center;
+}
+.settings-icon {
+  overflow: hidden;
 }
 
 .settings-icon-path {
   fill: white;
 }
 
+@media screen and (orientation: landscape) { // nokia5
+  #gameNavigation {
+    // height: 1em;
+    // font-size: 1.1em;
+  }
+}
 /*
 @media screen and (-webkit-min-device-pixel-ratio: 1.4) and (min-width: 250px) { // fly iq4415 iphone5Se
   // defaults above

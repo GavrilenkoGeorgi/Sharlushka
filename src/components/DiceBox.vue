@@ -82,148 +82,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 #diceControls {
   display: flex;
-  flex-direction: row;
-  // justify-content: space-around;
-  transition: opacity 1s ease;
-  // width: 100%;
-  border: 1px solid lime;
-  // border: 1px solid lime;
 }
+
 .dice-icon {
   width: 2.7em;
   height: 2.7em;
   object-fit: contain;
-  // margin: .3em;
-  // margin: 0em .1em 0em .1em;
-}
-.dice-box {
-  border: 1px solid black;
-  display: flex;
-  width: 100%;
+  margin: 0em .1em 0em .1em;
 }
 
 .dice-box, .result-box {
-  // border: 1px solid orange;
   display: flex;
-  flex-direction: row;
-  // width: auto;
-  // margin: 0 auto;
-  justify-content: space-around;
-  // width: 100%;
   align-items: center;
-  // align-content: center;
-  // width: 11em;
-  // align-items: center;
-}
-
-.result-box {
-  // justify-content: flex-end;
-  display: flex;
-  // width: 100%;
-  // width: 0em;
-  min-width: 0em;
-  border: 1px solid red;
 }
 
 @media screen and (orientation: landscape) { // nokia5
   #diceControls {
-    // border: 1px solid pink;
-    overflow: hidden;
     flex-direction: column;
   }
   .dice-box, .result-box {
     flex-direction: column;
   }
-}
-
-// @import "../assets/scss/index.scss";
-// @import "../../node_modules/animate.css/animate.css";
-/*
-
-#diceControls {
-  display: flex;
-}
-.dice-box, .result-box {
-  display: inherit;
-  flex-flow: row;
-  justify-content: flex-end;
-  align-content: center;
-  align-items: center;
-}
-
-*/
-/*
-@media screen and (-webkit-min-device-pixel-ratio: 1.4) and (min-width: 250px) { // fly iq4415 iphone5Se
-  // defaults above
-}
-*/
-/*
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) { // iphone 4
   .dice-icon {
-    width: 2.6em;
-    height: 2.6em;
+    margin: .1em 0em .1em 0em;
   }
 }
 
-@media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
-  .dice-icon {
-    // border: 1px solid pink;
-    width: 2.7em;
-    height: 2.7em;
-    margin: 0em .2em 0em .2em;
-  }
-}
-
-@media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) and (orientation: landscape) { // nokia5
-  #diceControls {
-    display: flex;
-    flex-direction: column;
-  }
-  .dice-box, .result-box {
-    display: inherit;
-    // flex-flow: row;
-    flex-direction: column;
-    justify-content: flex-end;
-  }
-  .dice-icon {
-    width: 3em;
-    height: 3em;
-  }
-}
-
-@media screen and (-webkit-min-device-pixel-ratio: 2.6) and (min-width: 411px) { // pixel 2
-  .dice-icon {
-    width: 3.5em;
-    height: 3.5em;
-  }
-}
-
-@media screen and (-webkit-min-device-pixel-ratio: 3) and (min-width: 414px) { // iphone678
-}
-
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) { // iPad
-  .dice-icon {
-    width: 6.5em;
-    height: 6.5em;
-  }
-}
-
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) { // iPadPro
-  .dice-icon {
-    width: 8.5em;
-    height: 8.5em;
-  }
-}
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) {
-
-}
-@media screen and (max-resolution: 96dpi) and (min-width: 700px) { // desktop
-  .dice-icon {
-    width: 8em;
-    height: 8em;
-  }
-}
-*/
 </style>

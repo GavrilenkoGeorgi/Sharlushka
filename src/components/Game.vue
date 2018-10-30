@@ -1,33 +1,30 @@
 <template>
   <!--v-container grid-list-md text-xs-center pa-0 ma-0 id="gameView"-->
-    <v-layout id="gameView" row wrap>
+    <v-layout id="gameView" justify-space-between row fill-height wrap>
       <v-flex>
-        <Navigation />
+        <Navigation></Navigation> <!-- should be closed -->
       </v-flex>
 <!-- School layout -->
       <v-layout column class="game-screen">
       <v-flex d-flex class="school">
-        <!--v-layout row class="school-icon-container"-->
         <v-flex v-for="dice in this.getSchoolArray"
             :key="dice.id"
-            v-bind:id="dice.id"
             class="text-xs-center">
-          <svg class="school-dice-icon" fill="none" v-on:click="handleBoardClick">
+          <svg class="school-dice-icon" fill="none" v-on:click="handleBoardClick" v-bind:id="dice.id">
             <use v-bind="{'xlink:href':'#' + dice.icon}"
                 class="default" v-bind:class="{ chosen:dice.final }">
             </use>
           </svg>
         </v-flex>
-        <!--/v-layout-->
       </v-flex>
     <v-flex d-flex class="school" v-on:click="handleBoardClick">
-      <!--v-layout row class="school-result-container"-->
-      <div class="school-result" v-for="result in this.getSchoolArray" :key="result.id"
+      <v-layout row justify-space-around class="school-result-layout">
+      <v-flex class="school-result" v-for="result in this.getSchoolArray" :key="result.id"
         v-bind:resultId="result.id"
-        v-bind:class="{ chosen:result.final }">
+        v-bind:class="{ chosen:result.final, blink:!result.final }">
         <span>{{ result.value }}</span>
-      </div>
-      <!--/v-layout-->
+      </v-flex>
+      </v-layout>
     </v-flex>
 <!-- Game table -->
     <v-flex class="game" v-on:click="handleBoardClick">
@@ -47,9 +44,10 @@
 <!-- Dice controls -->
     <v-flex class="dice-controls">
       <v-layout row class="dice-controls-container">
-        <v-flex class="pa-0" v-bind:class="{ hidden:$store.state.diceBoxHidden }">
+        <DiceBox v-bind:class="{ hidden:$store.state.diceBoxHidden }"></DiceBox> <!-- should be closed -->
+        <!-- v-flex class="pa-0" v-bind:class="{ hidden:$store.state.diceBoxHidden }">
           <DiceBox />
-        </v-flex>
+        </v-flex-->
   <!-- Main button -->
         <v-flex class="main-button pa-0 animated"
           v-on:click="handleMainGameButtonClick"
@@ -243,13 +241,13 @@ export default {
       }
     },
     handleBoardClick (event) {
-      console.log(`Event target is: ${event.target}`)
-      console.dir(event.target)
+      // console.log(`Event target is: ${event.target}`)
+      // console.dir(event.target)
       let idFound = false
       let scoreId = null
       let elementToCheck = event.target // .parentElement?
       while (!idFound && elementToCheck) {
-        if (elementToCheck.classList.contains('icon-container') ||
+        if (elementToCheck.classList.contains('school-dice-icon') ||
           elementToCheck.classList.contains('dice-icon') ||
           elementToCheck.classList.contains('game-combination')) {
           scoreId = elementToCheck.id
@@ -340,9 +338,9 @@ export default {
         store.state.scoreArray[combinationIndexInArray].final = true
         store.state.schoolScoreTotal += store.state.scoreArray[combinationIndexInArray].value
         store.state.turnCompleted = true
-        let resultParagraph = document.getElementById(combinationId)
-        resultParagraph.lastElementChild.classList.remove('blink')
-        resultParagraph.classList.add('saved')
+        // let resultParagraph = document.getElementById(combinationId)
+        // resultParagraph.lastElementChild.classList.remove('blink')
+        // resultParagraph.classList.add('saved')
         // set school completed to display game score on the board
         if (store.state.gameTurns === 6) {
           store.state.schoolCompleted = true
@@ -418,29 +416,21 @@ export default {
 
 .school {
   padding: .5em .3em .5em .3em;
-  // display: flex;
-  // justify-content: space-between;
 }
 .school-result {
   text-align: center;
-  border: 1px solid pink;
+  // border: 1px solid pink;
   width: 100%;
   text-align: center;
   font-size: 1.3em;
   font-weight: 700;
   height: 1.5em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .game-combination {
   display: flex;
   flex-direction: row;
   color: $color-primary-0;
-  // align-items: flex-start;
-  // margin: .3em 0em .3em 0em;
-  // border: 1px solid blue;
 }
 
 .game-combination-name {
@@ -453,18 +443,23 @@ export default {
   flex-grow: 1;
   align-items: center;
   justify-content: center;
-  // text-align: center;
   font-weight: 700;
   font-size: 1.4em;
   // border: 1px solid yellow;
 }
 .blink {
   color: gray;
-  animation: blinker 2.5s linear infinite;
+  animation: blinker 3s linear infinite;
 }
 @keyframes blinker {
+  10% {
+    opacity: .1;
+  }
   50% {
-    opacity: .2;
+    opacity: .5;
+  }
+  100% {
+    opacity: 1;
   }
 }
 .set {
@@ -480,15 +475,6 @@ export default {
   padding: .3em;
 }
 
-.dice-controls-container {
-  // border: 1px solid pink;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  // align-content: center;
-  // align-items: center;
-}
-
 .school-dice-icon {
   height: 3em;
   width: 3em;
@@ -500,8 +486,7 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  // margin: .1em;
-  // width: 100%;
+  margin-left: .2em;
   color: $color-light;
   border-radius: .25em;
   background-color: $color-primary-0;
@@ -548,10 +533,8 @@ export default {
   height: .1em;
   position: fixed;
   bottom: 0;
-  // align-self: flex-end;
   width: 0%;
   transition: width 1.75s;
-  // margin-top: .3em;
 }
 .full { // progress bar
   background-color: #AA3838;
@@ -561,22 +544,24 @@ export default {
 .game {
   padding: 1em 0em 1em 0em;
 }
-
+/*
+.border {
+  border: 1px solid pink;
+}
+*/
 @media screen and (orientation: landscape) { // nokia5
   .game-screen {
-    // border: 1px solid red;
     display: flex;
     flex-direction: row;
+    align-items: center;
+    padding: 0em 1em 0em 1em;
     }
   .school {
-    // display: flex;
     // border: 1px solid green;
     flex-direction: column;
     padding: .3em;
-    // width: 4em;
   }
   .game {
-    border: 1px solid green;
     padding: 0em;
     width: 60%;
   }
@@ -584,9 +569,18 @@ export default {
     height: 2.8em;
     width: 2.8em;
   }
-  .school-result-container {
+  .school-result-layout {
+    // border: 1px solid green;
+    height: 18em;
+    display: flex;
     flex-direction: column;
-    //width: 3em;
+    flex-basis: 0;
+  }
+  .school-result {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2em;
   }
   .game-combination-name {
     font-size: 1.4em;
@@ -595,7 +589,9 @@ export default {
     flex-direction: column;
   }
   .main-button {
-    height: 5em;
+    height: 4em;
+    margin-top: .2em; // meh...
+    margin-left: 0em;
   }
 }
 </style>
