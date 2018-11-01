@@ -1,73 +1,41 @@
 <template>
-  <!--v-container grid-list-md text-xs-center pa-0 ma-0 id="gameView"-->
-    <v-layout id="gameView" justify-space-between row fill-height wrap>
-      <v-flex>
-        <Navigation></Navigation> <!-- should be closed -->
+  <v-container fill-height fluid ma-0 pa-0>
+    <v-layout row wrap justify-space-between>
+      <Navigation></Navigation>
+<!-- School dice display -->
+      <v-flex d-flex xs12 class="school-dice-container">
+        <svg v-for="dice in this.getSchoolArray"
+              :key="dice.id"
+              class="school-dice-icon" fill="none"
+              v-on:click="handleBoardClick"
+              v-bind:id="dice.id">
+          <use v-bind="{'xlink:href':'#' + dice.icon}"
+              class="default" v-bind:class="{ chosen:dice.final }">
+          </use>
+        </svg>
       </v-flex>
-<!-- School layout -->
-      <v-layout column class="game-screen">
-      <v-flex d-flex class="school">
-        <v-flex v-for="dice in this.getSchoolArray"
-            :key="dice.id"
-            class="text-xs-center">
-          <svg class="school-dice-icon" fill="none" v-on:click="handleBoardClick" v-bind:id="dice.id">
-            <use v-bind="{'xlink:href':'#' + dice.icon}"
-                class="default" v-bind:class="{ chosen:dice.final }">
-            </use>
-          </svg>
-        </v-flex>
-      </v-flex>
-    <v-flex d-flex class="school" v-on:click="handleBoardClick">
-      <v-layout row justify-space-around class="school-result-layout">
-      <v-flex class="school-result" v-for="result in this.getSchoolArray" :key="result.id"
-        v-bind:resultId="result.id"
-        v-bind:class="{ chosen:result.final, blink:!result.final }">
+<!-- School results display -->
+      <v-flex xs2 class="school-result" v-for="result in this.getSchoolArray" :key="result.id"
+          v-bind:resultId="result.id"
+          v-bind:class="{ chosen:result.final, blink:!result.final }">
         <span>{{ result.value }}</span>
       </v-flex>
-      </v-layout>
-    </v-flex>
-<!-- Game table -->
-    <v-flex class="game" v-on:click="handleBoardClick">
-      <v-layout row wrap>
-      <v-flex xs12 py-1 class="game-combination" v-for="combination in this.getCombinationArray" :key="combination.id"
-        v-bind:id="combination.id" v-bind:class="{ set:combination.final }">
+<!-- Game combinations display -->
+      <v-flex xs12 class="game-combination" v-for="combination in this.getCombinationArray" :key="combination.id"
+          v-bind:id="combination.id" v-bind:class="{ set:combination.final }">
         <v-flex xs6 class="game-combination-name">{{ combination.fullName }}</v-flex>
         <v-flex xs2 class="game-result" v-for="(value, index) in combination.displayValues" :key="index">
           {{ value }}
         </v-flex>
         <v-flex xs2 class="game-result blink" v-if="combination.value">
-          {{ combination.value }}
+            {{ combination.value }}
         </v-flex>
       </v-flex>
-      </v-layout>
-    </v-flex>
 <!-- Dice controls -->
-    <v-flex class="dice-controls">
-      <v-layout row class="dice-controls-container">
-        <DiceBox v-bind:class="{ hidden:$store.state.diceBoxHidden }"></DiceBox> <!-- should be closed -->
-        <!-- v-flex class="pa-0" v-bind:class="{ hidden:$store.state.diceBoxHidden }">
-          <DiceBox />
-        </v-flex-->
-  <!-- Main button -->
-        <v-flex class="main-button pa-0 animated"
-          v-on:click="handleMainGameButtonClick"
-          v-bind:class="{ save: this.mainButtonState.save, bounce: this.mainButtonState.save }">
-            <div v-if=" this.mainButtonState.play " class="play-arrow-right animated fadeIn">
-              </div>
-            <div v-if=" this.mainButtonState.roll &&
-              this.getCurrentGameState.rollsCountForButton <= 3 "
-              class="circle-container animated fadeIn">
-              <div v-for="(value, index) in this.getCurrentGameState.rollsCountForButton"
-                :key="index" class="roll-circle animated fadeIn"></div>
-            </div>
-            <div v-if=" this.mainButtonState.save" class="stop-brick animated fadeIn"></div>
-        </v-flex>
-      </v-layout>
-      </v-flex>
-<!-- End of dice controls -->
-      </v-layout>
-      <div class="progress-bar pt-1"></div>
+      <DiceBox v-bind:turnCompleted="turnCompleted"></DiceBox>
+      <div class="progress-bar"></div>
     </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -81,29 +49,8 @@ export default {
   data () {
     return {
       title: 'Sharlushka',
-      test: true,
-      clicked: false,
       highestScore: 0,
-      registerForm: false,
-      userExists: false,
-      newTurn: false,
-      mainButtonState: {
-        play: true,
-        roll: false,
-        save: false,
-        disabled: false
-      },
-      mainButtonText: '',
-      currentlyHighlightedElement: null,
-      diceToDisplay: [
-        { value: '6', chosen: true, id: 'diceSixesSelected' },
-        { value: '5', chosen: false, id: 'second' }]
-    }
-  },
-  watch: {
-    newTurn () {
-      this.updateMainButtonState()
-      // this.updateProgressBar()
+      turnCompleted: false
     }
   },
   components: {
@@ -119,7 +66,18 @@ export default {
       'getCombinationArray',
       'getDiceArray',
       'getCurrentGameState'
-    ])
+    ]),
+    turnState: function () {
+      return store.state.newTurn
+    }
+  },
+  watch: {
+    turnState: {
+      immediate: true,
+      handler () { // some spaghetti code
+        this.turnCompleted = !this.turnState
+      }
+    }
   },
   mounted () {
     let highestScore = localStorage.getItem('highestScore')
@@ -129,60 +87,12 @@ export default {
   },
   methods: {
     ...mapActions([
-      'rollDice',
       'nextTurn',
-      'removeDice',
-      'openMenu',
-      'newGame',
-      'increment',
-      'decrement',
-      'computeScore',
-      'setDiceChosenState',
-      'incrementAsync'
+      // 'newGame',
+      'computeScore'
+      // 'setDiceChosenState',
+      // 'incrementAsync'
     ]),
-    handleMainGameButtonClick () {
-      if (this.getCurrentGameState.rollsCountForButton > 0 && !this.getCurrentGameState.turnCompleted) {
-        if (!this.diceRolled) {
-          this.diceRolled = true
-        }
-        store.commit('rollDice')
-        this.updateProgressBar()
-        this.updateMainButtonState()
-      } else if (this.getCurrentGameState.turnCompleted) {
-        this.newTurn = true
-        store.commit('nextTurn')
-      }
-    },
-    updateMainButtonState () {
-      let button = document.querySelector('.main-button')
-      this.mainButtonState.play = true
-      this.mainButtonState.save = false
-      this.mainButtonState.roll = false
-      if (this.getCurrentGameState.rollsCountForButton === 3 && !this.getCurrentGameState.turnCompleted) {
-        this.mainButtonState.play = true
-      }
-      if (this.getCurrentGameState.rollsCountForButton <= 2 && !this.getCurrentGameState.turnCompleted) {
-        // trigger render circles
-        this.mainButtonState.play = false
-        this.mainButtonState.roll = true
-      }
-      if (this.getCurrentGameState.turnCompleted) {
-        this.mainButtonState.roll = false
-        this.mainButtonState.play = true
-        this.mainButtonState.disabled = false
-      }
-      if (this.getCurrentGameState.rollsCountForButton === 0 && !this.getCurrentGameState.turnCompleted) {
-        this.mainButtonState.roll = false
-        this.mainButtonState.play = false
-        this.mainButtonState.save = true
-        this.mainButtonState.disabled = true
-        // window.navigator.vibrate(200)
-        // navigator.vibrate([500, 250, 500, 250, 500, 250, 500, 250, 500, 250, 500])
-        button.classList.add('bounce')
-      } else {
-        return false
-      }
-    },
     updateProgressBar () {
       let progressBar = document.querySelector('.progress-bar')
       if (store.state.rollCount === 2) {
@@ -197,55 +107,10 @@ export default {
         progressBar.classList.remove('full')
       }
     },
-    removeCurrentHighlight () {
-      if (this.currentlyHighlightedElement) {
-        // clear current highlights
-        this.currentlyHighlightedElement.nextElementSibling.classList.remove('highest-value')
-      } else {
-        return false
-      }
-    },
-    highlightHighestValue () {
-      // highlight highest value onscreen
-      this.removeCurrentHighlight()
-      // this.currentlyHighlightedElement = null
-      let highestScoreCombination = null
-      let highestValue = -12 // minimal combination score on sixes
-      for (let combination of this.currentValuesInScoreArray) {
-        if (combination.value >= highestValue) {
-          highestValue = combination.value
-          highestScoreCombination = combination
-          // console.log(`Highest score combination ${highestScoreCombination.id}`)
-        }
-      }
-      if (highestScoreCombination) {
-        this.currentlyHighlightedElement = document.getElementById(highestScoreCombination.id)
-        // let temp = document.getElementById(highestScoreCombination.id)
-        if (!store.state.schoolCompleted) {
-          // let itemToHighlight = document.getElementById(highestScoreCombination.id)
-          // console.log(`Item to highlight ${this.currentlyHighlightedElement}`)
-          this.currentlyHighlightedElement.nextElementSibling.classList.add('highest-value')
-          // console.log(itemToHighlight.nextElementSibling.classList)
-        } /* else if (store.state.schoolCompleted && this.currentlyHighlightedElement.nextElementSibling) {
-          // this.currentlyHighlightedElement.lastChild.classList.add('highest-value')
-          // console.log(`Currently highlighted item is ->`)
-          // console.dir(this.currentlyHighlightedElement)
-          // this.currentlyHighlightedElement.parentElement.classList.add('highest-value')
-          // console.dir(this.currentlyHighlightedElement.parentElement.lastElementChild)
-          // let gameResultElement = this.currentlyHighlightedElement.parentElement
-          console.dir(this.currentlyHighlightedElement.nextElementSibling)
-          this.currentlyHighlightedElement.parentNode.lastChild.classList.add('highest-value')
-        } */
-      } else {
-        return false
-      }
-    },
     handleBoardClick (event) {
-      // console.log(`Event target is: ${event.target}`)
-      // console.dir(event.target)
       let idFound = false
       let scoreId = null
-      let elementToCheck = event.target // .parentElement?
+      let elementToCheck = event.target
       while (!idFound && elementToCheck) {
         if (elementToCheck.classList.contains('school-dice-icon') ||
           elementToCheck.classList.contains('dice-icon') ||
@@ -265,54 +130,8 @@ export default {
         console.log(`Id is: ${scoreId}`)
       }
     },
-    handleDiceClick (element) {
-      while (element) {
-        if (element.classList.contains('dice-icon')) {
-          return element
-        } else {
-          element = element.parentElement
-          if (element) {
-            this.handleDiceClick(element)
-          } else {
-            return false
-          }
-        }
-      }
-    },
-    selectDice (event) {
-      this.clicked = true
-      let elementToAdd = event.currentTarget
-      let diceBox = document.querySelector('.dice-box')
-      let resultBox = document.querySelector('.result-box')
-      if (elementToAdd.parentElement === diceBox && !store.state.turnCompleted) {
-        diceBox.removeChild(elementToAdd) // dice-container
-        resultBox.appendChild(elementToAdd)
-        store.commit('setDiceChosenState', elementToAdd.id)
-        store.commit('computeScore')
-      } else if (elementToAdd.parentElement === resultBox) {
-        resultBox.removeChild(elementToAdd)
-        diceBox.appendChild(elementToAdd) // dice-container
-        store.commit('setDiceChosenState', elementToAdd.id)
-        store.commit('computeScore')
-      }
-    },
-    deSelectDice (event) {
-      let elementToRemove = this.handleDiceClick(event.target)
-      let diceBox = document.querySelector('.dice-box')
-      let resultBox = document.querySelector('.result-box')
-      if (elementToRemove && !store.state.turnCompleted) {
-        // dice-container
-        resultBox.removeChild(elementToRemove)
-        diceBox.appendChild(elementToRemove)
-      }
-    },
     clearResultBox () {
-      let diceBox = document.querySelector('.dice-box')
-      let resultBox = document.querySelector('.result-box')
-      while (resultBox.childNodes.length) {
-        diceBox.appendChild(resultBox.firstChild)
-      }
-      // and clear all temp results in store
+      // clear all temp results in store
       for (let key in store.state.scoreArray) {
         if (!store.state.scoreArray[key].final) {
           store.state.scoreArray[key].value = ''
@@ -329,6 +148,7 @@ export default {
       store.state.debug = true
     },
     recordResult (id) {
+      this.turnCompleted = true
       let combinationId = id
       const combinationIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(combinationId)
       if (!store.state.schoolCompleted &&
@@ -338,16 +158,15 @@ export default {
         store.state.scoreArray[combinationIndexInArray].final = true
         store.state.schoolScoreTotal += store.state.scoreArray[combinationIndexInArray].value
         store.state.turnCompleted = true
-        // let resultParagraph = document.getElementById(combinationId)
-        // resultParagraph.lastElementChild.classList.remove('blink')
-        // resultParagraph.classList.add('saved')
         // set school completed to display game score on the board
         if (store.state.gameTurns === 6) {
           store.state.schoolCompleted = true
         }
         this.clearResultBox()
-        this.removeCurrentHighlight()
-      } else if (store.state.scoreArray[combinationIndexInArray].value !== '' && store.state.scoreArray[combinationIndexInArray].displayValues.length < 3 && !store.state.turnCompleted) {
+        // this.removeCurrentHighlight()
+      } else if (store.state.scoreArray[combinationIndexInArray].value !== '' &&
+                  store.state.scoreArray[combinationIndexInArray].displayValues.length < 3 &&
+                  !store.state.turnCompleted) {
         store.state.turnCompleted = true
         // push result into display values array
         store.state.scoreArray[combinationIndexInArray].displayValues.push(store.state.scoreArray[combinationIndexInArray].value)
@@ -358,23 +177,22 @@ export default {
         }
         // this.clearResultInStore()
         this.clearResultBox()
-        this.removeCurrentHighlight()
+        // this.removeCurrentHighlight()
       } else if (!store.state.turnCompleted &&
         store.state.scoreArray[combinationIndexInArray].value === '' &&
         !store.state.scoreArray[combinationIndexInArray].final &&
         store.state.schoolCompleted &&
         store.state.rollCount === 0 &&
         !store.state.zeroCheck) {
-        // if there is no combination to record user can mark one field per turn as cancelled
+        // that means if there is no combination to record user can mark one field per turn as cancelled
         // and it won't be used to calculate score
         if (store.state.scoreArray[combinationIndexInArray].displayValues.length < 3) {
           store.state.scoreArray[combinationIndexInArray].displayValues.push(0)
           // zero saved during this turn
           store.state.zeroCheck = true
           this.clearResultBox()
-          this.removeCurrentHighlight()
+          // this.removeCurrentHighlight()
           store.state.turnCompleted = true
-          this.mainButtonText = 'Turn'
           this.mainButtonState.disabled = false
         }
         // check if it is full
@@ -386,7 +204,7 @@ export default {
         // console.log(`Nothing to record!`)
         return false
       }
-      // last checks after recording or not recording result
+      // last checks after recording or not recording the result
       if (store.state.gameTurns === 33 && store.state.turnCompleted) {
         // console.log(`Game Over!`)
         let score = store.state.schoolScoreTotal + store.state.gameTotal
@@ -401,9 +219,8 @@ export default {
         }
         this.$router.push({ path: '/endgame' })
       } else {
-        this.newTurn = true
+        this.turnCompleted = true
         store.commit('nextTurn')
-        this.updateMainButtonState()
         this.updateProgressBar()
       }
     } // end of record result method
@@ -413,38 +230,52 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/scss/vars/colors.scss";
+@import "../assets/scss/vars/fonts.scss";
 
+.school-dice-container {
+  height: 2.5em;
+}
+.school-result {
+  height: 1em;
+  text-align: center;
+}
+.game-combination {
+  font-size: 1.2em;
+  // font-family: verdana;
+  text-align: right;
+}
+
+/*
 .school {
-  padding: .5em .3em .5em .3em;
+  // padding: .5em .3em .5em .3em;
 }
 .school-result {
   text-align: center;
   // border: 1px solid pink;
-  width: 100%;
-  text-align: center;
-  font-size: 1.3em;
-  font-weight: 700;
-  height: 1.5em;
+  // width: 100%;
+  // font-size: 1.3em;
+  // font-weight: 700;
+  // height: 1.5em;
 }
 
 .game-combination {
-  display: flex;
-  flex-direction: row;
-  color: $color-primary-0;
+  // display: flex;
+  // flex-direction: row;
+  // color: $color-primary-0;
 }
 
 .game-combination-name {
-  font-size: 1.8em;
-  text-align: right;
+  // font-size: 1.8em;
+  // text-align: right;
 }
 
 .game-result {
-  display: flex;
-  flex-grow: 1;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 1.4em;
+  // display: flex;
+  // flex-grow: 1;
+  // align-items: center;
+  // justify-content: center;
+  // font-weight: 700;
+  // font-size: 1.4em;
   // border: 1px solid yellow;
 }
 .blink {
@@ -471,22 +302,22 @@ export default {
 }
 
 .dice-controls {
-  // border: 1px solid pink;
-  padding: .3em;
+  border: 1px solid red;
+  // padding: .3em;
 }
 
 .school-dice-icon {
-  height: 3em;
-  width: 3em;
+  height: auto;
+  width: 100%;
 }
-
-/* main button */
+*/
+/* main button
 .main-button {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-left: .2em;
+  // margin-left: .2em;
   color: $color-light;
   border-radius: .25em;
   background-color: $color-primary-0;
@@ -520,17 +351,20 @@ export default {
   background-color: $color-very-red;
   box-shadow: 0em 0em .3em $color-very-red;
 }
-
+*/
+/*
 .hidden {
-  opacity: 0;
+  opacity: 1;
 }
+*/
 
-/*Progress bar */
+/*Progress bar
+
 .progress-bar {
   // border: 1px solid red;
   background-color: $color-primary-0;
   box-shadow: 0px 1px 10px 0px $color-primary-4;
-  height: .1em;
+  height: .4em;
   position: fixed;
   bottom: 0;
   width: 0%;
@@ -540,15 +374,23 @@ export default {
   background-color: #AA3838;
   box-shadow: 0em .2em .8em 0em red;
 }
-
-.game {
-  padding: 1em 0em 1em 0em;
-}
+*/
 /*
+.game {
+  // padding: 1em 0em 1em 0em;
+}
+*/
+.border-lime {
+  border: 1px solid lime;
+}
 .border {
   border: 1px solid pink;
 }
-*/
+
+.border-black {
+  border: 1px solid black;
+}
+/*
 @media screen and (orientation: landscape) { // nokia5
   .game-screen {
     display: flex;
@@ -565,6 +407,7 @@ export default {
     padding: 0em;
     width: 60%;
   }
+
   .school-dice-icon {
     height: 2.8em;
     width: 2.8em;
@@ -592,6 +435,36 @@ export default {
     height: 4em;
     margin-top: .2em; // meh...
     margin-left: 0em;
+  }
+}
+*/
+/*
+.school-dice-container {
+  height: 2.8em;
+}
+*/
+/*
+@media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
+  .school-dice-container {
+    height: 3.5em;
+  }
+}
+*/
+/*
+@media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
+  .school-dice-container {
+    height: 8em;
+  }
+}
+*/
+@media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
+  .school-dice-container {
+    height: 3.8em;
+  }
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
+  .school-dice-container {
+    height: 10em;
   }
 }
 </style>

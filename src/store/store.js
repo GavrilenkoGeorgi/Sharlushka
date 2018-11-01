@@ -7,8 +7,9 @@ Vue.use(Vuex)
 const getDefaultState = () => {
   return {
     debug: false,
+    newTurn: true,
     diceRolled: true,
-    diceBoxHidden: true,
+    // diceBoxHidden: true,
     schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score
     schoolCompleted: false, // check if school is completed
@@ -350,6 +351,7 @@ const mutations = {
     }
   },
   rollDice (state) {
+    state.newTurn = false
     state.diceRolled = true
     state.rollCount--
     state.diceRolled = false
@@ -388,6 +390,7 @@ const mutations = {
     state.diceBoxHidden = false
   },
   nextTurn (state) {
+    state.newTurn = true
     state.gameCheck = false
     state.zeroCheck = false
     state.diceBoxHidden = true

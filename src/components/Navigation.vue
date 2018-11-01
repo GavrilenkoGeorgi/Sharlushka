@@ -1,5 +1,5 @@
 <template>
-  <v-container fill-height pa-1 id="gameNavigation">
+  <v-container fill-height fluid ma-0 pa-1 id="gameNavigation">
     <!-- icon definition -->
     <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
       <symbol id="settings" viewBox="0 0 507.45 507.45" preserveAspectRatio="xMidYMid meet">
@@ -62,7 +62,7 @@ export default {
 #gameNavigation {
   // border: 1px solid pink;
   background-color: $color-primary-0;
-  // height: 3em;
+  height: 1.5em;
   font-size: 2em;
 }
 .score {
@@ -93,7 +93,7 @@ export default {
 @media screen and (orientation: landscape) { // nokia5
   #gameNavigation {
     // height: 1em;
-    // font-size: 1.1em;
+    font-size: 1.3em;
   }
 }
 /*
