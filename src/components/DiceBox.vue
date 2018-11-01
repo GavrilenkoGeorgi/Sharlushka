@@ -10,28 +10,33 @@
           v-on:click="selectDice"
           fill="none">
           <use v-bind="{'xlink:href':'#' + dice.currentIcon}"
-            class="default animated fadeIn"
+            class="default animated"
             v-bind:class="{ chosen:dice.chosen, fadeInUp:$store.diceRolled }"><!-- dice rolled from store! -->
           </use>
         </svg>
       </v-flex>
-      <v-flex d-flex xs3 class="main-button pa-0 animated"
+<!-- Main button -->
+      <v-flex class="main-button animated"
           v-on:click="handleMainGameButtonClick"
           v-bind:class="{ save: this.mainButtonState.save, bounce: this.mainButtonState.save }">
-        <div v-if=" this.mainButtonState.play"
-          class="play-arrow-right animated fadeIn">
-        </div>
-        <div v-if=" this.mainButtonState.roll &&
-          this.getCurrentGameState.rollsCountForButton <= 3 "
-          class="circle-container animated fadeIn">
-        <div v-for="(value, index) in this.getCurrentGameState.rollsCountForButton"
-          :key="index" class="roll-circle animated fadeIn">
-        </div>
-        </div>
-        <div v-if=" this.mainButtonState.save" class="stop-brick animated fadeIn">
-        </div>
-        <!-- {{ turnCompleted }} -->
+
+        <v-layout align-center justify-center row fill-height>
+          <v-flex xs2 class="play-arrow animated fadeIn" v-if=" this.mainButtonState.play">
+          </v-flex>
+          <v-flex v-if=" this.mainButtonState.roll &&
+            this.getCurrentGameState.rollsCountForButton <= 3 "
+            class="circle-container animated fadeIn">
+            <v-layout row justify-center>
+              <div v-for="(value, index) in this.getCurrentGameState.rollsCountForButton"
+                :key="index" class="roll-circle animated fadeIn">
+              </div>
+            </v-layout>
+          </v-flex>
+          <v-flex xs4 v-if=" this.mainButtonState.save" class="stop-brick animated fadeIn">
+          </v-flex>
+        </v-layout>
       </v-flex>
+<!-- End of button -->
     </v-layout>
   </v-container>
 <!-- fill="none" stroke-width=".7em" in case of flyiq4415 or firefox-->
@@ -124,43 +129,28 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/scss/vars/colors.scss";
 
-.border-orange {
-  border: 1px solid orange;
-}
-
-.border-green {
-  border: 1px solid green;
-}
-
 #diceControls {
   // border: 1px solid blue;
   height: 2.3em;
 }
-
 .hidden {
   opacity: 0;
 }
+
 /* main button */
 .main-button {
-  // display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  // margin-left: .2em;
+  margin-right: .2em;
   color: $color-light;
   border-radius: .25em;
   background-color: $color-primary-0;
 }
-.play-arrow-right {
-  border-top: .55em solid transparent;
-  border-bottom: .55em solid transparent;
-  border-left: .95em solid $color-primary-1;
+.play-arrow {
+  margin-left: .75em;
+  border-top: .75em solid transparent;
+  border-bottom: .75em solid transparent;
+  border-left: 1.3em solid $color-primary-1;
 }
-.circle-container {
-  display: flex;
-  align-items: center;
-  // border: 1px solid pink;
-}
+
 .roll-circle {
   width: .75em;
   height: .75em;
@@ -180,12 +170,11 @@ export default {
   background-color: $color-very-red;
   box-shadow: 0em 0em .3em $color-very-red;
 }
-
-@media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia 5
-  #diceControls {
-    border: 1px solid orange;
-    // height: 3.6em;
-  }
+.border-orange {
+  border: 1px solid orange;
+}
+.border-green {
+  border: 1px solid green;
 }
 
 @media screen and (orientation: landscape) { // nokia5

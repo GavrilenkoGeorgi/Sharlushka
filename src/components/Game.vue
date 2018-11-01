@@ -358,7 +358,12 @@ export default {
 }
 */
 
-/*Progress bar
+/*
+.game {
+  // padding: 1em 0em 1em 0em;
+}
+*/
+/* Progress bar */
 
 .progress-bar {
   // border: 1px solid red;
@@ -374,12 +379,7 @@ export default {
   background-color: #AA3838;
   box-shadow: 0em .2em .8em 0em red;
 }
-*/
-/*
-.game {
-  // padding: 1em 0em 1em 0em;
-}
-*/
+
 .border-lime {
   border: 1px solid lime;
 }
