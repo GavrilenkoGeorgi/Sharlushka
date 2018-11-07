@@ -61,26 +61,23 @@ export default {
 
 #gameNavigation {
   // border: 1px solid pink;
+  // position: fixed;
+  top: 0;
   background-color: $color-primary-0;
   height: 1.5em;
-  font-size: 2em;
+  font-size: 1.7em;
 }
 .score {
   // border: 1px solid red;
   color: white;
   font-family: $text-font;
-  // font-size: 1.6em;
-  // text-align: center;
 }
 .game-name {
-  // width: 100%;
   a {
     color: white;
     font-family: $text-font;
     text-decoration: none;
-    // font-size: 1.6em;
   }
-  // text-align: center;
 }
 .settings-icon {
   overflow: hidden;
@@ -92,7 +89,6 @@ export default {
 
 @media screen and (orientation: landscape) { // nokia5
   #gameNavigation {
-    // height: 1em;
     font-size: 1.3em;
   }
 }
@@ -100,16 +96,53 @@ export default {
 @media screen and (-webkit-min-device-pixel-ratio: 1.4) and (min-width: 250px) { // fly iq4415 iphone5Se
   // defaults above
 }
-*/
+
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) {
+}
+*/
+
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) { // iphone5
+  #gameNavigation {
+    font-size: 2em;
+  }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
+  #gameNavigation {
+    font-size: 2.2em;
+  }
 }
+
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) { // ipad
+  #gameNavigation {
+    font-size: 3.2em;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) { // ipadPro
+  #gameNavigation {
+    font-size: 4.2em;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 3) and (min-width: 414px) { // iphone678plus
+  #gameNavigation {
+    font-size: 2.8em;
+  }
+}
+
+@media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
+  #gameNavigation {
+    font-size: 2.8em;
+  }
+}
+
+/*
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) {
 }
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) { // iPadPro
 }
 @media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
 }
+*/
 </style>

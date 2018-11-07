@@ -1,17 +1,17 @@
 <template>
-  <v-container fluid ma-0 pa-0 id="diceControls">
+  <v-container fluid mb-1 mt-3 pa-0 id="diceControls">
     <v-layout row fill-height>
       <v-flex d-flex xs9 class="dice-box"
         v-bind:class="{ hidden:!turnCompleted }"> <!-- fix this -->
-        <svg class="dice-icon"
+        <svg class="dice-icon default"
           v-for="dice in this.getDiceArray"
           :key="dice.id"
+          v-bind:class="{ chosen:dice.chosen }"
           v-bind:id="dice.id"
           v-on:click="selectDice"
           fill="none">
           <use v-bind="{'xlink:href':'#' + dice.currentIcon}"
-            class="default animated"
-            v-bind:class="{ chosen:dice.chosen, fadeInUp:$store.diceRolled }"><!-- dice rolled from store! -->
+            class="animated fadeInUp">
           </use>
         </svg>
       </v-flex>
@@ -19,7 +19,6 @@
       <v-flex class="main-button animated"
           v-on:click="handleMainGameButtonClick"
           v-bind:class="{ save: this.mainButtonState.save, bounce: this.mainButtonState.save }">
-
         <v-layout align-center justify-center row fill-height>
           <v-flex xs2 class="play-arrow animated fadeIn" v-if=" this.mainButtonState.play">
           </v-flex>
@@ -119,6 +118,12 @@ export default {
     },
     selectDice (event) {
       let elementToAdd = event.currentTarget
+      let diceBox = document.querySelector('.dice-box')
+      if (elementToAdd.classList.contains('chosen')) {
+        diceBox.appendChild(elementToAdd)
+      } else {
+        diceBox.insertBefore(elementToAdd, diceBox.childNodes[0])
+      }
       store.commit('setDiceChosenState', elementToAdd.id)
       store.commit('computeScore')
     }
@@ -133,6 +138,10 @@ export default {
   // border: 1px solid blue;
   height: 2.3em;
 }
+.dice-box {
+  opacity: 1;
+  transition: opacity 500ms;
+}
 .hidden {
   opacity: 0;
 }
@@ -145,7 +154,7 @@ export default {
   background-color: $color-primary-0;
 }
 .play-arrow {
-  margin-left: .75em;
+  margin-left: .375em;
   border-top: .75em solid transparent;
   border-bottom: .75em solid transparent;
   border-left: 1.3em solid $color-primary-1;
@@ -189,6 +198,13 @@ export default {
   }
 }
 
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) { // iphone5
+  #diceControls {
+    // border: 1px solid orange;
+    height: 3em;
+  }
+}
+
 @media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
   #diceControls {
     // border: 1px solid orange;
@@ -196,10 +212,75 @@ export default {
   }
 }
 
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) { // ipad
+  #diceControls {
+    // border: 1px solid orange;
+    height: 6.5em;
+  }
+  .main-button {
+    border-radius: .5em;
+  }
+  .play-arrow {
+  // margin-left: .375em;
+  border-top: 1.5em solid transparent;
+  border-bottom: 1.5em solid transparent;
+  border-left: 2.25em solid $color-primary-1;
+  }
+  .roll-circle {
+    width: 1.2em;
+    height: 1.2em;
+    margin: .3em;
+  }
+  .stop-brick {
+    height: 1.6em;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) { // ipadPro
+  #diceControls {
+    // border: 1px solid orange;
+    height: 9.5em;
+  }
+  .main-button {
+    border-radius: 1em;
+  }
+  .play-arrow {
+  // margin-left: .375em;
+  border-top: 2em solid transparent;
+  border-bottom: 2em solid transparent;
+  border-left: 3em solid $color-primary-1;
+  }
+  .roll-circle {
+    width: 2.2em;
+    height: 2.2em;
+    margin: .5em;
+  }
+  .stop-brick {
+    height: 2.5em;
+  }
+}
+
 @media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
   #diceControls {
     // border: 1px solid orange;
     height: 10em;
+  }
+  .main-button {
+    border-radius: 1em;
+  }
+  .play-arrow {
+  // margin-left: .375em;
+  border-top: 2em solid transparent;
+  border-bottom: 2em solid transparent;
+  border-left: 3em solid $color-primary-1;
+  }
+  .roll-circle {
+    width: 2.2em;
+    height: 2.2em;
+    margin: .5em;
+  }
+  .stop-brick {
+    height: 2.5em;
   }
 }
 </style>

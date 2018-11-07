@@ -6,11 +6,15 @@ svg circle {
   fill: currentColor;
 }
 .default {
-  color: $color-primary-0;
-  stroke: $color-primary-0;
+  use {
+    color: $color-primary-0;
+    stroke: $color-primary-0;
+  }
 }
 
 .chosen {
-  color: $color-chosen;
-  stroke: $color-chosen;
+  use {
+    color: $color-chosen;
+    stroke: $color-chosen;
+  }
 }

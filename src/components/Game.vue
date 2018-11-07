@@ -1,28 +1,32 @@
 <template>
-  <v-container fill-height fluid ma-0 pa-0>
-    <v-layout row wrap justify-space-between>
-      <Navigation></Navigation>
+  <v-container fill-height fluid ma-0 pa-0 id="gameView">
 <!-- School dice display -->
+    <v-layout row wrap justify-space-between>
+              <Navigation></Navigation>
       <v-flex d-flex xs12 class="school-dice-container">
         <svg v-for="dice in this.getSchoolArray"
               :key="dice.id"
-              class="school-dice-icon" fill="none"
+              class="school-dice-icon default" fill="none"
+              v-bind:class="{ chosen:dice.final }"
               v-on:click="handleBoardClick"
               v-bind:id="dice.id">
-          <use v-bind="{'xlink:href':'#' + dice.icon}"
-              class="default" v-bind:class="{ chosen:dice.final }">
+          <use v-bind="{'xlink:href':'#' + dice.icon}">
           </use>
         </svg>
       </v-flex>
 <!-- School results display -->
-      <v-flex xs2 class="school-result" v-for="result in this.getSchoolArray" :key="result.id"
-          v-bind:resultId="result.id"
-          v-bind:class="{ chosen:result.final, blink:!result.final }">
-        <span>{{ result.value }}</span>
+      <v-flex class="school-result" xs2 v-for="result in this.getSchoolArray" :key="result.id"
+          v-on:click="handleBoardClick"
+          v-bind:class="{ saved:result.final, blink:!result.final }">
+        <span v-bind:resultId="result.id">{{ result.value }}</span>
       </v-flex>
 <!-- Game combinations display -->
-      <v-flex xs12 class="game-combination" v-for="combination in this.getCombinationArray" :key="combination.id"
-          v-bind:id="combination.id" v-bind:class="{ set:combination.final }">
+      <v-flex xs12 d-flex align-center class="game-combination" v-for="combination in this.getCombinationArray"
+          :key="combination.id"
+          @click="handleBoardClick"
+          v-bind:id="combination.id"
+          v-bind:class="{ set:combination.final }">
+        <v-layout>
         <v-flex xs6 class="game-combination-name">{{ combination.fullName }}</v-flex>
         <v-flex xs2 class="game-result" v-for="(value, index) in combination.displayValues" :key="index">
           {{ value }}
@@ -30,6 +34,7 @@
         <v-flex xs2 class="game-result blink" v-if="combination.value">
             {{ combination.value }}
         </v-flex>
+        </v-layout>
       </v-flex>
 <!-- Dice controls -->
       <DiceBox v-bind:turnCompleted="turnCompleted"></DiceBox>
@@ -50,7 +55,8 @@ export default {
     return {
       title: 'Sharlushka',
       highestScore: 0,
-      turnCompleted: false
+      turnCompleted: false,
+      progressBarLength: 3
     }
   },
   components: {
@@ -69,6 +75,9 @@ export default {
     ]),
     turnState: function () {
       return store.state.newTurn
+    },
+    progressBarState: function () {
+      return store.state.rollCount
     }
   },
   watch: {
@@ -76,6 +85,16 @@ export default {
       immediate: true,
       handler () { // some spaghetti code
         this.turnCompleted = !this.turnState
+      }
+    },
+    progressBarState: {
+      immediate: true,
+      handler () {
+        if (document.querySelector('.progress-bar')) { // content onload?
+          this.updateProgressBar()
+        } else {
+          return false
+        }
       }
     }
   },
@@ -108,6 +127,7 @@ export default {
       }
     },
     handleBoardClick (event) {
+      // console.dir(event.target)
       let idFound = false
       let scoreId = null
       let elementToCheck = event.target
@@ -117,7 +137,8 @@ export default {
           elementToCheck.classList.contains('game-combination')) {
           scoreId = elementToCheck.id
           idFound = true
-        } else if (elementToCheck.classList.contains('school-result')) {
+          // } else if (elementToCheck.classList.contains('school-result')) {
+        } else if (elementToCheck.getAttribute('resultId')) {
           scoreId = elementToCheck.getAttribute('resultId')
           idFound = true
         } else {
@@ -231,7 +252,10 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/scss/vars/colors.scss";
 @import "../assets/scss/vars/fonts.scss";
-
+#gameView {
+  //padding-top: 4.5em;
+  border: 1px solid lime;
+}
 .school-dice-container {
   height: 2.5em;
 }
@@ -239,137 +263,43 @@ export default {
   height: 1em;
   text-align: center;
 }
+.saved {
+  color: $color-orange;
+}
 .game-combination {
   font-size: 1.2em;
-  // font-family: verdana;
   text-align: right;
+  color: $color-primary-0;
 }
-
-/*
-.school {
-  // padding: .5em .3em .5em .3em;
-}
-.school-result {
-  text-align: center;
-  // border: 1px solid pink;
-  // width: 100%;
-  // font-size: 1.3em;
-  // font-weight: 700;
-  // height: 1.5em;
-}
-
-.game-combination {
-  // display: flex;
-  // flex-direction: row;
-  // color: $color-primary-0;
-}
-
-.game-combination-name {
-  // font-size: 1.8em;
-  // text-align: right;
-}
-
 .game-result {
-  // display: flex;
-  // flex-grow: 1;
-  // align-items: center;
-  // justify-content: center;
-  // font-weight: 700;
-  // font-size: 1.4em;
-  // border: 1px solid yellow;
+  text-align: center;
+}
+.set {
+  background-color: $color-pale-primary;
+  color: $color-chosen;
 }
 .blink {
   color: gray;
   animation: blinker 3s linear infinite;
 }
 @keyframes blinker {
-  10% {
-    opacity: .1;
+  0% {
+    opacity: 0;
   }
   50% {
-    opacity: .5;
-  }
-  100% {
     opacity: 1;
   }
-}
-.set {
-  color: $color-orange;
-  background-color: $color-primary-tint;
-}
-.saved {
-  color: $color-orange;
+  100% {
+    opacity: 0;
+  }
 }
 
-.dice-controls {
-  border: 1px solid red;
-  // padding: .3em;
-}
-
-.school-dice-icon {
-  height: auto;
-  width: 100%;
-}
-*/
-/* main button
-.main-button {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  // margin-left: .2em;
-  color: $color-light;
-  border-radius: .25em;
-  background-color: $color-primary-0;
-}
-.play-arrow-right {
-  border-top: .55em solid transparent;
-  border-bottom: .55em solid transparent;
-  border-left: .95em solid $color-primary-1;
-}
-.circle-container {
-  display: flex;
-  align-items: center;
-  // border: 1px solid pink;
-}
-.roll-circle {
-  width: .75em;
-  height: .75em;
-  margin: .2em;
-  background: $color-primary-1;
-  border-radius: 50%
-}
-.stop-brick {
-  width: 1em;
-  height: 1em;
-  margin: .2em;
-  background: $color-light;
-  box-shadow: 0em 0em .4em .05em $color-light;
-}
-.save {
-  color: $color-light;
-  background-color: $color-very-red;
-  box-shadow: 0em 0em .3em $color-very-red;
-}
-*/
-/*
-.hidden {
-  opacity: 1;
-}
-*/
-
-/*
-.game {
-  // padding: 1em 0em 1em 0em;
-}
-*/
 /* Progress bar */
-
 .progress-bar {
   // border: 1px solid red;
   background-color: $color-primary-0;
   box-shadow: 0px 1px 10px 0px $color-primary-4;
-  height: .4em;
+  height: .2em;
   position: fixed;
   bottom: 0;
   width: 0%;
@@ -390,81 +320,88 @@ export default {
 .border-black {
   border: 1px solid black;
 }
-/*
-@media screen and (orientation: landscape) { // nokia5
-  .game-screen {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 0em 1em 0em 1em;
-    }
-  .school {
-    // border: 1px solid green;
-    flex-direction: column;
-    padding: .3em;
-  }
-  .game {
-    padding: 0em;
-    width: 60%;
-  }
 
-  .school-dice-icon {
-    height: 2.8em;
-    width: 2.8em;
-  }
-  .school-result-layout {
-    // border: 1px solid green;
-    height: 18em;
-    display: flex;
-    flex-direction: column;
-    flex-basis: 0;
-  }
-  .school-result {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2em;
-  }
-  .game-combination-name {
-    font-size: 1.4em;
-  }
-  .dice-controls-container {
-    flex-direction: column;
-  }
-  .main-button {
-    height: 4em;
-    margin-top: .2em; // meh...
-    margin-left: 0em;
-  }
-}
-*/
-/*
-.school-dice-container {
-  height: 2.8em;
-}
-*/
-/*
-@media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) { // iphone5
   .school-dice-container {
-    height: 3.5em;
+    height: 3.4em;
+  }
+  .school-result, .game-combination {
+    // border: 1px solid pink;
+    font-size: 1.8em;
   }
 }
-*/
-/*
-@media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
-  .school-dice-container {
-    height: 8em;
-  }
-}
-*/
+
 @media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
   .school-dice-container {
     height: 3.8em;
   }
+  .school-result {
+    // border: 1px solid pink;
+    font-size: 2em;
+  }
+  .game-combination {
+    font-size: 2em;
+  }
 }
+
+@media screen and (-webkit-min-device-pixel-ratio: 3) and (min-width: 375px) { // iphoneX
+.school-result {
+    // border: 1px solid pink;
+    font-size: 2.6em;
+  }
+  .game-combination {
+    font-size: 2.6em;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 3) and (min-width: 414px) { // iphone678plus
+   .game-combination {
+    font-size: 2.3em;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) { // ipad
+  .school-dice-container {
+    height: 5.8em;
+  }
+  .school-result {
+    // border: 1px solid pink;
+    font-size: 3em;
+  }
+  .game-combination {
+    font-size: 3em;
+  }
+  .progress-bar {
+    height: .4em;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) { // ipadPro
+  .school-dice-container {
+    height: 8.8em;
+  }
+  .school-result {
+    // border: 1px solid pink;
+    font-size: 4.5em;
+  }
+  .game-combination {
+    font-size: 4.5em;
+  }
+  .progress-bar {
+    height: .4em;
+  }
+}
+
 @media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
   .school-dice-container {
     height: 10em;
+  }
+  .school-result {
+    // border: 1px solid pink;
+    font-size: 3em;
+  }
+  .game-combination {
+    font-size: 3em;
   }
 }
 </style>
