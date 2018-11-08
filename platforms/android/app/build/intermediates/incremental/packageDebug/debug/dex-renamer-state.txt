@@ -1,4 +1,4 @@
-#Wed Oct 31 10:54:35 EET 2018
+#Wed Oct 31 11:04:05 EET 2018
 base.0=E\:\\github\\sharlushka\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
 renamed.0=classes.dex
 file.0=E\:\\github\\sharlushka\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0\\classes.dex
