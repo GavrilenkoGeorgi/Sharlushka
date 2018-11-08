@@ -252,10 +252,12 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/scss/vars/colors.scss";
 @import "../assets/scss/vars/fonts.scss";
+/*
 #gameView {
   //padding-top: 4.5em;
   border: 1px solid lime;
 }
+*/
 .school-dice-container {
   height: 2.5em;
 }

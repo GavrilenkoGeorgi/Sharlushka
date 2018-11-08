@@ -66,7 +66,7 @@ export default {
   ]),
   mounted: function () {
     this.$nextTick(function () {
-      // console.log(`Start page mounted`)
+      console.log(`Start page mounted`)
       let name = localStorage.getItem('userName')
       if (name) {
         // console.log(name)

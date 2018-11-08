@@ -18,20 +18,47 @@
       </v-flex>
       <v-layout column align-center>
         <v-flex>
-          <h1 role="button" class="help-link" @click="$router.push('/help')">{{ helpTitle }}</h1>
+          <h1 class="help-title">{{ helpTitle }}</h1>
         </v-flex>
         <v-flex class="user-info">
           <h2 class="user-name">{{ userName }}</h2>
           <h3 class="hi-score" v-if="highestScore">{{ hiscoreGreeting }} {{ highestScore }}{{ exclamation }}</h3>
         </v-flex>
+        <v-flex>
+          <h3>{{ lastScoresHeading }}</h3>
+        </v-flex>
+        <v-flex>
+          <v-layout align-center column>
+            <v-flex xs12 class="hi-score-display mb-3">
+              <v-layout row wrap justify-space-around>
+              <v-flex xs3 my-2 v-for="(value, index) in lastTwelveScores" :key="index">
+                {{ value }}
+              </v-flex>
+              </v-layout>
+            </v-flex>
+            <v-flex class="stats-display" xs12 v-for="item in stats" :key="item.msg">
+              {{ item.msg }} {{ item.value }}
+            </v-flex>
+          </v-layout>
+        </v-flex>
         <!--v-flex>
           <h3 class="hi-score" v-if="highestScore">{{ hiscoreGreeting }} {{ highestScore }}{{ exclamation }}</h3>
         </v-flex-->
-        <v-flex>
-          <v-btn class="ui-button" large color="red accent-4" dark v-on:click="restartGame">
-            <v-img :src="require('@/assets/icons/baseline-replay-24px.svg')" contain height="2em"></v-img>
-          </v-btn>
-        </v-flex>
+        <v-container ma-0 pa-0 fluid>
+        <v-layout row align-center>
+          <v-flex d-flex class="text-xs-center">
+            <v-btn class="ui-button" color="red accent-4" dark v-on:click="restartGame">
+              <v-img :src="require('@/assets/icons/baseline-replay-24px.svg')" contain height="2em"></v-img>
+            </v-btn>
+          </v-flex>
+          <v-flex xs6 class="text-xs-center">
+            <!--v-btn class="ui-button" large color="red accent-4" dark v-on:click="restartGame">
+              <v-img :src="require('@/assets/icons/baseline-replay-24px.svg')" contain height="2em"></v-img>
+            </v-btn-->
+            <h2 role="button" class="help-link animated bounce" @click="$router.push('/help')">{{ helpButtonText }}</h2>
+          </v-flex>
+        </v-layout>
+        </v-container>
       </v-layout>
     </v-layout>
   </v-container>
@@ -39,21 +66,43 @@
 
 <script>
 import store from '../store/store'
+// import MenuIcon from 'vue-material-design-icons/Menu.vue'
 
 export default {
   name: 'Settings',
+  /*
+  components: {
+    MenuIcon
+  },
+  */
   data () {
     return {
       userName: '',
-      helpTitle: 'Help!',
+      helpTitle: 'About',
+      helpButtonText: 'Help!',
       highestScore: '',
       hiscoreGreeting: 'Your highest score is',
-      exclamation: '!' // some over-engeneering
+      exclamation: '.', // some over-engeneering
+      // lastTwelveScores: [333, 125, 256, 368, -12, 234, 623, 546, 345, 324, 34, 342],
+      lastTwelveScores: '',
+      lastScoresHeading: 'Your recent scores are',
+      stats: [
+        { msg: 'Max possible score is', value: '879' },
+        { msg: 'Your average score', value: '' },
+        { msg: 'Percent from max score ~', value: '' }
+      ]
     }
   },
   mounted () {
     this.highestScore = localStorage.getItem('highestScore')
     this.userName = localStorage.getItem('userName')
+    let lastScoresString = localStorage.getItem('lastScoresArray')
+    if (lastScoresString) {
+      this.lastTwelveScores = lastScoresString.split(',')
+    }
+    // this.stats[0].value = this.highestScore
+    this.stats[1].value = this.computeAverageScore()
+    this.stats[2].value = this.computePercentFromMax()
   },
   computed: {
     computedGameScore: function () {
@@ -68,15 +117,44 @@ export default {
       console.log(`Restarting`)
       store.commit('resetState')
       this.$router.push('/')
+    },
+    computeAverageScore () {
+      // should be local storage item
+      // let lastTwelveScores = [333, 125, 256, 368, -12, 234, 623, 546, 345, 324, 34, 342]
+      // const scoreSum = (accumulator, currentValue) => accumulator + currentValue
+      // console.log(lastTwelveScores.reduce(scoreSum))
+      // let temp = this.lastTwelveScores
+      // return this.lastTwelveScores.reduce(scoreSum)
+      let newArray = []
+      const scoreSum = (accumulator, currentValue) => accumulator + currentValue
+      for (let value of this.lastTwelveScores) {
+        // console.log(value)
+        newArray.push(parseInt(value))
+      }
+      return parseInt(newArray.reduce(scoreSum) / newArray.length)
+    },
+    computePercentFromMax () {
+      let maxScore = 879
+      this.stats[0].value = maxScore
+      let percent = Math.floor(this.stats[1].value / maxScore * 100)
+      // let temp = Math.floor(percent)
+      console.log(`typeof ${typeof percent}`)
+      /// let output = parseInt(percent)
+      return percent + '%'
     }
   }
 }
 </script>
 <style lang="scss" scoped>
 @import "../assets/scss/vars/colors.scss";
+@import "../assets/scss/vars/fonts.scss"; // meh...
 
 .close-icon-path {
   fill: $color-primary-1;
+}
+.user-name {
+  color: $color-primary-0;
+  font-size: 2em;
 }
 .user-info {
   text-align: center;
@@ -84,12 +162,26 @@ export default {
 .help-link {
   color: $color-primary-0;
   transition: color 600ms;
+  // text-decoration: underline;
 }
 .help-link:hover {
   color: $color-chosen;
-  // text-decoration: underline
+  text-decoration: underline
 }
 .hi-score {
   padding-top: .3em;
+}
+
+.hi-score-display {
+  color: $color-primary-1;
+  // font-weight: 700;
+  font-size: 2.2em;
+  text-align: center;
+}
+
+.stats-display {
+  color: $color-primary-3;
+  font-size: 1.5em;
+  line-height: 1.4;
 }
 </style>
