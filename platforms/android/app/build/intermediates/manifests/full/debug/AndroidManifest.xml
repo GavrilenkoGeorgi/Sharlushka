@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.github.gavrilenkogeorgi"
     android:hardwareAccelerated="true"
-    android:versionCode="190010000"
-    android:versionName="1.0.0-ALPHA1" >
+    android:versionCode="190010100"
+    android:versionName="1.1.0-ALPHA2" >
 
     <uses-sdk
         android:minSdkVersion="16"

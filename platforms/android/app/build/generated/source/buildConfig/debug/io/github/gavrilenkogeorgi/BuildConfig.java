@@ -8,6 +8,6 @@ public final class BuildConfig {
   public static final String APPLICATION_ID = "io.github.gavrilenkogeorgi";
   public static final String BUILD_TYPE = "debug";
   public static final String FLAVOR = "";
-  public static final int VERSION_CODE = 190010000;
-  public static final String VERSION_NAME = "1.0.0-ALPHA1";
+  public static final int VERSION_CODE = 190010100;
+  public static final String VERSION_NAME = "1.1.0-ALPHA2";
 }
