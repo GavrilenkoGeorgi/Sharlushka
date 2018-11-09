@@ -11,8 +11,8 @@ const getDefaultState = () => {
     diceRolled: true,
     schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score
-    schoolCompleted: true, // check if school is completed
-    gameTurns: 7, // game turns counter
+    schoolCompleted: false, // check if school is completed
+    gameTurns: 1, // game turns counter
     maxGameTurns: 33,
     rollCount: 3, // roll counter for the current turn
     gameCheck: false, // to check if there are any combinations left to record

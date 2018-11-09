@@ -30,7 +30,7 @@
           </v-form>
         </v-flex>
         <v-flex>
-          <v-btn color="purple" dark to="/register" class="my-4 disabled" @click="saveUserName" :disabled="!this.valid">
+          <v-btn ripple block large color="purple" to="/register" class="my-4 disabled" @click="saveUserName" :disabled="!this.valid">
             <v-img :src="require('@/assets/icons/baseline-done_all-24px.svg')" contain height="2em"></v-img>
           </v-btn>
         </v-flex>

@@ -19,20 +19,20 @@
         <h3>{{ lastScoresHeading }}</h3>
       </v-flex>
       <v-flex>
-        <v-layout align-center column>
-          <v-flex xs12 mb-4 class="hi-score-display">
+        <v-layout align-space-around column>
+          <v-flex d-flex my-2 class="hi-score-display">
             <v-layout row wrap justify-space-around>
-              <v-flex xs3 my-2 v-for="(value, index) in lastTwelveScores" :key="index">
+              <v-flex ma-3 class="hi-score-value-box" v-for="(value, index) in lastTwelveScores" :key="index">
                 {{ value }}
               </v-flex>
             </v-layout>
           </v-flex>
-          <v-flex class="stats-display" v-for="item in stats" :key="item.msg">
+          <v-flex class="stats-display text-xs-center" v-for="item in stats" :key="item.msg">
             {{ item.msg }}&nbsp;{{ item.value }}
           </v-flex>
         </v-layout>
       </v-flex>
-      <v-layout mb-4 row align-center justify-space-around>
+      <v-layout my-2 row align-center justify-space-around>
         <v-flex xs4 class="text-xs-center">
           <v-btn ripple block class="ui-button" large color="orange" v-on:click="restartGame">
             <v-img :src="require('@/assets/icons/baseline-replay-24px.svg')" contain height="2em"></v-img>
@@ -68,10 +68,10 @@ export default {
       hiscoreGreeting: 'Your highest score is',
       exclamation: '.', // some over-engeneering
       lastTwelveScores: '',
-      lastScoresHeading: 'Your recent scores are',
+      lastScoresHeading: 'Recent scores are',
       stats: [
         { msg: 'Max possible score is', value: '879' },
-        { msg: 'Your average score', value: '' },
+        { msg: 'Your average score equals', value: '' },
         { msg: 'Percent from max score ~', value: '' }
       ]
     }
@@ -163,7 +163,15 @@ export default {
   font-weight: 700;
   line-height: 1.4;
 }
-.icon-close {
-  color: red;
+
+@media screen and (orientation: landscape) {
+  .hi-score-display {
+    font-size: 1.3em;
+    font-weight: 700;
+  }
+  .hi-score-value-box {
+    margin: .4em !important; // nicht gut
+    // color: pink;
+  }
 }
 </style>
