@@ -1,8 +1,10 @@
 <template>
-  <v-container fluid mb-1 mt-3 pa-0 id="diceControls">
-    <v-layout row fill-height>
-      <v-flex d-flex xs9 class="dice-box"
-        v-bind:class="{ hidden:!turnCompleted }"> <!-- fix this -->
+<v-flex d-flex ma-0 pa-0 id="diceControls">
+  <!--v-container fluid ma-0 pa-0 id="diceControls"-->
+    <!--v-layout fluid fill-height row class="dice-box-layout dice-box"-->
+    <!--v-layout row class="dice-box-layout"-->
+    <v-layout row align-center class="dice-box-layout">
+      <v-flex xs9 d-flex class="game-dice-container dice-box" v-bind:class="{ hidden:!turnCompleted }">
         <svg class="dice-icon default"
           v-for="dice in this.getDiceArray"
           :key="dice.id"
@@ -11,12 +13,13 @@
           v-on:click="selectDice"
           fill="none">
           <use v-bind="{'xlink:href':'#' + dice.currentIcon}"
-            class="animated fadeInUp">
+            class="game-dice animated fadeInUp">
           </use>
         </svg>
       </v-flex>
+      <!--/v-flex-->
 <!-- Main button -->
-      <v-flex class="main-button animated"
+      <v-flex xs3 class="main-button animated"
           v-on:click="handleMainGameButtonClick"
           v-bind:class="{ save: this.mainButtonState.save, bounce: this.mainButtonState.save }">
         <v-layout align-center justify-center row fill-height>
@@ -35,9 +38,11 @@
           </v-flex>
         </v-layout>
       </v-flex>
-<!-- End of button -->
     </v-layout>
-  </v-container>
+</v-flex>
+    <!--/v-layout-->
+<!-- End of button -->
+  <!--/v-container-->
 <!-- fill="none" stroke-width=".7em" in case of flyiq4415 or firefox-->
 </template>
 
@@ -134,23 +139,36 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/scss/vars/colors.scss";
 
+.border {
+  border: 1px solid lime;
+}
+
 #diceControls {
   // border: 1px solid blue;
-  height: 2.3em;
+ height: 6em;
+}
+/*
+.dice-box-layout {
+  // display: flex;
+  // flex-direction: column;
 }
 .dice-box {
   opacity: 1;
   transition: opacity 500ms;
 }
+
+*/
+/* main button */
+
 .hidden {
   opacity: 0;
 }
-
-/* main button */
 .main-button {
   margin-right: .2em;
+  // margin: .2em .2em .2em .2em;
   color: $color-light;
   border-radius: .25em;
+  height: 4em;
   background-color: $color-primary-0;
   box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
 }
@@ -180,6 +198,7 @@ export default {
   background-color: $color-very-red;
   box-shadow: 0em 0em .3em $color-very-red;
 }
+
 .border-orange {
   border: 1px solid orange;
 }
@@ -187,36 +206,45 @@ export default {
   border: 1px solid green;
 }
 
-@media screen and (orientation: landscape) { // nokia5
-  #diceControls {
-    // flex-direction: column;
-  }
-  .dice-box, .result-box {
-    // flex-direction: column;
-  }
-  .dice-icon {
-    // margin: .1em 0em .1em 0em;
-  }
+.dice-icon {
+  margin: .2em;
 }
 
+@media screen and (orientation: landscape) { // nokia5
+  .dice-box-layout {
+  display: flex;
+  flex-direction: column;
+  }
+  .dice-box {
+    display: flex;
+    flex-direction: column;
+  }
+  .game-dice-container {
+    display: flex;
+    flex-direction: column;
+    background-color: pink;
+    width: 7em;
+  }
+}
+/*
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) { // iphone5
   #diceControls {
     // border: 1px solid orange;
-    height: 3em;
+    // height: 3em;
   }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
   #diceControls {
     // border: 1px solid orange;
-    height: 3.5em;
+    // height: 3.5em;
   }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) { // ipad
   #diceControls {
     // border: 1px solid orange;
-    height: 6.5em;
+    // height: 6.5em;
   }
   .main-button {
     border-radius: .5em;
@@ -230,17 +258,17 @@ export default {
   .roll-circle {
     width: 1.2em;
     height: 1.2em;
-    margin: .3em;
+    // margin: .3em;
   }
   .stop-brick {
-    height: 1.6em;
+    // height: 1.6em;
   }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) { // ipadPro
   #diceControls {
     // border: 1px solid orange;
-    height: 9.5em;
+    // height: 9.5em;
   }
   .main-button {
     border-radius: 1em;
@@ -254,17 +282,17 @@ export default {
   .roll-circle {
     width: 2.2em;
     height: 2.2em;
-    margin: .5em;
+    // margin: .5em;
   }
   .stop-brick {
-    height: 2.5em;
+    // height: 2.5em;
   }
 }
 
 @media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
   #diceControls {
     // border: 1px solid orange;
-    height: 10em;
+    // height: 10em;
   }
   .main-button {
     border-radius: 1em;
@@ -278,10 +306,11 @@ export default {
   .roll-circle {
     width: 2.2em;
     height: 2.2em;
-    margin: .5em;
+    // margin: .5em;
   }
   .stop-brick {
-    height: 2.5em;
+    // height: 2.5em;
   }
 }
+*/
 </style>

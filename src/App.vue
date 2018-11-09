@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid ma-0 pa-0 id="app">
+  <v-container fluid fill-height ma-0 pa-0 id="app">
 <!-- SVG icons defs -->
   <!-- Default icons -->
       <svg version='1.1' style="display: none;" xmlns="http://www.w3.org/2000/svg">
