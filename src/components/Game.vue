@@ -214,7 +214,7 @@ export default {
           this.clearResultBox()
           // this.removeCurrentHighlight()
           store.state.turnCompleted = true
-          this.mainButtonState.disabled = false
+          // this.mainButtonState.disabled = false
         }
         // check if it is full
         if (store.state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
