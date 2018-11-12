@@ -83,6 +83,6 @@ export default {
 }
 
 .border {
-  border: 1px solid red;
+  // border: 1px solid red;
 }
 </style>

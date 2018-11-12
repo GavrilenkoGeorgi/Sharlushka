@@ -1,32 +1,16 @@
 <template>
   <v-container fill-height id="startPageContent">
-    <v-layout align-space-around column pt-4>
-      <v-flex class="text-xs-center" mt-4>
+    <v-layout align-space-around column>
+      <v-flex class="text-xs-center">
         <h1 class="game-name">{{ gameName }}</h1>
       </v-flex>
-      <v-flex d-flex xs4 my-2>
-        <!-- img class="startPageDice" src="../assets/icons/startPageDice.svg" alt="Start page dice"-->
+      <v-flex d-flex xs4>
         <v-img :src="require('@/assets/icons/startPageDice.svg')" contain></v-img>
       </v-flex>
-      <v-flex my-2 class="text-xs-center">
+      <v-flex class="text-xs-center">
         <h2 class="user-name">{{ greeting }} {{ userName }}{{ exclamation }}</h2>
     </v-flex>
-    <!--v-flex xs12 class="buttons">
-        <v-layout justify-space-around row>
-          <v-flex xs5 sm4 md2 d-flex>
-            <v-btn large color="purple" dark to="/game" v-bind:class="{orange:$store.state.gameTurns > 1}">
-              <v-img :src="require('@/assets/icons/baseline-done-24px.svg')" contain height="2em"></v-img>
-            </v-btn>
-          </v-flex>
-
-          <v-flex xs5 sm4 md2 d-flex>
-          <v-btn large color="purple" dark to="/register">
-            <v-img :src="require('@/assets/icons/baseline-build-24px.svg')" contain height="1.6em"></v-img>
-          </v-btn>
-          </v-flex>
-        </v-layout>
-    </v-flex-->
-    <v-layout my-2 row align-center justify-space-around>
+    <v-layout row align-center justify-space-around>
         <v-flex xs4 class="text-xs-center">
           <v-btn to="/game" ripple block class="ui-button" large color="purple darken-1"
             v-bind:class="{orange:$store.state.gameTurns > 1}">
@@ -42,13 +26,6 @@
       <span class="copyrights">
         Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
       </span>
-    <!--v-flex class="icon-license">
-      <v-layout align-center justify-end column fill-height>
-        <span>
-      Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
-        </span>
-      </v-layout>
-    </v-flex-->
     </v-layout>
   </v-container>
 </template>
@@ -109,12 +86,13 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/scss/vars/colors.scss";
+
 .game-name {
   font-size: 3em;
+  margin-top: 1em;
   // text-align: center;
   color: $color-primary-0;
 }
-
 .user-name {
   font-size: 2em;
 }
@@ -133,4 +111,9 @@ export default {
   border: 1px solid pink;
 }
 
+@media screen and (orientation: landscape) {
+  .game-name {
+    margin-top: .3em;
+  }
+}
 </style>

@@ -1,10 +1,10 @@
 <template>
-<v-flex d-flex ma-0 pa-0 id="diceControls">
+<v-flex d-flex ma-0 pa-0 id="diceControls border">
   <!--v-container fluid ma-0 pa-0 id="diceControls"-->
     <!--v-layout fluid fill-height row class="dice-box-layout dice-box"-->
     <!--v-layout row class="dice-box-layout"-->
     <v-layout row align-center class="dice-box-layout">
-      <v-flex xs9 d-flex class="game-dice-container dice-box" v-bind:class="{ hidden:!turnCompleted }">
+      <v-flex d-flex xs9 class="game-dice-container dice-box" v-bind:class="{ hidden:!turnCompleted }">
         <svg class="dice-icon default"
           v-for="dice in this.getDiceArray"
           :key="dice.id"
@@ -19,7 +19,7 @@
       </v-flex>
       <!--/v-flex-->
 <!-- Main button -->
-      <v-flex xs3 class="main-button animated"
+      <v-flex class="main-button animated"
           v-on:click="handleMainGameButtonClick"
           v-bind:class="{ save: this.mainButtonState.save, bounce: this.mainButtonState.save }">
         <v-layout align-center justify-center row fill-height>
@@ -140,12 +140,18 @@ export default {
 @import "../assets/scss/vars/colors.scss";
 
 .border {
-  border: 1px solid lime;
+  // border: 1px solid lime;
 }
 
 #diceControls {
   // border: 1px solid blue;
- height: 6em;
+ // height: 6em;
+}
+
+.game-dice-container {
+  // padding: 0em .4em 0em .4em;
+  margin-left: .3em;
+  margin-right: .2em;
 }
 /*
 .dice-box-layout {
@@ -156,8 +162,13 @@ export default {
   opacity: 1;
   transition: opacity 500ms;
 }
-
 */
+
+.dice-icon {
+  height: 3.6em;
+  // margin: 0em .1em 0em .1em;
+  // border: 1px solid green;
+}
 /* main button */
 
 .hidden {
@@ -168,7 +179,7 @@ export default {
   // margin: .2em .2em .2em .2em;
   color: $color-light;
   border-radius: .25em;
-  height: 4em;
+  height: 3.6em;
   background-color: $color-primary-0;
   box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
 }
@@ -206,14 +217,12 @@ export default {
   border: 1px solid green;
 }
 
-.dice-icon {
-  margin: .2em;
-}
-
-@media screen and (orientation: landscape) { // nokia5
+// landscape
+@media screen and (orientation: landscape) {
   .dice-box-layout {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
+    width: 10em;
   }
   .dice-box {
     display: flex;
@@ -222,10 +231,83 @@ export default {
   .game-dice-container {
     display: flex;
     flex-direction: column;
-    background-color: pink;
-    width: 7em;
+    // background-color: pink;
+    // width: 7em;
+  }
+  .dice-icon {
+  // height: 4em;
+  margin: .1em 0em .1em 0em;
+  // border: 1px solid green;
+  }
+  .main-button {
+    // border: 1px solid green;
+    // width: em;
+    width: 50%;
+    margin: .4em;
   }
 }
+
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) { // ipad
+  #diceControls {
+    // border: 1px solid orange;
+    // height: 6.5em;
+  }
+  .dice-icon {
+    height: 5.8em;
+    // margin: 0em .1em 0em .1em;
+    // border: 1px solid green;
+  }
+  .main-button {
+    border-radius: .5em;
+    height: 5.8em;
+  }
+  .play-arrow {
+  // margin-left: .375em;
+  border-top: 1.5em solid transparent;
+  border-bottom: 1.5em solid transparent;
+  border-left: 2.25em solid $color-primary-1;
+  }
+  .roll-circle {
+    width: 1.2em;
+    height: 1.2em;
+    // margin: .3em;
+  }
+  .stop-brick {
+    // height: 1.6em;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) { // ipadPro
+  #diceControls {
+    // border: 1px solid orange;
+    // height: 9.5em;
+  }
+  .dice-icon {
+    height: 8em;
+    // margin: 0em .1em 0em .1em;
+    // border: 1px solid green;
+  }
+  .main-button {
+    border-radius: .5em;
+    height: 8em;
+    border-radius: 1em;
+  }
+  .play-arrow {
+  // margin-left: .375em;
+  border-top: 2em solid transparent;
+  border-bottom: 2em solid transparent;
+  border-left: 3em solid $color-primary-1;
+  }
+  .roll-circle {
+    width: 2em;
+    height: 2em;
+    // margin: .5em;
+  }
+  .stop-brick {
+    height: 2.5em;
+  }
+}
+
 /*
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) { // iphone5
   #diceControls {

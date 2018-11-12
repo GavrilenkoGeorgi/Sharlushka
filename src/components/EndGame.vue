@@ -50,7 +50,7 @@ export default {
       console.log(`End game mounted`)
       this.highestScore = localStorage.getItem('highestScore')
       this.userName = localStorage.getItem('userName')
-      this.computedAverageScore = this.computeAverageScore() // !computed vs compute
+      // this.computedAverageScore = this.computeAverageScore() // !computed vs compute
       this.lastScoresArray = localStorage.getItem('lastScoresArray')
       console.log(`The beginning ${this.lastScoresArray}`)
       if (!this.lastScoresArray) {
@@ -95,7 +95,8 @@ export default {
     },
     computeAverageScore () {
       // should be local storage item
-      let lastTwelveScores = [333, 125, 256, 368, -12, 234, 623, 546, 345, 324, 34, 342]
+      // let lastTwelveScores = [333, 125, 256, 368, -12, 234, 623, 546, 345, 324, 34, 342]
+      let lastTwelveScores = this.lastScoresArray
       const scoreSum = (accumulator, currentValue) => accumulator + currentValue
       // console.log(lastTwelveScores.reduce(scoreSum))
       return lastTwelveScores.reduce(scoreSum)
@@ -113,7 +114,7 @@ export default {
         console.log(`Type of ${typeof this.lastScoresArray}`)
         this.lastScoresArray.push(this.getTotalScore)
         console.log(`this.lastScoresArray ${this.lastScoresArray}`)
-      } else if (this.lastScoresArray.length >= 12) {
+      } else if (this.lastScoresArray.length >= 11) {
         console.log(`Slicing`)
         this.lastScoresArray = this.lastScoresArray.slice(1)
         this.lastScoresArray.push(this.getTotalScore)
