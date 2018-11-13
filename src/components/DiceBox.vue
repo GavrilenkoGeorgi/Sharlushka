@@ -1,5 +1,5 @@
 <template>
-  <v-flex d-flex ma-0 pa-0 id="diceControls border">
+  <v-flex d-flex ma-0 pa-0 id="diceControls">
 <!-- Dice box -->
     <v-layout row align-center class="dice-box-layout">
       <v-flex d-flex xs9 class="game-dice-container dice-box" v-bind:class="{ visible:!turnCompleted }">
@@ -136,7 +136,7 @@ export default {
 .game-dice-container {
   margin-left: .3em;
   margin-right: .2em; // this
-  transition: opacity 1s cubic-bezier(.33,.15,.33,.98) ;
+  transition: opacity 500ms cubic-bezier(.33,.15,.33,.98) ;
 }
 .visible {
   opacity: 0; // ??
@@ -147,7 +147,7 @@ export default {
 
 /* main button */
 .main-button {
-  margin-right: .2em;
+  margin-right: .4em;
   color: $color-light;
   border-radius: .25em;
   height: 3.6em;

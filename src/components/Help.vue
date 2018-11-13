@@ -20,40 +20,34 @@
     <v-layout fill-height justify-center>
       <v-flex xs12 sm10 md8 lg6>
         <v-layout justify-space-around column>
-        <!--v-flex-->
-            <h1 class="text-xs-right mb-2 rules-heading">{{ rulesHeading }}</h1>
-        <!--/v-flex-->
-        <!--v-flex-->
-          <!--v-layout column-->
-            <p class="rules-text">
-              {{ overall }}
-            </p>
-            <p class="rules-text">
-              {{ schoolDescr }}
-            </p>
-          </v-layout>
+          <h1 class="text-xs-right mb-2 rules-heading">{{ rulesHeading }}</h1>
+          <p class="rules-text">
+            {{ overall }}
+          </p>
+          <p class="rules-text">
+            {{ schoolDescr }}
+          </p>
+        </v-layout>
   <!-- Combination descriptions -->
-            <v-flex class="combination-descr"
-                    v-for="(combination, index) in combinationsDescr"
-                    :key="index">
-              <v-layout>
-                <p>
-                  {{ combination.text }}
-                </p>
-                <v-layout justify-end>
-                  <svg class="help-dice-icon"
-                      v-for="index in combination.quantity" :key="index">
-                  <use v-bind="{'xlink:href':'#' + combination.iconId}"></use>
-                </svg>
-                  <p class="score-value">
-                    {{ combination.scoreValue }}
-                  </p>
-                </v-layout>
-              </v-layout>
-            </v-flex>
-          <!--/v-layout-->
+        <v-flex class="combination-descr"
+                v-for="(combination, index) in combinationsDescr"
+                :key="index">
+          <v-layout>
+            <p>
+              {{ combination.text }}
+            </p>
+            <v-layout justify-end>
+              <svg class="help-dice-icon"
+                  v-for="index in combination.quantity" :key="index">
+              <use v-bind="{'xlink:href':'#' + combination.iconId}"></use>
+            </svg>
+              <p class="score-value">
+                {{ combination.scoreValue }}
+              </p>
+            </v-layout>
+          </v-layout>
         </v-flex>
-      <!--/v-flex-->
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -142,18 +136,15 @@ export default {
 .close-icon-path {
   fill: $color-primary-1;
 }
-
 .rules-heading {
   font-family: $cyrillic-font;
 }
-
 .rules-text {
   line-height: 1.4em;
   font-size: 1.1em;
   text-indent: 1em;
   font-family: $cyrillic-font;
 }
-
 .help-dice-icon {
   display: block;
   width: 100%;
@@ -164,7 +155,6 @@ export default {
   margin: 0em .15em 0em .15em;
   stroke: $color-primary-0;
 }
-
 .score-value {
   // border: 1px solid green;
   width: 2em;
@@ -172,17 +162,14 @@ export default {
   font-weight: 500;
   color: $color-chosen;
 }
-
 .icon-box {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 .border {
   border: 1px solid pink;
 }
-
 .combination-descr {
   font-size: 1.18em;
   font-family: $cyrillic-font;
@@ -192,7 +179,6 @@ export default {
   }
   transition: background-color 500ms;
 }
-
 .combination-descr:hover {
   background-color: $color-pale-primary;
 }

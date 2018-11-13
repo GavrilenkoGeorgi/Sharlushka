@@ -97,9 +97,7 @@ export default {
   text-align: center;
   line-height: 1.4;
 }
-
 .user-name {
   color: $color-chosen;
 }
-
 </style>

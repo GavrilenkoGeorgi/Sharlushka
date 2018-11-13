@@ -180,7 +180,7 @@ export default {
       store.state.debug = true
     },
     recordResult (id) {
-      this.turnCompleted = true
+      // this.turnCompleted = true
       let combinationId = id
       const combinationIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(combinationId)
       if (!store.state.schoolCompleted &&
@@ -197,9 +197,10 @@ export default {
         this.clearResultBox()
         // this.removeCurrentHighlight()
       } else if (store.state.scoreArray[combinationIndexInArray].value !== '' &&
+                  store.state.scoreArray[combinationIndexInArray].displayValues &&
                   store.state.scoreArray[combinationIndexInArray].displayValues.length < 3 &&
                   !store.state.turnCompleted) {
-        store.state.turnCompleted = true
+        store.state.turnCompleted = true // another turn completed in store?
         // push result into display values array
         store.state.scoreArray[combinationIndexInArray].displayValues.push(store.state.scoreArray[combinationIndexInArray].value)
         store.state.gameTotal += store.state.scoreArray[combinationIndexInArray].value
@@ -256,6 +257,7 @@ export default {
         store.commit('nextTurn')
         this.updateProgressBar()
       }
+      this.turnCompleted = true
     } // end of record result method
   } // end of methods
 }

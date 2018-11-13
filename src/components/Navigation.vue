@@ -1,5 +1,4 @@
 <template>
-<!--v-container ma-0 pa-0-->
   <v-layout align-center justify-space-around row id="gameNavigation">
     <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
       <symbol id="settings" viewBox="0 0 507.45 507.45" preserveAspectRatio="xMidYMid meet">
@@ -20,7 +19,6 @@
         </router-link>
     </v-flex>
   </v-layout>
-<!--/v-container-->
 </template>
 
 <script>
@@ -67,6 +65,7 @@ export default {
   // border: 1px solid red;
   color: white;
   font-family: $text-font;
+  padding-left: .3em;
 }
 .game-name {
   a {
@@ -76,22 +75,12 @@ export default {
   }
 }
 .settings-icon {
-  // overflow: hidden;
   padding: .1em .2em 0em 0em;
 }
 
 .settings-icon-path {
   fill: white;
 }
-
-/*
-@media screen and (-webkit-min-device-pixel-ratio: 1.4) and (min-width: 250px) { // fly iq4415 iphone5Se
-  // defaults above
-}
-
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) {
-}
-*/
 
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) { // iphone5
   #gameNavigation {
@@ -101,7 +90,8 @@ export default {
 
 @media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
   #gameNavigation {
-    // font-size: 5em;
+    font-size: 2.5em;
+    // border: 1px solid lime;
   }
 }
 
@@ -122,13 +112,13 @@ export default {
     font-size: 4.2em;
   }
 }
-
+/*
 @media screen and (-webkit-min-device-pixel-ratio: 3) and (min-width: 414px) { // iphone678plus
   #gameNavigation {
     // font-size: 2.8em;
   }
 }
-
+*/
 @media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
   #gameNavigation {
     font-size: 2.8em;

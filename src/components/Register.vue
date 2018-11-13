@@ -66,13 +66,6 @@ export default {
         this.punctMarkOne = '?'
         this.punctMarkTwo = ''
       }
-      /*
-      if (this.userName !== 'Anonymous') {
-        console.log(`User name set`)
-      } else {
-        console.log(`User Anonymous`)
-      }
-      */
     })
   },
   methods: {
@@ -89,12 +82,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "../assets/scss/index.scss";
+@import "../assets/scss/vars/colors.scss";
 
 .greeting {
   font-size: 1.8em;
 }
-
 .close-icon-path {
   fill: $color-primary-1;
 }

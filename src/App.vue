@@ -82,7 +82,4 @@ export default {
   height: 100vh;
 }
 
-.border {
-  // border: 1px solid red;
-}
 </style>
