@@ -1,7 +1,7 @@
 export default {
   getCurrentGameState (state) {
     let currentGameState = {
-      currentTurn: state.gameTurns,
+      currentTurn: state.currentGameTurn,
       rollsCountForButton: state.rollCount,
       schoolCompleted: state.schoolCompleted,
       turnCompleted: state.turnCompleted,
@@ -23,6 +23,9 @@ export default {
   },
   getTotalScore (state) {
     return state.schoolScoreTotal + state.gameTotal
+  },
+  getDefaultUserName (state) {
+    return state.defaultUserName
   },
   debugInfo (state) {
     // console.log(`Debug on`)

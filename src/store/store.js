@@ -7,12 +7,13 @@ Vue.use(Vuex)
 const getDefaultState = () => {
   return {
     debug: false,
+    defaultUserName: 'Anonymous',
     newTurn: true,
     diceRolled: true,
     schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score
     schoolCompleted: false, // check if school is completed
-    gameTurns: 1, // game turns counter
+    currentGameTurn: 1, // game turns counter
     maxGameTurns: 33,
     rollCount: 3, // roll counter for the current turn
     gameCheck: false, // to check if there are any combinations left to record
@@ -270,11 +271,7 @@ const mutations = {
 
               // check for quads
               // very complicated, need to do something about it
-              // if (arrayToAnalyse[currentDice - 1].length === 4 && !state.scoreArray[10].final) {
               if (quadsArray >= 1 && !state.scoreArray[10].final) {
-                // console.log(`Quads debug quadsArray -->`)
-                // console.log(quadsArray)
-                // state.scoreArray[10].value = currentDice * 4
                 state.scoreArray[10].value = quadsArray[0] * 4
               } else if (!state.scoreArray[10].final) {
                 state.scoreArray[10].value = ''
@@ -322,7 +319,8 @@ const mutations = {
           }
         }
         /* ---------------End of game score calculation--------------- */
-      } else if (state.combinationArray.length === 0) { // if combination array is empty, clear all temporary calculation results onscreen
+      } else if (state.combinationArray.length === 0) { // if combination array is empty,
+        // clear all temporary calculation results onscreen
         // console.log(`ain't got shit, captain`)
         for (let key in state.scoreArray) { // there should be one storage array for school and game
           if (state.scoreArray[key].final !== true) { // to clear unconfirmed results properly
@@ -354,7 +352,6 @@ const mutations = {
     state.diceRolled = true
     state.rollCount--
     state.diceRolled = false
-    // console.log(`Current game turn ${state.gameTurns}`)
     for (let dice of state.diceArray) {
       if (!dice.chosen) {
         let numbah = Math.floor((Math.random() * 6) + 1)
@@ -363,7 +360,7 @@ const mutations = {
       }
     }
     // on last roll in school on the sixth turn we check if we can continue
-    if (state.rollCount === 0 && state.gameTurns <= 6 && !state.turnCompleted) {
+    if (state.rollCount === 0 && state.currentGameTurn <= 6 && !state.turnCompleted) {
       // check if we can record some result, if no -- game over
       let emptyDice = []
       for (let index = 0; index <= 5; index++) {
@@ -382,7 +379,7 @@ const mutations = {
       }
     }
     // check if user was able to complete school
-    if (state.gameTurns === 6 && state.rollCount === 0 && !state.turnCompleted && !state.gameCheck) {
+    if (state.currentGameTurn === 6 && state.rollCount === 0 && !state.turnCompleted && !state.gameCheck) {
       alert(`You can't even finish the school... Score is: ${state.schoolScoreTotal}`)
       // $router.push({ path: '/endgame' })
     }
@@ -393,7 +390,7 @@ const mutations = {
     state.gameCheck = false
     state.zeroCheck = false
     state.diceBoxHidden = true
-    state.gameTurns++ // increment turn counter
+    state.currentGameTurn++ // increment turn counter
     state.turnCompleted = false // set new turn state
     // state.rollButtonDisabled = false // unlock roll button
     state.rollCount = 3 // set roll count to intial value of three

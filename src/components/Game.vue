@@ -191,7 +191,7 @@ export default {
         store.state.schoolScoreTotal += store.state.scoreArray[combinationIndexInArray].value
         store.state.turnCompleted = true
         // set school completed to display game score on the board
-        if (store.state.gameTurns === 6) {
+        if (store.state.currentGameTurn === 6) {
           store.state.schoolCompleted = true
         }
         this.clearResultBox()
@@ -238,7 +238,7 @@ export default {
         return false
       }
       // last checks after recording or not recording the result
-      if (store.state.gameTurns === 33 && store.state.turnCompleted) {
+      if (store.state.currentGameTurn === 33 && store.state.turnCompleted) {
         // console.log(`Game Over!`)
         let score = store.state.schoolScoreTotal + store.state.gameTotal
         let highestScore = localStorage.getItem('highestScore')

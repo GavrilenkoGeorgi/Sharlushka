@@ -1,10 +1,8 @@
 <template>
-<v-flex d-flex ma-0 pa-0 id="diceControls border">
-  <!--v-container fluid ma-0 pa-0 id="diceControls"-->
-    <!--v-layout fluid fill-height row class="dice-box-layout dice-box"-->
-    <!--v-layout row class="dice-box-layout"-->
+  <v-flex d-flex ma-0 pa-0 id="diceControls border">
+<!-- Dice box -->
     <v-layout row align-center class="dice-box-layout">
-      <v-flex d-flex xs9 class="game-dice-container dice-box" v-bind:class="{ hidden:!turnCompleted }">
+      <v-flex d-flex xs9 class="game-dice-container dice-box" v-bind:class="{ visible:!turnCompleted }">
         <svg class="dice-icon default"
           v-for="dice in this.getDiceArray"
           :key="dice.id"
@@ -13,11 +11,10 @@
           v-on:click="selectDice"
           fill="none">
           <use v-bind="{'xlink:href':'#' + dice.currentIcon}"
-            class="game-dice animated fadeInUp">
+            class="game-dice animated fadeIn">
           </use>
         </svg>
       </v-flex>
-      <!--/v-flex-->
 <!-- Main button -->
       <v-flex class="main-button animated"
           v-on:click="handleMainGameButtonClick"
@@ -39,10 +36,7 @@
         </v-layout>
       </v-flex>
     </v-layout>
-</v-flex>
-    <!--/v-layout-->
-<!-- End of button -->
-  <!--/v-container-->
+  </v-flex>
 <!-- fill="none" stroke-width=".7em" in case of flyiq4415 or firefox-->
 </template>
 
@@ -139,44 +133,21 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/scss/vars/colors.scss";
 
-.border {
-  // border: 1px solid lime;
-}
-
-#diceControls {
-  // border: 1px solid blue;
- // height: 6em;
-}
-
 .game-dice-container {
-  // padding: 0em .4em 0em .4em;
   margin-left: .3em;
-  margin-right: .2em;
+  margin-right: .2em; // this
+  transition: opacity 1s cubic-bezier(.33,.15,.33,.98) ;
 }
-/*
-.dice-box-layout {
-  // display: flex;
-  // flex-direction: column;
+.visible {
+  opacity: 0; // ??
 }
-.dice-box {
-  opacity: 1;
-  transition: opacity 500ms;
-}
-*/
-
 .dice-icon {
   height: 3.6em;
-  // margin: 0em .1em 0em .1em;
-  // border: 1px solid green;
 }
-/* main button */
 
-.hidden {
-  opacity: 0;
-}
+/* main button */
 .main-button {
   margin-right: .2em;
-  // margin: .2em .2em .2em .2em;
   color: $color-light;
   border-radius: .25em;
   height: 3.6em;
@@ -187,14 +158,13 @@ export default {
   margin-left: .375em;
   border-top: .75em solid transparent;
   border-bottom: .75em solid transparent;
-  border-left: 1.3em solid $color-primary-1;
+  border-left: 1.3em solid $color-pale-primary-lightest;
 }
-
 .roll-circle {
   width: .75em;
   height: .75em;
   margin: .2em;
-  background: $color-primary-1;
+  background: $color-pale-primary-lightest;
   border-radius: 50%
 }
 .stop-brick {
@@ -208,13 +178,6 @@ export default {
   color: $color-light;
   background-color: $color-very-red;
   box-shadow: 0em 0em .3em $color-very-red;
-}
-
-.border-orange {
-  border: 1px solid orange;
-}
-.border-green {
-  border: 1px solid green;
 }
 
 // landscape
@@ -231,30 +194,19 @@ export default {
   .game-dice-container {
     display: flex;
     flex-direction: column;
-    // background-color: pink;
-    // width: 7em;
   }
   .dice-icon {
-  // height: 4em;
   margin: .1em 0em .1em 0em;
-  // border: 1px solid green;
   }
   .main-button {
-    // border: 1px solid green;
-    // width: em;
     width: 50%;
     margin: .4em;
   }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) { // ipad
-  #diceControls {
-    // border: 1px solid orange;
-    // height: 6.5em;
-  }
   .dice-icon {
     height: 5.8em;
-    // margin: 0em .1em 0em .1em;
     // border: 1px solid green;
   }
   .main-button {
@@ -262,29 +214,19 @@ export default {
     height: 5.8em;
   }
   .play-arrow {
-  // margin-left: .375em;
-  border-top: 1.5em solid transparent;
-  border-bottom: 1.5em solid transparent;
-  border-left: 2.25em solid $color-primary-1;
+    border-top: 1.5em solid transparent;
+    border-bottom: 1.5em solid transparent;
+    border-left: 2.25em solid $color-primary-1;
   }
   .roll-circle {
     width: 1.2em;
     height: 1.2em;
-    // margin: .3em;
-  }
-  .stop-brick {
-    // height: 1.6em;
   }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) { // ipadPro
-  #diceControls {
-    // border: 1px solid orange;
-    // height: 9.5em;
-  }
   .dice-icon {
     height: 8em;
-    // margin: 0em .1em 0em .1em;
     // border: 1px solid green;
   }
   .main-button {
@@ -293,106 +235,16 @@ export default {
     border-radius: 1em;
   }
   .play-arrow {
-  // margin-left: .375em;
-  border-top: 2em solid transparent;
-  border-bottom: 2em solid transparent;
-  border-left: 3em solid $color-primary-1;
+    border-top: 2em solid transparent;
+    border-bottom: 2em solid transparent;
+    border-left: 3em solid $color-primary-1;
   }
   .roll-circle {
     width: 2em;
     height: 2em;
-    // margin: .5em;
   }
   .stop-brick {
     height: 2.5em;
   }
 }
-
-/*
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) { // iphone5
-  #diceControls {
-    // border: 1px solid orange;
-    // height: 3em;
-  }
-}
-
-@media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
-  #diceControls {
-    // border: 1px solid orange;
-    // height: 3.5em;
-  }
-}
-
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) { // ipad
-  #diceControls {
-    // border: 1px solid orange;
-    // height: 6.5em;
-  }
-  .main-button {
-    border-radius: .5em;
-  }
-  .play-arrow {
-  // margin-left: .375em;
-  border-top: 1.5em solid transparent;
-  border-bottom: 1.5em solid transparent;
-  border-left: 2.25em solid $color-primary-1;
-  }
-  .roll-circle {
-    width: 1.2em;
-    height: 1.2em;
-    // margin: .3em;
-  }
-  .stop-brick {
-    // height: 1.6em;
-  }
-}
-
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) { // ipadPro
-  #diceControls {
-    // border: 1px solid orange;
-    // height: 9.5em;
-  }
-  .main-button {
-    border-radius: 1em;
-  }
-  .play-arrow {
-  // margin-left: .375em;
-  border-top: 2em solid transparent;
-  border-bottom: 2em solid transparent;
-  border-left: 3em solid $color-primary-1;
-  }
-  .roll-circle {
-    width: 2.2em;
-    height: 2.2em;
-    // margin: .5em;
-  }
-  .stop-brick {
-    // height: 2.5em;
-  }
-}
-
-@media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
-  #diceControls {
-    // border: 1px solid orange;
-    // height: 10em;
-  }
-  .main-button {
-    border-radius: 1em;
-  }
-  .play-arrow {
-  // margin-left: .375em;
-  border-top: 2em solid transparent;
-  border-bottom: 2em solid transparent;
-  border-left: 3em solid $color-primary-1;
-  }
-  .roll-circle {
-    width: 2.2em;
-    height: 2.2em;
-    // margin: .5em;
-  }
-  .stop-brick {
-    // height: 2.5em;
-  }
-}
-*/
 </style>

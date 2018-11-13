@@ -49,16 +49,11 @@
 </template>
 
 <script>
-import store from '../store/store'
-// import MenuIcon from 'vue-material-design-icons/Menu.vue'
+import store from '../store/store' // reset state button
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Settings',
-  /*
-  components: {
-    MenuIcon
-  },
-  */
   data () {
     return {
       userName: '',
@@ -77,8 +72,12 @@ export default {
     }
   },
   mounted () {
+    // console.log(`Settings mounted`)
     this.highestScore = localStorage.getItem('highestScore')
     this.userName = localStorage.getItem('userName')
+    if (!this.userName || this.userName === '') {
+      this.userName = this.getDefaultUserName
+    }
     let lastScoresString = localStorage.getItem('lastScoresArray')
     if (lastScoresString) {
       this.lastTwelveScores = lastScoresString.split(',')
@@ -87,35 +86,31 @@ export default {
     this.stats[2].value = this.computePercentFromMax()
   },
   computed: {
-    computedGameScore: function () {
-      return store.state.schoolScoreTotal + store.state.gameTotal
-    },
-    rollsLeft: function () {
-      return store.state.rollCount
-    }
+    ...mapGetters([
+      'getDefaultUserName'
+    ])
   },
   methods: {
     restartGame (state) {
       // console.log(`Restarting`)
       store.commit('resetState')
-      this.$router.push('/')
+      this.$router.push('/game')
     },
     computeAverageScore () {
-      // should be local storage item
       // let lastTwelveScores = [333, 125, 256, 368, -12, 234, 623, 546, 345, 324, 34, 342]
-      let newArray = []
+      let arrayToReduce = []
       const scoreSum = (accumulator, currentValue) => accumulator + currentValue
       for (let value of this.lastTwelveScores) {
-        newArray.push(parseInt(value))
+        arrayToReduce.push(parseInt(value))
       }
-      if (newArray.length > 0) {
-        return parseInt(newArray.reduce(scoreSum) / newArray.length)
+      if (arrayToReduce.length > 0) {
+        return parseInt(arrayToReduce.reduce(scoreSum) / arrayToReduce.length)
       } else {
         return 0
       }
     },
     computePercentFromMax () {
-      let maxScore = 879
+      let maxScore = 879 // move to store
       this.stats[0].value = maxScore
       let percent = Math.floor(this.stats[1].value / maxScore * 100)
       return percent + '%'
@@ -125,43 +120,27 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "../assets/scss/vars/colors.scss";
-@import "../assets/scss/vars/fonts.scss"; // meh...
 
-.close-icon-path {
-  fill: $color-primary-1;
+.help-title {
+  font-size: 2.7em;
 }
 .user-name {
   color: $color-orange;
-  font-size: 1.7em;
-}
-.user-info {
-  text-align: center;
-}
-.help-link {
-  color: $color-primary-0;
-  transition: color 600ms;
-  // text-decoration: underline;
-}
-.help-link:hover {
-  color: $color-chosen;
-  text-decoration: underline
+  font-size: 1.8em;
 }
 .hi-score {
-  padding-top: .3em;
+  line-height: 1.8;
 }
-
 .hi-score-display {
   color: $color-primary-1;
-  // font-weight: 700;
   font-size: 2em;
   text-align: center;
 }
-
 .stats-display {
   color: $color-primary-3;
   font-size: 1.2em;
   font-weight: 700;
-  line-height: 1.4;
+  line-height: 1.6;
 }
 
 @media screen and (orientation: landscape) {

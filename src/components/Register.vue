@@ -17,7 +17,7 @@
       </v-flex>
       <v-layout column align-center>
         <v-flex d-flex align-end>
-          <h1 class="greeting">{{ greeting }} {{ userName }}</h1>
+          <h1 class="greeting">{{ greeting }}{{ punctMarkOne }} {{ userName }}{{ punctMarkTwo }}</h1>
         </v-flex>
         <v-flex d-flex align-end>
           <v-form v-model="valid">
@@ -53,17 +53,26 @@ export default {
       v => !!v || 'E-mail is required',
       v => /.+@.+/.test(v) || 'E-mail must be valid'
     ],
-    greeting: 'Hi,',
-    userName: ''
+    greeting: 'Hi',
+    punctMarkOne: ',',
+    userName: '',
+    punctMarkTwo: '.'
   }),
   mounted: function () {
     this.$nextTick(function () {
       this.userName = localStorage.getItem('userName')
+      console.log(`Username is ${this.userName}`)
+      if (!this.userName) {
+        this.punctMarkOne = '?'
+        this.punctMarkTwo = ''
+      }
+      /*
       if (this.userName !== 'Anonymous') {
         console.log(`User name set`)
       } else {
         console.log(`User Anonymous`)
       }
+      */
     })
   },
   methods: {

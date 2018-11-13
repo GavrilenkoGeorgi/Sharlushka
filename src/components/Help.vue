@@ -1,5 +1,5 @@
 <template>
-  <v-container id="gameHelp">
+  <v-container lang="ru" id="gameHelp">
 <!-- Icon definition remove this -->
     <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
       <symbol id="settingsClose" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
