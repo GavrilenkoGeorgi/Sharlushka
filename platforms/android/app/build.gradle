@@ -23,7 +23,7 @@ ext.versionMajor = 1
 ext.versionMinor = 1
 ext.versionPatch = 2
 // ext.versionClassifier = null
-ext.versionClassifier = 'beta'
+ext.versionClassifier = 'beta2'
 ext.isSnapshot = false
 ext.minimumSdkVersion = 19
 

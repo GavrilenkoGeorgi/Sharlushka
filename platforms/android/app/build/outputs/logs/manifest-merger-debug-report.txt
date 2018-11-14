@@ -9,7 +9,7 @@ INJECTED from E:\github\sharlushka\platforms\android\app\src\main\AndroidManifes
 INJECTED from E:\github\sharlushka\platforms\android\app\src\main\AndroidManifest.xml:2:1-14:12
 INJECTED from E:\github\sharlushka\platforms\android\app\src\main\AndroidManifest.xml:2:1-14:12
 	package
-		ADDED from E:\github\sharlushka\platforms\android\app\src\main\AndroidManifest.xml:2:102-138
+		ADDED from E:\github\sharlushka\platforms\android\app\src\main\AndroidManifest.xml:2:102-132
 		INJECTED from E:\github\sharlushka\platforms\android\app\src\main\AndroidManifest.xml
 		INJECTED from E:\github\sharlushka\platforms\android\app\src\main\AndroidManifest.xml
 	android:versionName
@@ -19,7 +19,7 @@ INJECTED from E:\github\sharlushka\platforms\android\app\src\main\AndroidManifes
 	android:hardwareAccelerated
 		ADDED from E:\github\sharlushka\platforms\android\app\src\main\AndroidManifest.xml:2:11-45
 	xmlns:android
-		ADDED from E:\github\sharlushka\platforms\android\app\src\main\AndroidManifest.xml:2:139-197
+		ADDED from E:\github\sharlushka\platforms\android\app\src\main\AndroidManifest.xml:2:133-191
 	android:versionCode
 		ADDED from E:\github\sharlushka\platforms\android\app\src\main\AndroidManifest.xml:2:46-73
 		INJECTED from E:\github\sharlushka\platforms\android\app\src\main\AndroidManifest.xml
@@ -52,7 +52,7 @@ ADDED from E:\github\sharlushka\platforms\android\app\src\main\AndroidManifest.x
 		ADDED from E:\github\sharlushka\platforms\android\app\src\main\AndroidManifest.xml:5:18-52
 	android:icon
 		ADDED from E:\github\sharlushka\platforms\android\app\src\main\AndroidManifest.xml:5:53-80
-activity#io.github.gavrilenkogeorgi.MainActivity
+activity#io.github.sharlushka.MainActivity
 ADDED from E:\github\sharlushka\platforms\android\app\src\main\AndroidManifest.xml:6:9-11:20
 	android:label
 		ADDED from E:\github\sharlushka\platforms\android\app\src\main\AndroidManifest.xml:6:97-134
