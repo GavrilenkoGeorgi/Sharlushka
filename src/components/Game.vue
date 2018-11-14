@@ -1,57 +1,62 @@
 <template>
   <v-container fluid fill-height ma-0 pa-0 id="gameView">
+<!-- Navigation -->
+    <Navigation></Navigation>
+    <v-layout column class="game-layout">
 <!-- School dice display -->
-          <Navigation></Navigation>
-          <v-layout column class="game-layout">
-            <v-layout row>
-            <v-flex d-flex align-center class="school-dice-container">
-            <svg v-for="dice in this.getSchoolArray"
-                  :key="dice.id"
-                  class="school-dice-icon default"
-                  fill="none"
-                  v-bind:class="{ chosen:dice.final }"
-                  v-on:click="handleBoardClick"
-                  v-bind:id="dice.id">
-              <use v-bind="{'xlink:href':'#' + dice.icon}">
-              </use>
-            </svg>
-          </v-flex>
-            </v-layout>
+      <v-layout row>
+        <v-flex d-flex align-center class="school-dice-container">
+          <svg v-for="dice in this.getSchoolArray"
+                :key="dice.id"
+                @click="handleBoardClick"
+                v-bind:id="dice.id"
+                class="school-dice-icon default"
+                v-bind:class="{ chosen:dice.final }"
+                fill="none">
+            <use v-bind="{'xlink:href':'#' + dice.icon}">
+            </use>
+          </svg>
+        </v-flex>
+      </v-layout>
 <!-- School results display -->
-          <v-layout row class="school-results-layout">
-            <v-flex d-flex xs2 align-center justify-center
-                class="school-result"
-                v-for="result in this.getSchoolArray"
-                :key="result.id"
-                v-on:click="handleBoardClick"
-                v-bind:class="{ saved:result.final, blink:!result.final }">
-              <span v-bind:resultId="result.id">{{ result.value }}</span>
+      <v-layout row class="school-results-layout">
+        <v-flex d-flex xs2 align-center justify-center
+            v-for="result in this.getSchoolArray"
+            :key="result.id"
+            @click="handleBoardClick"
+            class="school-result"
+            v-bind:class="{ saved:result.final, blink:!result.final }">
+          <span v-bind:resultId="result.id">{{ result.value }}</span>
+        </v-flex>
+      </v-layout>
+<!-- Game combinations display -->
+      <v-layout column justify-center class="game-combinations-layout">
+        <v-flex d-flex align-center
+            v-for="combination in this.getCombinationArray"
+            :key="combination.id"
+            @click="handleBoardClick"
+            v-bind:id="combination.id"
+            class="game-combination"
+            v-bind:class="{ set:combination.final }">
+          <v-layout>
+            <v-flex xs6 pl-2>{{ combination.fullName }}</v-flex>
+            <v-flex xs2 class="text-xs-center"
+              v-for="(value, index) in combination.displayValues"
+              :key="index">
+              {{ value }}
+            </v-flex>
+            <v-flex xs2 class="blink text-xs-center"
+              v-if="combination.value">
+              {{ combination.value }}
             </v-flex>
           </v-layout>
-<!-- Game combinations display -->
-  <v-layout column justify-center class="game-combinations-layout">
-      <v-flex d-flex align-center v-for="combination in this.getCombinationArray"
-          :key="combination.id"
-          @click="handleBoardClick"
-          v-bind:id="combination.id"
-          class="game-combination"
-          v-bind:class="{ set:combination.final }">
-        <v-layout>
-          <v-flex xs6 pl-2>{{ combination.fullName }}</v-flex>
-          <v-flex xs2 class="text-xs-center" v-for="(value, index) in combination.displayValues" :key="index">
-            {{ value }}
-          </v-flex>
-          <v-flex xs2 class="text-xs-center blink" v-if="combination.value">
-              {{ combination.value }}
-          </v-flex>
-        </v-layout>
-      </v-flex>
-  </v-layout>
-    <DiceBox v-bind:turnCompleted="turnCompleted"></DiceBox>
+        </v-flex>
       </v-layout>
-      <div class="progress-bar"></div>
-      </v-container>
 <!-- Dice controls -->
+      <DiceBox v-bind:turnCompleted="turnCompleted"></DiceBox>
+    </v-layout>
+    <div class="progress-bar"></div>
+  </v-container>
 </template>
 
 <script>
@@ -266,20 +271,9 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/scss/vars/colors.scss";
 @import "../assets/scss/vars/fonts.scss";
-/*
-#gameView {
-  //padding-top: 4.5em;
-  border: 1px solid lime;
-}
-*/
 .game-layout {
   padding-top: 3.2em;
-  padding-bottom: .2em;
-}
-.school-dice-container {
-  // height: 5em;
-  // overflow: hidden;
-  // border: 1px solid yellow;
+  // padding-bottom: .2em;
 }
 .school-dice-icon {
   // background-color: yellow;
@@ -293,26 +287,10 @@ export default {
   color: $color-orange;
 }
 .game-combinations-layout {
-  // font-size: 2em;
-  // text-align: right;
-  // background-color: yellow;
-  // color: red;
-  // border: 1px solid red;
-  // width: 50em;
   color: $color-primary-0;
-  // padding-bottom: 1em;
 }
 .game-combination {
-  // border: 1px solid red;
   padding: 0.2em;
-  // display: flex;
-  // align-content: center;
-  // justify-content: center;
-  // align-items: center;
-}
-.game-result {
-  text-align: center;
-  // border: 1px solid red;
 }
 .set {
   background-color: $color-pale-primary;
@@ -320,7 +298,12 @@ export default {
 }
 .blink {
   color: gray;
-  animation: blinker 3s linear infinite;
+  font-weight: 700;
+  animation: blinker 3s ease-out infinite;
+}
+.blink:hover {
+  color: $color-chosen;
+  animation: none;
 }
 @keyframes blinker {
   0% {
@@ -336,51 +319,52 @@ export default {
 
 /* Progress bar */
 .progress-bar {
-  // border: 1px solid red;
   background-color: $color-primary-0;
   box-shadow: 0px 1px 10px 0px $color-primary-4;
   height: .2em;
   position: fixed;
   bottom: 0;
   width: 0%;
-  transition: width 1.75s;
+  transition: width 1.75s cubic-bezier(.27,.13,.46,.96);
 }
-.full { // progress bar
+.full { // progress bar state
   background-color: #AA3838;
   box-shadow: 0em .2em .8em 0em red;
 }
 
-.border-lime {
-  border: 1px solid lime;
-}
-.border {
-  border: 1px solid pink;
-}
-
-.border-black {
-  border: 1px solid black;
-}
-.wide {
-  // width: 100%;
-  // display: inline;
+// Landscape mode
+@media screen and (orientation: landscape) {
+  .game-layout {
+    flex-direction: row;
+    padding-top: 3em;
+    // border: 1px solid red;
+    padding-bottom: .4em;
+  }
+  .school-dice-container {
+    flex-direction: column;
+  }
+  .school-dice-icon {
+    margin: .2em 0em .2em 0em;
+  }
+  .school-results-layout {
+    width: 15em;
+    flex-direction: column;
+  }
+  .game-combinations-layout {
+    width: 100em;
+    padding: 0em;
+    font-size: .81em;
+  }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) { // iphone5
-  .school-dice-container {
-    // height: 3.4em;
-  }
   .school-result, .game-combination {
-    // border: 1px solid pink;
     font-size: 1.8em;
   }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
-  .school-dice-container {
-   // height: 3.8em;
-  }
   .school-result {
-    // border: 1px solid pink;
     font-size: 2em;
   }
   .game-combination {
@@ -389,7 +373,7 @@ export default {
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 3) and (min-width: 375px) { // iphoneX
-.school-result {
+  .school-result {
     // border: 1px solid pink;
     font-size: 2.6em;
   }
@@ -399,28 +383,21 @@ export default {
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 3) and (min-width: 414px) { // iphone678plus
-   .game-combination {
+  .game-combination {
     font-size: 2.3em;
   }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) { // ipad
-  .school-dice-container {
-   // height: 5.8em;
-  }
   .school-dice-icon {
-   height: 5.8em;
+    height: 5.8em;
   }
   .school-result {
     // border: 1px solid pink;
     font-size: 3em;
-
   }
   .game-combination {
     font-size: 2.8em;
-  }
-  .progress-bar {
-    // height: .4em;
   }
 }
 
@@ -430,9 +407,6 @@ export default {
 }
 .school-dice-icon {
    height: 8em;
-  }
-  .school-dice-container {
-    // height: 8.8em;
   }
   .school-result {
     // border: 1px solid pink;
@@ -446,55 +420,42 @@ export default {
   }
 }
 
-@media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
-  .school-dice-container {
-    // height: 10em;
-  }
+@media screen and (max-resolution: 96dpi) and (min-width: 500px) { // desktop
   .school-result {
     // border: 1px solid pink;
     font-size: 3em;
+    font-weight: 700;
   }
   .game-combination {
     font-size: 3em;
+    font-weight: 700;
   }
-}
-
-// Landscape mode
-@media screen and (orientation: landscape) {
-  .game-layout {
-    display: flex;
-    flex-direction: row;
-    padding-top: 2.6em;
-    //border: 1px solid red;
-    padding-bottom: .4em;
+    .game-layout {
+    // flex-direction: row;
+    // padding-top: 2.6em;
+    // border: 1px solid red;
+    padding-top: 6em;
+    padding-bottom: 1em;
+    // padding-bottom: .4em;
   }
   .school-dice-container {
-    // background-color: yellow;
-    // width: 5em;
-    flex-direction: column;
-    // padding: .2em 0em .2em 0em;
+    // flex-direction: column;
+    // border: 1px solid red;
   }
   .school-dice-icon {
-    // height: 3.3em;
-    // background-color: yellow;
-    margin: .2em 0em .2em 0em;
+    // margin: .2em 0em .2em 0em;
   }
   .school-results-layout {
-    width: 15em;
-    // background-color: gray;
-    flex-direction: column;
-    // flex-wrap: wrap;
-  }
-  .school-result {
-    // border: 1px solid lime;
-    // width: 5em;
+    // width: 15em;
+    // flex-direction: column;
   }
   .game-combinations-layout {
-    width: 100em;
-    padding: 0em;
-    font-size: .8em;
-    // color: red;
+    // width: 100em;
+    // padding: 0em;
+    // font-size: .81em;
+  }
+  .progress-bar {
+    height: .4em;
   }
 }
-
 </style>

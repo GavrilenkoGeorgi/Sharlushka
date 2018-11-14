@@ -52,6 +52,7 @@ export default {
       this.lastScoresArray = localStorage.getItem('lastScoresArray')
       if (!this.lastScoresArray) {
         // console.log(`No local storage score array yet`)
+        // let lastTwelveScores = [333, 125, 256, 368, -12, 234, 623, 546, 345, 324, 34, 342]
         this.lastScoresArray = [this.getTotalScore]
         localStorage.setItem('lastScoresArray', this.lastScoresArray)
       } else {

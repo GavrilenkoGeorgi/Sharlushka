@@ -14,7 +14,7 @@
         <v-flex xs4 class="text-xs-center">
           <v-btn to="/game" ripple block class="ui-button" large color="purple darken-1"
             aria-label="Start game"
-            v-bind:class="{orange:$store.state.gameTurns > 1}">
+            v-bind:class="{orange:$store.state.currentGameTurn > 1}">
             <v-img :src="require('@/assets/icons/baseline-done-24px.svg')" contain height="2em"></v-img>
           </v-btn>
         </v-flex>
@@ -64,7 +64,7 @@ export default {
   ]),
   mounted: function () {
     this.$nextTick(function () {
-      console.log(`Start page mounted`)
+      // console.log(`Main page mounted`)
       this.userName = localStorage.getItem('userName')
       if (!this.userName || this.userName === '') {
         this.userName = this.getDefaultUserName
@@ -97,7 +97,7 @@ export default {
 }
 .copyrights {
   text-align: center;
-  font-size: .8em;
+  font-size: .85em;
   color: rgb(83, 83, 83);
 }
 

@@ -1,6 +1,7 @@
 <template>
   <v-container fill-height id="gameSettings">
     <v-layout align-space-around column>
+<!-- Close button -->
       <v-layout justify-end row>
         <v-flex xs2 class="text-xs-center">
           <v-btn class="icon-close" outline small fab round color="white" @click="$router.go(-1)">
@@ -8,6 +9,7 @@
           </v-btn>
         </v-flex>
       </v-layout>
+<!-- Title and user name -->
       <v-flex class="text-xs-center">
         <h1 class="help-title">{{ helpTitle }}</h1>
       </v-flex>
@@ -15,26 +17,31 @@
         <h2 class="user-name">{{ userName }}!</h2>
         <h3 class="hi-score" v-if="highestScore">{{ hiscoreGreeting }} {{ highestScore }}{{ exclamation }}</h3>
       </v-flex>
+<!-- Last scores heading and table-->
       <v-flex d-flex align-center class="text-xs-center">
         <h3>{{ lastScoresHeading }}</h3>
       </v-flex>
       <v-flex>
         <v-layout align-space-around column>
-          <v-flex d-flex my-2 class="hi-score-display">
+          <v-flex d-flex class="hi-score-display">
             <v-layout row wrap justify-space-around>
-              <v-flex ma-3 class="hi-score-value-box" v-for="(value, index) in lastTwelveScores" :key="index">
-                {{ value }}
+              <v-flex xs4 sm1 ma-0 py-1 v-for="value in lastTwelveScores" :key="value">
+                {{value}}
               </v-flex>
             </v-layout>
           </v-flex>
-          <v-flex class="stats-display text-xs-center" v-for="item in stats" :key="item.msg">
+<!-- Stats display -->
+          <v-flex class="stats-display text-xs-center"
+            v-for="item in stats"
+            :key="item.msg">
             {{ item.msg }}&nbsp;{{ item.value }}
           </v-flex>
         </v-layout>
       </v-flex>
-      <v-layout my-2 row align-center justify-space-around>
+      <v-layout row align-center justify-space-around>
         <v-flex xs4 class="text-xs-center">
-          <v-btn ripple block class="ui-button" large color="orange" v-on:click="restartGame">
+          <v-btn ripple block class="ui-button" large color="orange"
+            @click="restartGame">
             <v-img :src="require('@/assets/icons/baseline-replay-24px.svg')" contain height="2em"></v-img>
           </v-btn>
         </v-flex>
@@ -133,7 +140,7 @@ export default {
 }
 .hi-score-display {
   color: $color-primary-1;
-  font-size: 2em;
+  font-size: 2.1em;
   text-align: center;
 }
 .stats-display {
@@ -147,10 +154,6 @@ export default {
   .hi-score-display {
     font-size: 1.3em;
     font-weight: 700;
-  }
-  .hi-score-value-box {
-    margin: .4em !important; // nicht gut
-    // color: pink;
   }
 }
 </style>

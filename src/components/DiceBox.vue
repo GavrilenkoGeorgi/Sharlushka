@@ -186,6 +186,8 @@ export default {
     display: flex;
     flex-direction: column;
     width: 10em;
+    // border: 1px solid red;
+    padding-top: .15em;
   }
   .dice-box {
     display: flex;
@@ -245,6 +247,20 @@ export default {
   }
   .stop-brick {
     height: 2.5em;
+  }
+}
+
+@media screen and (max-resolution: 96dpi) and (min-width: 500px) { // desktop
+  .dice-box-layout {
+    // display: flex;
+    // flex-direction: column;
+    width: 12em;
+    // border: 1px solid red;
+    // padding-top: .15em;
+  }
+  .main-button {
+    width: 8.5em;
+    border-radius: .6em;
   }
 }
 </style>

@@ -72,6 +72,8 @@ export default {
     saveUserName () {
       if (this.valid) {
         localStorage.setItem('userName', this.name)
+        // localStorage.setItem('lastScoresArray', '333, 125, 256, 368, -12, 234, 623, 546, 345, 324, 34, 342')
+        // console.log(`Score set`)
         this.userName = this.name
         this.$router.push({path: '/game'})
       } else {
