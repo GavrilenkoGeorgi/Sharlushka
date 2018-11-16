@@ -18,7 +18,7 @@
         <h3 class="hi-score" v-if="highestScore">{{ hiscoreGreeting }} {{ highestScore }}{{ exclamation }}</h3>
       </v-flex>
 <!-- Last scores heading and table-->
-      <v-flex d-flex align-center class="text-xs-center">
+      <v-flex d-flex align-center v-if="highestScore" class="text-xs-center">
         <h3>{{ lastScoresHeading }}</h3>
       </v-flex>
       <v-flex>

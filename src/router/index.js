@@ -1,12 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import MainPage from '@/components/MainPage'
-// import Register from '@/components/Register'
-// import Settings from '@/components/Settings'
-// import Game from '@/components/Game'
-// import EndGame from '@/components/EndGame'
-// import Help from '@/components/Help'
-// import DiceTemp from '@/components/DiceTemp'
 
 Vue.use(Router)
 

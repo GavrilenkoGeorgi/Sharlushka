@@ -97,7 +97,7 @@ export default {
 }
 .copyrights {
   text-align: center;
-  font-size: .85em;
+  font-size: .9em;
   color: rgb(83, 83, 83);
 }
 

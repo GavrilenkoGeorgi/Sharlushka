@@ -438,22 +438,6 @@ export default {
     padding-bottom: 1em;
     // padding-bottom: .4em;
   }
-  .school-dice-container {
-    // flex-direction: column;
-    // border: 1px solid red;
-  }
-  .school-dice-icon {
-    // margin: .2em 0em .2em 0em;
-  }
-  .school-results-layout {
-    // width: 15em;
-    // flex-direction: column;
-  }
-  .game-combinations-layout {
-    // width: 100em;
-    // padding: 0em;
-    // font-size: .81em;
-  }
   .progress-bar {
     height: .4em;
   }

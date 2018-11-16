@@ -16,7 +16,7 @@
         </svg>
       </v-flex>
 <!-- Main button -->
-      <v-flex class="main-button animated"
+      <v-flex class="main-button animated delay-s"
           v-on:click="handleMainGameButtonClick"
           v-bind:class="{ save: this.mainButtonState.save, bounce: this.mainButtonState.save }">
         <v-layout align-center justify-center row fill-height>
@@ -136,7 +136,7 @@ export default {
 .game-dice-container {
   margin-left: .3em;
   margin-right: .2em; // this
-  transition: opacity 500ms cubic-bezier(.33,.15,.33,.98) ;
+  transition: opacity 800ms cubic-bezier(.33,.15,.33,.98) ;
 }
 .visible {
   opacity: 0; // ??
@@ -252,15 +252,55 @@ export default {
 
 @media screen and (max-resolution: 96dpi) and (min-width: 500px) { // desktop
   .dice-box-layout {
-    // display: flex;
-    // flex-direction: column;
     width: 12em;
-    // border: 1px solid red;
-    // padding-top: .15em;
   }
   .main-button {
     width: 8.5em;
     border-radius: .6em;
   }
 }
+
+@keyframes bounce {
+  from,
+  20%,
+  53%,
+  80%,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    transform: translate3d(0, 0, 0);
+  }
+
+  40%,
+  43% {
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    transform: translate3d(0, -30px, 0);
+  }
+
+  70% {
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    transform: translate3d(0, -15px, 0);
+  }
+
+  90% {
+    transform: translate3d(0, -4px, 0);
+  }
+}
+.bounce {
+  animation-name: bounce;
+  transform-origin: center bottom;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+.fadeIn {
+  animation-name: fadeIn;
+}
+
 </style>
