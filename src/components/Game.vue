@@ -119,6 +119,8 @@ export default {
     if (highestScore) {
       this.highestScore = highestScore
     }
+    // message()
+    // console.log(message)
   },
   methods: {
     ...mapActions([

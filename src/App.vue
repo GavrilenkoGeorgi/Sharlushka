@@ -53,21 +53,9 @@
 </template>
 
 <script>
-// var sw = require('./sw/sw.js')
-// import sw from './sw/sw.js'
-// import SWorker from 'simple-web-worker'
+
 export default {
   name: 'App',
-  data () {
-    return {
-      status: false
-    }
-  },
-  methods: {
-    init: function () {
-      this.status = true
-    }
-  },
   mounted () {
     console.log('Main page mounted')
   }

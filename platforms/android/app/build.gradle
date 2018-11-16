@@ -20,10 +20,10 @@
 apply plugin: 'com.android.application'
 
 ext.versionMajor = 1
-ext.versionMinor = 1
-ext.versionPatch = 2
+ext.versionMinor = 2
+ext.versionPatch = 0
 // ext.versionClassifier = null
-ext.versionClassifier = 'beta2'
+ext.versionClassifier = 'beta3'
 ext.isSnapshot = false
 ext.minimumSdkVersion = 19
 
