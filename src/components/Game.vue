@@ -272,7 +272,8 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/scss/vars/colors.scss";
-@import "../assets/scss/vars/fonts.scss";
+// @import "../assets/scss/vars/fonts.scss";
+
 .game-layout {
   padding-top: 3.2em;
   // padding-bottom: .2em;
@@ -360,27 +361,31 @@ export default {
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) { // iphone5
+  .school-dice-icon {
+    // margin: .2em 0em .2em 0em;
+    height: 3em;
+  }
   .school-result, .game-combination {
-    font-size: 1.8em;
+    // font-size: 1.8em;
+    font-size: 1.5em;
+    // color: red;
   }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
-  .school-result {
-    font-size: 2em;
-  }
-  .game-combination {
+  .school-result, .game-combination {
     font-size: 2em;
   }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 3) and (min-width: 375px) { // iphoneX
-  .school-result {
-    // border: 1px solid pink;
-    font-size: 2.6em;
+.school-dice-icon {
+    // margin: .2em 0em .2em 0em;
+    height: 4em;
   }
-  .game-combination {
-    font-size: 2.6em;
+  .school-result, .game-combination {
+    // border: 1px solid pink;
+    font-size: 2.2em;
   }
 }
 

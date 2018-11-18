@@ -7,7 +7,7 @@
       <router-link to="/">{{ title }}</router-link>
     </v-flex>
     <v-flex class="settings-icon text-xs-right">
-      <v-btn to="/settings" fab flat ripple color="#79008f"
+      <v-btn to="/settings" fab flat color="#79008f"
         aria-label="Go to settings">
         <v-img :src="require('@/assets/icons/baseline-menu-24px.svg')" contain height="3em"></v-img>
       </v-btn>
@@ -43,29 +43,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/scss/index.scss";
+// @import "../assets/scss/vars/fonts.scss";
+@import "../assets/scss/vars/colors.scss";
 
 #gameNavigation {
   // border: 1px solid pink;
   position: fixed;
   top: 0;
   background-color: $color-primary-0;
-  height: 1.9em;
+  height: 1.7em;
   width: 100%;
   font-size: 1.2em;
-  padding-left: .3em;
-  // box-shadow: 0 .1em .05em -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  padding-left: .6em;
+  box-shadow: 0 .1em .05em -.05em rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
 }
 .score {
   // border: 1px solid red;
   color: white;
-  font-family: $text-font;
+  // font-family: $text-font;
+  font-size: 1.1em;
   // padding-left: .3em;
 }
 .game-name {
   a {
     color: white;
-    font-family: $text-font;
+    // font-family: $text-font;
     text-decoration: none;
   }
 }
@@ -77,13 +79,13 @@ export default {
 
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) { // iphone5
   #gameNavigation {
-    font-size: 2em;
+    font-size: 1.5em;
   }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
   #gameNavigation {
-    font-size: 1.7em;
+    font-size: 1.8em;
     // border: 1px solid lime;
   }
 }

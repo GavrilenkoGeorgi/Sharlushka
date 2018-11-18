@@ -7,47 +7,46 @@
         <path d="M0 0h24v24H0z"/>
       </symbol>
     </svg>
-<!-- Icon defs end -->
-    <v-layout column>
-      <v-flex>
-        <v-layout column align-end>
-          <svg class="ui-icon" @click="$router.go(-1)">
-            <use xlink:href="#settingsClose"></use>
-          </svg>
-        </v-layout>
-      </v-flex>
-    </v-layout>
-    <v-layout fill-height justify-center>
-      <v-flex xs12 sm10 md8 lg6>
-        <v-layout justify-space-around column>
-          <h1 class="text-xs-right mb-2 rules-heading">{{ rulesHeading }}</h1>
-          <p class="rules-text">
-            {{ overall }}
-          </p>
-          <p class="rules-text">
-            {{ schoolDescr }}
-          </p>
-        </v-layout>
-  <!-- Combination descriptions -->
-        <v-flex class="combination-descr"
-                v-for="(combination, index) in combinationsDescr"
-                :key="index">
-          <v-layout>
-            <p>
-              {{ combination.text }}
-            </p>
-            <v-layout justify-end>
-              <svg class="help-dice-icon"
-                  v-for="index in combination.quantity" :key="index">
-              <use v-bind="{'xlink:href':'#' + combination.iconId}"></use>
-            </svg>
-              <p class="score-value">
-                {{ combination.scoreValue }}
-              </p>
-            </v-layout>
-          </v-layout>
+    <v-layout align-space-around column>
+      <v-layout justify-end row>
+        <v-flex xs2 class="text-xs-center">
+          <v-btn class="icon-close" outline small fab round color="white" @click="$router.go(-1)">
+            <v-img :src="require('@/assets/icons/baseline-clear-24px.svg')" contain height="4em"></v-img>
+          </v-btn>
         </v-flex>
-      </v-flex>
+      </v-layout>
+      <v-layout fill-height justify-center>
+        <v-flex xs12 sm10 md8 lg6>
+          <v-layout justify-space-around column>
+            <h1 class="text-xs-right mb-2 rules-heading">{{ rulesHeading }}</h1>
+            <p class="rules-text">
+              {{ overall }}
+            </p>
+            <p class="rules-text">
+              {{ schoolDescr }}
+            </p>
+          </v-layout>
+    <!-- Combination descriptions -->
+          <v-flex class="combination-descr"
+                  v-for="(combination, index) in combinationsDescr"
+                  :key="index">
+            <v-layout>
+              <p>
+                {{ combination.text }}
+              </p>
+              <v-layout justify-end>
+                <svg class="help-dice-icon"
+                    v-for="index in combination.quantity" :key="index">
+                <use v-bind="{'xlink:href':'#' + combination.iconId}"></use>
+              </svg>
+                <p class="score-value">
+                  {{ combination.scoreValue }}
+                </p>
+              </v-layout>
+            </v-layout>
+          </v-flex>
+        </v-flex>
+      </v-layout>
     </v-layout>
   </v-container>
 </template>

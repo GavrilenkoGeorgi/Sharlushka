@@ -39,13 +39,13 @@
         </v-layout>
       </v-flex>
       <v-layout row align-center justify-space-around>
-        <v-flex xs4 class="text-xs-center">
+        <v-flex xs4 lg2 class="text-xs-center">
           <v-btn ripple block class="ui-button" large color="orange"
             @click="restartGame">
             <v-img :src="require('@/assets/icons/baseline-replay-24px.svg')" contain height="2em"></v-img>
           </v-btn>
         </v-flex>
-        <v-flex xs4 class="text-xs-center">
+        <v-flex xs4 lg2 class="text-xs-center">
           <v-btn ripple block class="ui-button" large color="purple darken-1" to="/help">
             <v-img :src="require('@/assets/icons/baseline-help_outline-24px.svg')" contain height="2em"></v-img>
           </v-btn>
@@ -154,6 +154,21 @@ export default {
   .hi-score-display {
     font-size: 1.3em;
     font-weight: 700;
+  }
+}
+
+@media screen and (max-resolution: 96dpi) and (min-width: 500px) { // desktop
+  .help-title {
+    font-size: 4em;
+  }
+  .user-name {
+    font-size: 3em;
+  }
+  .hi-score-display {
+    font-size: 2em;
+  }
+  .stats-display {
+    font-size: 1.5em;
   }
 }
 </style>

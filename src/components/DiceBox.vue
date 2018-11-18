@@ -258,6 +258,18 @@ export default {
     width: 8.5em;
     border-radius: .6em;
   }
+  .play-arrow {
+    border-top: 1.7em solid transparent;
+    border-bottom: 1.7em solid transparent;
+    border-left: 2.9em solid $color-primary-1;
+  }
+  .roll-circle {
+    width: 1.5em;
+    height: 1.5em;
+  }
+  .stop-brick {
+    height: 2.5em;
+  }
 }
 
 @keyframes bounce {

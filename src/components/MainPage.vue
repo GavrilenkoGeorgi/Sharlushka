@@ -11,14 +11,14 @@
         <h2 class="user-name">{{ greeting }} {{ userName }}{{ exclamation }}</h2>
     </v-flex>
     <v-layout row align-center justify-space-around>
-        <v-flex xs4 class="text-xs-center">
+        <v-flex xs4 lg2 class="text-xs-center">
           <v-btn to="/game" ripple block class="ui-button" large color="purple darken-1"
             aria-label="Start game"
             v-bind:class="{orange:$store.state.currentGameTurn > 1}">
             <v-img :src="require('@/assets/icons/baseline-done-24px.svg')" contain height="2em"></v-img>
           </v-btn>
         </v-flex>
-        <v-flex xs4 class="text-xs-center">
+        <v-flex xs4 lg2 class="text-xs-center">
           <v-btn to="/register" ripple block class="ui-button" large color="purple darken-1"
             aria-label="Register or change name">
             <v-img :src="require('@/assets/icons/baseline-how_to_reg-24px.svg')" contain height="2em"></v-img>
@@ -53,7 +53,7 @@ export default {
   name: 'Main',
   data () {
     return {
-      gameName: 'Sharlushka', // nicht gut
+      gameName: 'Sharlushka',
       userName: '',
       greeting: 'Hi,',
       exclamation: '.'
@@ -104,6 +104,16 @@ export default {
 @media screen and (orientation: landscape) {
   .game-name {
     font-size: 2.8em;
+  }
+}
+
+@media screen and (max-resolution: 96dpi) and (min-width: 500px) { // desktop
+  .game-name {
+    font-size: 5em;
+    // color: red;
+  }
+  .user-name {
+    font-size: 4em;
   }
 }
 </style>

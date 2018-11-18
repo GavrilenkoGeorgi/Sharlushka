@@ -47,7 +47,7 @@
                 mode="out-in"
                 enter-active-class="animated fadeInRight"
                 leave-active-class="animated fadeOutLeft">
-      <router-view />
+      <router-view></router-view>
     </transition>
   </v-container>
 </template>
@@ -63,7 +63,9 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./assets/scss/index.scss";
+@import "./assets/scss/vars/fonts.scss";
+@import "./assets/scss/vars/colors.scss";
+@import './assets/scss/vars/dice-icons.scss';
 
 #app {
   font-family: $text-font, sans-serif;
@@ -102,7 +104,7 @@ export default {
   animation-fill-mode: both;
 }
 .animated.delay-s {
-  animation-delay: 1.4s;
+  animation-delay: 700ms;
 }
 
 @media (prefers-reduced-motion) {
