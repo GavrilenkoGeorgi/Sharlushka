@@ -1,1 +1,32 @@
-@import './buttons/icons.scss';
+@import "./assets/scss/vars/colors.scss";
+@import "./assets/scss/vars/dice-icons.scss";
+@import "./assets/fonts/fonts.scss";
+
+svg path {
+  fill: none;
+  stroke-width: .6em;
+}
+svg circle {
+  fill: currentColor;
+}
+.default {
+  use {
+    color: $color-primary-0;
+    stroke: $color-primary-0;
+  }
+}
+.chosen {
+  use {
+    color: $color-chosen;
+    stroke: $color-chosen;
+  }
+}
+
+.ui-icon {
+  width: 3em;
+  height: 3em;
+}
+.ui-icon-smaller {
+  width: .8em;
+  height: .8em;
+}

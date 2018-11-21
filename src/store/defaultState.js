@@ -11,8 +11,9 @@ export default function () {
     maxGameTurns: 33,
     rollCount: 3, // roll counter for the current turn
     gameCheck: false, // to check if there are any combinations left to record
-    zeroCheck: false,
+    // zeroCheck: false,
     turnCompleted: false,
+    gameEnded: false,
     combinationArray: [],
     scoreArray: [{
       value: '', // school combinations

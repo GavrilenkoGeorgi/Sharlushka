@@ -1,4 +1,6 @@
 import getDefaultState from './defaultState.js'
+// import { Store } from 'vuex';
+
 export default {
   computeScore (state) {
     if (!state.turnCompleted) {
@@ -226,9 +228,14 @@ export default {
       }
     }
     // check if user was able to complete school
-    if (state.currentGameTurn === 6 && state.rollCount === 0 && !state.turnCompleted && !state.gameCheck) {
-      alert(`You can't even finish the school... Score is: ${state.schoolScoreTotal}`)
-      // $router.push({ path: '/endgame' })
+    if (state.currentGameTurn <= 6 &&
+        state.rollCount === 0 &&
+        !state.turnCompleted &&
+        !state.gameCheck) {
+      // alert(`You can't even finish the school... Score is: ${state.schoolScoreTotal}`)
+      // this.$router.push({ path: '/endgame' })
+      state.gameEnded = true
+      return false
     }
     state.diceBoxHidden = false
   },

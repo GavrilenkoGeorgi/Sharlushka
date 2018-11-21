@@ -18,7 +18,9 @@
 <!-- Main button -->
       <v-flex class="main-button animated delay-s"
           v-on:click="handleMainGameButtonClick"
-          v-bind:class="{ save: this.mainButtonState.save, bounce: this.mainButtonState.save }">
+          v-bind:class="{ save: this.mainButtonState.save,
+                          bounce: this.mainButtonState.save,
+                          visible: this.getCurrentGameState.gameEnded }">
         <v-layout align-center justify-center row fill-height>
           <v-flex xs2 class="play-arrow animated fadeIn" v-if=" this.mainButtonState.play">
           </v-flex>
@@ -62,7 +64,9 @@ export default {
       // the callback will be called immediately after the start of the observation
       immediate: true,
       handler () {
-        this.updateMainButtonState()
+        if (!this.getCurrentGameState.gameEnded) {
+          this.updateMainButtonState()
+        }
       }
     }
   },
@@ -112,6 +116,12 @@ export default {
           this.diceRolled = true
         }
         store.commit('rollDice')
+        if (this.getCurrentGameState.currentRollCount === 0 &&
+            this.getCurrentGameState.currentGameTurn <= 6 &&
+            !this.getCurrentGameState.gameCheck) {
+          // alert('School!')
+          this.$router.push({ path: '/endgame' })
+        }
         this.updateMainButtonState()
       }
     },

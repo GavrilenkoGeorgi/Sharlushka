@@ -1,6 +1,47 @@
 <template>
   <v-container fluid fill-height ma-0 pa-0 id="gameView">
 <!-- Navigation -->
+<svg version='1.1' style="display: none;" xmlns="http://www.w3.org/2000/svg">
+      <symbol id="diceOnes" viewBox="0 0 200 200">
+        <circle fill="currentColor" cx="100" cy="100" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceTwos" viewBox="0 0 200 200">
+        <circle fill="currentColor" cx="50" cy="150" r="18"/>
+        <circle fill="currentColor" cx="150" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceThrees" class="dice" viewBox="0 0 200 200">
+        <circle fill="currentColor" cx="50" cy="150" r="18"/>
+        <circle fill="currentColor" cx="100" cy="100" r="18"/>
+        <circle fill="currentColor" cx="150" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceFours" class="dice" viewBox="0 0 200 200">
+        <circle fill="currentColor" cx="150" cy="50" r="18"/>
+        <circle fill="currentColor" cx="150" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceFives" class="dice" viewBox="0 0 200 200">
+        <circle fill="currentColor" cx="100" cy="100" r="18"/>
+        <circle fill="currentColor" cx="150" cy="50" r="18"/>
+        <circle fill="currentColor" cx="150" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceSixes" class="dice" viewBox="0 0 200 200">
+        <circle fill="currentColor" cx="150" cy="100" r="18"/>
+        <circle fill="currentColor" cx="150" cy="50" r="18"/>
+        <circle fill="currentColor" cx="150" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="100" r="18"/>
+        <circle fill="currentColor" cx="50" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+    </svg>
     <Navigation></Navigation>
     <v-layout column class="game-layout">
 <!-- School dice display -->
@@ -187,6 +228,7 @@ export default {
       store.state.debug = true
     },
     recordResult (id) {
+      console.log('Recording result')
       // this.turnCompleted = true
       let combinationId = id
       const combinationIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(combinationId)
@@ -258,6 +300,7 @@ export default {
         } else {
           console.log(`Your score is not so high ${score}`)
         }
+        store.state.gameEnded = true
         this.$router.push({ path: '/endgame' })
       } else {
         this.turnCompleted = true
@@ -272,7 +315,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/scss/vars/colors.scss";
-// @import "../assets/scss/vars/fonts.scss";
 
 .game-layout {
   padding-top: 3.2em;
@@ -372,9 +414,12 @@ export default {
   }
 }
 
-@media screen and (-webkit-min-device-pixel-ratio: 1.88) and (min-width: 360px) { // nokia5
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 360px) { // nokia5
+  .school-dice-icon {
+    height: 3.7em;
+  }
   .school-result, .game-combination {
-    font-size: 2em;
+    font-size: 1.85em;
   }
 }
 
@@ -426,27 +471,34 @@ export default {
     height: .4em;
   }
 }
+@media screen and (max-resolution: 96dpi) and (min-width: 350px) { // desktop resized window
+  .school-result, .game-combination {
+    // border: 1px solid pink;
+    font-size: 1.9em;
+    font-weight: 700;
+  }
+  .progress-bar {
+    height: .3em;
+  }
+}
 
-@media screen and (max-resolution: 96dpi) and (min-width: 500px) { // desktop
+@media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop wide
   .school-result {
     // border: 1px solid pink;
-    font-size: 3em;
+    font-size: 2.8em;
     font-weight: 700;
   }
   .game-combination {
-    font-size: 3em;
-    font-weight: 700;
-  }
-    .game-layout {
-    // flex-direction: row;
-    // padding-top: 2.6em;
-    // border: 1px solid red;
-    padding-top: 6em;
-    padding-bottom: 1em;
-    // padding-bottom: .4em;
+    font-size: 4em;
   }
   .progress-bar {
-    height: .4em;
+    height: .3em;
+  }
+}
+
+@media screen and (max-resolution: 96dpi) and (orientation: landscape) { // desktop default window proportions
+  .game-layout {
+    padding-top: 4.6em;
   }
 }
 </style>

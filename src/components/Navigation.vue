@@ -128,9 +128,15 @@ export default {
   }
 }
 
-@media screen and (max-resolution: 96dpi) and (min-width: 500px) { // desktop
+@media screen and (max-resolution: 96dpi) and (min-width: 350px) { // desktop
   #gameNavigation {
-    font-size: 2.6em;
+    font-size: 1.9em;
+  }
+}
+
+@media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
+  #gameNavigation {
+    font-size: 2.3em;
   }
 }
 

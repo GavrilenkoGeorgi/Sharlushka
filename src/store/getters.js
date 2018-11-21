@@ -4,8 +4,12 @@ export default {
       currentTurn: state.currentGameTurn,
       rollsCountForButton: state.rollCount,
       schoolCompleted: state.schoolCompleted,
+      currentGameTurn: state.currentGameTurn,
+      currentRollCount: state.rollCount,
       turnCompleted: state.turnCompleted,
-      diceRolled: state.diceRolled
+      gameEnded: state.gameEnded,
+      diceRolled: state.diceRolled,
+      gameCheck: state.gameCheck
     }
     return currentGameState
   },

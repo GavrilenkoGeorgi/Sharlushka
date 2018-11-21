@@ -12,20 +12,24 @@
     </v-flex>
     <v-layout row align-center justify-space-around>
         <v-flex xs4 lg2 class="text-xs-center">
-          <v-btn to="/game" ripple block class="ui-button" large color="purple darken-1"
+          <v-btn to="/game" ripple block class="ui-button"
+            large color="purple darken-1"
             aria-label="Start game"
             v-bind:class="{orange:$store.state.currentGameTurn > 1}">
-            <v-img :src="require('@/assets/icons/baseline-done-24px.svg')" contain height="2em"></v-img>
+            <v-img :src="require('@/assets/icons/baseline-done-24px.svg')"
+              contain height="2em"></v-img>
           </v-btn>
         </v-flex>
         <v-flex xs4 lg2 class="text-xs-center">
-          <v-btn to="/register" ripple block class="ui-button" large color="purple darken-1"
+          <v-btn to="/register" ripple block class="ui-button"
+            large color="purple darken-1"
             aria-label="Register or change name">
-            <v-img :src="require('@/assets/icons/baseline-how_to_reg-24px.svg')" contain height="2em"></v-img>
+            <v-img :src="require('@/assets/icons/baseline-how_to_reg-24px.svg')"
+              contain height="2em"></v-img>
           </v-btn>
         </v-flex>
       </v-layout>
-      <span class="copyrights">
+      <span class="copyrights text-xs-center">
         Icons made by
         <a href="https://www.flaticon.com/authors/smashicons"
           title="Smashicons">
@@ -62,9 +66,9 @@ export default {
   computed: mapGetters([
     'getDefaultUserName'
   ]),
-  mounted: function () {
+  mounted () {
     this.$nextTick(function () {
-      // console.log(`Main page mounted`)
+      console.log(`Main page mounted.`)
       this.userName = localStorage.getItem('userName')
       if (!this.userName || this.userName === '') {
         this.userName = this.getDefaultUserName
@@ -92,11 +96,7 @@ export default {
 .user-name {
   font-size: 2em;
 }
-.greeting {
-  text-align: center;
-}
 .copyrights {
-  text-align: center;
   font-size: .9em;
   color: rgb(83, 83, 83);
 }
@@ -110,7 +110,6 @@ export default {
 @media screen and (max-resolution: 96dpi) and (min-width: 500px) { // desktop
   .game-name {
     font-size: 5em;
-    // color: red;
   }
   .user-name {
     font-size: 4em;

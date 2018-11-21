@@ -19,7 +19,7 @@
 <!-- Button -->
       <v-layout mb-4 row align-center justify-space-around>
         <v-flex xs4 class="text-xs-center">
-          <v-btn ripple block class="ui-button" large color="orange" v-on:click="restartGame">
+          <v-btn ripple block class="ui-button" large color="orange" @click="restartGame">
             <v-img :src="require('@/assets/icons/baseline-replay-24px.svg')" contain height="2em"></v-img>
           </v-btn>
         </v-flex>
@@ -46,7 +46,7 @@ export default {
   },
   mounted () {
     this.$nextTick(function () {
-      // console.log(`End game mounted`)
+      console.log(`Game over.`)
       this.highestScore = localStorage.getItem('highestScore')
       this.userName = localStorage.getItem('userName')
       this.lastScoresArray = localStorage.getItem('lastScoresArray')
@@ -68,7 +68,7 @@ export default {
   },
   methods: {
     restartGame () {
-      // console.log(`Restarting`)
+      console.log(`Restarting game.`)
       store.commit('resetState')
       this.$router.push('/game')
     },

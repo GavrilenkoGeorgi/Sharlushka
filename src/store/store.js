@@ -24,13 +24,8 @@ const actions = {
   }) => commit('rollDice'),
   nextTurn: ({
     commit
-  }) => commit('nextTurn'),
-  increment: ({
-    commit
-  }) => commit('increment'),
-  decrement: ({
-    commit
-  }) => commit('decrement'),
+  }) => commit('nextTurn')
+  /*
   incrementIfOdd: ({
     commit,
     state
@@ -48,7 +43,7 @@ const actions = {
         resolve()
       }, 1000)
     })
-  }
+  } */
 }
 
 export default new Vuex.Store({

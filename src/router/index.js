@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import MainPage from '@/components/MainPage'
+// import MainPage from '@/components/MainPage'
 
 Vue.use(Router)
 
@@ -11,7 +11,8 @@ export default new Router({
     {
       path: '/',
       name: 'MainPage',
-      component: MainPage
+      // component: MainPage
+      component: () => import(/* webpackChunkName: "mainpage" */ '@/components/MainPage.vue')
     },
     {
       path: '/register',

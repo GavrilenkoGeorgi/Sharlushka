@@ -11,21 +11,21 @@
       </v-layout>
 <!-- Title and user name -->
       <v-flex class="text-xs-center">
+        <v-layout column>
         <h1 class="help-title">{{ helpTitle }}</h1>
-      </v-flex>
-      <v-flex class="text-xs-center">
-        <h2 class="user-name">{{ userName }}!</h2>
+        <h2 class="user-name pt-2">{{ userName }}!</h2>
         <h3 class="hi-score" v-if="highestScore">{{ hiscoreGreeting }} {{ highestScore }}{{ exclamation }}</h3>
+        </v-layout>
       </v-flex>
 <!-- Last scores heading and table-->
-      <v-flex d-flex align-center v-if="highestScore" class="text-xs-center">
+      <v-flex d-flex align-end v-if="highestScore" class="text-xs-center">
         <h3>{{ lastScoresHeading }}</h3>
       </v-flex>
       <v-flex>
         <v-layout align-space-around column>
           <v-flex d-flex class="hi-score-display">
-            <v-layout row wrap justify-space-around>
-              <v-flex xs4 sm1 ma-0 py-1 v-for="value in lastTwelveScores" :key="value">
+            <v-layout row wrap justify-space-around py-2>
+              <v-flex xs4 sm1 ma-0 py-1 v-for="(value, index) in lastTwelveScores" :key="index">
                 {{value}}
               </v-flex>
             </v-layout>
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import store from '../store/store' // reset state button
+import store from '../store/store' // for reset state button
 import { mapGetters } from 'vuex'
 
 export default {
@@ -79,7 +79,7 @@ export default {
     }
   },
   mounted () {
-    // console.log(`Settings mounted`)
+    console.log(`Settings mounted`) // change to about
     this.highestScore = localStorage.getItem('highestScore')
     this.userName = localStorage.getItem('userName')
     if (!this.userName || this.userName === '') {
@@ -99,7 +99,7 @@ export default {
   },
   methods: {
     restartGame (state) {
-      // console.log(`Restarting`)
+      console.log(`Restarting.`)
       store.commit('resetState')
       this.$router.push('/game')
     },

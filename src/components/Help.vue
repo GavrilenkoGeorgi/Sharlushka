@@ -1,10 +1,45 @@
 <template>
   <v-container lang="ru" id="gameHelp">
 <!-- Icon definition remove this -->
-    <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
-      <symbol id="settingsClose" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
-        <path class="close-icon-path" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-        <path d="M0 0h24v24H0z"/>
+    <svg version='1.1' style="display: none;" xmlns="http://www.w3.org/2000/svg">
+      <symbol id="diceOnes" viewBox="0 0 200 200">
+        <circle fill="currentColor" cx="100" cy="100" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceTwos" viewBox="0 0 200 200">
+        <circle fill="currentColor" cx="50" cy="150" r="18"/>
+        <circle fill="currentColor" cx="150" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceThrees" class="dice" viewBox="0 0 200 200">
+        <circle fill="currentColor" cx="50" cy="150" r="18"/>
+        <circle fill="currentColor" cx="100" cy="100" r="18"/>
+        <circle fill="currentColor" cx="150" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceFours" class="dice" viewBox="0 0 200 200">
+        <circle fill="currentColor" cx="150" cy="50" r="18"/>
+        <circle fill="currentColor" cx="150" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceFives" class="dice" viewBox="0 0 200 200">
+        <circle fill="currentColor" cx="100" cy="100" r="18"/>
+        <circle fill="currentColor" cx="150" cy="50" r="18"/>
+        <circle fill="currentColor" cx="150" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      </symbol>
+      <symbol id="diceSixes" class="dice" viewBox="0 0 200 200">
+        <circle fill="currentColor" cx="150" cy="100" r="18"/>
+        <circle fill="currentColor" cx="150" cy="50" r="18"/>
+        <circle fill="currentColor" cx="150" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="150" r="18"/>
+        <circle fill="currentColor" cx="50" cy="100" r="18"/>
+        <circle fill="currentColor" cx="50" cy="50" r="18"/>
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
       </symbol>
     </svg>
     <v-layout align-space-around column>
@@ -64,20 +99,6 @@ export default {
         сразу его записать.`,
       schoolDescr: `Школа на примере единиц: требуется выбросить как можно больше едниниц.
         Очки считаются так:`,
-      temp: `один кубик с единицей -2 очка;
-        два кубика -1;
-        три 0;
-        четыре +1;
-        пять +2.
-        один кубик с шестёркой -12 очков;
-        пять +12;
-        Пара - суммируются очки 6+6=12;
-        Две пары - (5+5)+(6+6)= 24;
-        Три одинаковых - (6+6+6) = 18;
-        Фулл (5+5+5)+(3+3) = 21;
-        Каре (4+4+4+4);
-        Шанс - если не получилось выбрость хоть какую-то комбинацию,
-        записывается сумма значений всех выбраных кубиков.`,
       userName: '',
       highestScore: '',
       hiscoreGreeting: 'Your highest score is',
@@ -130,7 +151,8 @@ export default {
 </script>
 <style lang="scss" scoped> // no need for this
 @import "../assets/scss/vars/colors.scss";
-@import "../assets/scss/vars/fonts.scss";
+@import "../assets/fonts/fonts.scss";
+// @import "../assets/scss/vars/fonts.scss";
 
 .close-icon-path {
   fill: $color-primary-1;
