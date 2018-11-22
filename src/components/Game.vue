@@ -308,6 +308,7 @@ export default {
         this.updateProgressBar()
       }
       this.turnCompleted = true
+      console.log('Turn completed')
     } // end of record result method
   } // end of methods
 }
@@ -315,6 +316,9 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/scss/vars/colors.scss";
+@import "../assets/scss/vars/dice-icons.scss";
+// @import "../assets/fonts/fonts.scss";
+@import '../assets/scss/index.scss';
 
 .game-layout {
   padding-top: 3.2em;
@@ -342,7 +346,7 @@ export default {
   color: $color-chosen;
 }
 .blink {
-  color: gray;
+  color: $color-primary-1;
   font-weight: 700;
   animation: blinker 3s ease-out infinite;
 }

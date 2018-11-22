@@ -1,26 +1,35 @@
 <template>
   <v-container fill-height id="endGame">
-    <v-layout align-space-around column>
+    <v-layout align-space-around column class="text-xs-center">
       <v-layout justify-end row>
 <!-- Close icon -->
-        <v-flex xs2 class="text-xs-center">
-          <v-btn class="icon-close" outline small fab round color="white" @click="$router.go(-1)">
-            <v-img :src="require('@/assets/icons/baseline-clear-24px.svg')" contain height="4em"></v-img>
+        <v-flex xs2>
+          <v-btn outline small fab
+            round color="white"
+            @click="$router.go(-1)">
+            <v-img :src="require('@/assets/icons/baseline-clear-24px.svg')"
+              contain height="4em"></v-img>
           </v-btn>
         </v-flex>
       </v-layout>
 <!-- Message -->
-      <v-flex class="text-xs-center">
-        <h1 class="message">{{ message }}<br /><span class="user-name animated fadeIn">{{ userName }}{{ exclamation }}</span></h1>
+      <v-flex>
+        <h1 class="message">{{ message }}<br /><span class="user-name animated fadeIn delay-s">{{ userName }}{{ exclamation }}</span></h1>
       </v-flex>
-      <v-flex class="text-xs-center">
+      <v-flex v-if="!this.getCurrentGameState.schoolCompleted">
+        <h3>{{ graduationMessage }}</h3>
+      </v-flex>
+      <v-flex>
         <h2 class="hi-score" v-if="highestScore">{{ messageText }} {{ getTotalScore }}</h2>
       </v-flex>
 <!-- Button -->
       <v-layout mb-4 row align-center justify-space-around>
-        <v-flex xs4 class="text-xs-center">
-          <v-btn ripple block class="ui-button" large color="orange" @click="restartGame">
-            <v-img :src="require('@/assets/icons/baseline-replay-24px.svg')" contain height="2em"></v-img>
+        <v-flex xs4>
+          <v-btn ripple block class="ui-button"
+            large color="orange"
+            @click="restartGame">
+            <v-img :src="require('@/assets/icons/baseline-replay-24px.svg')"
+              contain height="2em"></v-img>
           </v-btn>
         </v-flex>
       </v-layout>
@@ -37,6 +46,7 @@ export default {
     return {
       message: 'Game over,',
       messageText: 'Your score is',
+      graduationMessage: 'You can\'t even finish the school.',
       userName: '',
       highestScore: '',
       hiscoreGreeting: 'Your highest score is',
@@ -46,12 +56,12 @@ export default {
   },
   mounted () {
     this.$nextTick(function () {
-      console.log(`Game over.`)
+      console.log(`Game over`)
       this.highestScore = localStorage.getItem('highestScore')
       this.userName = localStorage.getItem('userName')
       this.lastScoresArray = localStorage.getItem('lastScoresArray')
       if (!this.lastScoresArray) {
-        // console.log(`No local storage score array yet`)
+        console.log(`No local storage score array yet, creating one`)
         // let lastTwelveScores = [333, 125, 256, 368, -12, 234, 623, 546, 345, 324, 34, 342]
         this.lastScoresArray = [this.getTotalScore]
         localStorage.setItem('lastScoresArray', this.lastScoresArray)
@@ -63,23 +73,24 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getTotalScore'
+      'getTotalScore',
+      'getCurrentGameState'
     ])
   },
   methods: {
     restartGame () {
-      console.log(`Restarting game.`)
+      console.log(`Restarting game`)
       store.commit('resetState')
       this.$router.push('/game')
     },
     addScoreToDatabase () {
-      // console.log(`Adding score`)
+      console.log(`Adding score`)
       if (typeof this.lastScoresArray === 'string') {
         this.lastScoresArray = this.lastScoresArray.split(',')
       }
-      if (this.lastScoresArray.length < 11) {
+      if (this.lastScoresArray.length <= 11) {
         this.lastScoresArray.push(this.getTotalScore)
-      } else if (this.lastScoresArray.length >= 11) {
+      } else if (this.lastScoresArray.length >= 12) {
         // console.log(`Slicing`)
         this.lastScoresArray = this.lastScoresArray.slice(1)
         this.lastScoresArray.push(this.getTotalScore)
@@ -91,7 +102,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "../assets/scss/vars/colors.scss";
+@import "../assets/scss/index.scss";
+
 .message {
   font-size: 1.7em;
   font-weight: 700;

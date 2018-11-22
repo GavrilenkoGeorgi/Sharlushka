@@ -22,16 +22,10 @@ export default {
   name: 'Navigation',
   data () {
     return {
-      userName: '',
-      highestScore: '',
       title: 'Sharlushka'
     }
   },
-  mounted () {
-    this.highestScore = localStorage.getItem('highestScore')
-    this.userName = localStorage.getItem('userName')
-  },
-  computed: {
+  computed: { // maybe getter
     computedGameScore: function () {
       return store.state.schoolScoreTotal + store.state.gameTotal
     },

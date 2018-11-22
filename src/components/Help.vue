@@ -121,8 +121,11 @@ export default {
     }
   },
   mounted () {
-    this.highestScore = localStorage.getItem('highestScore')
-    this.userName = localStorage.getItem('userName')
+    this.$nextTick(function () {
+      console.log('Rules page mounted')
+      this.highestScore = localStorage.getItem('highestScore')
+      this.userName = localStorage.getItem('userName')
+    })
   },
   computed: {
     computedGameScore: function () {
@@ -149,10 +152,8 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped> // no need for this
-@import "../assets/scss/vars/colors.scss";
-@import "../assets/fonts/fonts.scss";
-// @import "../assets/scss/vars/fonts.scss";
+<style lang="scss" scoped>
+@import "../assets/scss/index.scss";
 
 .close-icon-path {
   fill: $color-primary-1;

@@ -38,6 +38,7 @@
         </v-layout>
       </v-flex>
     </v-layout>
+    <!--div class="debug">Navigator suported is: {{ navigatorSupported }}<br/>{{ zzz }}</div-->
   </v-flex>
 <!-- fill="none" stroke-width=".7em" in case of flyiq4415 or firefox-->
 </template>
@@ -51,6 +52,8 @@ export default {
   props: ['turnCompleted'],
   data () {
     return {
+      navigatorSupported: false,
+      zzz: 'zzz',
       mainButtonState: {
         play: true,
         roll: false,
@@ -58,6 +61,17 @@ export default {
         disabled: false
       }
     }
+  },
+  mounted () {
+    this.$nextTick(function () {
+      console.log('Dice box component mounted')
+      if ('vibrate' in navigator) {
+        this.navigatorSupported = true
+        // vibration API supported
+        console.log(`Vibrate in navigator is ${'vibrate' in navigator}`)
+        // navigator.vibrate([5, 200, 20])
+      }
+    })
   },
   watch: {
     turnCompleted: {
@@ -77,6 +91,12 @@ export default {
     ])
   },
   methods: {
+    vibrate () {
+      console.log('zzz')
+      this.zzz += '-zzz'
+      navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate
+      navigator.vibrate([5, 200, 20])
+    },
     updateMainButtonState () {
       let button = document.querySelector('.main-button')
       this.mainButtonState.play = true
@@ -111,6 +131,7 @@ export default {
       }
     },
     handleMainGameButtonClick () {
+      this.vibrate()
       if (this.getCurrentGameState.rollsCountForButton > 0 && !this.getCurrentGameState.turnCompleted) {
         if (!this.diceRolled) {
           this.diceRolled = true
@@ -119,7 +140,6 @@ export default {
         if (this.getCurrentGameState.currentRollCount === 0 &&
             this.getCurrentGameState.currentGameTurn <= 6 &&
             !this.getCurrentGameState.gameCheck) {
-          // alert('School!')
           this.$router.push({ path: '/endgame' })
         }
         this.updateMainButtonState()
@@ -141,8 +161,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/scss/vars/colors.scss";
-
+@import "../assets/scss/index.scss";
+/*
+.debug {
+  position: fixed;
+  top: 24%;
+  left: 45%;
+  font-size: .9em;
+  line-height: 1.8;
+  padding: .3em;
+  border: 1px solid pink;
+}
+*/
 .game-dice-container {
   margin-left: .3em;
   margin-right: .2em; // this

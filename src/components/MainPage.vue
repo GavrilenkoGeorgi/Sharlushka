@@ -68,7 +68,7 @@ export default {
   ]),
   mounted () {
     this.$nextTick(function () {
-      console.log(`Main page mounted.`)
+      console.log('Main page mounted')
       this.userName = localStorage.getItem('userName')
       if (!this.userName || this.userName === '') {
         this.userName = this.getDefaultUserName
@@ -87,7 +87,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/scss/vars/colors.scss";
+@import "../assets/scss/index.scss";
 
 .game-name {
   font-size: 3em;

@@ -1,5 +1,4 @@
 import getDefaultState from './defaultState.js'
-// import { Store } from 'vuex';
 
 export default {
   computeScore (state) {
@@ -83,7 +82,7 @@ export default {
               if (arrayToAnalyse[currentDice - 1].length === 4) {
                 quadsArray.push(currentDice)
               }
-
+              /*
               // check for 'pair' combination
               if (pairsArray.length >= 1 && !state.scoreArray[6].final) {
                 if (pairsArray.length === 1) {
@@ -96,7 +95,24 @@ export default {
               } else if (!state.scoreArray[6].final) {
                 state.scoreArray[6].value = ''
               }
-
+              */
+              // check for 'pair' combination
+              if ((pairsArray.length >= 1 || tripleArray.length === 1) &&
+                  !state.scoreArray[6].final) {
+                // we have pairs or triples array and the pairs score is not final
+                // in case of pairs array
+                if (pairsArray.length === 1) {
+                  state.scoreArray[6].value = (pairsArray[0] * 2)
+                } else if (pairsArray[0] > pairsArray[1]) {
+                  state.scoreArray[6].value = pairsArray[0] * 2
+                } else if (tripleArray) {
+                  state.scoreArray[6].value = (tripleArray[0] * 2)
+                } else {
+                  state.scoreArray[6].value = pairsArray[1] * 2
+                }
+              } else if (!state.scoreArray[6].final) {
+                state.scoreArray[6].value = ''
+              }
               // check for two pairs
               if (pairsArray.length === 2 && !state.scoreArray[7].final) {
                 state.scoreArray[7].value = (pairsArray[0] * 2) + (pairsArray[1] * 2)
@@ -170,14 +186,14 @@ export default {
         /* ---------------End of game score calculation--------------- */
       } else if (state.combinationArray.length === 0) { // if combination array is empty,
         // clear all temporary calculation results onscreen
-        // console.log(`ain't got shit, captain`)
+        console.log(`Ain't got shit, captain`)
         for (let key in state.scoreArray) { // there should be one storage array for school and game
           if (state.scoreArray[key].final !== true) { // to clear unconfirmed results properly
             state.scoreArray[key].value = ''
           }
         }
       } else {
-        alert(`Error!`)
+        alert(`Error!`) // meh...
       }
     }
   },
@@ -221,7 +237,7 @@ export default {
       for (let value of emptyDice) {
         for (let key in state.diceArray) {
           if (state.diceArray[key].value === value) {
-            // console.log(`All ok, one found at ${state.diceArray[key].id} with value ${state.diceArray[key].value}`)
+            console.log(`All ok, one found at ${state.diceArray[key].id} with value ${state.diceArray[key].value}`)
             state.gameCheck = true
           }
         }
@@ -232,8 +248,7 @@ export default {
         state.rollCount === 0 &&
         !state.turnCompleted &&
         !state.gameCheck) {
-      // alert(`You can't even finish the school... Score is: ${state.schoolScoreTotal}`)
-      // this.$router.push({ path: '/endgame' })
+      console.log(`You can't even finish the school... Score is: ${state.schoolScoreTotal}`)
       state.gameEnded = true
       return false
     }
@@ -246,7 +261,6 @@ export default {
     state.diceBoxHidden = true
     state.currentGameTurn++ // increment turn counter
     state.turnCompleted = false // set new turn state
-    // state.rollButtonDisabled = false // unlock roll button
     state.rollCount = 3 // set roll count to intial value of three
     for (let key in state.diceArray) {
       state.diceArray[key].value = '#'// reset all dice
@@ -255,7 +269,7 @@ export default {
     state.combinationArray = []
     // clear unsaved results onscreen
   },
-  resetState (state) {
+  resetState (state) { // reset state )
     Object.assign(state, getDefaultState())
   }
 } // mutations end

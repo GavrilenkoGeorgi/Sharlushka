@@ -24,10 +24,8 @@ export default {
 <style src='vuetify/dist/vuetify.min.css'>
 </style>
 <style lang="scss">
-@import './assets/scss/index.scss';
 
 #app {
-  font-family: $text-font, sans-serif;
   height: 100vh;
 }
 
@@ -41,7 +39,6 @@ export default {
   }
 }
 .fadeIn {
-  -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
 }
 
@@ -59,7 +56,7 @@ export default {
 }
 
 .animated {
-  animation-duration: 500ms;
+  animation-duration: 900ms;
   animation-fill-mode: both;
 }
 .animated.delay-s { // change this

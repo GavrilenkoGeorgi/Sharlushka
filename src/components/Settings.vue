@@ -26,7 +26,7 @@
           <v-flex d-flex class="hi-score-display">
             <v-layout row wrap justify-space-around py-2>
               <v-flex xs4 sm1 ma-0 py-1 v-for="(value, index) in lastTwelveScores" :key="index">
-                {{value}}
+                {{ value }}
               </v-flex>
             </v-layout>
           </v-flex>
@@ -60,7 +60,7 @@ import store from '../store/store' // for reset state button
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'Settings',
+  name: 'Settings', // change to statss
   data () {
     return {
       userName: '',
@@ -68,7 +68,7 @@ export default {
       helpButtonText: 'Help!',
       highestScore: '',
       hiscoreGreeting: 'Your highest score is',
-      exclamation: '.', // some over-engeneering
+      exclamation: '.', // some over-engineering
       lastTwelveScores: '',
       lastScoresHeading: 'Recent scores are',
       stats: [
@@ -127,6 +127,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "../assets/scss/vars/colors.scss";
+@import "../assets/scss/vars/dice-icons.scss";
+// @import "../assets/fonts/fonts.scss";
+@import '../assets/scss/index.scss';
 
 .help-title {
   font-size: 2.7em;

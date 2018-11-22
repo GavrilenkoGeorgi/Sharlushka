@@ -1,7 +1,10 @@
-@import "./assets/scss/vars/colors.scss";
-@import "./assets/scss/vars/dice-icons.scss";
-@import "./assets/fonts/fonts.scss";
+@import "../assets/scss/vars/colors.scss";
+// @import "./assets/scss/vars/dice-icons.scss";
+@import "../assets/fonts/fonts.scss";
 
+* {
+  font-family: $text-font;
+}
 svg path {
   fill: none;
   stroke-width: .6em;
@@ -21,7 +24,7 @@ svg circle {
     stroke: $color-chosen;
   }
 }
-
+/*
 .ui-icon {
   width: 3em;
   height: 3em;
@@ -29,4 +32,4 @@ svg circle {
 .ui-icon-smaller {
   width: .8em;
   height: .8em;
-}
+}*/
