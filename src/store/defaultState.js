@@ -118,31 +118,31 @@ export default function () {
       value: '#',
       chosen: false,
       id: 'first',
-      currentIcon: 'sixes'
+      currentIcon: ''
     },
     {
       value: '#',
       chosen: false,
       id: 'second',
-      currentIcon: 'sixes'
+      currentIcon: ''
     },
     {
       value: '#',
       chosen: false,
       id: 'third',
-      currentIcon: 'sixes'
+      currentIcon: ''
     },
     {
       value: '#',
       chosen: false,
       id: 'fourth',
-      currentIcon: 'sixes'
+      currentIcon: ''
     },
     {
       value: '#',
       chosen: false,
       id: 'fifth',
-      currentIcon: 'sixes'
+      currentIcon: ''
     }]
   }
 }

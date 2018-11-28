@@ -61,19 +61,18 @@
               {{ schoolDescr }}
             </p>
           </v-layout>
-    <!-- Combination descriptions -->
+<!-- Combination descriptions -->
           <v-flex class="combination-descr"
-                  v-for="(combination, index) in combinationsDescr"
+                  v-for="(combination, index) in combinationsDescrMk3"
                   :key="index">
             <v-layout>
-              <p>
-                {{ combination.text }}
-              </p>
+              <p>{{ combination.title }}</p>
               <v-layout justify-end>
                 <svg class="help-dice-icon"
-                    v-for="index in combination.quantity" :key="index">
-                <use v-bind="{'xlink:href':'#' + combination.iconId}"></use>
-              </svg>
+                    v-for="(icon, value) of combination.quantity" :key="value">
+                  <use v-bind="{'xlink:href':'#' + getDiceIds[icon - 1]}">
+                  </use>
+                </svg>
                 <p class="score-value">
                   {{ combination.scoreValue }}
                 </p>
@@ -88,6 +87,7 @@
 
 <script>
 import store from '../store/store'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Help',
@@ -105,6 +105,7 @@ export default {
       exclamation: '!', // some over-engeneering
       helpMenuHidden: true,
       rulesHeading: 'Правила',
+      /*
       combinationsDescr: [
         { text: 'Один кубик с единицей', iconId: 'diceOnes', quantity: 1, scoreValue: '-2' },
         { text: 'Два кубика', iconId: 'diceOnes', quantity: 2, scoreValue: '-1' },
@@ -116,7 +117,31 @@ export default {
         { text: 'Пять', iconId: 'diceSixes', quantity: 5, scoreValue: '+12' },
         { text: 'Пара', iconId: 'diceFives', quantity: 2, scoreValue: '10' },
         { text: 'Три одинаковых', iconId: 'diceFours', quantity: 3, scoreValue: '12' },
-        { text: 'Каре', iconId: 'diceTwos', quantity: 4, scoreValue: '8' }
+        { text: 'Каре', iconId: 'diceTwos', quantity: 4, scoreValue: '8' },
+        { text: 'Покер', iconId: 'diceFours', quantity: 5, scoreValue: '100' }
+      ],
+      combinationsDescrMk2: [
+        { text: 'Фулл', iconTypeOne: 'diceOnes', iconTypeTwo: 'diceSixes', quantity: [3, 2], scoreValue: '19' },
+        { text: 'Сложная комбинация', iconTypeOne: 'diceOnes', iconTypeTwo: 'diceSixes', quantity: [3, 2], scoreValue: '19' }
+      ], */
+      combinationsDescrMk3: [
+        { title: 'Один кубик с единицей', quantity: [1], scoreValue: '-2' },
+        { title: 'Два кубика', quantity: [1, 1], scoreValue: '-1' },
+        { title: 'Три', quantity: [1, 1, 1], scoreValue: '0' },
+        { title: 'Четыре', quantity: [1, 1, 1, 1], scoreValue: '+1' },
+        { title: 'Пять единиц', quantity: [1, 1, 1, 1, 1], scoreValue: '+2' },
+        { title: 'Одна шестёрка', quantity: [6], scoreValue: '-12' },
+        { title: 'Три шестёрки', quantity: [6, 6, 6], scoreValue: '0' },
+        { title: 'Пять шестёрок в школе', quantity: [6, 6, 6, 6, 6], scoreValue: '+12' },
+        { title: 'Pair', quantity: [4, 4], scoreValue: '8' },
+        { title: 'Two pairs', quantity: [5, 5, 3, 3], scoreValue: '16' },
+        { title: 'Three of a kind', quantity: [2, 2, 2], scoreValue: '6' },
+        { title: 'Full', quantity: [3, 3, 3, 5, 5], scoreValue: '19' },
+        { title: 'Quads', quantity: [6, 6, 6, 6], scoreValue: '24' },
+        { title: 'Poker', quantity: [4, 4, 4, 4, 4], scoreValue: '100' },
+        { title: 'Small', quantity: [1, 2, 3, 4, 5], scoreValue: '15' },
+        { title: 'Large', quantity: [2, 3, 4, 5, 6], scoreValue: '20' },
+        { title: 'Chance', quantity: [2, 6, 1, 3, 4], scoreValue: '16' }
       ]
     }
   },
@@ -128,6 +153,9 @@ export default {
     })
   },
   computed: {
+    ...mapGetters([
+      'getDiceIds'
+    ]),
     computedGameScore: function () {
       return store.state.schoolScoreTotal + store.state.gameTotal
     },
@@ -193,7 +221,8 @@ export default {
   border: 1px solid pink;
 }
 .combination-descr {
-  font-size: 1.18em;
+  font-size: 1.07em;
+  // color: red;
   font-family: $cyrillic-font;
   padding: .2em;
   p {

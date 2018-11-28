@@ -94,8 +94,9 @@ export default {
     vibrate () {
       console.log('zzz')
       this.zzz += '-zzz'
+      let pattern = [66, 300, 33, 150, 15]
       navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate
-      navigator.vibrate([5, 200, 20])
+      navigator.vibrate(pattern)
     },
     updateMainButtonState () {
       let button = document.querySelector('.main-button')
@@ -123,15 +124,14 @@ export default {
         this.mainButtonState.play = false
         this.mainButtonState.save = true
         this.mainButtonState.disabled = true
-        // window.navigator.vibrate(200)
-        // navigator.vibrate([500, 250, 500, 250, 500, 250, 500, 250, 500, 250, 500])
+        this.vibrate()
         button.classList.add('bounce')
       } else {
         return false
       }
     },
     handleMainGameButtonClick () {
-      this.vibrate()
+      // this.vibrate()
       if (this.getCurrentGameState.rollsCountForButton > 0 && !this.getCurrentGameState.turnCompleted) {
         if (!this.diceRolled) {
           this.diceRolled = true

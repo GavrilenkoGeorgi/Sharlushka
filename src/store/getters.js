@@ -13,6 +13,15 @@ export default {
     }
     return currentGameState
   },
+  getDiceIds (state) {
+    let diceIdsContainer = state.scoreArray.slice(0, state.diceArray.length + 1)
+    let diceIds = []
+    for (let id of diceIdsContainer) {
+      diceIds.push(id.icon)
+      // console.log(`Inside get ids ${id.icon}`)
+    }
+    return diceIds
+  },
   getSchoolArray (state) {
     let schoolArray = state.scoreArray.slice(0, state.diceArray.length + 1)
     return schoolArray

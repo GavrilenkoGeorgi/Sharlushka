@@ -18,9 +18,10 @@
       </v-flex>
       <v-flex v-if="!this.getCurrentGameState.schoolCompleted">
         <h3>{{ graduationMessage }}</h3>
+        <h2>{{ schoolScoreMessage }} {{ getTotalScore }}</h2>
       </v-flex>
       <v-flex>
-        <h2 class="hi-score" v-if="highestScore">{{ messageText }} {{ getTotalScore }}</h2>
+        <h2 class="hi-score" v-if="this.getCurrentGameState.schoolCompleted">{{ messageText }} {{ getTotalScore }}</h2>
       </v-flex>
 <!-- Button -->
       <v-layout mb-4 row align-center justify-space-around>
@@ -47,6 +48,7 @@ export default {
       message: 'Game over,',
       messageText: 'Your score is',
       graduationMessage: 'You can\'t even finish the school.',
+      schoolScoreMessage: 'Your score is',
       userName: '',
       highestScore: '',
       hiscoreGreeting: 'Your highest score is',
@@ -58,7 +60,11 @@ export default {
     this.$nextTick(function () {
       console.log(`Game over`)
       this.highestScore = localStorage.getItem('highestScore')
-      this.userName = localStorage.getItem('userName')
+      if (localStorage.getItem('userName')) {
+        this.userName = localStorage.getItem('userName')
+      } else {
+        this.userName = this.getDefaultUserName
+      }
       this.lastScoresArray = localStorage.getItem('lastScoresArray')
       if (!this.lastScoresArray) {
         console.log(`No local storage score array yet, creating one`)
@@ -74,7 +80,8 @@ export default {
   computed: {
     ...mapGetters([
       'getTotalScore',
-      'getCurrentGameState'
+      'getCurrentGameState',
+      'getDefaultUserName'
     ])
   },
   methods: {
