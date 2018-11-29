@@ -16,7 +16,7 @@
         </svg>
       </v-flex>
 <!-- Main button -->
-      <v-flex class="main-button animated delay-s"
+      <v-flex class="main-button animated"
           v-on:click="handleMainGameButtonClick"
           v-bind:class="{ save: this.mainButtonState.save,
                           bounce: this.mainButtonState.save,
@@ -94,7 +94,7 @@ export default {
     vibrate () {
       console.log('zzz')
       this.zzz += '-zzz'
-      let pattern = [66, 300, 33, 150, 15]
+      let pattern = [10, 150, 66, 300, 33, 150, 15]
       navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate
       navigator.vibrate(pattern)
     },

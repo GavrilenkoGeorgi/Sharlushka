@@ -82,42 +82,72 @@ export default {
               if (arrayToAnalyse[currentDice - 1].length === 4) {
                 quadsArray.push(currentDice)
               }
-              /*
+
               // check for 'pair' combination
-              if (pairsArray.length >= 1 && !state.scoreArray[6].final) {
-                if (pairsArray.length === 1) {
-                  state.scoreArray[6].value = (pairsArray[0] * 2)
-                } else if (pairsArray[0] > pairsArray[1]) {
-                  state.scoreArray[6].value = pairsArray[0] * 2
-                } else {
-                  state.scoreArray[6].value = pairsArray[1] * 2
-                }
-              } else if (!state.scoreArray[6].final) {
-                state.scoreArray[6].value = ''
-              }
-              */
-              // check for 'pair' combination
-              if ((pairsArray.length >= 1 || tripleArray.length === 1) &&
-                  !state.scoreArray[6].final) {
+              if ((pairsArray.length >= 1 || tripleArray.length >= 1) && !state.scoreArray[6].final) {
+                // console.log(`Pairs array in first if ${pairsArray.length}`)
                 // we have pairs or triples array and the pairs score is not final
                 // in case of pairs array
-                if (pairsArray.length === 1) {
-                  state.scoreArray[6].value = (pairsArray[0] * 2)
-                } else if (pairsArray[0] > pairsArray[1]) {
-                  state.scoreArray[6].value = pairsArray[0] * 2
-                } else if (tripleArray) {
-                  state.scoreArray[6].value = (tripleArray[0] * 2)
-                } else {
-                  state.scoreArray[6].value = pairsArray[1] * 2
+                let highestScoringPair = 0
+                if (pairsArray.length > 0) {
+                  highestScoringPair = (pairsArray[0] * 2)
+                  state.scoreArray[6].value = highestScoringPair
                 }
+                // state.scoreArray[6].value = highestScoringPair
+                /*
+                if (pairsArray.length >= 1) {
+                  highestScoringPair = (pairsArray[0] * 2)
+                }
+                */
+                /*
+                if (pairsArray.length > 0) {
+                  highestScoringPair = (pairsArray[0] * 2)
+                  // state.scoreArray[6].value = highestScoringPair
+                } else */
+                if (pairsArray.length > 1) {
+                  if (pairsArray[0] > pairsArray[1]) {
+                    highestScoringPair = pairsArray[0] * 2
+                  } else {
+                    highestScoringPair = pairsArray[1] * 2
+                  }
+                  state.scoreArray[6].value = highestScoringPair
+                } else if (pairsArray.length === 1) {
+                  highestScoringPair = pairsArray[0] * 2
+                  state.scoreArray[6].value = highestScoringPair
+                }
+                if (tripleArray.length === 1) {
+                  // check if it is bigger than what we have already
+                  let tripleArrayValue = tripleArray[0] * 2
+                  if (tripleArrayValue > highestScoringPair) {
+                    state.scoreArray[6].value = tripleArrayValue
+                    // console.log(`Triple array is bigger ${tripleArrayValue}`)
+                    // console.log(`highest pair is ${highestScoringPair}`)
+                    // console.log(`Pairs array length is ${pairsArray}`)
+                    // state.scoreArray[6].value = tripleArrayValue
+                  } else {
+                    // console.log(`highest pair is bigger ${highestScoringPair}`)
+                    // console.log(`Triple array is smaller ${tripleArrayValue}`)
+                    // console.log(`highest pair is ${highestScoringPair}`)
+                    state.scoreArray[6].value = highestScoringPair
+                    // console.log(`Score array value after setting ${state.scoreArray[6].value}`)
+                    // highestScoringPair = tripleArrayValue
+                    // state.scoreArray[6].value = highestScoringPair
+                    // highestScoringPair = (pairsArray[0] * 2)
+                  }
+                }
+                // state.scoreArray[6].value = highestScoringPair
               } else if (!state.scoreArray[6].final) {
                 state.scoreArray[6].value = ''
               }
+
               // check for two pairs
               if (pairsArray.length === 2 && !state.scoreArray[7].final) {
                 state.scoreArray[7].value = (pairsArray[0] * 2) + (pairsArray[1] * 2)
+              } else if (pairsArray.length > 0 && tripleArray.length > 0) {
+                let xpScore = (pairsArray[0] * 2) + (tripleArray[0] * 2)
+                state.scoreArray[7].value = xpScore
               } else if (pairsArray.length < 2 && !state.scoreArray[7].final) {
-                state.scoreArray[7].value = ''
+                state.scoreArray[7].value = '' // do something with this
               }
 
               // check for three of a kind

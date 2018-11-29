@@ -53,12 +53,12 @@
       <v-layout fill-height justify-center>
         <v-flex xs12 sm10 md8 lg6>
           <v-layout justify-space-around column>
-            <h1 class="text-xs-right mb-2 rules-heading">{{ rulesHeading }}</h1>
+            <h1 class="text-xs-center mb-2 rules-heading">{{ rulesHeading }}</h1>
             <p class="rules-text">
               {{ overall }}
             </p>
-            <p class="rules-text">
-              {{ schoolDescr }}
+            <p class="rules-text-eng">
+              {{ overallEng }}
             </p>
           </v-layout>
 <!-- Combination descriptions -->
@@ -99,12 +99,17 @@ export default {
         сразу его записать.`,
       schoolDescr: `Школа на примере единиц: требуется выбросить как можно больше едниниц.
         Очки считаются так:`,
+      overallEng: `Each turn consists of a maximum of three rolls — the first roll to be made with
+        all five dice. If the player elects to roll a second and third time, he may pick up and use any
+        number of dice, providing a score is taken on the last roll. It is the skillful use of these
+        two optional rolls of the dice that can turn an unlucky first or second roll into a high
+        scoring turn.`,
       userName: '',
       highestScore: '',
       hiscoreGreeting: 'Your highest score is',
       exclamation: '!', // some over-engeneering
       helpMenuHidden: true,
-      rulesHeading: 'Правила',
+      rulesHeading: 'Rules',
       /*
       combinationsDescr: [
         { text: 'Один кубик с единицей', iconId: 'diceOnes', quantity: 1, scoreValue: '-2' },
@@ -125,14 +130,14 @@ export default {
         { text: 'Сложная комбинация', iconTypeOne: 'diceOnes', iconTypeTwo: 'diceSixes', quantity: [3, 2], scoreValue: '19' }
       ], */
       combinationsDescrMk3: [
-        { title: 'Один кубик с единицей', quantity: [1], scoreValue: '-2' },
-        { title: 'Два кубика', quantity: [1, 1], scoreValue: '-1' },
-        { title: 'Три', quantity: [1, 1, 1], scoreValue: '0' },
-        { title: 'Четыре', quantity: [1, 1, 1, 1], scoreValue: '+1' },
-        { title: 'Пять единиц', quantity: [1, 1, 1, 1, 1], scoreValue: '+2' },
-        { title: 'Одна шестёрка', quantity: [6], scoreValue: '-12' },
-        { title: 'Три шестёрки', quantity: [6, 6, 6], scoreValue: '0' },
-        { title: 'Пять шестёрок в школе', quantity: [6, 6, 6, 6, 6], scoreValue: '+12' },
+        { title: 'Single dice with ace', quantity: [1], scoreValue: '-2' },
+        { title: 'Two aces', quantity: [1, 1], scoreValue: '-1' },
+        { title: 'Three', quantity: [1, 1, 1], scoreValue: '0' },
+        { title: 'Four', quantity: [1, 1, 1, 1], scoreValue: '+1' },
+        { title: 'Five', quantity: [1, 1, 1, 1, 1], scoreValue: '+2' },
+        { title: 'One six', quantity: [6], scoreValue: '-12' },
+        { title: 'Three sixes', quantity: [6, 6, 6], scoreValue: '0' },
+        { title: 'Five sixes in school', quantity: [6, 6, 6, 6, 6], scoreValue: '+12' },
         { title: 'Pair', quantity: [4, 4], scoreValue: '8' },
         { title: 'Two pairs', quantity: [5, 5, 3, 3], scoreValue: '16' },
         { title: 'Three of a kind', quantity: [2, 2, 2], scoreValue: '6' },
@@ -187,13 +192,18 @@ export default {
   fill: $color-primary-1;
 }
 .rules-heading {
-  font-family: $cyrillic-font;
+  font-family: $text-font;
 }
 .rules-text {
   line-height: 1.4em;
-  font-size: 1.1em;
+  font-size: 1.25em;
   text-indent: 1em;
   font-family: $cyrillic-font;
+}
+.rules-text-eng {
+  text-indent: 1em;
+  font-family: $text-font;
+  font-size: 1.4em;
 }
 .help-dice-icon {
   display: block;
@@ -221,9 +231,10 @@ export default {
   border: 1px solid pink;
 }
 .combination-descr {
-  font-size: 1.07em;
+  font-size: 1.2em;
+  // font-weight: 700;
   // color: red;
-  font-family: $cyrillic-font;
+  font-family: $text-font;
   padding: .2em;
   p {
     margin: 0;

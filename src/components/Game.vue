@@ -475,6 +475,22 @@ export default {
     height: .4em;
   }
 }
+
+@media screen and (max-resolution: 96dpi) and (max-width: 349px) { // fly iqsomething
+  .game-layout {
+    padding-top: 1.7em;
+  }
+  .game-combinations-layout {
+    padding-bottom: .3em;
+  }
+  .school-result, .game-combination {
+    // border: 1px solid pink;
+    font-size: 1.4em;
+    // font-weight: 700;
+    color: red;
+  }
+}
+
 @media screen and (max-resolution: 96dpi) and (min-width: 350px) { // desktop resized window
   .school-result, .game-combination {
     // border: 1px solid pink;
@@ -505,4 +521,5 @@ export default {
     padding-top: 4.6em;
   }
 }
+
 </style>

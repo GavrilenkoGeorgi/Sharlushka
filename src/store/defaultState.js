@@ -48,36 +48,36 @@ export default function () {
     {
       value: '',
       final: false,
-      id: 'sixes', // 5
-      icon: 'diceSixes'
+      id: 'sixes',
+      icon: 'diceSixes' // 5
     },
     { // game combinations
       value: '',
       displayValues: [],
       final: false,
-      id: 'pair', // 6
-      fullName: 'Pair'
+      id: 'pair',
+      fullName: 'Pair' // 6
     },
     {
       value: '',
       displayValues: [],
       final: false,
-      id: 'twoPairs', // 7
-      fullName: 'Two Pairs'
+      id: 'twoPairs',
+      fullName: 'Two Pairs' // 7
     },
     {
       value: '',
       displayValues: [],
       final: false,
-      id: 'threeOfAKind', // 8
-      fullName: 'Three O.A.K'
+      id: 'threeOfAKind',
+      fullName: 'Three O.A.K' // 8
     },
     {
       value: '',
       displayValues: [],
       final: false,
-      id: 'full', // 9
-      fullName: 'Full'
+      id: 'full',
+      fullName: 'Full' // 9
     },
     {
       value: '',
