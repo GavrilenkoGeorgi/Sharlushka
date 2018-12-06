@@ -26,6 +26,20 @@ const actions = {
     commit
   }) => commit('nextTurn')
   /*
+  signUp ({commit}, payload) {
+    commit('SET_PROCESSING', true)
+    firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
+      .then(user => {
+        console.log(`User added uid is ${user.id}`)
+        commit('SET_USER', user.id)
+        commit('SET_PROCESSING', false)
+      })
+      .catch(error => {
+        commit('SET_PROCESSING', false)
+        commit('SET_ERROR', error.message)
+      })
+  } */
+  /*
   incrementIfOdd: ({
     commit,
     state

@@ -121,19 +121,26 @@ export default {
     // border: 1px solid red;
   }
 }
-
-@media screen and (max-resolution: 96dpi) and (min-width: 350px) { // desktop
+@media screen and (max-resolution: 96dpi) and (max-width: 480px) { // fly iq4415 aka desktop
   #gameNavigation {
-    font-size: 1.9em;
+    font-size: 2em;
+    // border: 1px solid red;
   }
 }
 
+@media screen and (max-resolution: 96dpi) and (min-width: 481px) { // fly iq4415
+  #gameNavigation {
+    font-size: 3em;
+    // border: 1px solid red;
+  }
+}
+/*
 @media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
   #gameNavigation {
     font-size: 2.3em;
   }
 }
-
+*/
 /*
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) {
 }

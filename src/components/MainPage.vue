@@ -21,7 +21,7 @@
           </v-btn>
         </v-flex>
         <v-flex xs4 lg2 class="text-xs-center">
-          <v-btn to="/register" ripple block class="ui-button"
+          <v-btn to="/login" ripple block class="ui-button"
             large color="purple darken-1"
             aria-label="Register or change name">
             <v-img :src="require('@/assets/icons/baseline-how_to_reg-24px.svg')"

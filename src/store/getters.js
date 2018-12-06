@@ -13,6 +13,8 @@ export default {
     }
     return currentGameState
   },
+  getProcessing: (state) => state.processing,
+  getError: (state) => state.error,
   getDiceIds (state) {
     let diceIdsContainer = state.scoreArray.slice(0, state.diceArray.length + 1)
     let diceIds = []
@@ -31,9 +33,12 @@ export default {
     let combinationArray = state.scoreArray.slice(state.diceArray.length + 1, state.scoreArray.length)
     return combinationArray
   },
+  /*
   getDiceArray (state) {
     return state.diceArray
   },
+  */
+  getDiceArray: (state) => state.diceArray,
   getTotalScore (state) {
     return state.schoolScoreTotal + state.gameTotal
   },

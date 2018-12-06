@@ -1,6 +1,12 @@
 export default function () {
   return {
+    user: {
+      isAuthenticated: false,
+      uid: null
+    },
     debug: false,
+    error: 'No error',
+    processing: false,
     defaultUserName: 'Anonymous',
     newTurn: true,
     diceRolled: true,

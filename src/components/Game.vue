@@ -130,7 +130,7 @@ export default {
       'getDiceArray',
       'getCurrentGameState'
     ]),
-    turnState: function () {
+    turnState: function () { // wtf???
       return store.state.newTurn
     },
     progressBarState: function () {
@@ -476,49 +476,53 @@ export default {
   }
 }
 
-@media screen and (max-resolution: 96dpi) and (max-width: 349px) { // fly iqsomething
+@media screen and (max-resolution: 96dpi) and (max-width: 480px) { // fly iq4415
+.school-dice-icon {
+  // background-color: yellow;
+  height: 4.6em;
+}
+  .game-combinations-layout {
+    padding-bottom: .3em;
+  }
+  .school-result, .game-combination {
+    // border: 1px solid pink;
+    font-size: 2.7em;
+    // font-weight: 700;
+    // color: green;
+  }
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 481px) { // fly iq4415
   .game-layout {
-    padding-top: 1.7em;
+    padding-top: 5em;
+    }
+  .school-dice-icon {
+    height: 6em;
   }
   .game-combinations-layout {
     padding-bottom: .3em;
   }
   .school-result, .game-combination {
     // border: 1px solid pink;
-    font-size: 1.4em;
+    font-size: 2.4em;
     // font-weight: 700;
-    color: red;
+    // color: green;
   }
 }
 
-@media screen and (max-resolution: 96dpi) and (min-width: 350px) { // desktop resized window
-  .school-result, .game-combination {
-    // border: 1px solid pink;
-    font-size: 1.9em;
-    font-weight: 700;
-  }
-  .progress-bar {
-    height: .3em;
-  }
-}
-
-@media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop wide
-  .school-result {
-    // border: 1px solid pink;
-    font-size: 2.8em;
-    font-weight: 700;
-  }
-  .game-combination {
-    font-size: 4em;
-  }
-  .progress-bar {
-    height: .3em;
+@media screen and (max-resolution: 96dpi) and (min-width: 768px) { // fly iq4415
+  .game-combinations-layout {
+    padding-bottom: .3em;
   }
 }
 
 @media screen and (max-resolution: 96dpi) and (orientation: landscape) { // desktop default window proportions
   .game-layout {
-    padding-top: 4.6em;
+    padding-top: 6em;
+    padding-bottom: .6em;
+  }
+  .school-result, .game-combination {
+    // color: red;
+    font-size: 4em;
   }
 }
 

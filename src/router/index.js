@@ -43,11 +43,11 @@ export default new Router({
       name: 'Help',
       // component: Help
       component: () => import(/* webpackChunkName: "help" */ '@/components/Help.vue')
-    } /*
+    },
     {
-      path: '/dicetemp',
-      name: 'DiceTemp',
-      component: DiceTemp
-    } */
+      path: '/login',
+      name: 'login',
+      component: () => import(/* webpackChunkName: "Login" */ '@/components/Login.vue')
+    }
   ]
 })

@@ -1,7 +1,7 @@
 .DS_Store
 node_modules/
-/dist/
-www/
+/www/dist/
+dist/
 platforms/
 npm-debug.log*
 yarn-debug.log*
@@ -9,6 +9,7 @@ yarn-error.log*
 /test/unit/coverage/
 /test/e2e/reports/
 selenium-debug.log
+/src/components/Register.vue.bak
 temp.css
 temp.html
 

@@ -1,5 +1,5 @@
 <template>
-  <v-layout column id="register" pa-2>
+  <v-layout column id="login" pa-2>
     <v-layout justify-end row>
         <v-flex xs2 class="text-xs-right">
           <v-btn outline small fab round color="white" @click="$router.go(-1)">
@@ -7,15 +7,18 @@
           </v-btn>
         </v-flex>
       </v-layout>
-      <v-flex d-flex class="text-xs-center">
-        <h1>{{ pageTitle }}</h1>
-      </v-flex>
+    <v-flex class="text-xs-center">
+      <h1>{{ pageTitle }}</h1>
+    </v-flex>
+    <!--v-flex d-flex align-center class="text-xs-center">
+      <h2>Form is {{ valid }}</h2>
+    </v-flex-->
     <!--v-flex d-flex class="text-xs-center"
         v-for="user in users"
         :key="user.id">
         <span>{{ user.name }}</span>
-      </v-flex>
-      <v-flex d-flex class="text-xs-center">
+      </v-flex-->
+      <!--v-flex d-flex class="text-xs-center">
         <span>{{ name }}</span>
       </v-flex-->
     <v-layout justify-center>
@@ -31,16 +34,15 @@
       v-model="email"
       :rules="emailRules"
       label="E-mail"
-      :type="'email'"
-      autocomplete="off"
+      autocomplete="username"
       required
     ></v-text-field>
     <v-text-field
       v-model="password"
-      :rules="passwordRules"
       :type="'password'"
+      :rules="passwordRules"
       label="Password"
-      autocomplete="off"
+      autocomplete="current-password"
       required
     ></v-text-field>
     <!--v-select
@@ -58,37 +60,28 @@
     ></v-checkbox-->
 
     <v-btn :disabled="!valid"
-      @click.prevent="signUp">
-      submit
+      @click.prevent="login">
+      login
     </v-btn>
-    <v-btn @click="clear">clear</v-btn>
+    <v-btn @click="clear">
+      clear
+    </v-btn>
   </v-form>
     </v-layout>
-    <!--v-layout justify-center>
-      <v-btn outline round
-        class="dashBtn"
-        color="purple"
-        @click="getUsersList"
-        >Show users</v-btn>
-      <v-btn outline round
-        class="dashBtn"
-        color="purple">Remove user</v-btn>
-    </v-layout-->
   </v-layout>
 </template>
 
 <script>
 // import db from './firebaseInit'
-import { mapGetters } from 'vuex'
 import firebaseConfig from './firebaseConfig'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 
 export default {
-  name: 'dashboard',
+  name: 'login',
   data: () => ({
     users: [],
-    pageTitle: 'Sign Up',
+    pageTitle: 'Login',
     valid: true,
     name: '',
     nameRules: [
@@ -114,57 +107,33 @@ export default {
     ],
     checkbox: false
   }),
-  computed: {
-    ...mapGetters([
-      'getError'
-    ])
-  },
   methods: {
-    /*
-    getUsersList () {
-      db.collection('users').get().then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          console.log(doc.id)
-          const data = {
-            'id': doc.id,
-            'name': doc.data().name,
-            'type': doc.data().type
-          }
-          console.log(data)
-          this.users.push(data)
-        })
-      })
-    },
-    */
-    signUp () {
+    login: function () {
       if (this.valid) {
-        console.log(`Form is ${this.valid}`)
+        firebase
+          .auth()
+          .signInWithEmailAndPassword(this.email, this.password)
+          .then(
+            response => {
+              console.log(`You are logged in as ${response}`)
+              console.dir(response)
+              console.log(response.user.email)
+              console.log(response.user.uid)
+            },
+            err => {
+              console.log(err.message)
+            })
       }
-      firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-        .then(user => {
-          console.log(`User added ${user}`)
-          console.dir(user)
-        })
-        .catch(error => console.log(error.message))
     },
-    /*
-    addNewUser () {
-      db.collection('users').add({
-        name: this.name
-        // type: this.email
-      })
-        .then(docRef => console.log(`User added`))
-        .catch(error => console.log(error))
-    }, */
     clear () {
       this.$refs.form.reset()
     }
   },
   created () {
-    console.log(`Register page created`)
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig)
     }
+    console.log(`Login page created`)
     /*
     db.collection('users').get().then(querySnapshot => {
       querySnapshot.forEach(doc => {

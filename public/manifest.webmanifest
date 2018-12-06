@@ -16,6 +16,6 @@
   "start_url": ".",
   "theme_color": "#79008f",
   "background_color": "#79008f",
-  "display": "minimal-ui",
+  "display": "standalone",
   "description": "Sharlushka dice game on Javascript."
 }

@@ -241,7 +241,7 @@ export default {
   margin: .1em 0em .1em 0em;
   }
   .main-button {
-    width: 50%;
+    width: 75%;
     margin: .4em;
   }
 }
@@ -290,7 +290,77 @@ export default {
   }
 }
 
-@media screen and (max-resolution: 96dpi) and (min-width: 500px) { // desktop
+@media screen and (max-resolution: 96dpi) and (max-width: 480px) { // fly iq4415
+  .dice-icon {
+    // border: 1px solid pink;
+    height: 4.6em;
+  }
+  .main-button {
+    height: 4.6em;
+    // border-radius: .4em;
+  }
+  .play-arrow {
+    border-top: 1em solid transparent;
+    border-bottom: 1em solid transparent;
+    border-left: 2em solid $color-primary-1;
+  }
+  .roll-circle {
+    width: 1em;
+    height: 1em;
+  }
+  .stop-brick {
+    height: 1.4em;
+  }
+}
+
+@media screen and (max-resolution: 96dpi) and (min-width: 481px) { // fly iq4415
+  .dice-icon {
+    // border: 1px solid red;
+    height: 6em;
+  }
+  .main-button {
+    height: 5.4em; // really need this?
+    border-radius: .4em;
+  }
+  .play-arrow {
+    border-top: 1.33em solid transparent;
+    border-bottom: 1.33em solid transparent;
+    border-left: 2.33em solid $color-primary-1;
+  }
+  .roll-circle {
+    width: 1.33em;
+    height: 1.33em;
+  }
+  .stop-brick {
+    height: 2em;
+  }
+}
+
+@media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
+  .dice-icon {
+    // border: 1px solid orange;
+    height: 6em;
+  }
+  .main-button {
+    height: 6em;
+    border-radius: .6em;
+  }
+  .play-arrow {
+    border-top: 1.33em solid transparent;
+    border-bottom: 1.33em solid transparent;
+    border-left: 2.33em solid $color-primary-1;
+  }
+  .roll-circle {
+    width: 1.33em;
+    height: 1.33em;
+  }
+  .stop-brick {
+    height: 2em;
+  }
+}
+
+/*
+// @media screen and (max-resolution: 96dpi) and (min-width: 500px) { // desktop
   .dice-box-layout {
     width: 12em;
   }
@@ -311,7 +381,7 @@ export default {
     height: 2.5em;
   }
 }
-
+*/
 @keyframes bounce {
   from,
   20%,

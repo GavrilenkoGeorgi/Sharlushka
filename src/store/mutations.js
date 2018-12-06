@@ -143,7 +143,7 @@ export default {
               // check for two pairs
               if (pairsArray.length === 2 && !state.scoreArray[7].final) {
                 state.scoreArray[7].value = (pairsArray[0] * 2) + (pairsArray[1] * 2)
-              } else if (pairsArray.length > 0 && tripleArray.length > 0) {
+              } else if (pairsArray.length === 1 && tripleArray.length === 1 && !state.scoreArray[7].final) {
                 let xpScore = (pairsArray[0] * 2) + (tripleArray[0] * 2)
                 state.scoreArray[7].value = xpScore
               } else if (pairsArray.length < 2 && !state.scoreArray[7].final) {
@@ -301,5 +301,14 @@ export default {
   },
   resetState (state) { // reset state )
     Object.assign(state, getDefaultState())
+  },
+  SET_PROCESSING (state, payload) {
+    state.processing = payload
+  },
+  SET_ERROR (state, payload) {
+    state.error = payload
+  },
+  CLEAR_ERROR (state) {
+    state.error = null
   }
-} // mutations end
+}
