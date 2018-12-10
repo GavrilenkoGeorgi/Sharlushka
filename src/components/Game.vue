@@ -315,13 +315,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/scss/vars/colors.scss";
-@import "../assets/scss/vars/dice-icons.scss";
+// @import "../assets/scss/vars/colors.scss";
+// @import "../assets/scss/vars/dice-icons.scss";
 // @import "../assets/fonts/fonts.scss";
-@import '../assets/scss/index.scss';
+// @import '../assets/scss/index.scss';
+@import "../assets/scss/index.scss";
 
 .game-layout {
   padding-top: 3.2em;
+  font-family: $text-font;
   // padding-bottom: .2em;
 }
 .school-dice-icon {

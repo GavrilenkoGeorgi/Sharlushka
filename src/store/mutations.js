@@ -1,4 +1,4 @@
-import getDefaultState from './defaultState.js'
+// import getDefaultState from './defaultState.js'
 
 export default {
   computeScore (state) {
@@ -244,7 +244,7 @@ export default {
   },
   rollDice (state) {
     state.newTurn = false
-    state.diceRolled = true
+    state.diceRolled = true // what is this?
     state.rollCount--
     state.diceRolled = false
     for (let dice of state.diceArray) {
@@ -299,8 +299,38 @@ export default {
     state.combinationArray = []
     // clear unsaved results onscreen
   },
-  resetState (state) { // reset state )
-    Object.assign(state, getDefaultState())
+  resetState (state) { // reset state
+    /*
+    // hard reset
+    // Object.assign(state, getDefaultState())
+    */
+    // or just reset the game variables
+    state.newTurn = true
+    state.diceRolled = true
+    state.schoolScoreTotal = 0 // total school score
+    state.gameTotal = 0 // total game score
+    state.schoolCompleted = false // check if school is completed
+    state.currentGameTurn = 1 // game turns counter
+    state.maxGameTurns = 33
+    state.rollCount = 3 // roll counter for the current turn
+    state.gameCheck = false // to check if there are any combinations left to record
+    // zeroCheck = false,
+    state.turnCompleted = false
+    state.gameEnded = false
+    state.combinationArray = []
+    // and clear results
+    for (let result of state.scoreArray) {
+      result.value = ''
+      result.final = false
+    }
+    // and all dice chosen states and current value
+    for (let dice of state.diceArray) {
+      dice.value = '#'
+      dice.chosen = false
+    }
+  },
+  setUser (state, payload) {
+    state.user = payload
   },
   SET_PROCESSING (state, payload) {
     state.processing = payload

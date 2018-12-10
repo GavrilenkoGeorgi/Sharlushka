@@ -1,36 +1,31 @@
 <template>
   <v-container fill-height id="endGame">
-    <v-layout align-space-around column class="text-xs-center">
-      <v-layout justify-end row>
+    <v-layout align-space-around column>
+      <v-spacer></v-spacer>
 <!-- Close icon -->
-        <v-flex xs2>
-          <v-btn outline small fab
-            round color="white"
-            @click="$router.go(-1)">
-            <v-img :src="require('@/assets/icons/baseline-clear-24px.svg')"
-              contain height="4em"></v-img>
-          </v-btn>
-        </v-flex>
-      </v-layout>
+      <closeBtn></closeBtn>
 <!-- Message -->
-      <v-flex>
-        <h1 class="message">{{ message }}<br /><span class="user-name animated fadeIn delay-s">{{ userName }}{{ exclamation }}</span></h1>
+      <v-flex d-flex class="user-name text-xs-center">
+        <h1>{{ message }}<br />
+          <span>{{ userName }}{{ exclamation }}</span>
+        </h1>
       </v-flex>
-      <v-flex v-if="!this.getCurrentGameState.schoolCompleted">
+      <v-flex class="message-school text-xs-center"
+        v-if="!this.getCurrentGameState.schoolCompleted">
         <h3>{{ graduationMessage }}</h3>
         <h2>{{ schoolScoreMessage }} {{ getTotalScore }}</h2>
       </v-flex>
-      <v-flex>
-        <h2 class="hi-score" v-if="this.getCurrentGameState.schoolCompleted">{{ messageText }} {{ getTotalScore }}</h2>
+      <v-flex class="message-game text-xs-center"
+        v-if="this.getCurrentGameState.schoolCompleted">
+        <h2>{{ messageText }} {{ getTotalScore }}</h2>
       </v-flex>
 <!-- Button -->
       <v-layout mb-4 row align-center justify-space-around>
         <v-flex xs4>
-          <v-btn ripple block class="ui-button"
+          <v-btn ripple
             large color="orange"
             @click="restartGame">
-            <v-img :src="require('@/assets/icons/baseline-replay-24px.svg')"
-              contain height="2em"></v-img>
+            <v-icon medium color="white">replay</v-icon>
           </v-btn>
         </v-flex>
       </v-layout>
@@ -41,6 +36,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import store from '../store/store'
+import closeBtn from '../components/CloseBtn'
 
 export default {
   data () {
@@ -55,6 +51,9 @@ export default {
       exclamation: '!', // some over-engeneering
       lastScoresArray: ''
     }
+  },
+  components: {
+    closeBtn
   },
   mounted () {
     this.$nextTick(function () {
@@ -111,13 +110,15 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/scss/index.scss";
 
-.message {
-  font-size: 1.7em;
-  font-weight: 700;
-  text-align: center;
-  line-height: 1.4;
+.user-name, .message-school, .message-game {
+  font-family: $text-font;
 }
 .user-name {
-  color: $color-chosen;
+  span {
+    color: $color-chosen;
+  }
+}
+.message-school {
+  line-height: 1.5;
 }
 </style>

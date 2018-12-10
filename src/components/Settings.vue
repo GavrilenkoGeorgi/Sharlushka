@@ -2,13 +2,8 @@
   <v-container fill-height id="gameSettings">
     <v-layout align-space-around column>
 <!-- Close button -->
-      <v-layout justify-end row>
-        <v-flex xs2 class="text-xs-center">
-          <v-btn class="icon-close" outline small fab round color="white" @click="$router.go(-1)">
-            <v-img :src="require('@/assets/icons/baseline-clear-24px.svg')" contain height="4em"></v-img>
-          </v-btn>
-        </v-flex>
-      </v-layout>
+      <v-spacer></v-spacer>
+      <closeBtn></closeBtn>
 <!-- Title and user name -->
       <v-flex class="text-xs-center">
         <v-layout column>
@@ -18,7 +13,7 @@
         </v-layout>
       </v-flex>
 <!-- Last scores heading and table-->
-      <v-flex d-flex align-end v-if="highestScore" class="text-xs-center">
+      <v-flex d-flex align-end v-if="highestScore" class="last-scores-heading text-xs-center">
         <h3>{{ lastScoresHeading }}</h3>
       </v-flex>
       <v-flex>
@@ -42,12 +37,12 @@
         <v-flex xs4 lg2 class="text-xs-center">
           <v-btn ripple block class="ui-button" large color="orange"
             @click="restartGame">
-            <v-img :src="require('@/assets/icons/baseline-replay-24px.svg')" contain height="2em"></v-img>
+            <v-icon medium color="white">replay</v-icon>
           </v-btn>
         </v-flex>
         <v-flex xs4 lg2 class="text-xs-center">
           <v-btn ripple block class="ui-button" large color="purple darken-1" to="/help">
-            <v-img :src="require('@/assets/icons/baseline-help_outline-24px.svg')" contain height="2em"></v-img>
+            <v-icon medium color="white">help_outline</v-icon>
           </v-btn>
         </v-flex>
       </v-layout>
@@ -58,6 +53,7 @@
 <script>
 import store from '../store/store' // for reset state button
 import { mapGetters } from 'vuex'
+import closeBtn from '../components/CloseBtn'
 
 export default {
   name: 'Settings', // change to statss
@@ -77,6 +73,9 @@ export default {
         { msg: 'Percent from max score ~', value: '' }
       ]
     }
+  },
+  components: {
+    closeBtn
   },
   mounted () {
     console.log(`Settings mounted`) // change to about
@@ -126,10 +125,16 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "../assets/scss/vars/colors.scss";
-@import "../assets/scss/vars/dice-icons.scss";
-// @import "../assets/fonts/fonts.scss";
 @import '../assets/scss/index.scss';
+
+.help-title,
+.user-name,
+.hi-score,
+.last-scores-heading,
+.hi-score-display,
+.stats-display {
+  font-family: $text-font;
+}
 
 .help-title {
   font-size: 2.7em;

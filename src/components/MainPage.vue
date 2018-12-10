@@ -60,7 +60,8 @@ export default {
       gameName: 'Sharlushka',
       userName: '',
       greeting: 'Hi,',
-      exclamation: '.'
+      exclamation: '.',
+      loginOrRegister: 'login'
     }
   },
   computed: mapGetters([
@@ -88,7 +89,9 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/scss/index.scss";
-
+.game-name, .user-name, .copyrights {
+  font-family: $text-font;
+}
 .game-name {
   font-size: 3em;
   color: $color-primary-0;

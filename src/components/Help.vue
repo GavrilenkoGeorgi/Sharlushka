@@ -1,6 +1,37 @@
 <template>
-  <v-container lang="ru" id="gameHelp">
-<!-- Icon definition remove this -->
+  <v-layout column id="gameHelp" pa-2>
+      <v-spacer class="border"></v-spacer>
+      <closeBtn></closeBtn>
+      <!--v-layout fill-height justify-center>
+        <v-flex xs12 sm10 md8 lg6>
+          <v-layout justify-space-around column>
+            <h1 class="text-xs-center mb-2 rules-heading">{{ rulesHeading }}</h1>
+            <p class="rules-text">
+              {{ overall }}
+            </p>
+            <p class="rules-text-eng">
+              {{ overallEng }}
+            </p>
+          </v-layout-->
+<!-- Combination descriptions -->
+          <!--v-flex class="combination-descr"
+                  v-for="(combination, index) in combinationsDescrMk3"
+                  :key="index">
+            <v-layout>
+              <p>{{ combination.title }}</p>
+              <v-layout justify-end>
+                <svg class="help-dice-icon"
+                    v-for="(icon, value) of combination.quantity" :key="value">
+                  <use v-bind="{'xlink:href':'#' + getDiceIds[icon - 1]}">
+                  </use>
+                </svg>
+                <p class="score-value">
+                  {{ combination.scoreValue }}
+                </p>
+              </v-layout>
+            </v-layout>
+          </v-flex-->
+    <!-- Icon definition remove this -->
     <svg version='1.1' style="display: none;" xmlns="http://www.w3.org/2000/svg">
       <symbol id="diceOnes" viewBox="0 0 200 200">
         <circle fill="currentColor" cx="100" cy="100" r="18"/>
@@ -42,52 +73,14 @@
         <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
       </symbol>
     </svg>
-    <v-layout align-space-around column>
-      <v-layout justify-end row>
-        <v-flex xs2 class="text-xs-center">
-          <v-btn class="icon-close" outline small fab round color="white" @click="$router.go(-1)">
-            <v-img :src="require('@/assets/icons/baseline-clear-24px.svg')" contain height="4em"></v-img>
-          </v-btn>
-        </v-flex>
       </v-layout>
-      <v-layout fill-height justify-center>
-        <v-flex xs12 sm10 md8 lg6>
-          <v-layout justify-space-around column>
-            <h1 class="text-xs-center mb-2 rules-heading">{{ rulesHeading }}</h1>
-            <p class="rules-text">
-              {{ overall }}
-            </p>
-            <p class="rules-text-eng">
-              {{ overallEng }}
-            </p>
-          </v-layout>
-<!-- Combination descriptions -->
-          <v-flex class="combination-descr"
-                  v-for="(combination, index) in combinationsDescrMk3"
-                  :key="index">
-            <v-layout>
-              <p>{{ combination.title }}</p>
-              <v-layout justify-end>
-                <svg class="help-dice-icon"
-                    v-for="(icon, value) of combination.quantity" :key="value">
-                  <use v-bind="{'xlink:href':'#' + getDiceIds[icon - 1]}">
-                  </use>
-                </svg>
-                <p class="score-value">
-                  {{ combination.scoreValue }}
-                </p>
-              </v-layout>
-            </v-layout>
-          </v-flex>
-        </v-flex>
-      </v-layout>
-    </v-layout>
-  </v-container>
+
 </template>
 
 <script>
 import store from '../store/store'
 import { mapGetters } from 'vuex'
+import closeBtn from '../components/CloseBtn'
 
 export default {
   name: 'Help',
@@ -109,7 +102,7 @@ export default {
       hiscoreGreeting: 'Your highest score is',
       exclamation: '!', // some over-engeneering
       helpMenuHidden: true,
-      rulesHeading: 'Rules',
+      rulesHeading: 'Help',
       /*
       combinationsDescr: [
         { text: 'Один кубик с единицей', iconId: 'diceOnes', quantity: 1, scoreValue: '-2' },
@@ -150,6 +143,9 @@ export default {
       ]
     }
   },
+  components: {
+    closeBtn
+  },
   mounted () {
     this.$nextTick(function () {
       console.log('Rules page mounted')
@@ -188,9 +184,6 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/scss/index.scss";
 
-.close-icon-path {
-  fill: $color-primary-1;
-}
 .rules-heading {
   font-family: $text-font;
 }
@@ -222,13 +215,10 @@ export default {
   font-weight: 500;
   color: $color-chosen;
 }
-.icon-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 .border {
   border: 1px solid pink;
+  background-color: gray;
+  padding: .3em;
 }
 .combination-descr {
   font-size: 1.2em;

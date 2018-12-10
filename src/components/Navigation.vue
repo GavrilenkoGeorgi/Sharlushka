@@ -1,17 +1,25 @@
 <template>
-  <v-layout align-center justify-space-around row id="gameNavigation">
-    <v-flex class="score text-xs-left">
+  <v-layout align-center row id="gameNavigation">
+    <v-flex xs4 class="score text-xs-left">
       {{ computedGameScore }}
     </v-flex>
-    <v-flex class="game-name text-xs-center" role="button" aria-label="Go to main page">
+    <v-flex xs4 class="game-name text-xs-center" role="button" aria-label="Go to main page">
       <router-link to="/">{{ title }}</router-link>
     </v-flex>
-    <v-flex class="settings-icon text-xs-right">
+    <!--v-flex>
       <v-btn to="/settings" fab flat color="#79008f"
-        aria-label="Go to settings">
-        <v-img :src="require('@/assets/icons/baseline-menu-24px.svg')" contain height="3em"></v-img>
+        aria-label="Go to settings"-->
+        <!--v-img :src="require('@/assets/icons/baseline-menu-24px.svg')" contain height="3em"></v-img-->
+        <!--v-icon>more_vert</v-icon>
+        <h1>1</h1>
       </v-btn>
-    </v-flex>
+    </v-flex-->
+    <v-spacer></v-spacer>
+      <v-btn to='/settings' small icon
+        fab dark>
+        <v-icon size="2.8em"
+          color="white">more_vert</v-icon>
+      </v-btn>
   </v-layout>
 </template>
 
@@ -38,7 +46,8 @@ export default {
 
 <style lang="scss" scoped>
 // @import "../assets/scss/vars/fonts.scss";
-@import "../assets/scss/vars/colors.scss";
+// @import "../assets/scss/vars/colors.scss";
+@import "../assets/scss/index.scss";
 
 #gameNavigation {
   // border: 1px solid pink;
@@ -48,15 +57,26 @@ export default {
   height: 1.7em;
   width: 100%;
   font-size: 1.2em;
-  padding-left: .6em;
+  // padding-left: .6em;
   box-shadow: 0 .1em .05em -.05em rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+a {
+  margin: 0em;
+}
+
+i {
+  display: flex;
+}
+
+.score, .game-name {
+  font-family: $text-font;
 }
 .score {
   // border: 1px solid red;
   color: white;
   // font-family: $text-font;
   font-size: 1.1em;
-  // padding-left: .3em;
+  padding-left: .6em;
 }
 .game-name {
   a {

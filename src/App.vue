@@ -1,13 +1,17 @@
 <template>
-  <v-container fluid fill-height ma-0 pa-0 id="app">
+  <v-app>
+    <v-content>
+      <v-container fluid fill-height ma-0 pa-0 id="app">
 <!-- Router view -->
-    <transition name="custom-classes-transition"
-                mode="out-in"
-                enter-active-class="animated fadeIn"
-                leave-active-class="animated fadeOutLeft">
-      <router-view></router-view>
-    </transition>
-  </v-container>
+        <transition name="custom-classes-transition"
+                    mode="out-in"
+                    enter-active-class="animated fadeIn"
+                    leave-active-class="animated fadeOutLeft">
+          <router-view></router-view>
+        </transition>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
@@ -21,9 +25,10 @@ export default {
 }
 </script>
 
-<style src='vuetify/dist/vuetify.min.css'>
-</style>
+<!--style src='vuetify/dist/vuetify.min.css'>
+</style-->
 <style lang="scss">
+// @import "./assets/fonts/fonts.scss";
 
 #app {
   height: 100vh;
