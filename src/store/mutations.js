@@ -332,6 +332,9 @@ export default {
   setUser (state, payload) {
     state.user = payload
   },
+  setAuthState (state, payload) {
+    state.user.isAuthenticated = payload
+  },
   SET_PROCESSING (state, payload) {
     state.processing = payload
   },

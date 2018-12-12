@@ -1,3 +1,4 @@
+// remove this, get the new one
 export default {
   apiKey: 'AIzaSyD5xuRC6WLQX8RHxWRcaNLcACSWrZU6vTE',
   authDomain: 'sharlushka-6e9cd.firebaseapp.com',

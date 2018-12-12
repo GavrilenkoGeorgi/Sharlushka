@@ -11,6 +11,7 @@
     </v-alert>
     <v-flex d-flex class="page-title text-xs-center">
       <h1>{{ pageTitle }}</h1>
+      <h2>{{ logInOrSignOut }}</h2>
     </v-flex>
     <v-layout justify-center class="login-form">
       <v-flex xs8 d-flex align-center>
@@ -74,6 +75,16 @@
         color="purple">Remove user</v-btn>
     </v-layout-->
     <v-layout justify-center class="text-xs-center">
+      <!--v-flex v-if="this.getUserAuthState.isAuthenticated" xs5 d-flex align-end>
+        <v-btn
+          :type="'submit'"
+          @click.prevent="login"
+          class="button white--text"
+          color="orange">
+          Sign Out
+        </v-btn>
+      </v-flex-->
+
       <v-flex xs5 d-flex align-end>
         <v-btn :disabled="!valid"
           :type="'submit'"
@@ -83,12 +94,19 @@
           login
         </v-btn>
       </v-flex>
-      <v-flex xs5 d-flex align-end>
+      <!--v-flex xs5 d-flex align-end>
         <v-btn @click="clear"
         dark
         class="button"
         color="purple darken-1">
         clear</v-btn>
+      </v-flex-->
+      <v-flex xs5 d-flex align-end>
+        <v-btn @click="signOut"
+        dark
+        class="button"
+        color="purple darken-1">
+        sign out</v-btn>
       </v-flex>
     </v-layout>
     <v-layout wrap class="text-xs-center">
@@ -109,11 +127,10 @@
 </template>
 
 <script>
-// import db from './firebaseInit'
 import { mapGetters } from 'vuex'
-import firebaseConfig from './firebaseConfig'
 import firebase from 'firebase/app'
 import 'firebase/auth'
+import store from '../store/store'
 import closeButton from '../components/CloseBtn'
 
 export default {
@@ -154,10 +171,23 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getError'
+      'getError',
+      'getUserAuthState',
+      'getUserName'
     ]),
     comparePasswords () {
       return this.password !== this.confirmPassword ? 'Passwords do not match' : true
+    },
+    logInOrSignOut () {
+      let answer
+      if (this.getUserAuthState) {
+        console.log('User exists')
+        answer = true
+      } else {
+        console.log('No user yet')
+        answer = false
+      }
+      return answer
     }
   },
   methods: {
@@ -178,27 +208,32 @@ export default {
     },
     */
     login: function () {
-      if (this.valid) {
-        firebase
-          .auth()
-          .signInWithEmailAndPassword(this.email, this.password)
-          .then(
-            response => {
-              console.log(`You are logged in as`)
-              console.log(response.user.email)
-              console.log(response.user.uid)
-              const newUser = {
-                isAuthenticated: true,
-                uid: response.user.uid
-              }
-              this.$store.commit('setUser', newUser)
-              this.$router.push('/')
-            },
-            err => {
-              console.dir(err)
-              this.errorMessage = err.message
-            })
-      }
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+        .then(
+          response => {
+            console.log(`You are logged in as`)
+            console.log(response.user.email)
+            console.log(response.user.uid)
+            const newUser = {
+              isAuthenticated: true,
+              uid: response.user.uid
+            }
+            this.$store.commit('setUser', newUser)
+            // this.$router.push('/')
+          },
+          err => {
+            console.dir(err)
+            this.errorMessage = err.message
+          })
+      return true
+    },
+    signOut: () => {
+      firebase.auth().signOut().then(function () {
+        console.log('Signed Out')
+        store.commit('setAuthState', false)
+      }, function (error) {
+        console.error('Sign Out Error', error)
+      })
     },
     /*
     addNewUser () {
@@ -213,11 +248,44 @@ export default {
       this.$refs.form.reset()
     }
   },
-  created () {
-    console.log(`Login page created`)
+  mounted () {
+    console.log(`Login page mounted`)
+    /*
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig)
     }
+    */
+    /*
+    let check = true
+    if (check) {
+      console.log('User authenticated')
+      const initializeAuth = new Promise(resolve => {
+      // this adds a hook for the initial auth-change event
+        firebase.auth().onAuthStateChanged(user => {
+          const currentUser = firebase.auth().currentUser
+          console.log(`Current user is ${currentUser.uid}`)
+        })
+      })
+      initializeAuth.then(function (user) {
+        console.log(`Current user is ${user}`)
+      }).catch((reason) => {
+        console.log(`Something went wrong ${reason}`)
+      })
+    } else {
+      console.log('No, user is not authentificated')
+    } */
+    /*
+    const initializeAuth = new Promise(resolve => {
+    // this adds a hook for the initial auth-change event
+      firebase.auth().onAuthStateChanged(user => {
+        const currentUser = firebase.auth().currentUser
+        console.log(`Current user is ${currentUser.uid}`)
+      })
+    })
+    initializeAuth.then(function () {
+      const currentUser = firebase.auth().currentUser
+      console.log(`Current user is ${currentUser.email}`)
+    }) */
     /*
     db.collection('users').get().then(querySnapshot => {
       querySnapshot.forEach(doc => {

@@ -8,10 +8,16 @@ import App from './App'
 import router from './router'
 import store from './store/store'
 import './registerServiceWorker'
-// import 'vue-material-design-icons/styles.css'
 import '../node_modules/vuetify/dist/vuetify.min.css'
-// import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import firebase from 'firebase/app'
+import 'firebase/firestore'
+import firebaseConfig from './components/firebaseConfig'
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig)
+}
+firebase.firestore().settings({timestampsInSnapshots: true})
 
 Vue.config.productionTip = false
 // Vue.use(Vuetify)

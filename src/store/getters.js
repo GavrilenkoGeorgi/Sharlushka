@@ -38,6 +38,8 @@ export default {
     return state.diceArray
   },
   */
+  getUserAuthState: (state) => state.user.isAuthenticated,
+  getUserName: (state) => state.user.name,
   getDiceArray: (state) => state.diceArray,
   getTotalScore (state) {
     return state.schoolScoreTotal + state.gameTotal

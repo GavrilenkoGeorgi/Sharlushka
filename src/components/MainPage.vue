@@ -8,7 +8,7 @@
         <v-img :src="require('@/assets/icons/startPageDice.svg')" contain></v-img>
       </v-flex>
       <v-flex d-flex align-center class="text-xs-center">
-        <h2 class="user-name">{{ greeting }} {{ userName }}{{ exclamation }}</h2>
+        <h2 class="user-name">{{ greeting }} {{ this.userName }}{{ exclamation }}</h2>
     </v-flex>
     <v-layout row align-center justify-space-around>
         <v-flex xs4 lg2 class="text-xs-center">
@@ -51,7 +51,11 @@
 </template>
 
 <script>
+import db from './firebaseInit'
 import { mapGetters, mapActions } from 'vuex'
+import firebase from 'firebase/app'
+import 'firebase/auth'
+// import store from '../store/store'
 
 export default {
   name: 'Main',
@@ -65,16 +69,85 @@ export default {
     }
   },
   computed: mapGetters([
-    'getDefaultUserName'
+    'getDefaultUserName',
+    'getUserName',
+    'getUserAuthState'
   ]),
   mounted () {
     this.$nextTick(function () {
       console.log('Main page mounted')
-      this.userName = localStorage.getItem('userName')
+      if (this.getUserAuthState) {
+        const initializeAuth = new Promise((resolve, reject) => {
+        // this adds a hook for the initial auth-change event
+          firebase.auth().onAuthStateChanged(user => {
+            const currentUser = firebase.auth().currentUser
+            console.log(`Current user is ${currentUser.uid}`)
+            db.collection('users').where('uid', '==', currentUser.uid)
+              .get()
+              .then(function (querySnapshot) {
+                querySnapshot.forEach(function (doc) {
+                  // doc.data() is never undefined for query doc snapshots
+                  console.log(doc.data().uid)
+                  let payload = {
+                    isAuthenticated: true,
+                    // uid: doc.data().uid,
+                    name: doc.data().name
+                  }
+                  /*
+                  if (doc.data().uid) {
+                    store.commit('setUser', payload)
+                  }
+                  */
+                  // store.state.user.name = doc.data().email // make it a mutation
+                  // store.state.user.isAuthenticated = true
+                  // store.state.user.uid = currentUser.uid
+                  console.log(`This user name is ${payload}`)
+                })
+              })
+              .catch(function (error) {
+                console.log('Error getting documents: ', error)
+              })
+          })
+        })
+        initializeAuth.then(function (value) {
+          console.log(`From promise ${value}`)
+        }).catch(
+          (error) => {
+            console.log(`Something happened ${error}`)
+          }
+        )
+      }
+      // this.userName = localStorage.getItem('userName')
+      this.userName = this.getUserName
+      // console.log(`This user name is ${this.userName}`)
       if (!this.userName || this.userName === '') {
         this.userName = this.getDefaultUserName
+        console.log(`No user name ${this.userName}`)
       }
     })
+  },
+  created () {
+    console.log(`Main page created`)
+    // console.log(`After promise`)
+    /*
+    let check = true
+    if (check) {
+      console.log('User authenticated')
+      const initializeAuth = new Promise((resolve, reject) => {
+      // this adds a hook for the initial auth-change event
+        firebase.auth().onAuthStateChanged(user => {
+          const currentUser = firebase.auth().currentUser
+          console.log(`Current user is ${currentUser.uid}`)
+        })
+      })
+      initializeAuth.then((userState) => {
+        console.log(`From promise ${userState}`)
+      })
+      // const currentUser = firebase.auth().currentUser
+      // console.log(`Current user is ${currentUser.email}`)
+    } else {
+      console.log('No, user is not authentificated')
+    } */
   },
   methods: {
     ...mapActions([

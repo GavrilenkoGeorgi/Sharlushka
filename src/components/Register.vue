@@ -93,12 +93,11 @@
 </template>
 
 <script>
-// import db from './firebaseInit'
+import db from './firebaseInit'
 import firebaseConfig from './firebaseConfig'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import closeButton from '../components/CloseBtn'
-// import Navigation from '../components/Navigation'
 
 export default {
   name: 'register',
@@ -141,21 +140,67 @@ export default {
   },
   methods: {
     signUp () {
-      this.errorMessage = ''
+      this.errorMessage = '' // clear error message?
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
         .then(response => {
+          // set current user in store
           const newUser = {
             isAuthenticated: true,
             uid: response.user.uid
           }
           this.$store.commit('setUser', newUser)
-          console.log(`User added ${response.user.uid}`)
+          // add new user data to db
+          if (this.name === '') { // it is optional, privacy meh
+            this.name = 'Anonymous'
+          }
+          const newUserData = {
+            name: this.name, // or maybe Anonymous
+            uid: response.user.uid,
+            email: response.user.email,
+            resultsArray: [123, 432, 554], // or not
+            hiScore: 478 // if he palyed more than one game
+          }
+          this.addNewUser(newUserData)
+          // this.addNewUser(response.user.email, response.user.uid, this.name)
+          console.log(`User added ${response.user.email}`)
+          firebase
+            .auth()
+            .signInWithEmailAndPassword(this.email, this.password)
+            .then(
+              response => {
+                console.log(`Login in after registration`)
+                console.log(response.user.email)
+                // this.$router.push('/')
+              },
+              err => {
+                console.dir(err)
+                this.errorMessage = err.message
+              })
         })
         .catch(err => {
           console.log(err.message)
           this.errorMessage = err.message
         })
     },
+    addNewUser (userData) {
+      console.log(`Adding user`)
+      // Add a new document with a generated id.
+      const newUserRef = db.collection('users').doc()
+      /*
+      let newUserData = {
+        name: 'Anonymous',
+        userEmail: 'hank@aol.com',
+        userUid: 'fgdfgDFGDFGvsdf3',
+        // dateExample: new Date('December 10, 1815'),
+        userResults: [234, 432, 543]
+      }
+      */
+      // later...
+      // console.dir(this.$store.state.user.uid)
+      // userData.ownerId = newUserRef.id
+      newUserRef.set(userData)
+      console.log('Document successfully written!')
+    }, // end of user adding
     clear () {
       this.$refs.form.reset()
     }
