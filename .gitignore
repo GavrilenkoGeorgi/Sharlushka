@@ -10,7 +10,7 @@ yarn-error.log*
 /test/e2e/reports/
 selenium-debug.log
 /src/components/Register.vue.bak
-src/components/firebaseInit.js
+/src/components/firebaseConfig.js
 temp.css
 temp.html
 

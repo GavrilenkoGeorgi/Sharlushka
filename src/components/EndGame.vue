@@ -20,12 +20,19 @@
         <h2>{{ messageText }} {{ getTotalScore }}</h2>
       </v-flex>
 <!-- Button -->
-      <v-layout mb-4 row align-center justify-space-around>
-        <v-flex xs4>
+      <v-layout row align-center justify-space-around>
+        <v-flex xs5 d-flex class="text-xs-center">
           <v-btn ripple
             large color="orange"
             @click="restartGame">
             <v-icon medium color="white">replay</v-icon>
+          </v-btn>
+        </v-flex>
+        <v-flex xs5 d-flex class="text-xs-center">
+          <v-btn ripple
+            large color="purple darken-1"
+            :to="'/settings'">
+            <v-icon medium color="white">equalizer</v-icon>
           </v-btn>
         </v-flex>
       </v-layout>
@@ -37,6 +44,7 @@
 import { mapGetters } from 'vuex'
 import store from '../store/store'
 import closeBtn from '../components/CloseBtn'
+import db from './firebaseInit'
 
 export default {
   data () {
@@ -55,33 +63,44 @@ export default {
   components: {
     closeBtn
   },
-  mounted () {
-    this.$nextTick(function () {
-      console.log(`Game over`)
-      this.highestScore = localStorage.getItem('highestScore')
-      if (localStorage.getItem('userName')) {
-        this.userName = localStorage.getItem('userName')
-      } else {
-        this.userName = this.getDefaultUserName
-      }
-      this.lastScoresArray = localStorage.getItem('lastScoresArray')
-      if (!this.lastScoresArray) {
-        console.log(`No local storage score array yet, creating one`)
-        // let lastTwelveScores = [333, 125, 256, 368, -12, 234, 623, 546, 345, 324, 34, 342]
-        this.lastScoresArray = [this.getTotalScore]
-        localStorage.setItem('lastScoresArray', this.lastScoresArray)
-      } else {
-        // console.log(`local storage score array exists`)
-        this.addScoreToDatabase()
-      }
-    })
-  },
   computed: {
     ...mapGetters([
       'getTotalScore',
       'getCurrentGameState',
-      'getDefaultUserName'
+      'getDefaultUserName',
+      'getUserData'
     ])
+  },
+  mounted () {
+    this.$nextTick(function () {
+      console.log(`Game over`)
+      // check user status
+      if (this.getUserData.isAuthenticated) {
+        this.userName = this.getUserData.name
+        console.log()
+      } else {
+        this.userName = this.getDefaultUserName
+      }
+
+      if (this.getCurrentGameState.gameInProgress) {
+        this.lastScoresArray = localStorage.getItem('lastScoresArray')
+        if (!this.lastScoresArray) {
+          console.log(`No local storage score array yet, creating one`)
+          // let lastTwelveScores = [333, 125, 256, 368, -12, 234, 623, 546, 345, 324, 34, 342]
+          // this.lastScoresArray = [this.getTotalScore]
+          this.lastScoresArray = []
+          localStorage.setItem('lastScoresArray', this.lastScoresArray)
+          this.addScoreToDatabase()
+        } else {
+          // console.log(`local storage score array exists`)
+          this.addScoreToDatabase()
+        }
+        // set to default state
+        store.state.gameInProgress = false // mutation?
+      } else {
+        console.log(`Nothing to record, play the game.`)
+      }
+    })
   },
   methods: {
     restartGame () {
@@ -94,6 +113,7 @@ export default {
       if (typeof this.lastScoresArray === 'string') {
         this.lastScoresArray = this.lastScoresArray.split(',')
       }
+      /*
       if (this.lastScoresArray.length <= 11) {
         this.lastScoresArray.push(this.getTotalScore)
       } else if (this.lastScoresArray.length >= 12) {
@@ -101,8 +121,61 @@ export default {
         this.lastScoresArray = this.lastScoresArray.slice(1)
         this.lastScoresArray.push(this.getTotalScore)
       }
+      */
+      this.lastScoresArray.push(this.getTotalScore)
       // ! add check if game is completed
       localStorage.setItem('lastScoresArray', this.lastScoresArray)
+      // if user is Anonymous there is no database,
+      // only localStorage, so
+      if (this.getUserData.isAuthenticated) {
+        this.syncScoreInFirebase()
+      } else {
+        console.log(`Anonymous! To save results please register.`)
+      }
+    },
+    syncScoreInFirebase () {
+      console.log(`Syncing score for uid ${this.getUserData.uid}`)
+      let uid = this.getUserData.uid
+      db.collection('users').where('uid', '==', uid)
+        .get()
+        .then(function (querySnapshot) {
+          let docToUpdateId
+          querySnapshot.forEach(function (doc) {
+            // doc.data() is never undefined for query doc snapshots
+            if (doc.data().uid === uid) {
+              // store.state.commit('setUser', payload)
+              // console.log(doc.data().name)
+              // userName = doc.data().name
+              docToUpdateId = doc.id
+            }
+            // store.state.user.name = doc.data().email // make it a mutation
+            // store.state.user.isAuthenticated = true
+            // store.state.user.uid = currentUser.uid
+            // console.log(`This user name is ${payload.name}`)
+          })
+          return docToUpdateId
+        })
+        .then((docToUpdateId) => {
+          var docRef = db.collection('users').doc(docToUpdateId)
+          let resultsArrayToUpdate = localStorage.getItem('lastScoresArray')
+          // you really should check if it is actually higher
+          let highestScoreToUpdate = localStorage.getItem('highestScore')
+
+          var updateDocRef = docRef.update({
+            resultsArray: resultsArrayToUpdate,
+            hiScore: highestScoreToUpdate
+          })
+          // return true
+          console.log('...updating user stats')
+          return updateDocRef // ?
+          // this.userName = userName
+          // this.$store.commit('setUserName', userName)
+          // console.log(`Setting user name ${userName}`)
+          // console.log(`Updating scores array in fb ${updateDocRef}`)
+        })
+        .catch(function (error) {
+          console.log('Error getting documents: ', error)
+        })
     }
   }
 }

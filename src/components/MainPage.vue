@@ -53,8 +53,8 @@
 <script>
 import db from './firebaseInit'
 import { mapGetters, mapActions } from 'vuex'
-import firebase from 'firebase/app'
-import 'firebase/auth'
+// import firebase from 'firebase/app'
+// import 'firebase/auth'
 // import store from '../store/store'
 
 export default {
@@ -64,90 +64,40 @@ export default {
       gameName: 'Sharlushka',
       userName: '',
       greeting: 'Hi,',
-      exclamation: '.',
-      loginOrRegister: 'login'
+      exclamation: '.'
     }
   },
-  computed: mapGetters([
-    'getDefaultUserName',
-    'getUserName',
-    'getUserAuthState'
-  ]),
+  computed: {
+    ...mapGetters([
+      // 'getUserName', // remove this
+      // 'getUserAuthState',
+      'getUserData',
+      'getDefaultUserName'
+    ]),
+    userNameChanged: function () {
+      return this.getUserData.name
+    }
+  },
+  watch: {
+    userNameChanged: {
+      immediate: true,
+      handler () { // some spaghetti code
+        this.userName = this.getUserData.name
+      }
+    }
+  },
   mounted () {
     this.$nextTick(function () {
       console.log('Main page mounted')
-      if (this.getUserAuthState) {
-        const initializeAuth = new Promise((resolve, reject) => {
-        // this adds a hook for the initial auth-change event
-          firebase.auth().onAuthStateChanged(user => {
-            const currentUser = firebase.auth().currentUser
-            console.log(`Current user is ${currentUser.uid}`)
-            db.collection('users').where('uid', '==', currentUser.uid)
-              .get()
-              .then(function (querySnapshot) {
-                querySnapshot.forEach(function (doc) {
-                  // doc.data() is never undefined for query doc snapshots
-                  console.log(doc.data().uid)
-                  let payload = {
-                    isAuthenticated: true,
-                    // uid: doc.data().uid,
-                    name: doc.data().name
-                  }
-                  /*
-                  if (doc.data().uid) {
-                    store.commit('setUser', payload)
-                  }
-                  */
-                  // store.state.user.name = doc.data().email // make it a mutation
-                  // store.state.user.isAuthenticated = true
-                  // store.state.user.uid = currentUser.uid
-                  console.log(`This user name is ${payload}`)
-                })
-              })
-              .catch(function (error) {
-                console.log('Error getting documents: ', error)
-              })
-          })
-        })
-        initializeAuth.then(function (value) {
-          console.log(`From promise ${value}`)
-        }).catch(
-          (error) => {
-            console.log(`Something happened ${error}`)
-          }
-        )
-      }
-      // this.userName = localStorage.getItem('userName')
-      this.userName = this.getUserName
-      // console.log(`This user name is ${this.userName}`)
-      if (!this.userName || this.userName === '') {
+      this.userName = this.getUserData.name
+      if (this.userName === '') {
         this.userName = this.getDefaultUserName
-        console.log(`No user name ${this.userName}`)
+      }
+      if (this.getUserData.isAuthenticated) { // just ones is already enough
+        console.log(`Setting user score from db...`)
+        this.setUserScoreDataFromDB(this.getUserData.uid)
       }
     })
-  },
-  created () {
-    console.log(`Main page created`)
-    // console.log(`After promise`)
-    /*
-    let check = true
-    if (check) {
-      console.log('User authenticated')
-      const initializeAuth = new Promise((resolve, reject) => {
-      // this adds a hook for the initial auth-change event
-        firebase.auth().onAuthStateChanged(user => {
-          const currentUser = firebase.auth().currentUser
-          console.log(`Current user is ${currentUser.uid}`)
-        })
-      })
-      initializeAuth.then((userState) => {
-        console.log(`From promise ${userState}`)
-      })
-      // const currentUser = firebase.auth().currentUser
-      // console.log(`Current user is ${currentUser.email}`)
-    } else {
-      console.log('No, user is not authentificated')
-    } */
   },
   methods: {
     ...mapActions([
@@ -155,7 +105,60 @@ export default {
     ]),
     startNewGame (event) {
       window.location.replace('/game')
+    },
+    setUserScoreDataFromDB (uid) {
+      console.log(`Getting user scores for uid ${uid}`)
+      db.collection('users').where('uid', '==', uid)
+        .get()
+        .then(function (querySnapshot) {
+          // let scoreArray
+          let userScores = {}
+          querySnapshot.forEach(function (doc) {
+            // doc.data() is never undefined for query doc snapshots
+            if (doc.data().uid === uid) {
+              // scoreArray = doc.data().resultsArray
+              userScores = {
+                hiScore: doc.data().hiScore,
+                resultsArray: doc.data().resultsArray
+              }
+            }
+          })
+          return userScores
+        })
+        .then((userScores) => {
+          // let highestScore = 512
+          localStorage.setItem('highestScore', userScores.hiScore)
+          localStorage.setItem('lastScoresArray', userScores.resultsArray)
+          console.log(`Setting users score array to local storage ${userScores.resultsArray}`)
+        })
+        .catch(function (error) {
+          console.log('Error getting documents: ', error)
+        })
     }
+    /*
+    getUserNameFromDB (uid) {
+      console.log(`Getting user name for uid ${uid}`)
+      db.collection('users').where('uid', '==', uid)
+        .get()
+        .then(function (querySnapshot) {
+          let userName
+          querySnapshot.forEach(function (doc) {
+            // doc.data() is never undefined for query doc snapshots
+            if (doc.data().uid === uid) {
+              userName = doc.data().name
+            }
+          })
+          return userName
+        })
+        .then((userName) => {
+          this.userName = userName
+          this.$store.commit('setUserName', userName)
+          console.log(`Setting user name ${userName}`)
+        })
+        .catch(function (error) {
+          console.log('Error getting documents: ', error)
+        })
+    } */
   }
 }
 </script>

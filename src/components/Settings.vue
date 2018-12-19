@@ -13,21 +13,29 @@
         </v-layout>
       </v-flex>
 <!-- Last scores heading and table-->
-      <v-flex d-flex align-end v-if="highestScore" class="last-scores-heading text-xs-center">
-        <h3>{{ lastScoresHeading }}</h3>
+      <v-flex d-flex align-end v-if="lastScoresToDisplay" class="last-scores-heading text-xs-center">
+        <!--h3>{{ lastScoresHeadingPartOne }} {{ this.lastScoresToDisplay.length }} {{ lastScoresHeadingPartTwo }}</h3-->
+        <h3>{{ lastScoresHeadingPartOne }} {{ lastScoresHeadingPartTwo }}</h3>
       </v-flex>
       <v-flex>
         <v-layout align-space-around column>
           <v-flex d-flex class="hi-score-display">
             <v-layout row wrap justify-space-around py-2>
-              <v-flex xs4 sm1 ma-0 py-1 v-for="(value, index) in lastTwelveScores" :key="index">
+              <v-flex xs4 sm1 ma-0 py-1 v-for="(value, index) in lastScoresToDisplay" :key="index">
                 {{ value }}
               </v-flex>
             </v-layout>
           </v-flex>
 <!-- Stats display -->
-          <v-flex class="stats-display text-xs-center"
+          <!--v-flex class="stats-display text-xs-center"
             v-for="item in stats"
+            v-if="item.value"
+            :key="item.msg">
+            {{ item.msg }}&nbsp;{{ item.value }}
+          </v-flex-->
+          <v-flex class="stats-display text-xs-center"
+            v-for="item in newStats"
+            v-if="item.value"
             :key="item.msg">
             {{ item.msg }}&nbsp;{{ item.value }}
           </v-flex>
@@ -54,6 +62,7 @@
 import store from '../store/store' // for reset state button
 import { mapGetters } from 'vuex'
 import closeBtn from '../components/CloseBtn'
+import db from './firebaseInit'
 
 export default {
   name: 'Settings', // change to statss
@@ -65,36 +74,89 @@ export default {
       highestScore: '',
       hiscoreGreeting: 'Your highest score is',
       exclamation: '.', // some over-engineering
-      lastTwelveScores: '',
-      lastScoresHeading: 'Recent scores are',
+      lastScoresHeadingPartOne: 'Most recent',
+      lastScoresHeadingPartTwo: 'scores are',
+      userScoresArray: '',
+      lastScoresToDisplay: '',
+      userGamesPlayed: '',
+      newStats: {
+        gamesPlayed: {
+          msg: 'Games played',
+          value: '1'
+        },
+        maxPossibleScore: {
+          msg: 'Max possible score is',
+          value: '2'
+        },
+        percentFromMax: {
+          msg: 'Percent from max score ~',
+          value: '3'
+        },
+        averageScore: {
+          msg: 'Your average score equals',
+          value: '4'
+        }
+      },
       stats: [
+        { msg: 'Games played', value: '' }, // do something with this
         { msg: 'Max possible score is', value: '879' },
-        { msg: 'Your average score equals', value: '' },
-        { msg: 'Percent from max score ~', value: '' }
+        { msg: 'Percent from max score ~', value: '' },
+        { msg: 'Your average score equals', value: '' }
       ]
     }
   },
   components: {
     closeBtn
   },
-  mounted () {
-    console.log(`Settings mounted`) // change to about
-    this.highestScore = localStorage.getItem('highestScore')
-    this.userName = localStorage.getItem('userName')
-    if (!this.userName || this.userName === '') {
-      this.userName = this.getDefaultUserName
-    }
-    let lastScoresString = localStorage.getItem('lastScoresArray')
-    if (lastScoresString) {
-      this.lastTwelveScores = lastScoresString.split(',')
-    }
-    this.stats[1].value = this.computeAverageScore()
-    this.stats[2].value = this.computePercentFromMax()
-  },
   computed: {
     ...mapGetters([
-      'getDefaultUserName'
+      'getDefaultUserName',
+      'getUserData',
+      'getMaxPossibleScore'
     ])
+  },
+  mounted () {
+    console.log(`Settings mounted`) // change to about
+    // check if user is authenticated
+    // let assembledArray
+    // this.lastScores = [512, 345, 534]
+    if (!this.getUserData.isAuthenticated) {
+      console.log(`You are anonymous!`)
+      this.userName = this.getDefaultUserName
+      this.highestScore = localStorage.getItem('highestScore')
+      this.userScoresArray = this.assembleLastScoresArray()
+    } else {
+      console.log(`You are existing user!`)
+      // this.setUserScoreDataFromDB(this.getUserData.uid)
+      this.highestScore = localStorage.getItem('highestScore')
+      this.userName = this.getUserData.name
+      /*
+      if (!this.userName || this.userName === '') {
+        this.userName = this.getDefaultUserName
+      }
+      */
+      let lastScoresString = localStorage.getItem('lastScoresArray')
+      // if one played at least one full game then there is an array
+      // with the last score, which is the highest and
+      // it is in the local storage after visiting the 'endGame' page
+      if (lastScoresString) {
+        this.userScoresArray = lastScoresString.split(',')
+      }
+    }
+    if (this.userScoresArray) {
+      this.lastScoresToDisplay = this.userScoresArray.slice(0).slice(-12)
+    }
+    this.newStats.gamesPlayed.value = this.userScoresArray.length
+    this.newStats.maxPossibleScore.value = this.getMaxPossibleScore
+    this.newStats.percentFromMax.value = this.computePercentFromMax()
+    this.newStats.averageScore.value = this.computeAverageScore()
+
+    // this.stats[3].value = this.computeAverageScore() // what is this?
+    // this.stats[2].value = this.computePercentFromMax()
+    // this.stats[0].value = this.userScoresArray.length
+    // generate last twelve score array to display
+    // this.stats[1].value = this.computeAverageScore()
+    // this.stats[2].value = this.computePercentFromMax()
   },
   methods: {
     restartGame (state) {
@@ -102,24 +164,59 @@ export default {
       store.commit('resetState')
       this.$router.push('/game')
     },
-    computeAverageScore () {
-      // let lastTwelveScores = [333, 125, 256, 368, -12, 234, 623, 546, 345, 324, 34, 342]
-      let arrayToReduce = []
-      const scoreSum = (accumulator, currentValue) => accumulator + currentValue
-      for (let value of this.lastTwelveScores) {
-        arrayToReduce.push(parseInt(value))
-      }
-      if (arrayToReduce.length > 0) {
-        return parseInt(arrayToReduce.reduce(scoreSum) / arrayToReduce.length)
+    assembleLastScoresArray () {
+      console.log(`Preparing array`)
+      // this.lastScores = localStorage.getItem('lastScoresArray')
+      let lastScoresString = localStorage.getItem('lastScoresArray')
+      if (!lastScoresString) {
+        console.log(`You have to play at least one game to calculate stats`)
+        return false
       } else {
-        return 0
+        return lastScoresString.split(',')
+      }
+    },
+    setUserScoreDataFromDB (uid) {
+      console.log(`Getting user scores for uid ${uid}`)
+      db.collection('users').where('uid', '==', uid)
+        .get()
+        .then(function (querySnapshot) {
+          let scoreArray
+
+          querySnapshot.forEach(function (doc) {
+            // doc.data() is never undefined for query doc snapshots
+            if (doc.data().uid === uid) {
+              scoreArray = doc.data().resultsArray
+            }
+          })
+          return scoreArray
+        })
+        .then((scoreArray) => {
+          localStorage.setItem('lastScoresArray', scoreArray)
+          console.log(`Setting users score array to local storage ${scoreArray}`)
+        })
+        .catch(function (error) {
+          console.log('Error getting documents: ', error)
+        })
+    },
+    computeAverageScore () {
+      // let lastScores = [333, 125, 256, 368, -12, 234, 623, 546, 345, 324, 34, 342]
+      if (this.userScoresArray) {
+        let arrayToReduce = []
+        const scoreSum = (accumulator, currentValue) => accumulator + currentValue
+        for (let value of this.userScoresArray) {
+          arrayToReduce.push(parseInt(value))
+        }
+        console.log(`User scores array: ${this.userScoresArray}`)
+        if (arrayToReduce.length > 0) {
+          return parseInt(arrayToReduce.reduce(scoreSum) / arrayToReduce.length)
+        } else {
+          return 0
+        }
       }
     },
     computePercentFromMax () {
-      let maxScore = 879 // move to store
-      this.stats[0].value = maxScore
-      let percent = Math.floor(this.stats[1].value / maxScore * 100)
-      return percent + '%'
+      let result = Math.floor(this.newStats.averageScore.value / this.getMaxPossibleScore * 100)
+      this.newStats.percentFromMax.value = result + '%'
     }
   }
 }

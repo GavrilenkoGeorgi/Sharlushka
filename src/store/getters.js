@@ -1,15 +1,16 @@
 export default {
   getCurrentGameState (state) {
     let currentGameState = {
-      currentTurn: state.currentGameTurn,
+      currentTurn: state.currentGameTurn, // wtf
       rollsCountForButton: state.rollCount,
       schoolCompleted: state.schoolCompleted,
-      currentGameTurn: state.currentGameTurn,
+      currentGameTurn: state.currentGameTurn, // this
       currentRollCount: state.rollCount,
       turnCompleted: state.turnCompleted,
       gameEnded: state.gameEnded,
       diceRolled: state.diceRolled,
-      gameCheck: state.gameCheck
+      gameCheck: state.gameCheck,
+      gameInProgress: state.gameInProgress
     }
     return currentGameState
   },
@@ -38,7 +39,8 @@ export default {
     return state.diceArray
   },
   */
-  getUserAuthState: (state) => state.user.isAuthenticated,
+  getMaxPossibleScore: (state) => state.maxPossibleScore,
+  getUserAuthState: (state) => state.user.isAuthenticated, // ?
   getUserName: (state) => state.user.name,
   getDiceArray: (state) => state.diceArray,
   getTotalScore (state) {
@@ -47,6 +49,7 @@ export default {
   getDefaultUserName (state) {
     return state.defaultUserName
   },
+  getUserData: (state) => state.user,
   debugInfo (state) {
     // console.log(`Debug on`)
     for (let key in state.diceArray) {

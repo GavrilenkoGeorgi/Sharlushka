@@ -77,6 +77,7 @@
         <v-btn :disabled="!valid"
           @click.prevent="signUp"
           class="white--text"
+          large
           color="orange">
           register
         </v-btn>
@@ -84,6 +85,7 @@
       <v-flex xs5 d-flex>
         <v-btn @click="clear"
           class="button white--text"
+          large
           color="purple darken-1">
           clear
         </v-btn>
@@ -141,46 +143,66 @@ export default {
   methods: {
     signUp () {
       this.errorMessage = '' // clear error message?
-      firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-        .then(response => {
-          // set current user in store
-          const newUser = {
-            isAuthenticated: true,
-            uid: response.user.uid
-          }
-          this.$store.commit('setUser', newUser)
-          // add new user data to db
-          if (this.name === '') { // it is optional, privacy meh
-            this.name = 'Anonymous'
-          }
-          const newUserData = {
-            name: this.name, // or maybe Anonymous
-            uid: response.user.uid,
-            email: response.user.email,
-            resultsArray: [123, 432, 554], // or not
-            hiScore: 478 // if he palyed more than one game
-          }
-          this.addNewUser(newUserData)
-          // this.addNewUser(response.user.email, response.user.uid, this.name)
-          console.log(`User added ${response.user.email}`)
-          firebase
-            .auth()
-            .signInWithEmailAndPassword(this.email, this.password)
-            .then(
-              response => {
-                console.log(`Login in after registration`)
-                console.log(response.user.email)
-                // this.$router.push('/')
-              },
-              err => {
-                console.dir(err)
-                this.errorMessage = err.message
-              })
-        })
-        .catch(err => {
-          console.log(err.message)
-          this.errorMessage = err.message
-        })
+      if (this.email && this.password) {
+        firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+          .then(response => {
+            // set current user in store
+            const newUser = {
+              isAuthenticated: true,
+              uid: response.user.uid
+            }
+            this.$store.commit('setUser', newUser)
+            // add new user data to db
+            if (this.name === '') { // it is optional, privacy meh
+              this.name = 'Anonymous'
+            }
+
+            let hiScoreToSet = localStorage.getItem('highestScore')
+            let scoresArrayToSet
+            if (hiScoreToSet) {
+              scoresArrayToSet = localStorage.getItem('lastScoresArray')
+            } else {
+              hiScoreToSet = ''
+              scoresArrayToSet = ''
+            }
+
+            const newUserData = {
+              name: this.name, // or maybe Anonymous
+              uid: response.user.uid,
+              email: response.user.email,
+              // resultsArray: [123, 432, 554], // or not
+              // hiScore: 478 // if he played more than one game
+              resultsArray: scoresArrayToSet,
+              hiScore: hiScoreToSet
+            }
+            this.addNewUser(newUserData)
+            // localStorage.setItem('userName', this.name)
+            this.$store.state.user.name = this.name
+            // this.addNewUser(response.user.email, response.user.uid, this.name)
+            console.log(`User added ${response.user.email}`)
+            this.verifyUserEmail()
+            this.$router.push('/')
+            /*
+            firebase
+              .auth()
+              .signInWithEmailAndPassword(this.email, this.password)
+              .then(
+                response => {
+                  console.log(`Login in after registration`)
+                  console.log(response.user.email)
+                  this.$router.push('/')
+                },
+                err => {
+                  console.dir(err)
+                  this.errorMessage = err.message
+                })
+              */
+          })
+          .catch(err => {
+            console.log(err.message)
+            this.errorMessage = err.message
+          })
+      }
     },
     addNewUser (userData) {
       console.log(`Adding user`)
@@ -201,6 +223,14 @@ export default {
       newUserRef.set(userData)
       console.log('Document successfully written!')
     }, // end of user adding
+    verifyUserEmail () {
+      let user = firebase.auth().currentUser
+      user.sendEmailVerification().then(function () {
+        console.log('Email sent')
+      }).catch(function (error) {
+        console.log(`Error! ${error}`)
+      })
+    },
     clear () {
       this.$refs.form.reset()
     }

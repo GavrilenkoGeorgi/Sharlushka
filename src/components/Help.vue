@@ -1,80 +1,82 @@
 <template>
-  <v-layout column id="gameHelp" pa-2>
-      <v-spacer class="border"></v-spacer>
+  <v-container fluid fill-height>
+    <v-layout row wrap>
       <closeBtn></closeBtn>
-      <!--v-layout fill-height justify-center>
-        <v-flex xs12 sm10 md8 lg6>
-          <v-layout justify-space-around column>
-            <h1 class="text-xs-center mb-2 rules-heading">{{ rulesHeading }}</h1>
-            <p class="rules-text">
-              {{ overall }}
-            </p>
-            <p class="rules-text-eng">
-              {{ overallEng }}
-            </p>
-          </v-layout-->
+      <v-flex xs12>
+        <h1 class="text-xs-center mb-2 rules-heading">{{ rulesHeading }}</h1>
+        <p class="rules-text">
+          {{ overall }}
+        </p>
+        <p class="rules-text-eng">
+          {{ overallEng }}
+        </p>
+      </v-flex>
 <!-- Combination descriptions -->
-          <!--v-flex class="combination-descr"
-                  v-for="(combination, index) in combinationsDescrMk3"
-                  :key="index">
-            <v-layout>
-              <p>{{ combination.title }}</p>
-              <v-layout justify-end>
-                <svg class="help-dice-icon"
-                    v-for="(icon, value) of combination.quantity" :key="value">
-                  <use v-bind="{'xlink:href':'#' + getDiceIds[icon - 1]}">
-                  </use>
-                </svg>
-                <p class="score-value">
-                  {{ combination.scoreValue }}
-                </p>
-              </v-layout>
+      <v-flex xs12>
+        <v-flex class="combination-descr"
+            v-for="(combination, index) in combinationsDescrMk3"
+          :key="index">
+          <v-layout>
+            <p>
+              {{ combination.title }}
+            </p>
+            <v-layout justify-end>
+              <svg class="help-dice-icon"
+                  v-for="(icon, value) of combination.quantity" :key="value">
+                <use v-bind="{'xlink:href':'#' + getDiceIds[icon - 1]}">
+                </use>
+              </svg>
+              <p class="score-value">
+                {{ combination.scoreValue }}
+              </p>
             </v-layout>
-          </v-flex-->
-    <!-- Icon definition remove this -->
-    <svg version='1.1' style="display: none;" xmlns="http://www.w3.org/2000/svg">
-      <symbol id="diceOnes" viewBox="0 0 200 200">
-        <circle fill="currentColor" cx="100" cy="100" r="18"/>
-        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
-      </symbol>
-      <symbol id="diceTwos" viewBox="0 0 200 200">
-        <circle fill="currentColor" cx="50" cy="150" r="18"/>
-        <circle fill="currentColor" cx="150" cy="50" r="18"/>
-        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
-      </symbol>
-      <symbol id="diceThrees" class="dice" viewBox="0 0 200 200">
-        <circle fill="currentColor" cx="50" cy="150" r="18"/>
-        <circle fill="currentColor" cx="100" cy="100" r="18"/>
-        <circle fill="currentColor" cx="150" cy="50" r="18"/>
-        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
-      </symbol>
-      <symbol id="diceFours" class="dice" viewBox="0 0 200 200">
-        <circle fill="currentColor" cx="150" cy="50" r="18"/>
-        <circle fill="currentColor" cx="150" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="50" r="18"/>
-        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
-      </symbol>
-      <symbol id="diceFives" class="dice" viewBox="0 0 200 200">
-        <circle fill="currentColor" cx="100" cy="100" r="18"/>
-        <circle fill="currentColor" cx="150" cy="50" r="18"/>
-        <circle fill="currentColor" cx="150" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="50" r="18"/>
-        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
-      </symbol>
-      <symbol id="diceSixes" class="dice" viewBox="0 0 200 200">
-        <circle fill="currentColor" cx="150" cy="100" r="18"/>
-        <circle fill="currentColor" cx="150" cy="50" r="18"/>
-        <circle fill="currentColor" cx="150" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="100" r="18"/>
-        <circle fill="currentColor" cx="50" cy="50" r="18"/>
-        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
-      </symbol>
-    </svg>
-      </v-layout>
-
+          </v-layout>
+        </v-flex>
+      </v-flex>
+<!-- Icon definitions remove this -->
+      <svg version='1.1' style="display: none;" xmlns="http://www.w3.org/2000/svg">
+        <symbol id="diceOnes" viewBox="0 0 200 200">
+          <circle fill="currentColor" cx="100" cy="100" r="18"/>
+          <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+        </symbol>
+        <symbol id="diceTwos" viewBox="0 0 200 200">
+          <circle fill="currentColor" cx="50" cy="150" r="18"/>
+          <circle fill="currentColor" cx="150" cy="50" r="18"/>
+          <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+        </symbol>
+        <symbol id="diceThrees" class="dice" viewBox="0 0 200 200">
+          <circle fill="currentColor" cx="50" cy="150" r="18"/>
+          <circle fill="currentColor" cx="100" cy="100" r="18"/>
+          <circle fill="currentColor" cx="150" cy="50" r="18"/>
+          <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+        </symbol>
+        <symbol id="diceFours" class="dice" viewBox="0 0 200 200">
+          <circle fill="currentColor" cx="150" cy="50" r="18"/>
+          <circle fill="currentColor" cx="150" cy="150" r="18"/>
+          <circle fill="currentColor" cx="50" cy="150" r="18"/>
+          <circle fill="currentColor" cx="50" cy="50" r="18"/>
+          <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+        </symbol>
+        <symbol id="diceFives" class="dice" viewBox="0 0 200 200">
+          <circle fill="currentColor" cx="100" cy="100" r="18"/>
+          <circle fill="currentColor" cx="150" cy="50" r="18"/>
+          <circle fill="currentColor" cx="150" cy="150" r="18"/>
+          <circle fill="currentColor" cx="50" cy="150" r="18"/>
+          <circle fill="currentColor" cx="50" cy="50" r="18"/>
+          <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+        </symbol>
+        <symbol id="diceSixes" class="dice" viewBox="0 0 200 200">
+          <circle fill="currentColor" cx="150" cy="100" r="18"/>
+          <circle fill="currentColor" cx="150" cy="50" r="18"/>
+          <circle fill="currentColor" cx="150" cy="150" r="18"/>
+          <circle fill="currentColor" cx="50" cy="150" r="18"/>
+          <circle fill="currentColor" cx="50" cy="100" r="18"/>
+          <circle fill="currentColor" cx="50" cy="50" r="18"/>
+          <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+        </symbol>
+      </svg>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -146,16 +148,10 @@ export default {
   components: {
     closeBtn
   },
-  mounted () {
-    this.$nextTick(function () {
-      console.log('Rules page mounted')
-      this.highestScore = localStorage.getItem('highestScore')
-      this.userName = localStorage.getItem('userName')
-    })
-  },
   computed: {
     ...mapGetters([
-      'getDiceIds'
+      'getDiceIds',
+      'getUserData'
     ]),
     computedGameScore: function () {
       return store.state.schoolScoreTotal + store.state.gameTotal
@@ -163,6 +159,13 @@ export default {
     rollsLeft: function () {
       return store.state.rollCount
     }
+  },
+  mounted () {
+    this.$nextTick(function () {
+      console.log('Rules page mounted')
+      this.highestScore = localStorage.getItem('highestScore')
+      this.userName = this.getUserData.name
+    })
   },
   methods: {
     openHelpMenu () {
@@ -216,9 +219,9 @@ export default {
   color: $color-chosen;
 }
 .border {
-  border: 1px solid pink;
-  background-color: gray;
-  padding: .3em;
+  // border: 1px solid pink;
+  // background-color: gray;
+  // padding-top: .3em;
 }
 .combination-descr {
   font-size: 1.2em;

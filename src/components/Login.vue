@@ -11,7 +11,6 @@
     </v-alert>
     <v-flex d-flex class="page-title text-xs-center">
       <h1>{{ pageTitle }}</h1>
-      <h2>{{ logInOrSignOut }}</h2>
     </v-flex>
     <v-layout justify-center class="login-form">
       <v-flex xs8 d-flex align-center>
@@ -89,24 +88,26 @@
         <v-btn :disabled="!valid"
           :type="'submit'"
           @click.prevent="login"
+          large
           class="button white--text"
           color="orange">
           login
         </v-btn>
       </v-flex>
-      <!--v-flex xs5 d-flex align-end>
+      <v-flex xs5 d-flex align-end>
         <v-btn @click="clear"
         dark
+        large
         class="button"
         color="purple darken-1">
         clear</v-btn>
-      </v-flex-->
-      <v-flex xs5 d-flex align-end>
-        <v-btn @click="signOut"
+
+        <!--v-btn @click="signOut"
+        v-if="this.logInOrSignOut"
         dark
         class="button"
         color="purple darken-1">
-        sign out</v-btn>
+        sign out</v-btn-->
       </v-flex>
     </v-layout>
     <v-layout wrap class="text-xs-center">
@@ -116,11 +117,19 @@
     <v-flex xs12>
         <v-btn to='/register'
           dark
+          large
           class="button"
           color="purple darken-1">
-          <v-icon medium color="white">edit</v-icon>
+          <!--v-icon medium color="white">edit</v-icon-->
           {{ newUserBtnText }}
         </v-btn>
+        <v-btn @click="signOut"
+        v-if="this.logInOrSignOut"
+        dark
+        large
+        class="button"
+        color="purple darken-1">
+        sign out</v-btn>
       </v-flex>
     </v-layout>
   </v-layout>
@@ -128,6 +137,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import db from '../components/firebaseInit'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import store from '../store/store'
@@ -184,7 +194,7 @@ export default {
         console.log('User exists')
         answer = true
       } else {
-        console.log('No user yet')
+        // console.log('No user yet')
         answer = false
       }
       return answer
@@ -207,29 +217,54 @@ export default {
       })
     },
     */
-    login: function () {
-      firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-        .then(
-          response => {
-            console.log(`You are logged in as`)
-            console.log(response.user.email)
-            console.log(response.user.uid)
-            const newUser = {
-              isAuthenticated: true,
-              uid: response.user.uid
+    getUserNameFromDB (uid) {
+      // console.log(`Getting user name for uid ${uid}`)
+      db.collection('users').where('uid', '==', uid)
+        .get()
+        .then(function (querySnapshot) {
+          let userName
+          querySnapshot.forEach(function (doc) {
+            if (doc.data().uid === uid) {
+              userName = doc.data().name
             }
-            this.$store.commit('setUser', newUser)
-            // this.$router.push('/')
-          },
-          err => {
-            console.dir(err)
-            this.errorMessage = err.message
           })
-      return true
+          store.commit('setUserName', userName)
+          console.log(`Setting user name: ${userName}`)
+          return userName
+        })
+        .catch(function (error) {
+          console.log('Error getting documents: ', error)
+        })
+    },
+    login: function () {
+      if (this.email && this.password) { // need some proper validation
+        firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+          .then(
+            response => {
+              console.log(`You are logged in as`)
+              console.log(response.user.email)
+              console.log(response.user.uid)
+              let tempName = this.getUserNameFromDB(response.user.uid)
+              const newUser = {
+                isAuthenticated: true,
+                uid: response.user.uid,
+                name: tempName
+              }
+              this.$store.commit('setUser', newUser)
+              this.$router.push('/')
+            },
+            err => {
+              console.dir(err)
+              this.errorMessage = err.message
+            })
+        return true
+      }
     },
     signOut: () => {
       firebase.auth().signOut().then(function () {
         console.log('Signed Out')
+        localStorage.removeItem('highestScore')
+        localStorage.removeItem('lastScoresArray')
         store.commit('setAuthState', false)
       }, function (error) {
         console.error('Sign Out Error', error)

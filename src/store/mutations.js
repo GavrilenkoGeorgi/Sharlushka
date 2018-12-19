@@ -316,12 +316,16 @@ export default {
     state.gameCheck = false // to check if there are any combinations left to record
     // zeroCheck = false,
     state.turnCompleted = false
+    state.gameInProgress = false
     state.gameEnded = false
     state.combinationArray = []
     // and clear results
     for (let result of state.scoreArray) {
       result.value = ''
       result.final = false
+      if (result.displayValues) {
+        result.displayValues = []
+      }
     }
     // and all dice chosen states and current value
     for (let dice of state.diceArray) {
@@ -332,8 +336,15 @@ export default {
   setUser (state, payload) {
     state.user = payload
   },
-  setAuthState (state, payload) {
-    state.user.isAuthenticated = payload
+  setUserName (state, name) {
+    state.user.name = name
+  },
+  setAuthState (state, authState) {
+    if (!authState) {
+      state.user.isAuthenticated = false
+      state.user.uid = ''
+      state.user.name = ''
+    }
   },
   SET_PROCESSING (state, payload) {
     state.processing = payload
