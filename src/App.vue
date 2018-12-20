@@ -111,8 +111,8 @@ export default {
 }
 </script>
 
-<!--style src='vuetify/dist/vuetify.min.css'>
-</style-->
+<style src='vuetify/dist/vuetify.min.css'>
+</style>
 <style lang="scss">
 // @import "./assets/fonts/fonts.scss";
 
@@ -159,6 +159,11 @@ export default {
     animation: unset !important;
     transition: none !important;
   }
+}
+
+.ct-series-a .ct-line,
+.ct-series-a .ct-bar {
+  stroke: #8E24AA;
 }
 
 </style>

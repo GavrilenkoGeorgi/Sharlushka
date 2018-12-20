@@ -8,12 +8,20 @@
       <v-flex class="text-xs-center">
         <v-layout column>
         <h1 class="help-title">{{ helpTitle }}</h1>
-        <h2 class="user-name pt-2">{{ userName }}!</h2>
+        <h2 class="user-name">{{ userName }}!</h2>
         <h3 class="hi-score" v-if="highestScore">{{ hiscoreGreeting }} {{ highestScore }}{{ exclamation }}</h3>
         </v-layout>
       </v-flex>
+      <v-flex>
+        <chartist
+            ratio="ct-major-tenth"
+            type="Bar"
+            :data="chartData"
+            :options="chartOptions">
+        </chartist>
+      </v-flex>
 <!-- Last scores heading and table-->
-      <v-flex d-flex align-end v-if="lastScoresToDisplay" class="last-scores-heading text-xs-center">
+      <v-flex d-flex v-if="lastScoresToDisplay" class="last-scores-heading text-xs-center">
         <!--h3>{{ lastScoresHeadingPartOne }} {{ this.lastScoresToDisplay.length }} {{ lastScoresHeadingPartTwo }}</h3-->
         <h3>{{ lastScoresHeadingPartOne }} {{ lastScoresHeadingPartTwo }}</h3>
       </v-flex>
@@ -21,7 +29,7 @@
         <v-layout align-space-around column>
           <v-flex d-flex class="hi-score-display">
             <v-layout row wrap justify-space-around py-2>
-              <v-flex xs4 sm1 ma-0 py-1 v-for="(value, index) in lastScoresToDisplay" :key="index">
+              <v-flex xs4 sm1 ma-0 v-for="(value, index) in lastScoresToDisplay" :key="index">
                 {{ value }}
               </v-flex>
             </v-layout>
@@ -79,30 +87,33 @@ export default {
       userScoresArray: '',
       lastScoresToDisplay: '',
       userGamesPlayed: '',
+      chartData: {
+        labels: [],
+        series: []
+        // labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+        // series: [[333, 125, 256, 368, 129, 234, 623, 546, 345, 324, 34, 342]]
+      },
+      chartOptions: {
+        lineSmooth: false
+      },
       newStats: {
         gamesPlayed: {
           msg: 'Games played',
-          value: '1'
+          value: ''
         },
         maxPossibleScore: {
           msg: 'Max possible score is',
-          value: '2'
+          value: ''
         },
         percentFromMax: {
           msg: 'Percent from max score ~',
-          value: '3'
+          value: ''
         },
         averageScore: {
           msg: 'Your average score equals',
-          value: '4'
+          value: ''
         }
-      },
-      stats: [
-        { msg: 'Games played', value: '' }, // do something with this
-        { msg: 'Max possible score is', value: '879' },
-        { msg: 'Percent from max score ~', value: '' },
-        { msg: 'Your average score equals', value: '' }
-      ]
+      }
     }
   },
   components: {
@@ -148,21 +159,38 @@ export default {
     }
     this.newStats.gamesPlayed.value = this.userScoresArray.length
     this.newStats.maxPossibleScore.value = this.getMaxPossibleScore
-    this.newStats.percentFromMax.value = this.computePercentFromMax()
     this.newStats.averageScore.value = this.computeAverageScore()
-
-    // this.stats[3].value = this.computeAverageScore() // what is this?
-    // this.stats[2].value = this.computePercentFromMax()
-    // this.stats[0].value = this.userScoresArray.length
-    // generate last twelve score array to display
-    // this.stats[1].value = this.computeAverageScore()
-    // this.stats[2].value = this.computePercentFromMax()
+    this.newStats.percentFromMax.value = this.computePercentFromMax()
+    if (this.userScoresArray.length) {
+      this.chartData.labels = this.prepareLabelsForChart(this.userScoresArray.length)
+      this.chartData.series = [this.lastScoresToDisplay]
+    }
   },
   methods: {
     restartGame (state) {
       console.log(`Restarting.`)
       store.commit('resetState')
       this.$router.push('/game')
+    },
+    prepareLabelsForChart (numOfLabels) {
+      // console.log(`Preparing labels ${typeof numOfLabels}`)
+      let resultsToDisplay = 12 // Twelve results for now
+      let lastLabelToDisplay = numOfLabels - resultsToDisplay
+      let labelsArray = []
+      if (numOfLabels >= resultsToDisplay) {
+        while (numOfLabels !== lastLabelToDisplay) {
+          labelsArray.push(numOfLabels)
+          numOfLabels--
+        }
+        return labelsArray.reverse()
+      } else {
+        while (numOfLabels !== 0) {
+          labelsArray.push(numOfLabels)
+          numOfLabels--
+          console.log('Scaaary..')
+        }
+        return labelsArray.reverse()
+      }
     },
     assembleLastScoresArray () {
       console.log(`Preparing array`)
@@ -216,11 +244,16 @@ export default {
     },
     computePercentFromMax () {
       let result = Math.floor(this.newStats.averageScore.value / this.getMaxPossibleScore * 100)
-      this.newStats.percentFromMax.value = result + '%'
+      if (result) {
+        return result + '%'
+      } else {
+        return false
+      }
     }
   }
 }
 </script>
+
 <style lang="scss" scoped>
 @import '../assets/scss/index.scss';
 
@@ -234,25 +267,25 @@ export default {
 }
 
 .help-title {
-  font-size: 2.7em;
+  font-size: 2.3em;
 }
 .user-name {
   color: $color-orange;
-  font-size: 1.8em;
+  font-size: 1.5em;
 }
 .hi-score {
-  line-height: 1.8;
+  line-height: 1.2;
 }
 .hi-score-display {
   color: $color-primary-1;
-  font-size: 2.1em;
+  font-size: 1.9em;
   text-align: center;
 }
 .stats-display {
   color: $color-primary-3;
-  font-size: 1.2em;
+  font-size: 1.1em;
   font-weight: 700;
-  line-height: 1.6;
+  line-height: 1.3;
 }
 
 @media screen and (orientation: landscape) {

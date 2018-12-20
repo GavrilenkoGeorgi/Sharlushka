@@ -9,9 +9,9 @@ import store from './store/store'
 
 import './registerServiceWorker'
 
-import '../node_modules/vuetify/dist/vuetify.min.css'
+// import '../node_modules/vuetify/dist/vuetify.min.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
-
+import 'chartist/dist/chartist.min.css'
 // import firebase from 'firebase/app'
 // import 'firebase/firestore'
 import firebaseConfig from './components/firebaseConfig'
@@ -109,6 +109,7 @@ Vue.config.productionTip = false
 Vue.use(Vuetify, {
   iconfont: 'md' // 'md' || 'mdi' || 'fa' || 'fa4'
 })
+Vue.use(require('vue-chartist'))
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

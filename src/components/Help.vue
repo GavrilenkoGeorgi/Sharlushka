@@ -37,25 +37,25 @@
       <svg version='1.1' style="display: none;" xmlns="http://www.w3.org/2000/svg">
         <symbol id="diceOnes" viewBox="0 0 200 200">
           <circle fill="currentColor" cx="100" cy="100" r="18"/>
-          <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          <path stroke-width=".4em" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
         </symbol>
         <symbol id="diceTwos" viewBox="0 0 200 200">
           <circle fill="currentColor" cx="50" cy="150" r="18"/>
           <circle fill="currentColor" cx="150" cy="50" r="18"/>
-          <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          <path stroke-width=".4em" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
         </symbol>
         <symbol id="diceThrees" class="dice" viewBox="0 0 200 200">
           <circle fill="currentColor" cx="50" cy="150" r="18"/>
           <circle fill="currentColor" cx="100" cy="100" r="18"/>
           <circle fill="currentColor" cx="150" cy="50" r="18"/>
-          <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          <path stroke-width=".4em" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
         </symbol>
         <symbol id="diceFours" class="dice" viewBox="0 0 200 200">
           <circle fill="currentColor" cx="150" cy="50" r="18"/>
           <circle fill="currentColor" cx="150" cy="150" r="18"/>
           <circle fill="currentColor" cx="50" cy="150" r="18"/>
           <circle fill="currentColor" cx="50" cy="50" r="18"/>
-          <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          <path stroke-width=".4em" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
         </symbol>
         <symbol id="diceFives" class="dice" viewBox="0 0 200 200">
           <circle fill="currentColor" cx="100" cy="100" r="18"/>
@@ -63,7 +63,7 @@
           <circle fill="currentColor" cx="150" cy="150" r="18"/>
           <circle fill="currentColor" cx="50" cy="150" r="18"/>
           <circle fill="currentColor" cx="50" cy="50" r="18"/>
-          <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          <path stroke-width=".4em" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
         </symbol>
         <symbol id="diceSixes" class="dice" viewBox="0 0 200 200">
           <circle fill="currentColor" cx="150" cy="100" r="18"/>
@@ -72,7 +72,7 @@
           <circle fill="currentColor" cx="50" cy="150" r="18"/>
           <circle fill="currentColor" cx="50" cy="100" r="18"/>
           <circle fill="currentColor" cx="50" cy="50" r="18"/>
-          <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+          <path stroke-width=".4em" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
         </symbol>
       </svg>
     </v-layout>
