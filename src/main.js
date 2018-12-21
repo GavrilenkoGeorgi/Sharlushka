@@ -9,11 +9,7 @@ import store from './store/store'
 
 import './registerServiceWorker'
 
-// import '../node_modules/vuetify/dist/vuetify.min.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
-import 'chartist/dist/chartist.min.css'
-// import firebase from 'firebase/app'
-// import 'firebase/firestore'
 import firebaseConfig from './components/firebaseConfig'
 import db from './components/firebaseInit'
 import firebase from 'firebase/app'
@@ -74,12 +70,7 @@ function getUserNameFromDB (uid) {
       store.commit('setUserName', userName)
       console.log(`Setting user name: ${userName}`)
       return userName
-    }) /*
-    .then((userName) => {
-      // this.userName = userName
-      // store.commit('setUserName', userName)
-      // console.log(`Setting user name ${userName}`)
-    }) */
+    })
     .catch(function (error) {
       console.log('Error getting documents: ', error)
     })
@@ -104,7 +95,6 @@ if (!this.getUserAuthState || this.getUserData.name === '') {
 }
 
 Vue.config.productionTip = false
-// Vue.use(Vuetify)
 
 Vue.use(Vuetify, {
   iconfont: 'md' // 'md' || 'mdi' || 'fa' || 'fa4'

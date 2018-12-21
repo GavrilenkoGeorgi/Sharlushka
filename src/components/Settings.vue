@@ -1,5 +1,5 @@
 <template>
-  <v-container fill-height id="gameSettings">
+  <v-container id="gameSettings">
     <v-layout align-space-around column>
 <!-- Close button -->
       <v-spacer></v-spacer>
@@ -9,38 +9,32 @@
         <v-layout column>
         <h1 class="help-title">{{ helpTitle }}</h1>
         <h2 class="user-name">{{ userName }}!</h2>
-        <h3 class="hi-score" v-if="highestScore">{{ hiscoreGreeting }} {{ highestScore }}{{ exclamation }}</h3>
+        <h3 class="hi-score" v-if="highestScore">{{ hiscoreGreeting }} {{ highestScore }}{{ exclamation }}</h3><!-- Safari -->
         </v-layout>
       </v-flex>
-      <v-flex>
+<!-- Chart -->
+      <v-flex d-flex align-center my-4>
         <chartist
-            ratio="ct-major-tenth"
-            type="Bar"
+            ratio="ct-major-twelfth"
+            type="Line"
             :data="chartData"
             :options="chartOptions">
         </chartist>
       </v-flex>
 <!-- Last scores heading and table-->
-      <v-flex d-flex v-if="lastScoresToDisplay" class="last-scores-heading text-xs-center">
-        <!--h3>{{ lastScoresHeadingPartOne }} {{ this.lastScoresToDisplay.length }} {{ lastScoresHeadingPartTwo }}</h3-->
+      <v-flex d-flex align-end v-if="lastScoresToDisplay" class="last-scores-heading text-xs-center">
         <h3>{{ lastScoresHeadingPartOne }} {{ lastScoresHeadingPartTwo }}</h3>
       </v-flex>
       <v-flex>
         <v-layout align-space-around column>
           <v-flex d-flex class="hi-score-display">
-            <v-layout row wrap justify-space-around py-2>
+            <v-layout row wrap justify-space-around>
               <v-flex xs4 sm1 ma-0 v-for="(value, index) in lastScoresToDisplay" :key="index">
                 {{ value }}
               </v-flex>
             </v-layout>
           </v-flex>
 <!-- Stats display -->
-          <!--v-flex class="stats-display text-xs-center"
-            v-for="item in stats"
-            v-if="item.value"
-            :key="item.msg">
-            {{ item.msg }}&nbsp;{{ item.value }}
-          </v-flex-->
           <v-flex class="stats-display text-xs-center"
             v-for="item in newStats"
             v-if="item.value"
@@ -49,7 +43,8 @@
           </v-flex>
         </v-layout>
       </v-flex>
-      <v-layout row align-center justify-space-around>
+<!-- Buttons -->
+      <v-layout mt-4 row align-center justify-space-around>
         <v-flex xs4 lg2 class="text-xs-center">
           <v-btn ripple block class="ui-button" large color="orange"
             @click="restartGame">
@@ -94,7 +89,13 @@ export default {
         // series: [[333, 125, 256, 368, 129, 234, 623, 546, 345, 324, 34, 342]]
       },
       chartOptions: {
-        lineSmooth: false
+        lineSmooth: false,
+        axisX: {
+          // We can disable the grid for this axis
+          showGrid: true,
+          // and also don't show the label
+          showLabel: true
+        }
       },
       newStats: {
         gamesPlayed: {
@@ -129,8 +130,6 @@ export default {
   mounted () {
     console.log(`Settings mounted`) // change to about
     // check if user is authenticated
-    // let assembledArray
-    // this.lastScores = [512, 345, 534]
     if (!this.getUserData.isAuthenticated) {
       console.log(`You are anonymous!`)
       this.userName = this.getDefaultUserName
@@ -138,14 +137,8 @@ export default {
       this.userScoresArray = this.assembleLastScoresArray()
     } else {
       console.log(`You are existing user!`)
-      // this.setUserScoreDataFromDB(this.getUserData.uid)
       this.highestScore = localStorage.getItem('highestScore')
       this.userName = this.getUserData.name
-      /*
-      if (!this.userName || this.userName === '') {
-        this.userName = this.getDefaultUserName
-      }
-      */
       let lastScoresString = localStorage.getItem('lastScoresArray')
       // if one played at least one full game then there is an array
       // with the last score, which is the highest and
@@ -194,7 +187,6 @@ export default {
     },
     assembleLastScoresArray () {
       console.log(`Preparing array`)
-      // this.lastScores = localStorage.getItem('lastScoresArray')
       let lastScoresString = localStorage.getItem('lastScoresArray')
       if (!lastScoresString) {
         console.log(`You have to play at least one game to calculate stats`)
@@ -227,7 +219,6 @@ export default {
         })
     },
     computeAverageScore () {
-      // let lastScores = [333, 125, 256, 368, -12, 234, 623, 546, 345, 324, 34, 342]
       if (this.userScoresArray) {
         let arrayToReduce = []
         const scoreSum = (accumulator, currentValue) => accumulator + currentValue

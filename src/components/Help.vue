@@ -218,11 +218,7 @@ export default {
   font-weight: 500;
   color: $color-chosen;
 }
-.border {
-  // border: 1px solid pink;
-  // background-color: gray;
-  // padding-top: .3em;
-}
+
 .combination-descr {
   font-size: 1.2em;
   // font-weight: 700;

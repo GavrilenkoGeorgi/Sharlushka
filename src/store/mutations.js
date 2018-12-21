@@ -168,6 +168,14 @@ export default {
               // very complicated, need to do something about it
               if (quadsArray >= 1 && !state.scoreArray[10].final) {
                 state.scoreArray[10].value = quadsArray[0] * 4
+                if (!state.scoreArray[8].final) {
+                  // so if three of a kind is not final we can count it as a three o.a.k
+                  state.scoreArray[8].value = quadsArray[0] * 3
+                }
+                if (!state.scoreArray[6].final) {
+                  // pair is not final we can count it as a pair
+                  state.scoreArray[6].value = quadsArray[0] * 2
+                }
               } else if (!state.scoreArray[10].final) {
                 state.scoreArray[10].value = ''
               }
@@ -175,6 +183,19 @@ export default {
               // check for poker
               if (arrayToAnalyse[currentDice - 1].length === 5 && !state.scoreArray[11].final) {
                 state.scoreArray[11].value = (currentDice * 5) + 80
+                // This should be something else here (
+                if (!state.scoreArray[10].final) {
+                  // full
+                  state.scoreArray[10].value = arrayToAnalyse[currentDice - 1] * 4
+                }
+                if (!state.scoreArray[8].final) {
+                  // so if three of a kind is not final we can count it as a three o.a.k
+                  state.scoreArray[8].value = arrayToAnalyse[currentDice - 1] * 3
+                }
+                if (!state.scoreArray[6].final) {
+                  // pair is not final we can count it as a pair
+                  state.scoreArray[6].value = arrayToAnalyse[currentDice - 1] * 2
+                }
               } else if (!state.scoreArray[11].final) {
                 state.scoreArray[11].value = ''
               }

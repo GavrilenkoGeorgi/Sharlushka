@@ -19,8 +19,8 @@
       <v-flex class="main-button animated"
           v-on:click="handleMainGameButtonClick"
           v-bind:class="{ save: this.mainButtonState.save,
-                          bounce: this.mainButtonState.save,
-                          visible: this.getCurrentGameState.gameEnded }">
+          bounce: this.mainButtonState.save,
+          visible: this.getCurrentGameState.gameEnded }">
         <v-layout align-center justify-center row fill-height>
           <v-flex xs2 class="play-arrow animated fadeIn" v-if=" this.mainButtonState.play">
           </v-flex>
@@ -94,7 +94,13 @@ export default {
     vibrate () {
       console.log('zzz')
       this.zzz += '-zzz'
-      let pattern = [10, 150, 66, 300, 33, 150, 15]
+      let pattern = [5, 75, 66, 300, 33, 150, 15]
+      navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate
+      navigator.vibrate(pattern)
+    },
+    vibrateOnce () {
+      console.log(`One z`)
+      let pattern = [10]
       navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate
       navigator.vibrate(pattern)
     },
@@ -136,6 +142,7 @@ export default {
         if (!this.diceRolled) {
           this.diceRolled = true
         }
+        this.vibrateOnce()
         store.commit('rollDice')
         if (this.getCurrentGameState.currentRollCount === 0 &&
             this.getCurrentGameState.currentGameTurn <= 6 &&

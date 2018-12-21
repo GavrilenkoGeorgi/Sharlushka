@@ -316,10 +316,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// @import "../assets/scss/vars/colors.scss";
-// @import "../assets/scss/vars/dice-icons.scss";
-// @import "../assets/fonts/fonts.scss";
-// @import '../assets/scss/index.scss';
 @import "../assets/scss/index.scss";
 
 .game-layout {
