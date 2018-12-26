@@ -172,9 +172,11 @@ export default {
           let resultsArrayToUpdate = localStorage.getItem('lastScoresArray')
           // you really should check if it is actually higher
           let highestScoreToUpdate = localStorage.getItem('highestScore')
+          let schoolScoresToUpdate = localStorage.getItem('schoolScores')
 
           var updateDocRef = docRef.update({
             resultsArray: resultsArrayToUpdate,
+            schoolResultsArray: schoolScoresToUpdate,
             hiScore: highestScoreToUpdate
           })
           // return true

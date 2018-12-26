@@ -2,7 +2,6 @@
   <v-container id="gameSettings">
     <v-layout align-space-around column>
 <!-- Close button -->
-      <v-spacer></v-spacer>
       <closeBtn></closeBtn>
 <!-- Title and user name -->
       <v-flex class="text-xs-center">
@@ -13,7 +12,7 @@
         </v-layout>
       </v-flex>
 <!-- Chart -->
-      <v-flex d-flex align-center my-2>
+      <v-flex d-flex align-center>
         <chartist
             ratio="ct-major-twelfth"
             type="Line"
@@ -44,7 +43,7 @@
         </v-layout>
       </v-flex>
 <!-- Buttons -->
-      <v-layout mt-4 row align-center justify-space-around>
+      <v-layout mt-3 row align-center justify-space-around>
         <v-flex xs4 lg2 class="text-xs-center">
           <v-btn ripple block class="ui-button" large color="orange"
             @click="restartGame">
@@ -259,14 +258,14 @@ export default {
 }
 
 .help-title {
-  font-size: 2.3em;
+  font-size: 2em;
 }
 .user-name {
   color: $color-orange;
-  font-size: 1.5em;
+  font-size: 1.4em;
 }
 .hi-score {
-  line-height: 1.2;
+  line-height: 1;
 }
 .hi-score-display {
   color: $color-primary-1;
