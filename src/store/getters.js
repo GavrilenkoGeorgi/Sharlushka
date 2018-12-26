@@ -46,6 +46,9 @@ export default {
   getTotalScore (state) {
     return state.schoolScoreTotal + state.gameTotal
   },
+  getSchoolScore (state) {
+    return state.schoolScoreTotal
+  },
   getDefaultUserName (state) {
     return state.defaultUserName
   },

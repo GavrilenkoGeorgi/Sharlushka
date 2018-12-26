@@ -32,7 +32,7 @@
           <v-btn ripple
             large color="purple darken-1"
             :to="'/settings'">
-            <v-icon medium color="white">equalizer</v-icon>
+            <v-icon medium color="white">trending_up</v-icon>
           </v-btn>
         </v-flex>
       </v-layout>
@@ -57,7 +57,8 @@ export default {
       highestScore: '',
       hiscoreGreeting: 'Your highest score is',
       exclamation: '!', // some over-engeneering
-      lastScoresArray: ''
+      lastScores: '',
+      schoolScores: ''
     }
   },
   components: {
@@ -66,6 +67,7 @@ export default {
   computed: {
     ...mapGetters([
       'getTotalScore',
+      'getSchoolScore',
       'getCurrentGameState',
       'getDefaultUserName',
       'getUserData'
@@ -83,13 +85,15 @@ export default {
       }
 
       if (this.getCurrentGameState.gameInProgress) {
-        this.lastScoresArray = localStorage.getItem('lastScoresArray')
-        if (!this.lastScoresArray) {
+        this.lastScores = localStorage.getItem('lastScoresArray')
+        this.schoolScores = localStorage.getItem('schoolScores')
+        if (!this.lastScores) { // remove this
           console.log(`No local storage score array yet, creating one`)
           // let lastTwelveScores = [333, 125, 256, 368, -12, 234, 623, 546, 345, 324, 34, 342]
-          // this.lastScoresArray = [this.getTotalScore]
-          this.lastScoresArray = []
-          localStorage.setItem('lastScoresArray', this.lastScoresArray)
+          // this.lastScores = [this.getTotalScore]
+          this.lastScores = []
+          localStorage.setItem('lastScoresArray', this.lastScores)
+          // localStorage.setItem('schoolScores', this.getSchoolScore)
           this.addScoreToDatabase()
         } else {
           // console.log(`local storage score array exists`)
@@ -110,8 +114,13 @@ export default {
     },
     addScoreToDatabase () {
       console.log(`Adding score`)
-      if (typeof this.lastScoresArray === 'string') {
-        this.lastScoresArray = this.lastScoresArray.split(',')
+      if (typeof this.lastScores === 'string') {
+        this.lastScores = this.lastScores.split(',')
+      }
+      if (typeof this.schoolScores === 'string') {
+        this.schoolScores = this.schoolScores.split(',')
+      } else {
+        this.schoolScores = [this.getSchoolScore]
       }
       /*
       if (this.lastScoresArray.length <= 11) {
@@ -122,9 +131,12 @@ export default {
         this.lastScoresArray.push(this.getTotalScore)
       }
       */
-      this.lastScoresArray.push(this.getTotalScore)
+      // check if school is completed
+      this.lastScores.push(this.getTotalScore)
+      this.schoolScores.push(this.getSchoolScore)
       // ! add check if game is completed
-      localStorage.setItem('lastScoresArray', this.lastScoresArray)
+      localStorage.setItem('lastScoresArray', this.lastScores)
+      localStorage.setItem('schoolScores', this.schoolScores)
       // if user is Anonymous there is no database,
       // only localStorage, so
       if (this.getUserData.isAuthenticated) {

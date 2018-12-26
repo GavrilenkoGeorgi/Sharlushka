@@ -154,16 +154,19 @@ export default {
             this.$store.commit('setUser', newUser)
             // add new user data to db
             if (this.name === '') { // it is optional, privacy meh
-              this.name = 'Anonymous'
+              this.name = 'Anonymous' // get default name??
             }
 
             let hiScoreToSet = localStorage.getItem('highestScore')
             let scoresArrayToSet
+            let schoolResultsToSet
             if (hiScoreToSet) {
               scoresArrayToSet = localStorage.getItem('lastScoresArray')
+              schoolResultsToSet = localStorage.getItem('schoolScores') // !do something about naming here
             } else {
               hiScoreToSet = ''
               scoresArrayToSet = ''
+              schoolResultsToSet = ''
             }
 
             const newUserData = {
@@ -172,8 +175,9 @@ export default {
               email: response.user.email,
               // resultsArray: [123, 432, 554], // or not
               // hiScore: 478 // if he played more than one game
+              hiScore: hiScoreToSet,
               resultsArray: scoresArrayToSet,
-              hiScore: hiScoreToSet
+              schoolResultsArray: schoolResultsToSet
             }
             this.addNewUser(newUserData)
             // localStorage.setItem('userName', this.name)

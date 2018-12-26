@@ -268,10 +268,18 @@ export default {
     state.diceRolled = true // what is this?
     state.rollCount--
     state.diceRolled = false
+
+    function getRandomInt (max) {
+      return Math.floor(Math.random() * Math.floor(max))
+    }
+
     for (let dice of state.diceArray) {
       if (!dice.chosen) {
-        let numbah = Math.floor((Math.random() * 6) + 1)
+        // let numbah = Math.floor((Math.random() * 6) + 1)
+        let numbah = getRandomInt(6) + 1 // shifting stuff
+        // set dice value
         dice.value = numbah
+        // set dice icon svg image
         dice.currentIcon = state.scoreArray[numbah - 1].icon
       }
     }

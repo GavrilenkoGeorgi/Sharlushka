@@ -13,7 +13,7 @@
         </v-layout>
       </v-flex>
 <!-- Chart -->
-      <v-flex d-flex align-center my-4>
+      <v-flex d-flex align-center my-2>
         <chartist
             ratio="ct-major-twelfth"
             type="Line"
@@ -89,6 +89,7 @@ export default {
         // series: [[333, 125, 256, 368, 129, 234, 623, 546, 345, 324, 34, 342]]
       },
       chartOptions: {
+        fullWidth: true,
         lineSmooth: false,
         axisX: {
           // We can disable the grid for this axis

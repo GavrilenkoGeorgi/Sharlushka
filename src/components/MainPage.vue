@@ -90,8 +90,10 @@ export default {
     this.$nextTick(function () {
       console.log('Main page mounted')
       this.userName = this.getUserData.name
-      if (this.userName === '') {
+      if (this.userName === '' && !localStorage.getItem('schoolScores')) {
         this.userName = this.getDefaultUserName
+        // localStorage.setItem('schoolScores', null)
+        console.log(`Setting school score local storage for the first time`)
       }
       if (this.getUserData.isAuthenticated) { // just ones is already enough
         console.log(`Setting user score from db...`)
@@ -119,7 +121,8 @@ export default {
               // scoreArray = doc.data().resultsArray
               userScores = {
                 hiScore: doc.data().hiScore,
-                resultsArray: doc.data().resultsArray
+                resultsArray: doc.data().resultsArray,
+                schoolResultsArray: doc.data().schoolResultsArray
               }
             }
           })
@@ -129,6 +132,7 @@ export default {
           // let highestScore = 512
           localStorage.setItem('highestScore', userScores.hiScore)
           localStorage.setItem('lastScoresArray', userScores.resultsArray)
+          localStorage.setItem('schoolScores', userScores.schoolResultsArray)
           console.log(`Setting users score array to local storage ${userScores.resultsArray}`)
         })
         .catch(function (error) {

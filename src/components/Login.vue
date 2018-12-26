@@ -1,19 +1,20 @@
 <template>
-  <v-layout column id="login" pa-2 pt-3>
-    <v-spacer></v-spacer>
+  <v-layout column id="login" pa-2>
     <closeButton></closeButton>
-    <v-alert
-      :value="errorMessage"
-      dismissible
-      outline
-      type="error">
-      {{ errorMessage }}
-    </v-alert>
-    <v-flex d-flex class="page-title text-xs-center">
+    <v-flex d-flex>
+      <v-alert
+        :value="errorMessage"
+        dismissible
+        outline
+        type="error">
+        {{ errorMessage }}
+      </v-alert>
+    </v-flex>
+    <v-flex d-flex class="page-title text-xs-center py-4">
       <h1>{{ pageTitle }}</h1>
     </v-flex>
     <v-layout justify-center class="login-form">
-      <v-flex xs8 d-flex align-center>
+      <v-flex xs8 d-flex align-center py-4>
       <v-form ref="form" v-model="valid"
         lazy-validation>
       <!--v-text-field
@@ -73,7 +74,7 @@
         class="dashBtn"
         color="purple">Remove user</v-btn>
     </v-layout-->
-    <v-layout justify-center class="text-xs-center">
+    <v-layout justify-center class="text-xs-center pt-4">
       <!--v-flex v-if="this.getUserAuthState.isAuthenticated" xs5 d-flex align-end>
         <v-btn
           :type="'submit'"
@@ -111,7 +112,7 @@
       </v-flex>
     </v-layout>
     <v-layout wrap class="text-xs-center">
-      <v-flex d-flex align-center class="info-text">
+      <v-flex d-flex align-center class="info-text py-4">
       <span>or</span>
       </v-flex>
     <v-flex xs12>
@@ -147,7 +148,7 @@ export default {
   name: 'login',
   data: () => ({
     users: [],
-    errorMessage: '',
+    errorMessage: undefined,
     newUserBtnText: 'Create new user',
     pageTitle: 'Log In',
     valid: true,
@@ -237,6 +238,7 @@ export default {
         })
     },
     login: function () {
+      this.errorMessage = undefined
       if (this.email && this.password) { // need some proper validation
         firebase.auth().signInWithEmailAndPassword(this.email, this.password)
           .then(
@@ -254,7 +256,7 @@ export default {
               this.$router.push('/')
             },
             err => {
-              console.dir(err)
+              console.log(err.message)
               this.errorMessage = err.message
             })
         return true
@@ -265,6 +267,7 @@ export default {
         console.log('Signed Out')
         localStorage.removeItem('highestScore')
         localStorage.removeItem('lastScoresArray')
+        localStorage.removeItem('schoolScores')
         store.commit('setAuthState', false)
       }, function (error) {
         console.error('Sign Out Error', error)

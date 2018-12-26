@@ -81,12 +81,12 @@ export default {
 
 .ct-series-a .ct-point {
   stroke: #AA00FF;
-  stroke-width: .5em;
+  stroke-width: .25em;
 }
 .ct-series-a .ct-line,
 .ct-series-a .ct-bar {
   stroke: #E1BEE7;
-  stroke-width: .15em;
+  stroke-width: .075em;
 }
 .ct-nodata {
   visibility: hidden;

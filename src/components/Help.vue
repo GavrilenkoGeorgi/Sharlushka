@@ -1,9 +1,19 @@
 <template>
-  <v-container fluid fill-height>
+  <v-container>
     <v-layout row wrap>
       <closeBtn></closeBtn>
       <v-flex xs12>
         <h1 class="text-xs-center mb-2 rules-heading">{{ rulesHeading }}</h1>
+        <h4 v-if="this.schoolScores !== ''" class="text-xs-center mb-2 rules-heading">Your school results</h4>
+      <!-- Chart -->
+      <v-flex d-flex align-center my-2>
+        <chartist
+            ratio="ct-major-twelfth"
+            type="Line"
+            :data="chartData"
+            :options="chartOptions">
+        </chartist>
+      </v-flex>
         <p class="rules-text">
           {{ overall }}
         </p>
@@ -88,6 +98,25 @@ export default {
   name: 'Help',
   data () {
     return {
+      schoolScores: '',
+      chartData: {
+        labels: [],
+        series: []
+        // labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+        // series: [[12, 14, 36, 34, 23, 12, -24, 14, 36, 44, 23, -12, 12, 14, 36, -24, 23]]
+      },
+      chartOptions: {
+        fullWidth: true,
+        // lineSmooth: false,
+        // lineSmooth: Chartist.Interpolation.simple(),
+        showArea: true,
+        axisX: {
+          // We can disable the grid for this axis
+          showGrid: true,
+          // and also don't show the label
+          showLabel: true
+        }
+      },
       overall: `Три броска, для того чтобы собрать комбинацию. Первый раз бросаются все пять кубиков.
         Дополнительно два раза можно перебрасывать часть кубиков, оставляя нужные,
         или перебросить всё заново. Можно остановиться на первом или втором результате и
@@ -162,12 +191,58 @@ export default {
   },
   mounted () {
     this.$nextTick(function () {
-      console.log('Rules page mounted')
+      console.log(`Rules page mounted ${this.schoolScores}`)
       this.highestScore = localStorage.getItem('highestScore')
+      this.schoolScores = localStorage.getItem('schoolScores')
       this.userName = this.getUserData.name
+      // this.chartData.labels = this.prepareLabelsForChart(this.schoolScores.split(',').length)
+      if (this.schoolScores) {
+        let arrayToDisplay = this.schoolScores.split(',')
+        this.chartData.series = [arrayToDisplay]
+      }
+      // console.log(`Scores are split ${this.schoolScores.split(',').length}`)
+      // this.chartData.series = this.schoolScores
+      // this.schoolScores = [12, 14, 36, 34, 23, 12, -24, 14, 36, 44, 23, -12, 12, 14, 36, -24, 23]
+      // this.schoolScores = '12, 14, 36, 34, 23, 12, -24, 14, 36, 44, 23, -12, 12, 14, 36, -24, 23'
+      /*
+      if (this.schoolScores !== '') {
+        this.chartData.labels = this.prepareLabelsForChart(this.schoolScores.length)
+        if (this.schoolScores.length >= 1) {
+          // this.userScoresArray = lastScoresString.split(',')
+          this.chartData.series = this.schoolScores.split(',')
+        }
+      }
+      */
     })
   },
   methods: {
+    prepareLabelsForChart (numOfLabels) {
+      // console.log(`Preparing labels ${typeof numOfLabels}`)
+      // let resultsToDisplay = numOfLabels // More than twelve
+      console.log(`Results to display ${numOfLabels}`)
+      // let lastLabelToDisplay = numOfLabels - resultsToDisplay
+      let labelsArray = []
+      while (numOfLabels !== 1) {
+        labelsArray.push(numOfLabels)
+        numOfLabels--
+      }
+      return labelsArray.reverse()
+      /*
+      if (numOfLabels >= resultsToDisplay) {
+        while (numOfLabels !== lastLabelToDisplay) {
+          labelsArray.push(numOfLabels)
+          numOfLabels--
+        }
+        return labelsArray.reverse()
+      } else {
+        while (numOfLabels !== 0) {
+          labelsArray.push(numOfLabels)
+          numOfLabels--
+          console.log('Scaaary..')
+        }
+        return labelsArray.reverse()
+      } */
+    },
     openHelpMenu () {
       console.log(`Help menu!`)
       if (this.helpMenuHidden) {
@@ -233,4 +308,5 @@ export default {
 .combination-descr:hover {
   background-color: $color-pale-primary;
 }
+
 </style>
