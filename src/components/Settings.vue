@@ -1,8 +1,8 @@
 <template>
   <v-container id="gameSettings">
-    <v-layout align-space-around column>
 <!-- Close button -->
-      <closeBtn></closeBtn>
+    <closeBtn></closeBtn>
+    <v-layout align-space-around column>
 <!-- Title and user name -->
       <v-flex class="text-xs-center">
         <v-layout column>
@@ -15,7 +15,7 @@
       <v-flex d-flex align-center>
         <chartist
             ratio="ct-major-twelfth"
-            type="Line"
+            type="Bar"
             :data="chartData"
             :options="chartOptions">
         </chartist>
@@ -189,7 +189,7 @@ export default {
       console.log(`Preparing array`)
       let lastScoresString = localStorage.getItem('lastScoresArray')
       if (!lastScoresString) {
-        console.log(`You have to play at least one game to calculate stats`)
+        console.log(`You have to finish at least one game to calculate stats, school results are in rules section.`)
         return false
       } else {
         return lastScoresString.split(',')
@@ -299,5 +299,9 @@ export default {
   .stats-display {
     font-size: 1.5em;
   }
+}
+
+#gameSettings {
+  height: 100%;
 }
 </style>

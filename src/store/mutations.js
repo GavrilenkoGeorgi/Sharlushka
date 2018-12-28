@@ -265,14 +265,12 @@ export default {
   },
   rollDice (state) {
     state.newTurn = false
-    state.diceRolled = true // what is this?
+    state.diceRollInProgress = true // what is this?
     state.rollCount--
-    state.diceRolled = false
-
+    // state.diceRolled = false
     function getRandomInt (max) {
       return Math.floor(Math.random() * Math.floor(max))
     }
-
     for (let dice of state.diceArray) {
       if (!dice.chosen) {
         // let numbah = Math.floor((Math.random() * 6) + 1)
@@ -327,6 +325,9 @@ export default {
     }
     state.combinationArray = []
     // clear unsaved results onscreen
+  },
+  stopDiceRollProcess (state) {
+    state.diceRollInProgress = false
   },
   resetState (state) { // reset state
     /*

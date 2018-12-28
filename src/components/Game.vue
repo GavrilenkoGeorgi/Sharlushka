@@ -207,7 +207,7 @@ export default {
       if (scoreId) {
         this.recordResult(scoreId)
       } else {
-        console.log(`Id is: ${scoreId}`)
+        console.log(`Nothing to record Id is: ${scoreId}`)
       }
     },
     clearResultBox () {
@@ -228,7 +228,7 @@ export default {
       store.state.debug = true
     },
     recordResult (id) {
-      console.log('Recording result')
+      console.log('Recording result..')
       store.state.gameInProgress = true // should be just ones
       // this.turnCompleted = true
       let combinationId = id
@@ -291,6 +291,7 @@ export default {
       // last checks after recording or not recording the result
       if (store.state.currentGameTurn === 33 && store.state.turnCompleted) {
         console.log(`Game Over!`)
+        /*
         let score = store.state.schoolScoreTotal + store.state.gameTotal
         let highestScore = localStorage.getItem('highestScore')
         if (!highestScore) {
@@ -300,7 +301,7 @@ export default {
           localStorage.setItem('highestScore', score)
         } else {
           console.log(`Your score is not so high ${score}`)
-        }
+        } */
         store.state.gameEnded = true
         this.$router.push({ path: '/endgame' })
       } else {

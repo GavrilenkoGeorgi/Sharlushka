@@ -62,7 +62,7 @@ export default {
   data () {
     return {
       gameName: 'Sharlushka',
-      userName: '',
+      userName: '1',
       greeting: 'Hi,',
       exclamation: '.'
     }
@@ -89,15 +89,11 @@ export default {
   mounted () {
     this.$nextTick(function () {
       console.log('Main page mounted')
-      this.userName = this.getUserData.name
-      if (this.userName === '' && !localStorage.getItem('schoolScores')) {
-        this.userName = this.getDefaultUserName
-        // localStorage.setItem('schoolScores', null)
-        console.log(`Setting school score local storage for the first time`)
-      }
-      if (this.getUserData.isAuthenticated) { // just ones is already enough
+      if (this.getUserData.isAuthenticated) {
         console.log(`Setting user score from db...`)
         this.setUserScoreDataFromDB(this.getUserData.uid)
+      } else {
+        this.userName = this.getDefaultUserName
       }
     })
   },
@@ -113,12 +109,10 @@ export default {
       db.collection('users').where('uid', '==', uid)
         .get()
         .then(function (querySnapshot) {
-          // let scoreArray
           let userScores = {}
           querySnapshot.forEach(function (doc) {
             // doc.data() is never undefined for query doc snapshots
             if (doc.data().uid === uid) {
-              // scoreArray = doc.data().resultsArray
               userScores = {
                 hiScore: doc.data().hiScore,
                 resultsArray: doc.data().resultsArray,
@@ -129,40 +123,14 @@ export default {
           return userScores
         })
         .then((userScores) => {
-          // let highestScore = 512
           localStorage.setItem('highestScore', userScores.hiScore)
           localStorage.setItem('lastScoresArray', userScores.resultsArray)
           localStorage.setItem('schoolScores', userScores.schoolResultsArray)
-          console.log(`Setting users score array to local storage ${userScores.resultsArray}`)
         })
         .catch(function (error) {
           console.log('Error getting documents: ', error)
         })
     }
-    /*
-    getUserNameFromDB (uid) {
-      console.log(`Getting user name for uid ${uid}`)
-      db.collection('users').where('uid', '==', uid)
-        .get()
-        .then(function (querySnapshot) {
-          let userName
-          querySnapshot.forEach(function (doc) {
-            // doc.data() is never undefined for query doc snapshots
-            if (doc.data().uid === uid) {
-              userName = doc.data().name
-            }
-          })
-          return userName
-        })
-        .then((userName) => {
-          this.userName = userName
-          this.$store.commit('setUserName', userName)
-          console.log(`Setting user name ${userName}`)
-        })
-        .catch(function (error) {
-          console.log('Error getting documents: ', error)
-        })
-    } */
   }
 }
 </script>

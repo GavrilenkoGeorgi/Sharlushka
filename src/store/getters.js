@@ -8,7 +8,7 @@ export default {
       currentRollCount: state.rollCount,
       turnCompleted: state.turnCompleted,
       gameEnded: state.gameEnded,
-      diceRolled: state.diceRolled,
+      diceRollInProgress: state.diceRollInProgress,
       gameCheck: state.gameCheck,
       gameInProgress: state.gameInProgress
     }

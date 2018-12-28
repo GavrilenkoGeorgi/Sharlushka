@@ -11,6 +11,7 @@ yarn-error.log*
 selenium-debug.log
 /src/components/Register.vue.bak
 /src/components/firebaseConfig.js
+/src/store/debugState.js
 temp.css
 temp.html
 

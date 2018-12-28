@@ -1,34 +1,35 @@
 <template>
-  <v-container fill-height id="endGame">
-    <v-layout align-space-around column>
-      <v-spacer></v-spacer>
-<!-- Close icon -->
-      <closeBtn></closeBtn>
-<!-- Message -->
-      <v-flex d-flex class="user-name text-xs-center">
+  <v-container id="endGame">
+<!-- Close button -->
+    <closeBtn></closeBtn>
+    <v-layout align-center justify-center row fill-height wrap>
+<!-- Messages -->
+      <v-flex xs12 class="user-name text-xs-center">
         <h1>{{ message }}<br />
           <span>{{ userName }}{{ exclamation }}</span>
         </h1>
       </v-flex>
-      <v-flex class="message-school text-xs-center"
+<!-- School message -->
+      <v-flex xs12 class="message-school text-xs-center"
         v-if="!this.getCurrentGameState.schoolCompleted">
         <h3>{{ graduationMessage }}</h3>
         <h2>{{ schoolScoreMessage }} {{ getTotalScore }}</h2>
       </v-flex>
+<!-- Game message -->
       <v-flex class="message-game text-xs-center"
         v-if="this.getCurrentGameState.schoolCompleted">
         <h2>{{ messageText }} {{ getTotalScore }}</h2>
       </v-flex>
-<!-- Button -->
+<!-- Buttons -->
       <v-layout row align-center justify-space-around>
-        <v-flex xs5 d-flex class="text-xs-center">
+        <v-flex d-flex xs5 lg2 class="text-xs-center">
           <v-btn ripple
             large color="orange"
             @click="restartGame">
             <v-icon medium color="white">replay</v-icon>
           </v-btn>
         </v-flex>
-        <v-flex xs5 d-flex class="text-xs-center">
+        <v-flex d-flex xs5 lg2 class="text-xs-center">
           <v-btn ripple
             large color="purple darken-1"
             :to="'/settings'">
@@ -54,11 +55,11 @@ export default {
       graduationMessage: 'You can\'t even finish the school.',
       schoolScoreMessage: 'Your score is',
       userName: '',
-      highestScore: '',
+      highestScore: null,
       hiscoreGreeting: 'Your highest score is',
       exclamation: '!', // some over-engeneering
-      lastScores: '',
-      schoolScores: ''
+      lastScores: [],
+      schoolScores: []
     }
   },
   components: {
@@ -79,27 +80,30 @@ export default {
       // check user status
       if (this.getUserData.isAuthenticated) {
         this.userName = this.getUserData.name
-        console.log()
       } else {
         this.userName = this.getDefaultUserName
       }
-
       if (this.getCurrentGameState.gameInProgress) {
-        this.lastScores = localStorage.getItem('lastScoresArray')
-        this.schoolScores = localStorage.getItem('schoolScores')
-        if (!this.lastScores) { // remove this
-          console.log(`No local storage score array yet, creating one`)
-          // let lastTwelveScores = [333, 125, 256, 368, -12, 234, 623, 546, 345, 324, 34, 342]
-          // this.lastScores = [this.getTotalScore]
-          this.lastScores = []
+        // collect them when mounted and game finished
+        if (localStorage.getItem('highestScore') === null) { // check if localStorage set
+          console.log(`No local storage score array yet exist, creating one`)
+          this.lastScores = [] // initial values
+          this.schoolScores = []
+          this.highestScore = this.getTotalScore // first run
           localStorage.setItem('lastScoresArray', this.lastScores)
-          // localStorage.setItem('schoolScores', this.getSchoolScore)
+          localStorage.setItem('schoolScores', this.schoolScores)
+          localStorage.setItem('highestScore', this.getTotalScore)
+          // and
           this.addScoreToDatabase()
         } else {
-          // console.log(`local storage score array exists`)
+          this.lastScores = localStorage.getItem('lastScoresArray')
+          this.schoolScores = localStorage.getItem('schoolScores')
+          this.highestScore = localStorage.getItem('highestScore')
+          // just add it already
           this.addScoreToDatabase()
         }
-        // set to default state
+        // set to default state so repeating visits
+        // to this page won't fill our array with zeroes
         store.state.gameInProgress = false // mutation?
       } else {
         console.log(`Nothing to record, play the game.`)
@@ -112,39 +116,44 @@ export default {
       store.commit('resetState')
       this.$router.push('/game')
     },
+    // add anonymous score to local storage
     addScoreToDatabase () {
       console.log(`Adding score`)
+      // one function?
       if (typeof this.lastScores === 'string') {
         this.lastScores = this.lastScores.split(',')
       }
       if (typeof this.schoolScores === 'string') {
         this.schoolScores = this.schoolScores.split(',')
+      }
+      // check for new highest score
+      if (this.getTotalScore > this.highestScore) {
+        this.highestScore = this.getTotalScore
+        localStorage.setItem('highestScore', this.getTotalScore)
       } else {
-        this.schoolScores = [this.getSchoolScore]
+        console.log(`Your score is not so high: ${this.getTotalScore}`)
       }
-      /*
-      if (this.lastScoresArray.length <= 11) {
-        this.lastScoresArray.push(this.getTotalScore)
-      } else if (this.lastScoresArray.length >= 12) {
-        // console.log(`Slicing`)
-        this.lastScoresArray = this.lastScoresArray.slice(1)
-        this.lastScoresArray.push(this.getTotalScore)
+      if (this.getCurrentGameState.schoolCompleted) {
+        // record game result if school completed
+        this.lastScores.push(this.getTotalScore)
+        localStorage.setItem('lastScoresArray', this.lastScores)
+        // and school result for stats
+        this.schoolScores.push(this.getSchoolScore)
+        localStorage.setItem('schoolScores', this.schoolScores)
+      } else {
+        // game ended in school,
+        // so we have only school result to save
+        this.schoolScores.push(this.getSchoolScore)
+        localStorage.setItem('schoolScores', this.schoolScores)
       }
-      */
-      // check if school is completed
-      this.lastScores.push(this.getTotalScore)
-      this.schoolScores.push(this.getSchoolScore)
-      // ! add check if game is completed
-      localStorage.setItem('lastScoresArray', this.lastScores)
-      localStorage.setItem('schoolScores', this.schoolScores)
-      // if user is Anonymous there is no database,
-      // only localStorage, so
+      // finally if user is registered
       if (this.getUserData.isAuthenticated) {
         this.syncScoreInFirebase()
       } else {
         console.log(`Anonymous! To save results please register.`)
       }
     },
+    // if user exists add score to the account
     syncScoreInFirebase () {
       console.log(`Syncing score for uid ${this.getUserData.uid}`)
       let uid = this.getUserData.uid
@@ -155,15 +164,8 @@ export default {
           querySnapshot.forEach(function (doc) {
             // doc.data() is never undefined for query doc snapshots
             if (doc.data().uid === uid) {
-              // store.state.commit('setUser', payload)
-              // console.log(doc.data().name)
-              // userName = doc.data().name
               docToUpdateId = doc.id
             }
-            // store.state.user.name = doc.data().email // make it a mutation
-            // store.state.user.isAuthenticated = true
-            // store.state.user.uid = currentUser.uid
-            // console.log(`This user name is ${payload.name}`)
           })
           return docToUpdateId
         })
@@ -173,19 +175,13 @@ export default {
           // you really should check if it is actually higher
           let highestScoreToUpdate = localStorage.getItem('highestScore')
           let schoolScoresToUpdate = localStorage.getItem('schoolScores')
-
           var updateDocRef = docRef.update({
             resultsArray: resultsArrayToUpdate,
             schoolResultsArray: schoolScoresToUpdate,
             hiScore: highestScoreToUpdate
           })
-          // return true
           console.log('...updating user stats')
-          return updateDocRef // ?
-          // this.userName = userName
-          // this.$store.commit('setUserName', userName)
-          // console.log(`Setting user name ${userName}`)
-          // console.log(`Updating scores array in fb ${updateDocRef}`)
+          return updateDocRef // ? true
         })
         .catch(function (error) {
           console.log('Error getting documents: ', error)
@@ -197,6 +193,9 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/scss/index.scss";
 
+#endGame {
+  height: 100%;
+}
 .user-name, .message-school, .message-game {
   font-family: $text-font;
 }

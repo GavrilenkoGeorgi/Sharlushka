@@ -1,139 +1,86 @@
 <template>
-  <v-layout column id="login" pa-2>
-    <closeButton></closeButton>
-    <v-flex d-flex>
-      <v-alert
-        :value="errorMessage"
-        dismissible
-        outline
-        type="error">
-        {{ errorMessage }}
-      </v-alert>
-    </v-flex>
-    <v-flex d-flex class="page-title text-xs-center py-4">
-      <h1>{{ pageTitle }}</h1>
-    </v-flex>
-    <v-layout justify-center class="login-form">
-      <v-flex xs8 d-flex align-center py-4>
-      <v-form ref="form" v-model="valid"
-        lazy-validation>
-      <!--v-text-field
-        v-model="name"
-        :rules="nameRules"
-        :counter="10"
-        label="Name"
-        required
-      ></v-text-field-->
-      <v-text-field
-        v-model="email"
-        :rules="emailRules"
-        label="E-mail"
-        :type="'email'"
-        autocomplete="off"
-        required
-      ></v-text-field>
-      <v-text-field
-        v-model="password"
-        :rules="passwordRules"
-        :type="'password'"
-        label="Password"
-        autocomplete="off"
-        required
-      ></v-text-field>
-      <!--v-text-field
-        v-model="confirmPassword"
-        :rules="[comparePasswords]"
-        :type="'password'"
-        label="Confirm password"
-        autocomplete="off"
-        required
-      ></v-text-field-->
-      <!--v-select
-        v-model="select"
-        :items="items"
-        :rules="[v => !!v || 'Item is required']"
-        label="Item"
-        required
-      ></v-select>
-      <v-checkbox
-        v-model="checkbox"
-        :rules="[v => !!v || 'You must agree to continue!']"
-        label="Do you agree?"
-        required
-      ></v-checkbox-->
-    </v-form>
+  <v-container fluid id="login">
+<!-- Close button -->
+    <closeBtn></closeBtn>
+    <v-layout column>
+      <v-flex d-flex>
+        <v-alert
+          :value="errorMessage"
+          dismissible
+          outline
+          type="error">
+          {{ errorMessage }}
+        </v-alert>
       </v-flex>
-    </v-layout>
-    <!--v-layout justify-center>
-      <v-btn outline round
-        class="dashBtn"
-        color="purple"
-        @click="getUsersList"
-        >Show users</v-btn>
-      <v-btn outline round
-        class="dashBtn"
-        color="purple">Remove user</v-btn>
-    </v-layout-->
-    <v-layout justify-center class="text-xs-center pt-4">
-      <!--v-flex v-if="this.getUserAuthState.isAuthenticated" xs5 d-flex align-end>
-        <v-btn
-          :type="'submit'"
-          @click.prevent="login"
-          class="button white--text"
-          color="orange">
-          Sign Out
-        </v-btn>
-      </v-flex-->
-
-      <v-flex xs5 d-flex align-end>
-        <v-btn :disabled="!valid"
-          :type="'submit'"
-          @click.prevent="login"
-          large
-          class="button white--text"
-          color="orange">
-          login
-        </v-btn>
+      <v-flex d-flex class="page-title text-xs-center py-4">
+        <h1>{{ pageTitle }}</h1>
       </v-flex>
-      <v-flex xs5 d-flex align-end>
-        <v-btn @click="clear"
-        dark
-        large
-        class="button"
-        color="purple darken-1">
-        clear</v-btn>
-
-        <!--v-btn @click="signOut"
-        v-if="this.logInOrSignOut"
-        dark
-        class="button"
-        color="purple darken-1">
-        sign out</v-btn-->
-      </v-flex>
-    </v-layout>
-    <v-layout wrap class="text-xs-center">
-      <v-flex d-flex align-center class="info-text py-4">
-      <span>or</span>
-      </v-flex>
-    <v-flex xs12>
-        <v-btn to='/register'
+      <v-layout justify-center class="login-form py-4">
+        <v-flex xs8 d-flex align-center py-4>
+        <v-form ref="form" v-model="valid"
+          lazy-validation>
+        <v-text-field
+          v-model="email"
+          :rules="emailRules"
+          label="E-mail"
+          :type="'email'"
+          autocomplete="off"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="password"
+          :rules="passwordRules"
+          :type="'password'"
+          label="Password"
+          autocomplete="off"
+          required
+        ></v-text-field>
+      </v-form>
+        </v-flex>
+      </v-layout>
+      <v-layout justify-center class="text-xs-center">
+        <v-flex xs5 d-flex align-end>
+          <v-btn :disabled="!valid"
+            :type="'submit'"
+            @click.prevent="login"
+            large
+            class="button white--text"
+            color="orange">
+            login
+          </v-btn>
+        </v-flex>
+        <v-flex xs5 d-flex align-end>
+          <v-btn @click="clear"
           dark
           large
           class="button"
           color="purple darken-1">
-          <!--v-icon medium color="white">edit</v-icon-->
-          {{ newUserBtnText }}
-        </v-btn>
-        <v-btn @click="signOut"
-        v-if="this.logInOrSignOut"
-        dark
-        large
-        class="button"
-        color="purple darken-1">
-        sign out</v-btn>
-      </v-flex>
+          clear</v-btn>
+        </v-flex>
+      </v-layout>
+      <v-layout wrap class="text-xs-center">
+        <v-flex d-flex align-center class="info-text">
+        <span>or</span>
+        </v-flex>
+      <v-flex xs12>
+          <v-btn to='/register'
+            dark
+            large
+            class="button"
+            color="purple darken-1">
+            {{ newUserBtnText }}
+          </v-btn>
+          <v-btn @click="signOut"
+          v-if="this.logInOrSignOut"
+          dark
+          large
+          class="button"
+          color="purple darken-1">
+          sign out</v-btn>
+        </v-flex>
+      </v-layout>
     </v-layout>
-  </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -142,7 +89,7 @@ import db from '../components/firebaseInit'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import store from '../store/store'
-import closeButton from '../components/CloseBtn'
+import closeBtn from '../components/CloseBtn'
 
 export default {
   name: 'login',
@@ -178,7 +125,7 @@ export default {
     checkbox: false
   }),
   components: {
-    closeButton
+    closeBtn
   },
   computed: {
     ...mapGetters([
@@ -343,6 +290,10 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/index.scss';
+
+#login {
+  height: 100%;
+}
 
 .login-form, .page-title, .info-text, .button {
   font-family: $text-font;

@@ -10,7 +10,7 @@ export default function () {
     processing: false,
     defaultUserName: 'Anonymous',
     newTurn: true,
-    diceRolled: true,
+    diceRollInProgress: false, // not needed?
     schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score
     schoolCompleted: false, // check if school is completed

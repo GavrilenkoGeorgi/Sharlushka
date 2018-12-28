@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-content>
-      <v-container fluid ma-0 pa-0 id="app">
+      <v-container fluid fill-height ma-0 pa-0 id="app">
 <!-- Router view -->
         <transition name="custom-classes-transition"
                     mode="out-in"
@@ -17,9 +17,6 @@
 <script>
 export default {
   name: 'App',
-  created () {
-    console.log(`Main page created`)
-  },
   mounted () {
     this.$nextTick(function () {
       console.log('App started')
@@ -64,12 +61,41 @@ export default {
   animation-name: fadeOutLeft;
 }
 
+@keyframes shake {
+  from,
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translate3d(-.1em, 0px, 0px);
+    opacity: .6
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translate3d(.1em, 0px, 0px);
+    opacity: .8;
+  }
+}
+
+.shake {
+  animation-name: shake;
+}
+
 .animated {
-  animation-duration: 900ms;
+  animation-duration: .7s;
   animation-fill-mode: both;
 }
-.animated.delay-s { // change this
-  animation-delay: 500ms;
+.animated.delay-s {
+  animation-delay: .5s;
 }
 
 @media (prefers-reduced-motion) {
@@ -83,14 +109,18 @@ export default {
   stroke: #AA00FF;
   stroke-width: .25em;
 }
-.ct-series-a .ct-line,
-.ct-series-a .ct-bar {
+.ct-series-a .ct-line {
   stroke: #E1BEE7;
   stroke-width: .075em;
 }
+
+.ct-series-a .ct-bar {
+  stroke: #AA00FF;
+  stroke-width: .2em;
+}
 .ct-nodata {
   visibility: hidden;
-  height: 6em;
+  height: 1em;
 }
 
 </style>

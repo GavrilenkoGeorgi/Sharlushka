@@ -3,7 +3,7 @@
 <!-- Dice box -->
     <v-layout row align-center class="dice-box-layout">
       <v-flex d-flex xs9 class="game-dice-container dice-box" v-bind:class="{ visible:!turnCompleted }">
-        <svg class="dice-icon default"
+        <svg class="dice-icon default animated"
           v-for="dice in this.getDiceArray"
           :key="dice.id"
           v-bind:class="{ chosen:dice.chosen }"
@@ -17,7 +17,9 @@
       </v-flex>
 <!-- Main button -->
       <v-flex class="main-button animated"
-          v-on:click="handleMainGameButtonClick"
+          @click.prevent="handleMainGameButtonClick"
+          aria-label="Main game button"
+          type="button"
           v-bind:class="{ save: this.mainButtonState.save,
           bounce: this.mainButtonState.save,
           visible: this.getCurrentGameState.gameEnded }">
@@ -130,27 +132,38 @@ export default {
         this.mainButtonState.play = false
         this.mainButtonState.save = true
         this.mainButtonState.disabled = true
-        this.vibrate()
+        // this.vibrate()
         button.classList.add('bounce')
       } else {
         return false
       }
     },
     handleMainGameButtonClick () {
-      // this.vibrate()
-      if (this.getCurrentGameState.rollsCountForButton > 0 && !this.getCurrentGameState.turnCompleted) {
-        if (!this.diceRolled) {
-          this.diceRolled = true
-        }
-        this.vibrateOnce()
+      if (this.getCurrentGameState.rollsCountForButton > 0 &&
+        !this.getCurrentGameState.turnCompleted) {
+        // this.vibrateOnce()
         store.commit('rollDice')
+        if (this.getCurrentGameState.diceRollInProgress) {
+          let diceToAnimateOnRoll = document.querySelectorAll('.dice-icon:not(.chosen)')
+          for (let dice of diceToAnimateOnRoll) {
+            dice.classList.add('shake')
+          }
+        }
         if (this.getCurrentGameState.currentRollCount === 0 &&
             this.getCurrentGameState.currentGameTurn <= 6 &&
             !this.getCurrentGameState.gameCheck) {
           this.$router.push({ path: '/endgame' })
         }
-        this.updateMainButtonState()
+        setTimeout(function () {
+          // not the best way to do it, but
+          // console.log(`timing!`)
+          let diceToRemoveAnimFrom = document.querySelectorAll('.dice-icon')
+          for (let dice of diceToRemoveAnimFrom) {
+            dice.classList.remove('shake')
+          }
+        }, 500)
       }
+      this.updateMainButtonState()
     },
     selectDice (event) {
       let elementToAdd = event.currentTarget
