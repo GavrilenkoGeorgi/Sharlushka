@@ -94,6 +94,11 @@ export default {
         this.setUserScoreDataFromDB(this.getUserData.uid)
       } else {
         this.userName = this.getDefaultUserName
+        if (localStorage.getItem('schoolScores') === null) {
+          localStorage.setItem('schoolScores', '')
+          localStorage.setItem('lastScoresArray', '')
+          localStorage.setItem('highestScore', '')
+        }
       }
     })
   },

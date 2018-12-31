@@ -1,10 +1,9 @@
-// import getDefaultState from './defaultState.js'
-
 export default {
-  computeScore (state) {
+  computeScore (state) { // biggest chunk of javaScript
     if (!state.turnCompleted) {
       // empty array for calculating score
-      let arrayToAnalyse = [[], [], [], [], [], []] // dice are with values from 1 to 6, quantity: 5 pieces
+      let arrayToAnalyse = [[], [], [], [], [], []]
+      // dice are with values from 1 to 6, quantity: 5 pieces
       // for any game combination except chances and school we need at least a pair of dice
       // if it is larger than 0, we have at least one dice to calculate
       if (state.combinationArray.length > 0) {
@@ -30,7 +29,7 @@ export default {
               arrayToAnalyse[5].push(state.combinationArray[key])
               break
             default:
-              // console.log(`Can't create array to analyse.`)
+              console.log(`Can't create array to analyse`)
               return false
           }
         }
@@ -84,8 +83,10 @@ export default {
               }
 
               // check for 'pair' combination
-              if ((pairsArray.length >= 1 || tripleArray.length >= 1) && !state.scoreArray[6].final) {
-                // console.log(`Pairs array in first if ${pairsArray.length}`)
+              // there may be two pairs and we need to choose
+              // the highest scoring one
+              if ((pairsArray.length >= 1 || tripleArray.length >= 1) &&
+                !state.scoreArray[6].final) {
                 // we have pairs or triples array and the pairs score is not final
                 // in case of pairs array
                 let highestScoringPair = 0
@@ -93,17 +94,6 @@ export default {
                   highestScoringPair = (pairsArray[0] * 2)
                   state.scoreArray[6].value = highestScoringPair
                 }
-                // state.scoreArray[6].value = highestScoringPair
-                /*
-                if (pairsArray.length >= 1) {
-                  highestScoringPair = (pairsArray[0] * 2)
-                }
-                */
-                /*
-                if (pairsArray.length > 0) {
-                  highestScoringPair = (pairsArray[0] * 2)
-                  // state.scoreArray[6].value = highestScoringPair
-                } else */
                 if (pairsArray.length > 1) {
                   if (pairsArray[0] > pairsArray[1]) {
                     highestScoringPair = pairsArray[0] * 2
@@ -120,19 +110,8 @@ export default {
                   let tripleArrayValue = tripleArray[0] * 2
                   if (tripleArrayValue > highestScoringPair) {
                     state.scoreArray[6].value = tripleArrayValue
-                    // console.log(`Triple array is bigger ${tripleArrayValue}`)
-                    // console.log(`highest pair is ${highestScoringPair}`)
-                    // console.log(`Pairs array length is ${pairsArray}`)
-                    // state.scoreArray[6].value = tripleArrayValue
                   } else {
-                    // console.log(`highest pair is bigger ${highestScoringPair}`)
-                    // console.log(`Triple array is smaller ${tripleArrayValue}`)
-                    // console.log(`highest pair is ${highestScoringPair}`)
                     state.scoreArray[6].value = highestScoringPair
-                    // console.log(`Score array value after setting ${state.scoreArray[6].value}`)
-                    // highestScoringPair = tripleArrayValue
-                    // state.scoreArray[6].value = highestScoringPair
-                    // highestScoringPair = (pairsArray[0] * 2)
                   }
                 }
                 // state.scoreArray[6].value = highestScoringPair
@@ -166,26 +145,34 @@ export default {
 
               // check for quads
               // very complicated, need to do something about it
-              if (quadsArray >= 1 && !state.scoreArray[10].final) {
-                state.scoreArray[10].value = quadsArray[0] * 4
+              if (quadsArray >= 1) {
+                // check for quads
+                if (!state.scoreArray[10].final) {
+                  state.scoreArray[10].value = quadsArray[0] * 4
+                }
                 if (!state.scoreArray[8].final) {
                   // so if three of a kind is not final we can count it as a three o.a.k
                   state.scoreArray[8].value = quadsArray[0] * 3
                 }
                 if (!state.scoreArray[6].final) {
-                  // pair is not final we can count it as a pair
+                  // pair is not final, we can count it as a pair
                   state.scoreArray[6].value = quadsArray[0] * 2
                 }
               } else if (!state.scoreArray[10].final) {
+                // finally clear all previous result calculations
+                // need this for proper results clearing onscreen
+                // when user deciding which combination to choose
                 state.scoreArray[10].value = ''
               }
 
               // check for poker
+              // you should really check for poker first and then
+              // for quads, three o.a.k and a pair
               if (arrayToAnalyse[currentDice - 1].length === 5 && !state.scoreArray[11].final) {
                 state.scoreArray[11].value = (currentDice * 5) + 80
                 // This should be something else here (
                 if (!state.scoreArray[10].final) {
-                  // full
+                  // quads
                   state.scoreArray[10].value = arrayToAnalyse[currentDice - 1] * 4
                 }
                 if (!state.scoreArray[8].final) {

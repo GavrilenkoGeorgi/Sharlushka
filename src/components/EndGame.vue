@@ -120,10 +120,14 @@ export default {
     addScoreToDatabase () {
       console.log(`Adding score`)
       // one function?
-      if (typeof this.lastScores === 'string') {
+      if (this.lastScores === '') {
+        this.lastScores = [] // first run
+      } else {
         this.lastScores = this.lastScores.split(',')
       }
-      if (typeof this.schoolScores === 'string') {
+      if (this.schoolScores === '') {
+        this.schoolScores = []
+      } else {
         this.schoolScores = this.schoolScores.split(',')
       }
       // check for new highest score
@@ -133,6 +137,7 @@ export default {
       } else {
         console.log(`Your score is not so high: ${this.getTotalScore}`)
       }
+
       if (this.getCurrentGameState.schoolCompleted) {
         // record game result if school completed
         this.lastScores.push(this.getTotalScore)

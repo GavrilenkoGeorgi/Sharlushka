@@ -146,7 +146,7 @@ export default {
         if (this.getCurrentGameState.diceRollInProgress) {
           let diceToAnimateOnRoll = document.querySelectorAll('.dice-icon:not(.chosen)')
           for (let dice of diceToAnimateOnRoll) {
-            dice.classList.add('shake')
+            dice.classList.add('zoomIn')
           }
         }
         if (this.getCurrentGameState.currentRollCount === 0 &&
@@ -159,7 +159,7 @@ export default {
           // console.log(`timing!`)
           let diceToRemoveAnimFrom = document.querySelectorAll('.dice-icon')
           for (let dice of diceToRemoveAnimFrom) {
-            dice.classList.remove('shake')
+            dice.classList.remove('zoomIn')
           }
         }, 500)
       }

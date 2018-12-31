@@ -61,33 +61,19 @@ export default {
   animation-name: fadeOutLeft;
 }
 
-@keyframes shake {
-  from,
-  to {
-    transform: translate3d(0, 0, 0);
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+
+  50% {
     opacity: 1;
-  }
-
-  10%,
-  30%,
-  50%,
-  70%,
-  90% {
-    transform: translate3d(-.1em, 0px, 0px);
-    opacity: .6
-  }
-
-  20%,
-  40%,
-  60%,
-  80% {
-    transform: translate3d(.1em, 0px, 0px);
-    opacity: .8;
   }
 }
 
-.shake {
-  animation-name: shake;
+.zoomIn {
+  animation-name: zoomIn;
 }
 
 .animated {

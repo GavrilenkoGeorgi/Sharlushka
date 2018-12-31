@@ -8,6 +8,7 @@
     <author email="gavrilenko.georgi@gmail.com" href="http://gavrilenkogeorgi.github.io">
         Gavrilenko Georgi
     </author>
+    <preference name="HeaderColor" value="#B380D7" />
     <content src="dist/index.html" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <access origin="*" />
