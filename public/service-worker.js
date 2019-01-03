@@ -1,4 +1,4 @@
-const cacheName = 'sharlushkaMk6'
+const cacheName = 'sharlushkaMk7'
 
 const cacheAssets = [
   'index.html'

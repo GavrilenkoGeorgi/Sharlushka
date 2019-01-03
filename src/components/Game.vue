@@ -43,7 +43,8 @@
       </symbol>
     </svg>
     <Navigation></Navigation>
-    <v-layout column class="game-layout">
+    <v-layout column class="game-layout"
+      v-bind:class="{ 'game-ended':this.getCurrentGameState.gameEnded }">
 <!-- School dice display -->
       <v-layout row>
         <v-flex d-flex align-center class="school-dice-container">
@@ -186,7 +187,6 @@ export default {
       }
     },
     handleBoardClick (event) {
-      // console.dir(event.target)
       let idFound = false
       let scoreId = null
       let elementToCheck = event.target
@@ -196,7 +196,6 @@ export default {
           elementToCheck.classList.contains('game-combination')) {
           scoreId = elementToCheck.id
           idFound = true
-          // } else if (elementToCheck.classList.contains('school-result')) {
         } else if (elementToCheck.getAttribute('resultId')) {
           scoreId = elementToCheck.getAttribute('resultId')
           idFound = true
@@ -231,7 +230,7 @@ export default {
       console.log('Recording result..')
       store.state.gameInProgress = true // should be just ones
       // this.turnCompleted = true
-      let combinationId = id
+      let combinationId = id // ?
       const combinationIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(combinationId)
       if (!store.state.schoolCompleted &&
           store.state.scoreArray[combinationIndexInArray].value !== '' &&
@@ -261,7 +260,7 @@ export default {
         // this.clearResultInStore()
         this.clearResultBox()
         // this.removeCurrentHighlight()
-      } else if (!store.state.turnCompleted &&
+      } else if (!store.state.turnCompleted && // this really should be a single check
         store.state.scoreArray[combinationIndexInArray].value === '' &&
         !store.state.scoreArray[combinationIndexInArray].final &&
         store.state.schoolCompleted &&
@@ -291,19 +290,12 @@ export default {
       // last checks after recording or not recording the result
       if (store.state.currentGameTurn === 33 && store.state.turnCompleted) {
         console.log(`Game Over!`)
-        /*
-        let score = store.state.schoolScoreTotal + store.state.gameTotal
-        let highestScore = localStorage.getItem('highestScore')
-        if (!highestScore) {
-          // console.log(`Highest score not set, setting it for the first time`)
-          localStorage.setItem('highestScore', score)
-        } else if (score > highestScore) {
-          localStorage.setItem('highestScore', score)
-        } else {
-          console.log(`Your score is not so high ${score}`)
-        } */
         store.state.gameEnded = true
-        this.$router.push({ path: '/endgame' })
+        // this.$router.push('/endgame')
+        setTimeout(() => {
+          console.log('Timer!')
+          this.$router.push('/endgame')
+        }, 1500)
       } else {
         this.turnCompleted = true
         store.commit('nextTurn')
@@ -322,7 +314,22 @@ export default {
 .game-layout {
   padding-top: 3.2em;
   font-family: $text-font;
+  // background: $color-pale-primary;
   // padding-bottom: .2em;
+  transition: background-color 1s ease-in;
+  // transition-duration: 1s;
+  // transition-timing-function: ease-in;
+}
+.set {
+  background-color: $color-pale-primary;
+  color: $color-chosen;
+}
+.game-ended {
+  background: $color-pale-primary;
+  .set {
+    transition: background-color 1s ease-out;
+    background-color: inherit;
+  }
 }
 .school-dice-icon {
   // background-color: yellow;
@@ -340,10 +347,6 @@ export default {
 }
 .game-combination {
   padding: 0.05em;
-}
-.set {
-  background-color: $color-pale-primary;
-  color: $color-chosen;
 }
 .blink {
   color: $color-primary-1;

@@ -8,6 +8,7 @@ import router from './router'
 import store from './store/store'
 
 import './registerServiceWorker'
+import VueOffline from 'vue-offline'
 
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import firebaseConfig from './components/firebaseConfig'
@@ -99,6 +100,9 @@ Vue.config.productionTip = false
 Vue.use(Vuetify, {
   iconfont: 'md' // 'md' || 'mdi' || 'fa' || 'fa4'
 })
+
+Vue.use(VueOffline)
+
 Vue.use(require('vue-chartist'))
 /* eslint-disable no-new */
 new Vue({

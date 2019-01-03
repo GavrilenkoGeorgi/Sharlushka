@@ -26,7 +26,8 @@
           :type="'email'"
           autocomplete="off"
           required
-        ></v-text-field>
+          color="purple accent-4">
+        </v-text-field>
         <v-text-field
           v-model="password"
           :rules="passwordRules"
@@ -34,7 +35,8 @@
           label="Password"
           autocomplete="off"
           required
-        ></v-text-field>
+          color="purple accent-4">
+        </v-text-field>
       </v-form>
         </v-flex>
       </v-layout>
@@ -42,6 +44,7 @@
         <v-flex xs5 d-flex align-end>
           <v-btn :disabled="!valid"
             :type="'submit'"
+            :loading="logginIn"
             @click.prevent="login"
             large
             class="button white--text"
@@ -71,10 +74,10 @@
             {{ newUserBtnText }}
           </v-btn>
           <v-btn @click="signOut"
-          v-if="this.logInOrSignOut"
-          dark
+          :loading="loggingOut"
+          :disabled="!this.getUserAuthState"
           large
-          class="button"
+          class="button white--text"
           color="purple darken-1">
           sign out</v-btn>
         </v-flex>
@@ -94,6 +97,9 @@ import closeBtn from '../components/CloseBtn'
 export default {
   name: 'login',
   data: () => ({
+    loader: null,
+    logginIn: false,
+    loggingOut: false,
     users: [],
     errorMessage: undefined,
     newUserBtnText: 'Create new user',
@@ -135,7 +141,8 @@ export default {
     ]),
     comparePasswords () {
       return this.password !== this.confirmPassword ? 'Passwords do not match' : true
-    },
+    }
+    /*
     logInOrSignOut () {
       let answer
       if (this.getUserAuthState) {
@@ -146,7 +153,7 @@ export default {
         answer = false
       }
       return answer
-    }
+    } */
   },
   methods: {
     /*
@@ -165,6 +172,10 @@ export default {
       })
     },
     */
+    setLoginLoadingState () {
+      this.logginIn = !this.logginIn
+      return true
+    },
     getUserNameFromDB (uid) {
       // console.log(`Getting user name for uid ${uid}`)
       db.collection('users').where('uid', '==', uid)
@@ -187,6 +198,7 @@ export default {
     login: function () {
       this.errorMessage = undefined
       if (this.email && this.password) { // need some proper validation
+        this.setLoginLoadingState()
         firebase.auth().signInWithEmailAndPassword(this.email, this.password)
           .then(
             response => {
@@ -205,11 +217,13 @@ export default {
             err => {
               console.log(err.message)
               this.errorMessage = err.message
+              this.setLoginLoadingState()
             })
         return true
       }
     },
     signOut: () => {
+      this.loggingOut = !this.loggingOut
       firebase.auth().signOut().then(function () {
         console.log('Signed Out')
         localStorage.removeItem('highestScore')
@@ -218,6 +232,7 @@ export default {
         store.commit('setAuthState', false)
       }, function (error) {
         console.error('Sign Out Error', error)
+        this.loggingOut = !this.loggingOut
       })
     },
     /*

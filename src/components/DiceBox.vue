@@ -2,7 +2,8 @@
   <v-flex d-flex ma-0 pa-0 id="diceControls">
 <!-- Dice box -->
     <v-layout row align-center class="dice-box-layout">
-      <v-flex d-flex xs9 class="game-dice-container dice-box" v-bind:class="{ visible:!turnCompleted }">
+      <v-flex d-flex xs9 class="game-dice-container dice-box"
+        v-bind:class="{ visible: this.getCurrentGameState.gameEnded, visible: this.hidden }">
         <svg class="dice-icon default animated"
           v-for="dice in this.getDiceArray"
           :key="dice.id"
@@ -22,6 +23,7 @@
           type="button"
           v-bind:class="{ save: this.mainButtonState.save,
           bounce: this.mainButtonState.save,
+          fadeOut: this.getCurrentGameState.gameEnded,
           visible: this.getCurrentGameState.gameEnded }">
         <v-layout align-center justify-center row fill-height>
           <v-flex xs2 class="play-arrow animated fadeIn" v-if=" this.mainButtonState.play">
@@ -55,6 +57,7 @@ export default {
   data () {
     return {
       navigatorSupported: false,
+      hidden: false,
       zzz: 'zzz',
       mainButtonState: {
         play: true,
@@ -70,7 +73,7 @@ export default {
       if ('vibrate' in navigator) {
         this.navigatorSupported = true
         // vibration API supported
-        console.log(`Vibrate in navigator is ${'vibrate' in navigator}`)
+        // console.log(`Vibrate in navigator is ${'vibrate' in navigator}`)
         // navigator.vibrate([5, 200, 20])
       }
     })
@@ -82,6 +85,7 @@ export default {
       handler () {
         if (!this.getCurrentGameState.gameEnded) {
           this.updateMainButtonState()
+          this.hidden = !this.hidden
         }
       }
     }
@@ -415,12 +419,12 @@ export default {
   40%,
   43% {
     animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
-    transform: translate3d(0, -30px, 0);
+    transform: translate3d(0, -25px, 0);
   }
 
   70% {
     animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
-    transform: translate3d(0, -15px, 0);
+    transform: translate3d(0, -12px, 0);
   }
 
   90% {
@@ -432,17 +436,18 @@ export default {
   transform-origin: center bottom;
 }
 
-@keyframes fadeIn {
+@keyframes fadeOut {
   from {
-    opacity: 0;
+    opacity: 1;
   }
 
   to {
-    opacity: 1;
+    opacity: 0;
   }
 }
-.fadeIn {
-  animation-name: fadeIn;
-}
 
+.fadeOut {
+  -webkit-animation-name: fadeOut;
+  animation-name: fadeOut;
+}
 </style>

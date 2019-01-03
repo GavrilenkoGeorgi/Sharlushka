@@ -21,6 +21,19 @@ export default {
     this.$nextTick(function () {
       console.log('App started')
     })
+  },
+  methods: {
+    updateOnlineStatus () {
+      if (navigator.onLine) {
+        console.log('online')
+        // document.documentElement.classList.remove('is-offline');
+        // document.querySelector('.connection-status').innerHTML = 'Online';
+      } else {
+        console.log('offline')
+        // document.documentElement.classList.add('is-offline');
+        // document.querySelector('.connection-status').innerHTML = 'Offline';
+      }
+    }
   }
 }
 </script>
@@ -93,20 +106,20 @@ export default {
 
 .ct-series-a .ct-point {
   stroke: #AA00FF;
-  stroke-width: .25em;
+  stroke-width: .2em;
 }
 .ct-series-a .ct-line {
   stroke: #E1BEE7;
-  stroke-width: .075em;
+  stroke-width: .06em;
 }
 
 .ct-series-a .ct-bar {
   stroke: #AA00FF;
-  stroke-width: .2em;
+  stroke-width: .25em;
 }
 .ct-nodata {
   visibility: hidden;
-  height: 1em;
+  height: 0em;
 }
 
 </style>

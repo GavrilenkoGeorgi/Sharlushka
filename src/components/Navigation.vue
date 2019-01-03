@@ -15,25 +15,62 @@
       </v-btn>
     </v-flex-->
     <v-spacer></v-spacer>
-      <v-btn to='/settings' small icon
-        fab dark>
-        <v-icon size="2.8em"
-          color="white">more_vert</v-icon>
-      </v-btn>
+<!-- Offline message -->
+    <v-flex xs2 v-if="!this.networkStatus">
+      <v-dialog
+        v-model="offlineMessage"
+        width="20em">
+        <v-btn small icon
+          slot="activator"
+          fab
+          dark
+        ><v-icon
+        size="2em"
+        class="blink"
+        color="orange">cloud_off</v-icon>
+        </v-btn>
+        <v-card>
+          <v-card-text class="text-xs-center offline-message-text">
+            Check your connection to save results.
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="primary"
+              small icon
+              flat
+              @click="offlineMessage = false"
+            >
+              <v-icon size="2em" color="orange">done</v-icon>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-flex>
+<!-- Settings button -->
+    <v-btn to='/settings' small icon
+      fab dark>
+      <v-icon size="2.8em"
+        color="white">more_vert</v-icon>
+    </v-btn>
   </v-layout>
 </template>
 
 <script>
-import store from '../store/store'
+import store from '../store/store' // ??
 
 export default {
   name: 'Navigation',
   data () {
     return {
-      title: 'Sharlushka'
+      title: 'Sharlushka',
+      offlineMessage: false
     }
   },
-  computed: { // maybe getter
+  computed: {
+    networkStatus () {
+      return this.isOnline ? 'ok' : null
+    },
     computedGameScore: function () {
       return store.state.schoolScoreTotal + store.state.gameTotal
     },
@@ -88,6 +125,28 @@ i {
 .settings-icon {
   a {
     margin: 0em;
+  }
+}
+
+.blink {
+  animation: blinker 5s ease-out infinite;
+}
+
+.offline-message-text {
+  font-family: $text-font;
+  font-weight: 700;
+  color: $color-primary-0;
+}
+
+@keyframes blinker {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
 

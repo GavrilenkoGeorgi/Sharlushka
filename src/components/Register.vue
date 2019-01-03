@@ -20,13 +20,15 @@
           :rules="nameRules"
           :counter="10"
           label="Name"
-          autocomplete="username">
+          autocomplete="username"
+          color="purple accent-4">
         </v-text-field>
         <v-text-field
           v-model="email"
           :rules="emailRules"
           label="E-mail"
           autocomplete="email"
+          color="purple accent-4"
           required>
         </v-text-field>
         <v-text-field
@@ -35,6 +37,7 @@
           :rules="passwordRules"
           label="Password"
           autocomplete="current-password"
+          color="purple accent-4"
           required>
         </v-text-field>
         <v-text-field
@@ -43,6 +46,7 @@
           :type="'password'"
           label="Confirm password"
           autocomplete="off"
+          color="purple accent-4"
           required>
         </v-text-field>
     </v-form>
@@ -52,6 +56,7 @@
         <v-flex xs5 d-flex>
           <v-btn :disabled="!valid"
             @click.prevent="signUp"
+            :loading="registering"
             class="white--text"
             large
             color="orange">
@@ -81,6 +86,7 @@ import closeButton from '../components/CloseBtn'
 export default {
   name: 'register',
   data: () => ({
+    registering: false,
     users: [],
     errorMessage: '',
     pageTitle: 'Register',
@@ -121,6 +127,7 @@ export default {
     signUp () {
       this.errorMessage = '' // clear error message?
       if (this.email && this.password) {
+        this.registering = true
         firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
           .then(response => {
             // set current user in store
