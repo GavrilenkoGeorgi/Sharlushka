@@ -1,5 +1,6 @@
+
 {
-  "name": "Sharlushka dice game",
+  "name": "Sharlushka The Dice Game",
   "short_name": "Sharlushka",
   "icons": [
       {
@@ -17,5 +18,5 @@
   "theme_color": "#79008f",
   "background_color": "#79008f",
   "display": "standalone",
-  "description": "Sharlushka dice game on Javascript."
+  "description": "Sharlushka is a game written using JavaScript."
 }

@@ -13,7 +13,7 @@
         <h1>{{ pageTitle }}</h1>
       </v-flex>
       <v-layout justify-center class="register-form pb-4">
-        <v-flex xs8>
+        <v-flex xs9>
         <v-form ref="form" v-model="valid" lazy-validation>
         <v-text-field
           v-model="name"
@@ -65,6 +65,7 @@
         </v-flex>
         <v-flex xs5 d-flex>
           <v-btn @click="clear"
+            :disabled="valid"
             class="button white--text"
             large
             color="purple darken-1">
@@ -246,6 +247,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 @import '../assets/scss/index.scss';
 
 #register {

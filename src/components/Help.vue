@@ -1,10 +1,10 @@
 <template>
-  <v-container>
+  <v-container fill-height>
     <v-layout row wrap>
       <closeBtn></closeBtn>
       <v-flex xs12>
         <h1 class="text-xs-center mb-2 rules-heading">{{ rulesHeading }}</h1>
-        <h4 v-if="this.schoolScores !== ''" class="text-xs-center mb-2 rules-heading">Your school results</h4>
+        <h4 v-if="this.schoolScores !== ''" class="text-xs-center mb-2 rules-heading">Your recent school results</h4>
       <!-- Chart -->
       <v-flex d-flex align-center my-2>
         <chartist
@@ -24,9 +24,9 @@
 <!-- Combination descriptions -->
       <v-flex xs12>
         <v-flex class="combination-descr"
-            v-for="(combination, index) in combinationsDescrMk3"
+          v-for="(combination, index) in combinationsDescrMk3"
           :key="index">
-          <v-layout>
+          <v-layout align-center>
             <p>
               {{ combination.title }}
             </p>
@@ -36,10 +36,10 @@
                 <use v-bind="{'xlink:href':'#' + getDiceIds[icon - 1]}">
                 </use>
               </svg>
-              <p class="score-value">
+            </v-layout>
+            <p class="score-value">
                 {{ combination.scoreValue }}
               </p>
-            </v-layout>
           </v-layout>
         </v-flex>
       </v-flex>
@@ -185,7 +185,7 @@ export default {
     computedGameScore: function () {
       return store.state.schoolScoreTotal + store.state.gameTotal
     },
-    rollsLeft: function () {
+    rollsLeft: function () { // ???
       return store.state.rollCount
     }
   },
@@ -198,7 +198,9 @@ export default {
       // this.chartData.labels = this.prepareLabelsForChart(this.schoolScores.split(',').length)
       if (this.schoolScores) {
         let arrayToDisplay = this.schoolScores.split(',')
-        this.chartData.series = [arrayToDisplay]
+        let slicedArray = arrayToDisplay.slice(-12)
+        console.log(`Sliced array is ${slicedArray}`)
+        this.chartData.series = [slicedArray]
       }
       // console.log(`Scores are split ${this.schoolScores.split(',').length}`)
       // this.chartData.series = this.schoolScores
@@ -260,6 +262,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+
 @import "../assets/scss/index.scss";
 
 .rules-heading {
@@ -278,6 +281,7 @@ export default {
 }
 .help-dice-icon {
   display: block;
+  fill: none;
   width: 100%;
   height: 1.25em;
   width: 1.25em;
@@ -307,6 +311,12 @@ export default {
 }
 .combination-descr:hover {
   background-color: $color-pale-primary;
+}
+
+@media screen and (orientation: landscape) {
+  .combination-descr {
+  font-size: 2em;
+  }
 }
 
 </style>

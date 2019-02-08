@@ -1,14 +1,14 @@
 <template>
-  <v-container fill-height id="startPageContent">
+  <v-container pb-2 fill-height id="startPageContent">
     <v-layout align-space-around column>
       <v-flex d-flex align-center class="text-xs-center">
         <h1 class="game-name">{{ gameName }}</h1>
       </v-flex>
-      <v-flex d-flex xs4>
-        <v-img :src="require('@/assets/icons/startPageDice.svg')" contain></v-img>
+      <v-flex d-flex justify-center>
+        <v-img max-width="12em" :src="require('@/assets/icons/startPageDice.svg')" contain></v-img>
       </v-flex>
       <v-flex d-flex align-center class="text-xs-center">
-        <h2 class="user-name">{{ greeting }} {{ this.userName }}{{ exclamation }}</h2>
+        <h2 class="user-name-main-page">{{ greeting }} {{ userName }}{{ exclamation }}</h2>
     </v-flex>
     <v-layout row align-center justify-space-around>
         <v-flex xs4 lg2 class="text-xs-center">
@@ -87,7 +87,7 @@ export default {
     }
   },
   mounted () {
-    this.$nextTick(function () {
+    this.$nextTick(() => {
       console.log('Main page mounted')
       if (this.getUserData.isAuthenticated) {
         console.log(`Setting user score from db...`)
@@ -107,7 +107,8 @@ export default {
       'newGame'
     ]),
     startNewGame (event) {
-      window.location.replace('/game')
+      // window.location.replace('/game')
+      this.$router.push('/')
     },
     setUserScoreDataFromDB (uid) {
       console.log(`Getting user scores for uid ${uid}`)
@@ -141,8 +142,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 @import "../assets/scss/index.scss";
-.game-name, .user-name, .copyrights {
+.game-name, .user-name, .user-name-main-page, .copyrights {
   font-family: $text-font;
 }
 .game-name {
@@ -151,6 +153,10 @@ export default {
 }
 .user-name {
   font-size: 2em;
+}
+.user-name-main-page {
+  font-size: 2.3em;
+  color: $color-primary-3;
 }
 .copyrights {
   font-size: .9em;
@@ -171,4 +177,5 @@ export default {
     font-size: 4em;
   }
 }
+
 </style>

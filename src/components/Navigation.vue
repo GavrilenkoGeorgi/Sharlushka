@@ -1,21 +1,6 @@
 <template>
   <v-layout align-center row id="gameNavigation">
-    <v-flex xs4 class="score text-xs-left">
-      {{ computedGameScore }}
-    </v-flex>
-    <v-flex xs4 class="game-name text-xs-center" role="button" aria-label="Go to main page">
-      <router-link to="/">{{ title }}</router-link>
-    </v-flex>
-    <!--v-flex>
-      <v-btn to="/settings" fab flat color="#79008f"
-        aria-label="Go to settings"-->
-        <!--v-img :src="require('@/assets/icons/baseline-menu-24px.svg')" contain height="3em"></v-img-->
-        <!--v-icon>more_vert</v-icon>
-        <h1>1</h1>
-      </v-btn>
-    </v-flex-->
-    <v-spacer></v-spacer>
-<!-- Offline message -->
+    <!--v-toolbar dark color="purple darken-3 navbar">
     <v-flex xs2 v-if="!this.networkStatus">
       <v-dialog
         v-model="offlineMessage"
@@ -46,13 +31,11 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-flex>
-<!-- Settings button -->
-    <v-btn to='/settings' small icon
-      fab dark>
-      <v-icon size="2.8em"
-        color="white">more_vert</v-icon>
-    </v-btn>
+    </v-flex-->
+      <!--v-btn fab flat icon>
+        <v-icon>more_vert</v-icon>
+      </v-btn-->
+    <!--/v-toolbar-->
   </v-layout>
 </template>
 
@@ -61,12 +44,21 @@ import store from '../store/store' // ??
 
 export default {
   name: 'Navigation',
-  data () {
-    return {
-      title: 'Sharlushka',
-      offlineMessage: false
-    }
-  },
+  data: () => ({
+    title: 'Sharlushka',
+    offlineMessage: false,
+    navDrawer: true,
+    admins: [
+      ['Management', 'people_outline'],
+      ['Settings', 'settings']
+    ],
+    cruds: [
+      ['Create', 'add'],
+      ['Read', 'insert_drive_file'],
+      ['Update', 'update'],
+      ['Delete', 'delete']
+    ]
+  }),
   computed: {
     networkStatus () {
       return this.isOnline ? 'ok' : null
@@ -82,14 +74,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/*
 // @import "../assets/scss/vars/fonts.scss";
 // @import "../assets/scss/vars/colors.scss";
 @import "../assets/scss/index.scss";
 
 #gameNavigation {
   // border: 1px solid pink;
-  position: fixed;
-  top: 0;
+  // position: fixed;
+  // top: 0;
   background-color: $color-primary-0;
   height: 1.7em;
   width: 100%;
@@ -106,7 +99,7 @@ i {
 }
 
 .score, .game-name {
-  font-family: $text-font;
+  // font-family: $text-font;
 }
 .score {
   // border: 1px solid red;
@@ -133,9 +126,9 @@ i {
 }
 
 .offline-message-text {
-  font-family: $text-font;
+  // font-family: $text-font;
   font-weight: 700;
-  color: $color-primary-0;
+  // color: $color-primary-0;
 }
 
 @keyframes blinker {
@@ -182,7 +175,7 @@ i {
   }
 }
 */
-
+/*
 // landscape
 @media screen and (orientation: landscape) {
   #gameNavigation {
@@ -213,6 +206,7 @@ i {
     // border: 1px solid red;
   }
 }
+
 /*
 @media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
   #gameNavigation {
@@ -228,4 +222,5 @@ i {
 @media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
 }
 */
+
 </style>

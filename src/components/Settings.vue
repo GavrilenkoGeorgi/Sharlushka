@@ -1,5 +1,5 @@
 <template>
-  <v-container id="gameSettings">
+  <v-container id="gameSettings"> <!-- Maybe stats? -->
 <!-- Close button -->
     <closeBtn></closeBtn>
     <v-layout align-space-around column>
@@ -33,10 +33,9 @@
               </v-flex>
             </v-layout>
           </v-flex>
-<!-- Stats display -->
+<!-- Stats display v-if="item.value" -->
           <v-flex class="stats-display text-xs-center"
             v-for="item in newStats"
-            v-if="item.value"
             :key="item.msg">
             {{ item.msg }}&nbsp;{{ item.value }}
           </v-flex>
@@ -61,7 +60,7 @@
 </template>
 
 <script>
-import store from '../store/store' // for reset state button
+// import store from '../store/store' // for reset state button
 import { mapGetters } from 'vuex'
 import closeBtn from '../components/CloseBtn'
 import db from './firebaseInit'
@@ -92,7 +91,7 @@ export default {
         lineSmooth: false,
         axisX: {
           // We can disable the grid for this axis
-          showGrid: true,
+          showGrid: false,
           // and also don't show the label
           showLabel: true
         }
@@ -162,7 +161,7 @@ export default {
   methods: {
     restartGame (state) {
       console.log(`Restarting.`)
-      store.commit('resetState')
+      this.$store.commit('resetState')
       this.$router.push('/game')
     },
     prepareLabelsForChart (numOfLabels) {
@@ -238,7 +237,7 @@ export default {
       if (result) {
         return result + '%'
       } else {
-        return false
+        return ''
       }
     }
   }
@@ -246,6 +245,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 @import '../assets/scss/index.scss';
 
 .help-title,
@@ -304,4 +304,5 @@ export default {
 #gameSettings {
   height: 100%;
 }
+
 </style>

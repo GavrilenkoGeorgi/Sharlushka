@@ -3,6 +3,7 @@ import '@babel/polyfill'
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import Vuetify from 'vuetify'
+// import 'vuetify/dist/vuetify.min.css'
 import App from './App'
 import router from './router'
 import store from './store/store'
@@ -10,7 +11,7 @@ import store from './store/store'
 import './registerServiceWorker'
 import VueOffline from 'vue-offline'
 
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
+// import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import firebaseConfig from './components/firebaseConfig'
 import db from './components/firebaseInit'
 import firebase from 'firebase/app'
@@ -29,7 +30,6 @@ const initializeAuth = new Promise(resolve => {
       resolve(user)
     } else {
       console.log(`No user!`)
-      this.userName = this.getDefaultUserName
     }
   })
 })
@@ -69,7 +69,7 @@ function getUserNameFromDB (uid) {
         }
       })
       store.commit('setUserName', userName)
-      console.log(`Setting user name: ${userName}`)
+      // console.log(`Setting user name: ${userName}`)
       return userName
     })
     .catch(function (error) {

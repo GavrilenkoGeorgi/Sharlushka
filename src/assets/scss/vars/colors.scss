@@ -4,7 +4,8 @@
 
 // As hex codes */
 
-$color-primary-0: #79008f;
+// $color-primary-0: #79008f;
+$color-primary-0: #7B1FA2; // purple darken-2
 $color-primary-1: #B380D7;
 $color-primary-2: #7B4B9D;
 $color-primary-3: #301246;
@@ -15,7 +16,10 @@ $some-color3: #D1D4D1;
 
 $color-light: #fff;
 $color-light-gray: rgb(219, 219, 219);
-$color-very-red: #b40000;
+$color-very-red: rgba(180, 0, 0, 1);
+$color-red-darker: rgb(90, 0, 0);
+$color-stop-brick: rgb(255, 180, 180);
+// $color-red-darker: #fff;
 $color-very-red-transparent: rgba(180, 0, 0, .9);
 $color-orange: #FF9800;
 $color-chosen: #FF9800;

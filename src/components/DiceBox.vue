@@ -112,32 +112,34 @@ export default {
     },
     updateMainButtonState () {
       let button = document.querySelector('.main-button')
-      this.mainButtonState.play = true
-      this.mainButtonState.save = false
-      this.mainButtonState.roll = false
-      if (this.getCurrentGameState.rollsCountForButton === 3 &&
-          !this.getCurrentGameState.turnCompleted) {
+      if (button) { // do something with this, looks weird
         this.mainButtonState.play = true
-      }
-      if (this.getCurrentGameState.rollsCountForButton <= 2 &&
-          !this.getCurrentGameState.turnCompleted) {
-        // trigger render circles
-        this.mainButtonState.play = false
-        this.mainButtonState.roll = true
-      }
-      if (this.getCurrentGameState.turnCompleted) {
+        this.mainButtonState.save = false
         this.mainButtonState.roll = false
-        this.mainButtonState.play = true
-        this.mainButtonState.disabled = false
-      }
-      if (this.getCurrentGameState.rollsCountForButton === 0 &&
-          !this.getCurrentGameState.turnCompleted) {
-        this.mainButtonState.roll = false
-        this.mainButtonState.play = false
-        this.mainButtonState.save = true
-        this.mainButtonState.disabled = true
-        // this.vibrate()
-        button.classList.add('bounce')
+        if (this.getCurrentGameState.rollsCountForButton === 3 &&
+            !this.getCurrentGameState.turnCompleted) {
+          this.mainButtonState.play = true
+        }
+        if (this.getCurrentGameState.rollsCountForButton <= 2 &&
+            !this.getCurrentGameState.turnCompleted) {
+          // trigger render circles
+          this.mainButtonState.play = false
+          this.mainButtonState.roll = true
+        }
+        if (this.getCurrentGameState.turnCompleted) {
+          this.mainButtonState.roll = false
+          this.mainButtonState.play = true
+          this.mainButtonState.disabled = false
+        }
+        if (this.getCurrentGameState.rollsCountForButton === 0 &&
+            !this.getCurrentGameState.turnCompleted) {
+          this.mainButtonState.roll = false
+          this.mainButtonState.play = false
+          this.mainButtonState.save = true
+          this.mainButtonState.disabled = true
+          // this.vibrate()
+          button.classList.add('bounce')
+        }
       } else {
         return false
       }
@@ -197,7 +199,9 @@ export default {
   border: 1px solid pink;
 }
 */
+
 .game-dice-container {
+  height: 3.6em;
   margin-left: .3em;
   margin-right: .2em; // this
   transition: opacity 800ms cubic-bezier(.33,.15,.33,.98) ;
@@ -205,11 +209,12 @@ export default {
 .visible {
   opacity: 0; // ??
 }
-.dice-icon {
-  height: 3.6em;
+.game-dice {
+  height: .6em;
 }
 
 /* main button */
+
 .main-button {
   margin-right: .4em;
   color: $color-light;
@@ -235,38 +240,46 @@ export default {
   width: 1em;
   height: 1em;
   margin: .2em;
-  background: $color-light;
-  box-shadow: 0em 0em .4em .05em $color-light;
+  background: $color-stop-brick;
+  box-shadow: 0em 0em .4em .05em $color-stop-brick;
 }
 .save {
-  color: $color-light;
+  // color: $color-light;
   background-color: $color-very-red;
-  box-shadow: 0em 0em .3em $color-very-red;
+  // box-shadow: 0em 0em .3em $color-very-red;
 }
 
 // landscape
 @media screen and (orientation: landscape) {
   .dice-box-layout {
-    display: flex;
+    // display: flex;
     flex-direction: column;
-    width: 10em;
     // border: 1px solid red;
-    padding-top: .15em;
+    // padding-top: .15em;
+    height: 80vh;
+    width: 10em;
   }
   .dice-box {
     display: flex;
     flex-direction: column;
   }
+  .game-combination {
+    font-size: 1em;
+    // border: 1px solid pink;
+  }
   .game-dice-container {
-    display: flex;
+    // display: flex;
+    // height: 1em;
     flex-direction: column;
+    // border: 1px solid red;
   }
   .dice-icon {
-  margin: .1em 0em .1em 0em;
+    margin: .1em 0em .1em 0em;
+    height: 1em;
   }
   .main-button {
-    width: 75%;
-    margin: .4em;
+    width:75%;
+    // margin: .4em;
   }
 }
 
@@ -406,6 +419,7 @@ export default {
   }
 }
 */
+
 @keyframes bounce {
   from,
   20%,
@@ -450,4 +464,5 @@ export default {
   -webkit-animation-name: fadeOut;
   animation-name: fadeOut;
 }
+
 </style>

@@ -1,6 +1,6 @@
 <template>
-  <v-container fluid fill-height ma-0 pa-0 id="gameView">
-<!-- Navigation -->
+  <v-container fill-height ma-0 pa-0 id="gameView">
+<!-- Navigation ???? -->
 <svg version='1.1' style="display: none;" xmlns="http://www.w3.org/2000/svg">
       <symbol id="diceOnes" viewBox="0 0 200 200">
         <circle fill="currentColor" cx="100" cy="100" r="18"/>
@@ -42,7 +42,6 @@
         <path stroke-width=".4em" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
       </symbol>
     </svg>
-    <Navigation></Navigation>
     <v-layout column class="game-layout"
       v-bind:class="{ 'game-ended':this.getCurrentGameState.gameEnded }">
 <!-- School dice display -->
@@ -309,16 +308,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/scss/index.scss";
 
+@import "../assets/scss/index.scss";
+#gameView {
+  // border: 1px solid green;
+  // display: flex;
+  height: 85vh;
+}
 .game-layout {
-  padding-top: 3.2em;
+  padding-top: .2em;
+  // height: 100vh;
   font-family: $text-font;
   // background: $color-pale-primary;
   // padding-bottom: .2em;
+  // border: 1px solid green;
   transition: background-color 1s ease-in;
   // transition-duration: 1s;
   // transition-timing-function: ease-in;
+}
+
+.school-dice-container {
+  // height: 2.4em;
+  padding: .3em 0em .3em 0em;
+  // border: 1px solid pink;
 }
 .set {
   background-color: $color-pale-primary;
@@ -346,7 +358,7 @@ export default {
   color: $color-primary-0;
 }
 .game-combination {
-  padding: 0.05em;
+  padding: 0.06em; // padding messes up with the toolbar in apk
 }
 .blink {
   color: $color-primary-1;
@@ -368,8 +380,6 @@ export default {
     opacity: 0;
   }
 }
-
-/* Progress bar */
 .progress-bar {
   background-color: $color-primary-0;
   box-shadow: 0px 1px 10px 0px $color-primary-4;
@@ -386,9 +396,14 @@ export default {
 
 // Landscape mode
 @media screen and (orientation: landscape) {
+  #gameView {
+  // border: 1px solid green;
+  // display: flex;
+  height: 80vh;
+  }
   .game-layout {
     flex-direction: row;
-    padding-top: 3em;
+    // padding-top: 3em;
     // border: 1px solid red;
     padding-bottom: .4em;
   }
@@ -406,6 +421,10 @@ export default {
     width: 100em;
     padding: 0em;
     font-size: .81em;
+  }
+  .game-combination {
+    padding: 0px;
+    margin: 0px;
   }
 }
 
@@ -462,7 +481,7 @@ export default {
 
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) { // ipadPro
 .game-layout {
-  padding-top: 7em;
+  // padding-top: 7em;
 }
 .school-dice-icon {
    height: 8em;
@@ -496,7 +515,7 @@ export default {
 }
 @media screen and (max-resolution: 96dpi) and (min-width: 481px) { // fly iq4415
   .game-layout {
-    padding-top: 5em;
+    // padding-top: 5em;
     }
   .school-dice-icon {
     height: 6em;
@@ -520,7 +539,7 @@ export default {
 
 @media screen and (max-resolution: 96dpi) and (orientation: landscape) { // desktop default window proportions
   .game-layout {
-    padding-top: 6em;
+    // padding-top: 6em;
     padding-bottom: .6em;
   }
   .school-result, .game-combination {

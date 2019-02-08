@@ -1,87 +1,102 @@
 <template>
-  <v-container fluid id="login">
+  <v-container fluid id="login" class="text-xs-center">
 <!-- Close button -->
     <closeBtn></closeBtn>
+<!-- Error message -->
     <v-layout column>
       <v-flex d-flex>
         <v-alert
           :value="errorMessage"
           dismissible
           outline
+          relative
           type="error">
           {{ errorMessage }}
         </v-alert>
       </v-flex>
-      <v-flex d-flex class="page-title text-xs-center py-4">
+<!-- Page title -->
+      <v-flex d-flex class="page-title py-4">
         <h1>{{ pageTitle }}</h1>
       </v-flex>
+<!-- Input form -->
       <v-layout justify-center class="login-form py-4">
-        <v-flex xs8 d-flex align-center py-4>
-        <v-form ref="form" v-model="valid"
-          lazy-validation>
-        <v-text-field
-          v-model="email"
-          :rules="emailRules"
-          label="E-mail"
-          :type="'email'"
-          autocomplete="off"
-          required
-          color="purple accent-4">
-        </v-text-field>
-        <v-text-field
-          v-model="password"
-          :rules="passwordRules"
-          :type="'password'"
-          label="Password"
-          autocomplete="off"
-          required
-          color="purple accent-4">
-        </v-text-field>
-      </v-form>
+        <v-flex xs9 d-flex align-center py-4>
+          <v-form ref="form" v-model="valid"
+            lazy-validation>
+            <v-text-field
+              v-model="email"
+              :rules="emailRules"
+              label="E-mail"
+              :type="'email'"
+              autocomplete="off"
+              required
+              color="purple accent-4">
+            </v-text-field>
+            <v-text-field
+              v-model="password"
+              :rules="passwordRules"
+              :type="'password'"
+              label="Password"
+              autocomplete="off"
+              required
+              color="purple accent-4">
+            </v-text-field>
+          </v-form>
         </v-flex>
       </v-layout>
-      <v-layout justify-center class="text-xs-center">
-        <v-flex xs5 d-flex align-end>
-          <v-btn :disabled="!valid"
+<!-- Buttons layout -->
+      <v-layout row wrap justify-center>
+        <v-flex d-flex xs5>
+          <v-btn @click.prevent="login"
+            :disabled="logginIn"
             :type="'submit'"
             :loading="logginIn"
-            @click.prevent="login"
             large
+            ripple
             class="button white--text"
             color="orange">
             login
           </v-btn>
         </v-flex>
-        <v-flex xs5 d-flex align-end>
+
+        <v-flex d-flex xs5>
           <v-btn @click="clear"
-          dark
-          large
-          class="button"
-          color="purple darken-1">
-          clear</v-btn>
-        </v-flex>
-      </v-layout>
-      <v-layout wrap class="text-xs-center">
-        <v-flex d-flex align-center class="info-text">
-        <span>or</span>
-        </v-flex>
-      <v-flex xs12>
-          <v-btn to='/register'
-            dark
+            :disabled="valid"
             large
-            class="button"
+            ripple
+            class="button white--text"
+            color="purple darken-1">
+            clear
+          </v-btn>
+        </v-flex>
+
+        <v-flex xs12 py-4 align-center class="info-text">
+          <v-divider></v-divider>
+        </v-flex>
+
+        <v-flex d-flex xs5>
+          <v-btn @click="signOut"
+            :loading="loggingOut"
+            :disabled="!this.getUserAuthState"
+            large
+            ripple
+            class="button white--text"
+            color="purple darken-1">
+              log out
+          </v-btn>
+        </v-flex>
+
+        <v-flex d-flex xs5>
+          <v-btn to='/register'
+            large
+            ripple
+            class="button white--text"
             color="purple darken-1">
             {{ newUserBtnText }}
           </v-btn>
-          <v-btn @click="signOut"
-          :loading="loggingOut"
-          :disabled="!this.getUserAuthState"
-          large
-          class="button white--text"
-          color="purple darken-1">
-          sign out</v-btn>
         </v-flex>
       </v-layout>
+<!-- End of buttons layout -->
     </v-layout>
   </v-container>
 </template>
@@ -97,12 +112,12 @@ import closeBtn from '../components/CloseBtn'
 export default {
   name: 'login',
   data: () => ({
-    loader: null,
+    // loader: null,
     logginIn: false,
     loggingOut: false,
     users: [],
     errorMessage: undefined,
-    newUserBtnText: 'Create new user',
+    newUserBtnText: 'Add user',
     pageTitle: 'Log In',
     valid: true,
     name: '',
@@ -222,15 +237,18 @@ export default {
         return true
       }
     },
-    signOut: () => {
+    signOut () {
       this.loggingOut = !this.loggingOut
-      firebase.auth().signOut().then(function () {
+      firebase.auth().signOut().then(() => {
         console.log('Signed Out')
         localStorage.removeItem('highestScore')
         localStorage.removeItem('lastScoresArray')
         localStorage.removeItem('schoolScores')
         store.commit('setAuthState', false)
-      }, function (error) {
+        store.commit('setUserName', 'Anonymous')
+        this.loggingOut = !this.loggingOut
+        this.$router.push('/')
+      }).catch(error => {
         console.error('Sign Out Error', error)
         this.loggingOut = !this.loggingOut
       })
@@ -303,7 +321,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '../assets/scss/index.scss';
 
 #login {
@@ -312,6 +330,7 @@ export default {
 
 .login-form, .page-title, .info-text, .button {
   font-family: $text-font;
+  // font-family: 'Courier New', Courier, monospace;
   // font-weight: 700;
 }
 .info-text {
@@ -319,4 +338,41 @@ export default {
   font-size: 1.4em;
   font-weight: 700;
 }
+
+.custom-loader {
+    animation: loader 1s infinite;
+    display: flex;
+  }
+  @-moz-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-o-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 </style>

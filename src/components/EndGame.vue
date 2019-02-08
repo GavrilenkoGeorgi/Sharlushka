@@ -4,8 +4,8 @@
     <closeBtn></closeBtn>
     <v-layout align-center justify-center row fill-height wrap>
 <!-- Messages -->
-      <v-flex xs12 class="user-name text-xs-center">
-        <h1>{{ message }}<br />
+      <v-flex xs12 class="user-name-game-end text-xs-center">
+        <h1 >{{ message }}<br />
           <span>{{ userName }}{{ exclamation }}</span>
         </h1>
       </v-flex>
@@ -16,7 +16,7 @@
         <h2>{{ schoolScoreMessage }} {{ getTotalScore }}</h2>
       </v-flex>
 <!-- Game message -->
-      <v-flex class="message-game text-xs-center"
+      <v-flex xs12 class="message-game text-xs-center"
         v-if="this.getCurrentGameState.schoolCompleted">
         <h2>{{ messageText }} {{ getTotalScore }}</h2>
       </v-flex>
@@ -201,10 +201,10 @@ export default {
 #endGame {
   height: 100%;
 }
-.user-name, .message-school, .message-game {
+.user-name-game-end, .message-school, .message-game {
   font-family: $text-font;
 }
-.user-name {
+.user-name-game-end {
   span {
     color: $color-chosen;
   }
@@ -212,4 +212,5 @@ export default {
 .message-school {
   line-height: 1.5;
 }
+
 </style>
