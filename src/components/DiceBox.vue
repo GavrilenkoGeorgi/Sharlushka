@@ -3,7 +3,7 @@
 <!-- Dice box -->
     <v-layout row align-center class="dice-box-layout">
       <v-flex d-flex xs9 class="game-dice-container dice-box"
-        v-bind:class="{ visible: this.getCurrentGameState.gameEnded, visible: this.hidden }">
+        v-bind:class="{ visible: this.getCurrentGameState.gameEnded}">
         <svg class="dice-icon default animated"
           v-for="dice in this.getDiceArray"
           :key="dice.id"
