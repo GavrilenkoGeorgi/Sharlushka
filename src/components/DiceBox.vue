@@ -3,7 +3,8 @@
 <!-- Dice box -->
     <v-layout row align-center class="dice-box-layout">
       <v-flex d-flex xs9 class="game-dice-container dice-box"
-        v-bind:class="{ visible: this.getCurrentGameState.gameEnded}">
+        v-bind:class="{ hidden: this.getCurrentGameState.gameEnded
+          || this.getCurrentGameState.currentRollCount === 3 }">
         <svg class="dice-icon default animated"
           v-for="dice in this.getDiceArray"
           :key="dice.id"
@@ -24,7 +25,7 @@
           v-bind:class="{ save: this.mainButtonState.save,
           bounce: this.mainButtonState.save,
           fadeOut: this.getCurrentGameState.gameEnded,
-          visible: this.getCurrentGameState.gameEnded }">
+          hidden: this.getCurrentGameState.gameEnded }">
         <v-layout align-center justify-center row fill-height>
           <v-flex xs2 class="play-arrow animated fadeIn" v-if=" this.mainButtonState.play">
           </v-flex>
@@ -57,7 +58,7 @@ export default {
   data () {
     return {
       navigatorSupported: false,
-      hidden: false,
+      // hidden: false,
       zzz: 'zzz',
       mainButtonState: {
         play: true,
@@ -70,6 +71,7 @@ export default {
   mounted () {
     this.$nextTick(function () {
       console.log('Dice box component mounted')
+      this.updateMainButtonState()
       if ('vibrate' in navigator) {
         this.navigatorSupported = true
         // vibration API supported
@@ -85,7 +87,7 @@ export default {
       handler () {
         if (!this.getCurrentGameState.gameEnded) {
           this.updateMainButtonState()
-          this.hidden = !this.hidden
+          // this.hidden = !this.hidden
         }
       }
     }
@@ -206,7 +208,7 @@ export default {
   margin-right: .2em; // this
   transition: opacity 800ms cubic-bezier(.33,.15,.33,.98) ;
 }
-.visible {
+.hidden {
   opacity: 0; // ??
 }
 .game-dice {
