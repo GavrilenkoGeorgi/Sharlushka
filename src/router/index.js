@@ -46,8 +46,13 @@ export default new Router({
     },
     {
       path: '/login',
-      name: 'login',
-      component: () => import(/* webpackChunkName: "Login" */ '@/components/Login.vue')
+      name: 'Login',
+      component: () => import(/* webpackChunkName: "login" */ '@/components/Login.vue')
+    },
+    {
+      path: '/leaderboard',
+      name: 'LeaderBoard',
+      component: () => import(/* webpackChunkName: "leaderboard" */ '@/views/Leaderboard.vue')
     }
   ]
 })

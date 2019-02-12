@@ -1,6 +1,65 @@
 <template>
-  <v-container fill-height ma-0 pa-0 id="gameView">
-<!-- Navigation ???? -->
+  <v-container fill-height fluid ma-0 pa-0 id="gameView">
+<!-- Toolbar -->
+    <v-toolbar app dense color="purple darken-2" class="text-xs-center"
+      v-if="['Game'].includes($route.name)">
+      <span class="score pl-3">
+        {{ getTotalScore }}
+      </span>
+      <v-spacer></v-spacer>
+      <v-toolbar-title
+        class="game-name">
+        <router-link :to="{ path: '/' }">
+        {{ gameName }}
+        </router-link>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <NetworkCheck></NetworkCheck>
+      <v-toolbar-items>
+        <v-spacer></v-spacer>
+        <v-btn fab dark small flat @click="manipulateDrawer">
+          <v-icon large>more_vert</v-icon>
+        </v-btn>
+      </v-toolbar-items>
+    </v-toolbar>
+<!-- Navigation drawer -->
+    <v-navigation-drawer temporary width="295" v-model="navDrawer"
+      fixed right class="navigation-drawer">
+      <v-list>
+        <v-list-tile class="pb-3" @click="manipulateDrawer">
+          <v-list-tile-action>
+            <v-flex class="text-xs-center">
+              <v-icon large color="orange">keyboard_backspace</v-icon>
+            </v-flex>
+          </v-list-tile-action>
+          <v-list-tile-title class="drawer-menu-item">Back</v-list-tile-title>
+        </v-list-tile>
+<!-- Greeting -->
+        <v-list-tile>
+          <v-list-tile-action>
+            <v-flex class="text-xs-center">
+              <NetworkCheck></NetworkCheck>
+            </v-flex>
+          </v-list-tile-action>
+          <v-list-tile-content class="drawer-menu-item pa-0 user-name">Hi,&nbsp;{{ currentUserName }}.</v-list-tile-content>
+        </v-list-tile>
+<!-- Nav drawer links -->
+        <v-list-tile v-for="link in navDrawerLinks"
+          :key="link.path"
+          :to="{ path: link.path }">
+          <v-list-tile-action>
+            <v-flex class="text-xs-center">
+              <v-icon color="purple darken-2">
+                {{ link.icon }}
+              </v-icon>
+            </v-flex>
+          </v-list-tile-action>
+          <v-list-tile-title class="drawer-menu-item subheading">
+            {{ link.text }}
+          </v-list-tile-title>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
 <svg version='1.1' style="display: none;" xmlns="http://www.w3.org/2000/svg">
       <symbol id="diceOnes" viewBox="0 0 200 200">
         <circle fill="currentColor" cx="100" cy="100" r="18"/>
@@ -101,24 +160,46 @@
 </template>
 
 <script>
+import NetworkCheck from '@/components/NetworkCheck.vue'
 import { mapGetters, mapActions } from 'vuex'
 import store from '../store/store'
-import Navigation from '../components/Navigation'
+// import Navigation from '../components/Navigation'
 import DiceBox from '../components/DiceBox'
 
 export default {
   name: 'Game',
-  data () {
-    return {
-      title: 'Sharlushka',
-      highestScore: 0,
-      turnCompleted: false,
-      progressBarLength: 3
-    }
-  },
+  data: () => ({
+    title: 'Sharlushka',
+    highestScore: 0,
+    turnCompleted: false,
+    progressBarLength: 3,
+    navDrawer: false,
+    navDrawerLinks: [
+      {
+        path: '/help',
+        icon: 'trending_up',
+        text: 'School results & help'
+      },
+      {
+        path: '/settings',
+        icon: 'equalizer',
+        text: 'User stats'
+      },
+      {
+        path: '/leaderboard',
+        icon: 'import_export',
+        text: 'Leaderboard'
+      },
+      {
+        path: '/login',
+        icon: 'exit_to_app',
+        text: 'Log in/out'
+      }
+    ]
+  }),
   components: {
-    Navigation,
-    DiceBox
+    DiceBox,
+    NetworkCheck
   },
   computed: {
     ...mapGetters([
@@ -128,13 +209,25 @@ export default {
       'getSchoolArray',
       'getCombinationArray',
       'getDiceArray',
-      'getCurrentGameState'
+      'getCurrentGameState',
+      'getTotalScore',
+      'getUserName'
     ]),
+    gameName () {
+      return 'Sharlushka'
+    },
     turnState: function () { // wtf???
       return store.state.newTurn
     },
     progressBarState: function () {
       return store.state.rollCount
+    },
+    currentUserName () {
+      if (this.getUserName === '') {
+        return 'Anonymous'
+      } else {
+        return this.getUserName
+      }
     }
   },
   watch: {
@@ -171,6 +264,20 @@ export default {
       // 'setDiceChosenState',
       // 'incrementAsync'
     ]),
+    manipulateDrawer () {
+      this.navDrawer = !this.navDrawer
+    },
+    updateOnlineStatus () {
+      if (navigator.onLine) {
+        console.log('online')
+        // document.documentElement.classList.remove('is-offline');
+        // document.querySelector('.connection-status').innerHTML = 'Online';
+      } else {
+        console.log('offline')
+        // document.documentElement.classList.add('is-offline');
+        // document.querySelector('.connection-status').innerHTML = 'Offline';
+      }
+    },
     updateProgressBar () {
       let progressBar = document.querySelector('.progress-bar')
       if (store.state.rollCount === 2) {
@@ -313,7 +420,7 @@ export default {
 #gameView {
   // border: 1px solid green;
   // display: flex;
-  height: 85vh;
+  // height: 85vh;
 }
 .game-layout {
   padding-top: .2em;
@@ -348,7 +455,7 @@ export default {
   height: 3.8em;
 }
 .school-result {
-  height: 1em;
+  height: .8em;
   text-align: center;
 }
 .saved {
@@ -392,6 +499,38 @@ export default {
 .full { // progress bar state
   background-color: #AA3838;
   box-shadow: 0em .2em .8em 0em red;
+}
+
+.navigation-drawer {
+  font-family: $text-font;
+}
+.drawer-menu-item {
+  font-family: $text-font;
+  font-weight: 700;
+  font-size: 1.4em;
+  color: $color-primary-3;
+}
+.user-name {
+  color: $color-primary-0;
+  font-size: 2em;
+  // line-height: 1;
+}
+.score {
+  color: white;
+  font-size: 2em;
+  font-family: $text-font;
+  text-align: center;
+}
+
+.game-name {
+  // font-weight: 700;
+  a {
+    color: white;
+    font-size: 1.3em;
+    font-family: $text-font;
+    text-transform: capitalize;
+    text-decoration: none;
+  }
 }
 
 // Landscape mode
