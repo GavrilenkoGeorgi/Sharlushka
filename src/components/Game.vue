@@ -1,8 +1,7 @@
 <template>
   <v-container fill-height fluid ma-0 pa-0 id="gameView">
 <!-- Toolbar -->
-    <v-toolbar app dense color="purple darken-2" class="text-xs-center"
-      v-if="['Game'].includes($route.name)">
+    <v-toolbar absolute dense color="purple darken-2" class="text-xs-center">
       <span class="score pl-3">
         {{ getTotalScore }}
       </span>
@@ -119,7 +118,7 @@
         </v-flex>
       </v-layout>
 <!-- School results display -->
-      <v-layout row class="school-results-layout">
+      <v-layout row class="school-results-layout" align-center>
         <v-flex d-flex xs2 align-center justify-center
             v-for="result in this.getSchoolArray"
             :key="result.id"
@@ -417,13 +416,14 @@ export default {
 <style lang="scss" scoped>
 
 @import "../assets/scss/index.scss";
+
 #gameView {
   // border: 1px solid green;
   // display: flex;
   // height: 85vh;
 }
 .game-layout {
-  padding-top: .2em;
+  padding-top: 3.5em;
   // height: 100vh;
   font-family: $text-font;
   // background: $color-pale-primary;
@@ -436,7 +436,7 @@ export default {
 
 .school-dice-container {
   // height: 2.4em;
-  padding: .3em 0em .3em 0em;
+  // padding: .3em 0em .3em 0em;
   // border: 1px solid pink;
 }
 .set {
@@ -450,12 +450,17 @@ export default {
     background-color: inherit;
   }
 }
+/*
 .school-dice-icon {
   // background-color: yellow;
-  height: 3.8em;
+  // height: 3.8em;
 }
+
+.school-results-layout {
+  border: 1px solid pink;
+} */
 .school-result {
-  height: .8em;
+  // height: .8em;
   text-align: center;
 }
 .saved {
@@ -465,7 +470,7 @@ export default {
   color: $color-primary-0;
 }
 .game-combination {
-  padding: 0.06em; // padding messes up with the toolbar in apk
+  padding: 0.1em; // padding messes up with the toolbar in apk
 }
 .blink {
   color: $color-primary-1;
