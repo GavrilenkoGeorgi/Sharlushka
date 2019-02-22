@@ -159,11 +159,11 @@
 </template>
 
 <script>
-import NetworkCheck from '@/components/NetworkCheck.vue'
+import NetworkCheck from './NetworkCheck.vue'
 import { mapGetters, mapActions } from 'vuex'
 import store from '../store/store'
 // import Navigation from '../components/Navigation'
-import DiceBox from '../components/DiceBox'
+import DiceBox from './DiceBox.vue'
 
 export default {
   name: 'Game',

@@ -62,7 +62,7 @@
 <script>
 // import store from '../store/store' // for reset state button
 import { mapGetters } from 'vuex'
-import closeBtn from '../components/CloseBtn'
+import closeBtn from './CloseBtn.vue'
 import db from './firebaseInit'
 
 export default {

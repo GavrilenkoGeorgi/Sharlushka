@@ -1,10 +1,11 @@
-import '@babel/polyfill'
+// import '@babel/polyfill'
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 // import 'vuetify/dist/vuetify.min.css'
-import App from './App'
+// import css from './main.css'
+import App from './App.vue'
 import router from './router'
 import store from './store/store'
 
@@ -76,7 +77,7 @@ function getUserNameFromDB (uid) {
       console.log('Error getting documents: ', error)
     })
 }
-
+/*
 if (!this.getUserAuthState || this.getUserData.name === '') {
   authService.authenticated().then((result) => {
     // this.userName = authService.userUid
@@ -94,7 +95,7 @@ if (!this.getUserAuthState || this.getUserData.name === '') {
     console.log(`Error ${error}`)
   })
 }
-
+*/
 Vue.config.productionTip = false
 
 Vue.use(Vuetify, {
@@ -109,7 +110,10 @@ new Vue({
   el: '#app',
   store,
   router,
-  components: { App },
-  template: '<App/>',
+  components: {
+    AsyncComponent: () => import('./App.vue')
+  },
+  // components: { App },
+  // template: '<App/>',
   render: h => h(App)
 })

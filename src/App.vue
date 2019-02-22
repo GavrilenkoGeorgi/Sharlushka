@@ -30,7 +30,7 @@ export default {
 </style>
 <style lang="scss">
 @import '../node_modules/chartist/dist/chartist.min.css';
-@import '@/assets/scss/index.scss';
+@import './assets/scss/index.scss';
 
 #app {
   background: #ffffff;

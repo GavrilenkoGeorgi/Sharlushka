@@ -92,7 +92,7 @@
 <script>
 import store from '../store/store'
 import { mapGetters } from 'vuex'
-import closeBtn from '../components/CloseBtn'
+import closeBtn from '../components/CloseBtn.vue'
 
 export default {
   name: 'Help',

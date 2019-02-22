@@ -12,47 +12,47 @@ export default new Router({
       path: '/',
       name: 'MainPage',
       // component: MainPage
-      component: () => import(/* webpackChunkName: "mainpage" */ '@/components/MainPage.vue')
+      component: () => import(/* webpackChunkName: "mainpage" */ '../components/MainPage.vue')
     },
     {
       path: '/register',
       name: 'Register',
       // component: Register
-      component: () => import(/* webpackChunkName: "register" */ '@/components/Register.vue')
+      component: () => import(/* webpackChunkName: "register" */ '../components/Register.vue')
     },
     {
       path: '/settings',
       name: 'Settings',
       // component: Settings
-      component: () => import(/* webpackChunkName: "settings" */ '@/components/Settings.vue')
+      component: () => import(/* webpackChunkName: "settings" */ '../components/Settings.vue')
     },
     {
       path: '/game',
       name: 'Game',
       // component: Game
-      component: () => import(/* webpackChunkName: "game" */ '@/components/Game.vue')
+      component: () => import(/* webpackChunkName: "game" */ '../components/Game.vue')
     },
     {
       path: '/endgame',
       name: 'EndGame',
       // component: EndGame
-      component: () => import(/* webpackChunkName: "endgame" */ '@/components/EndGame.vue')
+      component: () => import(/* webpackChunkName: "endgame" */ '../components/EndGame.vue')
     },
     {
       path: '/help',
       name: 'Help',
       // component: Help
-      component: () => import(/* webpackChunkName: "help" */ '@/components/Help.vue')
+      component: () => import(/* webpackChunkName: "help" */ '../components/Help.vue')
     },
     {
       path: '/login',
       name: 'Login',
-      component: () => import(/* webpackChunkName: "login" */ '@/components/Login.vue')
+      component: () => import(/* webpackChunkName: "login" */ '../components/Login.vue')
     },
     {
       path: '/leaderboard',
       name: 'LeaderBoard',
-      component: () => import(/* webpackChunkName: "leaderboard" */ '@/views/Leaderboard.vue')
+      component: () => import(/* webpackChunkName: "leaderboard" */ '../views/Leaderboard.vue')
     }
   ]
 })

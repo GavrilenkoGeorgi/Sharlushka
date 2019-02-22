@@ -44,7 +44,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import store from '../store/store'
-import closeBtn from '../components/CloseBtn'
+import closeBtn from '../components/CloseBtn.vue'
 import db from './firebaseInit'
 
 export default {

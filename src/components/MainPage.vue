@@ -5,7 +5,7 @@
         <h1 class="game-name">{{ gameName }}</h1>
       </v-flex>
       <v-flex d-flex justify-center>
-        <v-img max-width="12em" :src="require('@/assets/icons/startPageDice.svg')" contain></v-img>
+        <!--v-img max-width="12em" :src="require('../assets/icons/startPageDice.svg')" contain></v-img-->
       </v-flex>
       <v-flex d-flex align-center class="text-xs-center">
         <h2 class="user-name-main-page">{{ greeting }} {{ userName }}{{ exclamation }}</h2>
@@ -16,16 +16,16 @@
             large color="purple darken-1"
             aria-label="Start game"
             v-bind:class="{orange:$store.state.currentGameTurn > 1}">
-            <v-img :src="require('@/assets/icons/baseline-done-24px.svg')"
-              contain height="2em"></v-img>
+            <!--v-img :src="require('../assets/icons/baseline-done-24px.svg')"
+              contain height="2em"></v-img-->
           </v-btn>
         </v-flex>
         <v-flex xs4 lg2 class="text-xs-center">
           <v-btn to="/login" ripple block class="ui-button"
             large color="purple darken-1"
             aria-label="Register or change name">
-            <v-img :src="require('@/assets/icons/baseline-how_to_reg-24px.svg')"
-              contain height="2em"></v-img>
+            <!--v-img :src="require('../assets/icons/baseline-how_to_reg-24px.svg')"
+              contain height="2em"></v-img-->
           </v-btn>
         </v-flex>
       </v-layout>

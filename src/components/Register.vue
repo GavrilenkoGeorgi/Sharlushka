@@ -82,7 +82,7 @@ import db from './firebaseInit'
 import firebaseConfig from './firebaseConfig'
 import firebase from 'firebase/app'
 import 'firebase/auth'
-import closeButton from '../components/CloseBtn'
+import closeButton from './CloseBtn.vue'
 
 export default {
   name: 'register',

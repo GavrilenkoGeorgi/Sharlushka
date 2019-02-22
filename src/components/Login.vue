@@ -107,7 +107,7 @@ import db from '../components/firebaseInit'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import store from '../store/store'
-import closeBtn from '../components/CloseBtn'
+import closeBtn from '../components/CloseBtn.vue'
 
 export default {
   name: 'login',

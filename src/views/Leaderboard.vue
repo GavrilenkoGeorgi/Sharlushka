@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import closeBtn from '../components/CloseBtn'
+import closeBtn from '../components/CloseBtn.vue'
 import { mapGetters } from 'vuex'
 import db from '../components/firebaseInit'
 
