@@ -1,12 +1,14 @@
 <template>
   <v-app>
     <v-content>
-<!-- Router view -->
-      <transition name="custom-classes-transition"
-                  mode="out-in"
-                  enter-active-class="animated fadeIn"
-                  leave-active-class="animated fadeOutLeft">
-        <router-view></router-view>
+      <!-- Router view -->
+      <transition
+        name="custom-classes-transition"
+        mode="out-in"
+        enter-active-class="animated fadeIn"
+        leave-active-class="animated fadeOutLeft"
+      >
+        <router-view />
       </transition>
     </v-content>
   </v-app>
@@ -19,9 +21,11 @@ export default {
     userName: 'Anonymous'
   }),
   mounted () {
+    /*
     this.$nextTick(() => {
       console.log(`App started.`)
     })
+    */
   }
 }
 </script>

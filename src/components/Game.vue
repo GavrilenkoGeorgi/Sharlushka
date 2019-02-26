@@ -1,51 +1,91 @@
 <template>
-  <v-container fill-height fluid ma-0 pa-0 id="gameView">
-<!-- Toolbar -->
-    <v-toolbar absolute dense color="purple darken-2" class="text-xs-center">
+  <v-container
+    id="gameView"
+    fill-height
+    fluid
+    ma-0
+    pa-0
+  >
+    <!-- Toolbar -->
+    <v-toolbar
+      absolute
+      dense
+      color="purple darken-2"
+      class="text-xs-center"
+    >
       <span class="score pl-3">
         {{ getTotalScore }}
       </span>
-      <v-spacer></v-spacer>
+      <v-spacer />
       <v-toolbar-title
-        class="game-name">
+        class="game-name"
+      >
         <router-link :to="{ path: '/' }">
-        {{ gameName }}
+          {{ gameName }}
         </router-link>
       </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <NetworkCheck></NetworkCheck>
+      <v-spacer />
+      <NetworkCheck />
       <v-toolbar-items>
-        <v-spacer></v-spacer>
-        <v-btn fab dark small flat @click="manipulateDrawer">
-          <v-icon large>more_vert</v-icon>
+        <v-spacer />
+        <v-btn
+          fab
+          dark
+          small
+          flat
+          @click="manipulateDrawer"
+        >
+          <v-icon large>
+            more_vert
+          </v-icon>
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
-<!-- Navigation drawer -->
-    <v-navigation-drawer temporary width="295" v-model="navDrawer"
-      fixed right class="navigation-drawer">
+    <!-- Navigation drawer -->
+    <v-navigation-drawer
+      v-model="navDrawer"
+      temporary
+      width="295"
+      fixed
+      right
+      class="navigation-drawer"
+    >
       <v-list>
-        <v-list-tile class="pb-3" @click="manipulateDrawer">
+        <v-list-tile
+          class="pb-3"
+          @click="manipulateDrawer"
+        >
           <v-list-tile-action>
             <v-flex class="text-xs-center">
-              <v-icon large color="orange">keyboard_backspace</v-icon>
+              <v-icon
+                large
+                color="orange"
+              >
+                keyboard_backspace
+              </v-icon>
             </v-flex>
           </v-list-tile-action>
-          <v-list-tile-title class="drawer-menu-item">Back</v-list-tile-title>
+          <v-list-tile-title class="drawer-menu-item">
+            Back
+          </v-list-tile-title>
         </v-list-tile>
-<!-- Greeting -->
+        <!-- Greeting -->
         <v-list-tile>
           <v-list-tile-action>
             <v-flex class="text-xs-center">
-              <NetworkCheck></NetworkCheck>
+              <NetworkCheck />
             </v-flex>
           </v-list-tile-action>
-          <v-list-tile-content class="drawer-menu-item pa-0 user-name">Hi,&nbsp;{{ currentUserName }}.</v-list-tile-content>
+          <v-list-tile-content class="drawer-menu-item pa-0 user-name">
+            Hi,&nbsp;{{ currentUserName }}.
+          </v-list-tile-content>
         </v-list-tile>
-<!-- Nav drawer links -->
-        <v-list-tile v-for="link in navDrawerLinks"
+        <!-- Nav drawer links -->
+        <v-list-tile
+          v-for="link in navDrawerLinks"
           :key="link.path"
-          :to="{ path: link.path }">
+          :to="{ path: link.path }"
+        >
           <v-list-tile-action>
             <v-flex class="text-xs-center">
               <v-icon color="purple darken-2">
@@ -59,102 +99,286 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-<svg version='1.1' style="display: none;" xmlns="http://www.w3.org/2000/svg">
-      <symbol id="diceOnes" viewBox="0 0 200 200">
-        <circle fill="currentColor" cx="100" cy="100" r="18"/>
-        <path stroke-width=".4em" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+    <svg
+      version="1.1"
+      style="display: none;"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <symbol
+        id="diceOnes"
+        viewBox="0 0 200 200"
+      >
+        <circle
+          fill="currentColor"
+          cx="100"
+          cy="100"
+          r="18"
+        />
+        <path
+          stroke-width=".4em"
+          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
+        />
       </symbol>
-      <symbol id="diceTwos" viewBox="0 0 200 200">
-        <circle fill="currentColor" cx="50" cy="150" r="18"/>
-        <circle fill="currentColor" cx="150" cy="50" r="18"/>
-        <path stroke-width=".4em" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      <symbol
+        id="diceTwos"
+        viewBox="0 0 200 200"
+      >
+        <circle
+          fill="currentColor"
+          cx="50"
+          cy="150"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="150"
+          cy="50"
+          r="18"
+        />
+        <path
+          stroke-width=".4em"
+          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
+        />
       </symbol>
-      <symbol id="diceThrees" class="dice" viewBox="0 0 200 200">
-        <circle fill="currentColor" cx="50" cy="150" r="18"/>
-        <circle fill="currentColor" cx="100" cy="100" r="18"/>
-        <circle fill="currentColor" cx="150" cy="50" r="18"/>
-        <path stroke-width=".4em" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      <symbol
+        id="diceThrees"
+        class="dice"
+        viewBox="0 0 200 200"
+      >
+        <circle
+          fill="currentColor"
+          cx="50"
+          cy="150"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="100"
+          cy="100"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="150"
+          cy="50"
+          r="18"
+        />
+        <path
+          stroke-width=".4em"
+          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
+        />
       </symbol>
-      <symbol id="diceFours" class="dice" viewBox="0 0 200 200">
-        <circle fill="currentColor" cx="150" cy="50" r="18"/>
-        <circle fill="currentColor" cx="150" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="50" r="18"/>
-        <path stroke-width=".4em" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      <symbol
+        id="diceFours"
+        class="dice"
+        viewBox="0 0 200 200"
+      >
+        <circle
+          fill="currentColor"
+          cx="150"
+          cy="50"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="150"
+          cy="150"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="50"
+          cy="150"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="50"
+          cy="50"
+          r="18"
+        />
+        <path
+          stroke-width=".4em"
+          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
+        />
       </symbol>
-      <symbol id="diceFives" class="dice" viewBox="0 0 200 200">
-        <circle fill="currentColor" cx="100" cy="100" r="18"/>
-        <circle fill="currentColor" cx="150" cy="50" r="18"/>
-        <circle fill="currentColor" cx="150" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="50" r="18"/>
-        <path stroke-width=".4em" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      <symbol
+        id="diceFives"
+        class="dice"
+        viewBox="0 0 200 200"
+      >
+        <circle
+          fill="currentColor"
+          cx="100"
+          cy="100"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="150"
+          cy="50"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="150"
+          cy="150"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="50"
+          cy="150"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="50"
+          cy="50"
+          r="18"
+        />
+        <path
+          stroke-width=".4em"
+          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
+        />
       </symbol>
-      <symbol id="diceSixes" class="dice" viewBox="0 0 200 200">
-        <circle fill="currentColor" cx="150" cy="100" r="18"/>
-        <circle fill="currentColor" cx="150" cy="50" r="18"/>
-        <circle fill="currentColor" cx="150" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="150" r="18"/>
-        <circle fill="currentColor" cx="50" cy="100" r="18"/>
-        <circle fill="currentColor" cx="50" cy="50" r="18"/>
-        <path stroke-width=".4em" d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+      <symbol
+        id="diceSixes"
+        class="dice"
+        viewBox="0 0 200 200"
+      >
+        <circle
+          fill="currentColor"
+          cx="150"
+          cy="100"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="150"
+          cy="50"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="150"
+          cy="150"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="50"
+          cy="150"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="50"
+          cy="100"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="50"
+          cy="50"
+          r="18"
+        />
+        <path
+          stroke-width=".4em"
+          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
+        />
       </symbol>
     </svg>
-    <v-layout column class="game-layout"
-      v-bind:class="{ 'game-ended':this.getCurrentGameState.gameEnded }">
-<!-- School dice display -->
+    <v-layout
+      column
+      class="game-layout"
+      :class="{ 'game-ended': getCurrentGameState.gameEnded }"
+    >
+      <!-- School dice display -->
       <v-layout row>
-        <v-flex d-flex align-center class="school-dice-container">
-          <svg v-for="dice in this.getSchoolArray"
-                :key="dice.id"
-                @click="handleBoardClick"
-                v-bind:id="dice.id"
-                class="school-dice-icon default"
-                v-bind:class="{ chosen:dice.final }"
-                fill="none">
-            <use v-bind="{'xlink:href':'#' + dice.icon}">
-            </use>
+        <v-flex
+          d-flex
+          align-center
+          class="school-dice-container"
+        >
+          <svg
+            v-for="dice in getSchoolArray"
+            :id="dice.id"
+            :key="dice.id"
+            class="school-dice-icon default"
+            :class="{ chosen:dice.final }"
+            fill="none"
+            @click="handleBoardClick"
+          >
+            <use v-bind="{'xlink:href':'#' + dice.icon}" />
           </svg>
         </v-flex>
       </v-layout>
-<!-- School results display -->
-      <v-layout row class="school-results-layout" align-center>
-        <v-flex d-flex xs2 align-center justify-center
-            v-for="result in this.getSchoolArray"
-            :key="result.id"
-            @click="handleBoardClick"
-            class="school-result"
-            v-bind:class="{ saved:result.final, blink:!result.final }">
-          <span v-bind:resultId="result.id">{{ result.value }}</span>
+      <!-- School results display -->
+      <v-layout
+        row
+        class="school-results-layout"
+        align-center
+      >
+        <v-flex
+          v-for="result in getSchoolArray"
+          :key="result.id"
+          d-flex
+          xs2
+          align-center
+          justify-center
+          class="school-result"
+          :class="{ saved:result.final, blink:!result.final }"
+          @click="handleBoardClick"
+        >
+          <span :resultId="result.id">{{ result.value }}</span>
         </v-flex>
       </v-layout>
-<!-- Game combinations display -->
-      <v-layout column justify-center class="game-combinations-layout">
-        <v-flex d-flex align-center
-            v-for="combination in this.getCombinationArray"
-            :key="combination.id"
-            @click="handleBoardClick"
-            v-bind:id="combination.id"
-            class="game-combination"
-            v-bind:class="{ set:combination.final }">
+      <!-- Game combinations display -->
+      <v-layout
+        column
+        justify-center
+        class="game-combinations-layout"
+      >
+        <v-flex
+          v-for="combination in getCombinationArray"
+          :id="combination.id"
+          :key="combination.id"
+          d-flex
+          align-center
+          class="game-combination"
+          :class="{ set:combination.final }"
+          @click="handleBoardClick"
+        >
           <v-layout>
-            <v-flex xs6 pl-2>{{ combination.fullName }}</v-flex>
-            <v-flex xs2 class="text-xs-center"
+            <v-flex
+              xs6
+              pl-2
+            >
+              {{ combination.fullName }}
+            </v-flex>
+            <v-flex
               v-for="(value, index) in combination.displayValues"
-              :key="index">
+              :key="index"
+              xs2
+              class="text-xs-center"
+            >
               {{ value }}
             </v-flex>
-            <v-flex xs2 class="blink text-xs-center"
-              v-if="combination.value">
+            <v-flex
+              v-if="combination.value"
+              xs2
+              class="blink text-xs-center"
+            >
               {{ combination.value }}
             </v-flex>
           </v-layout>
         </v-flex>
       </v-layout>
-<!-- Dice controls -->
-      <DiceBox v-bind:turnCompleted="turnCompleted"></DiceBox>
+      <!-- Dice controls -->
+      <DiceBox :turn-completed="turnCompleted" />
     </v-layout>
-    <div class="progress-bar"></div>
+    <div class="progress-bar" />
   </v-container>
 </template>
 
@@ -167,6 +391,10 @@ import DiceBox from './DiceBox.vue'
 
 export default {
   name: 'Game',
+  components: {
+    DiceBox,
+    NetworkCheck
+  },
   data: () => ({
     title: 'Sharlushka',
     highestScore: 0,
@@ -196,10 +424,6 @@ export default {
       }
     ]
   }),
-  components: {
-    DiceBox,
-    NetworkCheck
-  },
   computed: {
     ...mapGetters([
       'debugInfo',

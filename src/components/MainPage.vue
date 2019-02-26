@@ -1,48 +1,100 @@
 <template>
-  <v-container pb-2 fill-height id="startPageContent">
-    <v-layout align-space-around column>
-      <v-flex d-flex align-center class="text-xs-center">
-        <h1 class="game-name">{{ gameName }}</h1>
+  <v-container
+    id="startPageContent"
+    pb-2
+    fill-height
+  >
+    <v-layout
+      align-space-around
+      column
+    >
+      <v-flex
+        d-flex
+        align-end
+        class="text-xs-center"
+      >
+        <h1 class="game-name">
+          {{ gameName }}
+        </h1>
       </v-flex>
-      <v-flex d-flex justify-center>
-        <!--v-img max-width="12em" :src="require('../assets/icons/startPageDice.svg')" contain></v-img-->
+      <v-flex
+        justify-center
+        style="padding: 0em 4em 0em 4em"
+      >
+        <!--v-img max-width="12em" :src="require('./startPageDice.svg')" contain></v-img-->
+        <!--span v-html="require(`../assets/icons/startPageDice.svg`)" /-->
+        <!--div v-html="require(`./startPageDice.svg`)"></div-->
       </v-flex>
-      <v-flex d-flex align-center class="text-xs-center">
-        <h2 class="user-name-main-page">{{ greeting }} {{ userName }}{{ exclamation }}</h2>
-    </v-flex>
-    <v-layout row align-center justify-space-around>
-        <v-flex xs4 lg2 class="text-xs-center">
-          <v-btn to="/game" ripple block class="ui-button"
-            large color="purple darken-1"
+      <v-flex
+        d-flex
+        align-center
+        class="text-xs-center"
+      >
+        <h2 class="user-name-main-page">
+          {{ greeting }} {{ userName }}{{ exclamation }}
+        </h2>
+      </v-flex>
+      <v-layout
+        row
+        align-center
+        justify-space-around
+      >
+        <v-flex
+          xs4
+          lg2
+          class="text-xs-center"
+        >
+          <v-btn
+            to="/game"
+            ripple
+            color="purple darken-1"
             aria-label="Start game"
-            v-bind:class="{orange:$store.state.currentGameTurn > 1}">
-            <!--v-img :src="require('../assets/icons/baseline-done-24px.svg')"
-              contain height="2em"></v-img-->
+            :class="{orange:$store.state.currentGameTurn > 1}"
+          >
+            <v-icon color="white">
+              done
+            </v-icon>
           </v-btn>
         </v-flex>
-        <v-flex xs4 lg2 class="text-xs-center">
-          <v-btn to="/login" ripple block class="ui-button"
-            large color="purple darken-1"
-            aria-label="Register or change name">
-            <!--v-img :src="require('../assets/icons/baseline-how_to_reg-24px.svg')"
-              contain height="2em"></v-img-->
+        <v-flex
+          xs4
+          lg2
+          class="text-xs-center"
+        >
+          <v-btn
+            to="/login"
+            ripple
+            color="purple darken-1"
+            aria-label="Register or change name"
+          >
+            <v-icon color="white">
+              how_to_reg
+            </v-icon>
           </v-btn>
         </v-flex>
       </v-layout>
       <span class="copyrights text-xs-center">
         Icons made by
-        <a href="https://www.flaticon.com/authors/smashicons"
-          title="Smashicons">
+        <a
+          href="https://www.flaticon.com/authors/smashicons"
+          title="Smashicons"
+        >
           Smashicons
         </a>
         from
-        <a href="https://www.flaticon.com/"
-          title="Flaticon">
+        <a
+          href="https://www.flaticon.com/"
+          title="Flaticon"
+        >
           www.flaticon.com
         </a>
         is licensed by
-        <a href="http://creativecommons.org/licenses/by/3.0/"
-          title="Creative Commons BY 3.0" target="_blank" rel="noopener">
+        <a
+          href="http://creativecommons.org/licenses/by/3.0/"
+          title="Creative Commons BY 3.0"
+          target="_blank"
+          rel="noopener"
+        >
           CC 3.0 BY
         </a>
       </span>
@@ -53,9 +105,9 @@
 <script>
 import db from './firebaseInit'
 import { mapGetters, mapActions } from 'vuex'
-// import firebase from 'firebase/app'
-// import 'firebase/auth'
-// import store from '../store/store'
+import firebase from 'firebase/app'
+// import firebaseConfig from './firebaseConfig'
+import 'firebase/auth'
 
 export default {
   name: 'Main',
@@ -88,7 +140,59 @@ export default {
   },
   mounted () {
     this.$nextTick(() => {
-      console.log('Main page mounted')
+      console.log('Main page mounted. Time to check if user is logged in')
+      //
+      // Here
+      //
+      /*
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig)
+        console.log(`Init firebase`)
+      } else {
+        console.log(`No firebase init`)
+        // firebase.firestore().settings({timestampsInSnapshots: true})
+      } */
+      const initializeAuth = new Promise(resolve => {
+        // this adds a hook for the initial auth-change event
+        firebase.auth().onAuthStateChanged(user => {
+          if (user) {
+            authService.setUser(user)
+            resolve(user)
+          } else {
+            console.log(`No user!`)
+          }
+        })
+      })
+      const authService = {
+        userUid: null,
+        authenticated () {
+          return initializeAuth.then(user => {
+            return user && !user.isAnonymous
+          })
+        },
+        setUser (user) {
+          this.userUid = user.uid
+          console.log(`User set ${user.email}`)
+        }
+      }
+      if (true) {
+        authService.authenticated().then((result) => {
+          // this.userName = authService.userUid
+          // console.log(`Setting uid ${authService.userUid}`)
+          let nameToSet = getUserNameFromDB(authService.userUid)
+          if (result) {
+            let currentUserData = {
+              isAuthenticated: true,
+              uid: authService.userUid,
+              name: nameToSet
+            }
+            store.commit('setUser', currentUserData)
+          }
+        }).catch((error) => {
+          console.log(`Error ${error}`)
+        })
+      }
+
       if (this.getUserData.isAuthenticated) {
         console.log(`Setting user score from db...`)
         this.setUserScoreDataFromDB(this.getUserData.uid)
@@ -106,7 +210,7 @@ export default {
     ...mapActions([
       'newGame'
     ]),
-    startNewGame (event) {
+    startNewGame () {
       // window.location.replace('/game')
       this.$router.push('/')
     },

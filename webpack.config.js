@@ -1,7 +1,7 @@
 const { VueLoaderPlugin } = require('vue-loader');
 const path = require('path');
 const webpack = require('webpack');
-
+const MinifyPlugin = require("babel-minify-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const env = process.env.NODE_ENV;
@@ -9,7 +9,16 @@ const env = process.env.NODE_ENV;
 const config = {
   entry: path.join(__dirname, 'src', 'main.js'),
   plugins: [
-    new webpack.HashedModuleIdsPlugin(), // so that file hashes don't change unexpectedly
+    new VueLoaderPlugin(),
+    new MinifyPlugin({}, {
+      comments: false
+    }),
+    new HtmlWebpackPlugin({
+      filename: path.join(__dirname, 'dist', 'index.html'),
+      template: path.join(__dirname, 'index.html'),
+      inject: true,
+    }),
+    new webpack.HashedModuleIdsPlugin() // so that file hashes don't change unexpectedly
   ],
   mode: env,
   output: {
@@ -30,7 +39,6 @@ const config = {
             // get the name. E.g. node_modules/packageName/not/this/part.js
             // or node_modules/packageName
             const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-
             // npm package names are URL-safe, but some servers don't like @ symbols
             return `npm.${packageName.replace('@', '')}`;
           },
@@ -38,24 +46,33 @@ const config = {
       },
     },
   },
-  // optimization: {
-    // splitChunks: {
-      // Must be specified for HtmlWebpackPlugin to work correctly.
-      // See: https://github.com/jantimon/html-webpack-plugin/issues/882
-      // chunks: 'all',
-      // chunks: 'all'
-    // },
-  // },
   module: {
     rules: [
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
+        use: [{
+          loader: 'vue-loader'
+        },
+        {
+          loader: 'eslint-loader'
+        }]
       },
       {
         test: /\.js$/,
-        loader: 'babel-loader',
+        exclude: /node_modules/,
+        use: [{
+          loader: 'babel-loader',
+        }],
         include: [path.join(__dirname, 'src')],
+      },
+      {
+        test: /\.svg$/,
+        use: [{
+          loader: 'html-loader',
+          options: {
+            minimize: true
+          }
+        }]
       },
       {
         test: /\.scss|.css$/,
@@ -68,15 +85,7 @@ const config = {
         ],
       },
     ],
-  },
-  plugins: [
-    new VueLoaderPlugin(),
-    new HtmlWebpackPlugin({
-      filename: path.join(__dirname, 'dist', 'index.html'),
-      template: path.join(__dirname, 'index.html'),
-      inject: true,
-    }),
-  ],
+  }
 };
 
 module.exports = config;

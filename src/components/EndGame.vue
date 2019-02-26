@@ -1,39 +1,85 @@
 <template>
   <v-container id="endGame">
-<!-- Close button -->
-    <closeBtn></closeBtn>
-    <v-layout align-center justify-center row fill-height wrap>
-<!-- Messages -->
-      <v-flex xs12 class="user-name-game-end text-xs-center">
-        <h1 >{{ message }}<br />
+    <!-- Close button -->
+    <closeBtn />
+    <v-layout
+      align-center
+      justify-center
+      row
+      fill-height
+      wrap
+    >
+      <!-- Messages -->
+      <v-flex
+        xs12
+        class="user-name-game-end text-xs-center"
+      >
+        <h1>
+          {{ message }}<br>
           <span>{{ userName }}{{ exclamation }}</span>
         </h1>
       </v-flex>
-<!-- School message -->
-      <v-flex xs12 class="message-school text-xs-center"
-        v-if="!this.getCurrentGameState.schoolCompleted">
+      <!-- School message -->
+      <v-flex
+        v-if="!getCurrentGameState.schoolCompleted"
+        xs12
+        class="message-school text-xs-center"
+      >
         <h3>{{ graduationMessage }}</h3>
         <h2>{{ schoolScoreMessage }} {{ getTotalScore }}</h2>
       </v-flex>
-<!-- Game message -->
-      <v-flex xs12 class="message-game text-xs-center"
-        v-if="this.getCurrentGameState.schoolCompleted">
+      <!-- Game message -->
+      <v-flex
+        v-if="getCurrentGameState.schoolCompleted"
+        xs12
+        class="message-game text-xs-center"
+      >
         <h2>{{ messageText }} {{ getTotalScore }}</h2>
       </v-flex>
-<!-- Buttons -->
-      <v-layout row align-center justify-space-around>
-        <v-flex d-flex xs5 lg2 class="text-xs-center">
-          <v-btn ripple
-            large color="orange"
-            @click="restartGame">
-            <v-icon medium color="white">replay</v-icon>
+      <!-- Buttons -->
+      <v-layout
+        row
+        align-center
+        justify-space-around
+      >
+        <v-flex
+          d-flex
+          xs5
+          lg2
+          class="text-xs-center"
+        >
+          <v-btn
+            ripple
+            large
+            color="orange"
+            @click="restartGame"
+          >
+            <v-icon
+              medium
+              color="white"
+            >
+              replay
+            </v-icon>
           </v-btn>
         </v-flex>
-        <v-flex d-flex xs5 lg2 class="text-xs-center">
-          <v-btn ripple
-            large color="purple darken-1"
-            :to="'/settings'">
-            <v-icon medium color="white">trending_up</v-icon>
+        <v-flex
+          d-flex
+          xs5
+          lg2
+          class="text-xs-center"
+        >
+          <v-btn
+            ripple
+            large
+            color="purple darken-1"
+            :to="'/settings'"
+          >
+            <v-icon
+              medium
+              color="white"
+            >
+              trending_up
+            </v-icon>
           </v-btn>
         </v-flex>
       </v-layout>
@@ -48,6 +94,9 @@ import closeBtn from '../components/CloseBtn.vue'
 import db from './firebaseInit'
 
 export default {
+  components: {
+    closeBtn
+  },
   data () {
     return {
       message: 'Game over,',
@@ -61,9 +110,6 @@ export default {
       lastScores: [],
       schoolScores: []
     }
-  },
-  components: {
-    closeBtn
   },
   computed: {
     ...mapGetters([

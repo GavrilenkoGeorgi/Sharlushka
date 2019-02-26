@@ -1,8 +1,12 @@
 <template>
-  <v-container fluid id="login" class="text-xs-center">
-<!-- Close button -->
-    <closeBtn></closeBtn>
-<!-- Error message -->
+  <v-container
+    id="login"
+    fluid
+    class="text-xs-center"
+  >
+    <!-- Close button -->
+    <closeBtn />
+    <!-- Error message -->
     <v-layout column>
       <v-flex d-flex>
         <v-alert
@@ -10,19 +14,34 @@
           dismissible
           outline
           relative
-          type="error">
+          type="error"
+        >
           {{ errorMessage }}
         </v-alert>
       </v-flex>
-<!-- Page title -->
-      <v-flex d-flex class="page-title py-4">
+      <!-- Page title -->
+      <v-flex
+        d-flex
+        class="page-title py-4"
+      >
         <h1>{{ pageTitle }}</h1>
       </v-flex>
-<!-- Input form -->
-      <v-layout justify-center class="login-form py-4">
-        <v-flex xs9 d-flex align-center py-4>
-          <v-form ref="form" v-model="valid"
-            lazy-validation>
+      <!-- Input form -->
+      <v-layout
+        justify-center
+        class="login-form py-4"
+      >
+        <v-flex
+          xs9
+          d-flex
+          align-center
+          py-4
+        >
+          <v-form
+            ref="form"
+            v-model="valid"
+            lazy-validation
+          >
             <v-text-field
               v-model="email"
               :rules="emailRules"
@@ -30,8 +49,8 @@
               :type="'email'"
               autocomplete="off"
               required
-              color="purple accent-4">
-            </v-text-field>
+              color="purple accent-4"
+            />
             <v-text-field
               v-model="password"
               :rules="passwordRules"
@@ -39,64 +58,93 @@
               label="Password"
               autocomplete="off"
               required
-              color="purple accent-4">
-            </v-text-field>
+              color="purple accent-4"
+            />
           </v-form>
         </v-flex>
       </v-layout>
-<!-- Buttons layout -->
-      <v-layout row wrap justify-center>
-        <v-flex d-flex xs5>
-          <v-btn @click.prevent="login"
+      <!-- Buttons layout -->
+      <v-layout
+        row
+        wrap
+        justify-center
+      >
+        <v-flex
+          d-flex
+          xs5
+        >
+          <v-btn
             :disabled="logginIn"
             :type="'submit'"
             :loading="logginIn"
             large
             ripple
             class="button white--text"
-            color="orange">
+            color="orange"
+            @click.prevent="login"
+          >
             login
           </v-btn>
         </v-flex>
 
-        <v-flex d-flex xs5>
-          <v-btn @click="clear"
+        <v-flex
+          d-flex
+          xs5
+        >
+          <v-btn
             :disabled="valid"
             large
             ripple
             class="button white--text"
-            color="purple darken-1">
+            color="purple darken-1"
+            @click="clear"
+          >
             clear
           </v-btn>
         </v-flex>
 
-        <v-flex xs12 py-4 align-center class="info-text">
-          <v-divider></v-divider>
+        <v-flex
+          xs12
+          py-4
+          align-center
+          class="info-text"
+        >
+          <v-divider />
         </v-flex>
 
-        <v-flex d-flex xs5>
-          <v-btn @click="signOut"
+        <v-flex
+          d-flex
+          xs5
+        >
+          <v-btn
             :loading="loggingOut"
-            :disabled="!this.getUserAuthState"
+            :disabled="!getUserAuthState"
             large
             ripple
             class="button white--text"
-            color="purple darken-1">
-              log out
+            color="purple darken-1"
+            @click="signOut"
+          >
+            log out
           </v-btn>
         </v-flex>
 
-        <v-flex d-flex xs5>
-          <v-btn to='/register'
+        <v-flex
+          d-flex
+          xs5
+        >
+          <v-btn
+            to="/register"
             large
             ripple
             class="button white--text"
-            color="purple darken-1">
+            color="purple darken-1"
+          >
             {{ newUserBtnText }}
           </v-btn>
         </v-flex>
       </v-layout>
-<!-- End of buttons layout -->
+      <!-- End of buttons layout -->
     </v-layout>
   </v-container>
 </template>
@@ -110,7 +158,10 @@ import store from '../store/store'
 import closeBtn from '../components/CloseBtn.vue'
 
 export default {
-  name: 'login',
+  name: 'Login',
+  components: {
+    closeBtn
+  },
   data: () => ({
     // loader: null,
     logginIn: false,
@@ -145,9 +196,6 @@ export default {
     ],
     checkbox: false
   }),
-  components: {
-    closeBtn
-  },
   computed: {
     ...mapGetters([
       'getError',
@@ -169,6 +217,58 @@ export default {
       }
       return answer
     } */
+  },
+  mounted () {
+    console.log(`Login page mounted`)
+    /*
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig)
+    }
+    */
+    /*
+    let check = true
+    if (check) {
+      console.log('User authenticated')
+      const initializeAuth = new Promise(resolve => {
+      // this adds a hook for the initial auth-change event
+        firebase.auth().onAuthStateChanged(user => {
+          const currentUser = firebase.auth().currentUser
+          console.log(`Current user is ${currentUser.uid}`)
+        })
+      })
+      initializeAuth.then(function (user) {
+        console.log(`Current user is ${user}`)
+      }).catch((reason) => {
+        console.log(`Something went wrong ${reason}`)
+      })
+    } else {
+      console.log('No, user is not authentificated')
+    } */
+    /*
+    const initializeAuth = new Promise(resolve => {
+    // this adds a hook for the initial auth-change event
+      firebase.auth().onAuthStateChanged(user => {
+        const currentUser = firebase.auth().currentUser
+        console.log(`Current user is ${currentUser.uid}`)
+      })
+    })
+    initializeAuth.then(function () {
+      const currentUser = firebase.auth().currentUser
+      console.log(`Current user is ${currentUser.email}`)
+    }) */
+    /*
+    db.collection('users').get().then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        console.log(doc.id)
+        const data = {
+          'id': doc.id,
+          'name': doc.data().name,
+          'type': doc.data().type
+        }
+        console.log(data)
+        this.users.push(data)
+      })
+    }) */
   },
   methods: {
     /*
@@ -265,58 +365,6 @@ export default {
     clear () {
       this.$refs.form.reset()
     }
-  },
-  mounted () {
-    console.log(`Login page mounted`)
-    /*
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig)
-    }
-    */
-    /*
-    let check = true
-    if (check) {
-      console.log('User authenticated')
-      const initializeAuth = new Promise(resolve => {
-      // this adds a hook for the initial auth-change event
-        firebase.auth().onAuthStateChanged(user => {
-          const currentUser = firebase.auth().currentUser
-          console.log(`Current user is ${currentUser.uid}`)
-        })
-      })
-      initializeAuth.then(function (user) {
-        console.log(`Current user is ${user}`)
-      }).catch((reason) => {
-        console.log(`Something went wrong ${reason}`)
-      })
-    } else {
-      console.log('No, user is not authentificated')
-    } */
-    /*
-    const initializeAuth = new Promise(resolve => {
-    // this adds a hook for the initial auth-change event
-      firebase.auth().onAuthStateChanged(user => {
-        const currentUser = firebase.auth().currentUser
-        console.log(`Current user is ${currentUser.uid}`)
-      })
-    })
-    initializeAuth.then(function () {
-      const currentUser = firebase.auth().currentUser
-      console.log(`Current user is ${currentUser.email}`)
-    }) */
-    /*
-    db.collection('users').get().then(querySnapshot => {
-      querySnapshot.forEach(doc => {
-        console.log(doc.id)
-        const data = {
-          'id': doc.id,
-          'name': doc.data().name,
-          'type': doc.data().type
-        }
-        console.log(data)
-        this.users.push(data)
-      })
-    }) */
   }
 }
 </script>

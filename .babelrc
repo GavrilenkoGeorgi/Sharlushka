@@ -1,7 +1,7 @@
-{
+/* {
   "presets": [
     [
-      "@babel/preset-env",
+      "preset-env",
       {
         "modules": false
       }
@@ -9,5 +9,21 @@
   ],
   "plugins": [
     "@babel/plugin-syntax-dynamic-import"
+  ]
+} */
+
+{
+  "presets": [
+    [
+      "@babel/preset-env", {
+        "useBuiltIns": "usage"
+      }
+    ],
+  ],
+  "plugins": [
+    "@babel/plugin-syntax-dynamic-import"
+  ],
+  "ignore": [
+    "node_modules"
   ]
 }

@@ -9,15 +9,15 @@ import App from './App.vue'
 import router from './router'
 import store from './store/store'
 
-import './registerServiceWorker'
-import VueOffline from 'vue-offline'
+// import './registerServiceWorker'
+// import VueOffline from 'vue-offline'
 
 // import 'material-design-icons-iconfont/dist/material-design-icons.css'
-import firebaseConfig from './components/firebaseConfig'
-import db from './components/firebaseInit'
-import firebase from 'firebase/app'
-import 'firebase/auth'
-
+// import firebaseConfig from './components/firebaseConfig'
+// import db from './components/firebaseInit'
+// import firebase from 'firebase/app'
+// import 'firebase/auth'
+/*
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig)
 }
@@ -34,7 +34,8 @@ const initializeAuth = new Promise(resolve => {
     }
   })
 })
-
+*/
+/*
 const authService = {
   userUid: null,
   authenticated () {
@@ -46,6 +47,7 @@ const authService = {
     this.userUid = user.uid
     console.log(`User set ${user.email}`)
   }
+} */
   /*
   login (email, password) {
     return firebase.auth().signInWithEmailAndPassword(email, password)
@@ -56,8 +58,7 @@ const authService = {
     })
   }
   */
-}
-
+/*
 function getUserNameFromDB (uid) {
   // console.log(`Getting user name for uid ${uid}`)
   db.collection('users').where('uid', '==', uid)
@@ -77,6 +78,7 @@ function getUserNameFromDB (uid) {
       console.log('Error getting documents: ', error)
     })
 }
+*/
 /*
 if (!this.getUserAuthState || this.getUserData.name === '') {
   authService.authenticated().then((result) => {
@@ -102,7 +104,7 @@ Vue.use(Vuetify, {
   iconfont: 'md' // 'md' || 'mdi' || 'fa' || 'fa4'
 })
 
-Vue.use(VueOffline)
+// Vue.use(VueOffline)
 
 Vue.use(require('vue-chartist'))
 /* eslint-disable no-new */

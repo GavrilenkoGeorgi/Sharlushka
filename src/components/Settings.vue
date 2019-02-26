@@ -1,57 +1,132 @@
 <template>
-  <v-container id="gameSettings"> <!-- Maybe stats? -->
-<!-- Close button -->
-    <closeBtn></closeBtn>
-    <v-layout align-space-around column>
-<!-- Title and user name -->
+  <v-container id="gameSettings">
+    <!-- Maybe stats? -->
+    <!-- Close button -->
+    <closeBtn />
+    <v-layout
+      align-space-around
+      column
+    >
+      <!-- Title and user name -->
       <v-flex class="text-xs-center">
         <v-layout column>
-        <h1 class="help-title">{{ helpTitle }}</h1>
-        <h2 class="user-name">{{ userName }}!</h2>
-        <h3 class="hi-score" v-if="highestScore">{{ hiscoreGreeting }} {{ highestScore }}{{ exclamation }}</h3><!-- Safari -->
+          <h1 class="help-title">
+            {{ helpTitle }}
+          </h1>
+          <h2 class="user-name">
+            {{ userName }}!
+          </h2>
+          <h3
+            v-if="highestScore"
+            class="hi-score"
+          >
+            {{ hiscoreGreeting }} {{ highestScore }}{{ exclamation }}
+          </h3><!-- Safari -->
         </v-layout>
       </v-flex>
-<!-- Chart -->
-      <v-flex d-flex align-center>
+      <!-- Chart -->
+      <v-flex
+        d-flex
+        align-center
+      >
         <chartist
-            ratio="ct-major-twelfth"
-            type="Bar"
-            :data="chartData"
-            :options="chartOptions">
-        </chartist>
+          ratio="ct-major-twelfth"
+          type="Bar"
+          :data="chartData"
+          :options="chartOptions"
+        />
       </v-flex>
-<!-- Last scores heading and table-->
-      <v-flex d-flex align-end v-if="lastScoresToDisplay" class="last-scores-heading text-xs-center">
+      <!-- Last scores heading and table-->
+      <v-flex
+        v-if="lastScoresToDisplay"
+        d-flex
+        align-end
+        class="last-scores-heading text-xs-center"
+      >
         <h3>{{ lastScoresHeadingPartOne }} {{ lastScoresHeadingPartTwo }}</h3>
       </v-flex>
       <v-flex>
-        <v-layout align-space-around column>
-          <v-flex d-flex class="hi-score-display">
-            <v-layout row wrap justify-space-around>
-              <v-flex xs4 sm1 ma-0 v-for="(value, index) in lastScoresToDisplay" :key="index">
+        <v-layout
+          align-space-around
+          column
+        >
+          <v-flex
+            d-flex
+            class="hi-score-display"
+          >
+            <v-layout
+              row
+              wrap
+              justify-space-around
+            >
+              <v-flex
+                v-for="(value, index) in lastScoresToDisplay"
+                :key="index"
+                xs4
+                sm1
+                ma-0
+              >
                 {{ value }}
               </v-flex>
             </v-layout>
           </v-flex>
-<!-- Stats display v-if="item.value" -->
-          <v-flex class="stats-display text-xs-center"
+          <!-- Stats display v-if="item.value" -->
+          <v-flex
             v-for="item in newStats"
-            :key="item.msg">
+            :key="item.msg"
+            class="stats-display text-xs-center"
+          >
             {{ item.msg }}&nbsp;{{ item.value }}
           </v-flex>
         </v-layout>
       </v-flex>
-<!-- Buttons -->
-      <v-layout mt-3 row align-center justify-space-around>
-        <v-flex xs4 lg2 class="text-xs-center">
-          <v-btn ripple block class="ui-button" large color="orange"
-            @click="restartGame">
-            <v-icon medium color="white">replay</v-icon>
+      <!-- Buttons -->
+      <v-layout
+        mt-3
+        row
+        align-center
+        justify-space-around
+      >
+        <v-flex
+          xs4
+          lg2
+          class="text-xs-center"
+        >
+          <v-btn
+            ripple
+            block
+            class="ui-button"
+            large
+            color="orange"
+            @click="restartGame"
+          >
+            <v-icon
+              medium
+              color="white"
+            >
+              replay
+            </v-icon>
           </v-btn>
         </v-flex>
-        <v-flex xs4 lg2 class="text-xs-center">
-          <v-btn ripple block class="ui-button" large color="purple darken-1" to="/help">
-            <v-icon medium color="white">help_outline</v-icon>
+        <v-flex
+          xs4
+          lg2
+          class="text-xs-center"
+        >
+          <v-btn
+            ripple
+            block
+            class="ui-button"
+            large
+            color="purple darken-1"
+            to="/help"
+          >
+            <v-icon
+              medium
+              color="white"
+            >
+              help_outline
+            </v-icon>
           </v-btn>
         </v-flex>
       </v-layout>
@@ -66,7 +141,10 @@ import closeBtn from './CloseBtn.vue'
 import db from './firebaseInit'
 
 export default {
-  name: 'Settings', // change to statss
+  name: 'Settings',
+  components: {
+    closeBtn
+  }, // change to statss
   data () {
     return {
       userName: '',
@@ -116,9 +194,6 @@ export default {
       }
     }
   },
-  components: {
-    closeBtn
-  },
   computed: {
     ...mapGetters([
       'getDefaultUserName',
@@ -159,7 +234,7 @@ export default {
     }
   },
   methods: {
-    restartGame (state) {
+    restartGame () {
       console.log(`Restarting.`)
       this.$store.commit('resetState')
       this.$router.push('/game')

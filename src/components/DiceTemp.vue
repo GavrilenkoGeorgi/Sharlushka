@@ -1,49 +1,69 @@
 <template>
-<v-container fluid fill-height id="tempDice">
-  <DiceBox></DiceBox>
-  <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
-      <symbol id="diceTemp" viewBox="-10 -10 220 220" preserveAspectRatio="xMidYMid meet">
-        <circle fill="currentColor" cx="100" cy="100" r="18"/>
-        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"/>
+  <v-container
+    id="tempDice"
+    fluid
+    fill-height
+  >
+    <DiceBox />
+    <svg
+      style="display: none;"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <symbol
+        id="diceTemp"
+        viewBox="-10 -10 220 220"
+        preserveAspectRatio="xMidYMid meet"
+      >
+        <circle
+          fill="currentColor"
+          cx="100"
+          cy="100"
+          r="18"
+        />
+        <path d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z" />
       </symbol>
     </svg>
-  <v-layout justify-space-around column fill-height>
-  <div class="box-dice">
-    <svg class="temp-icon">
-      <use xlink:href="#diceTemp"></use>
-    </svg>
-    <svg class="temp-icon">
-      <use xlink:href="#diceTemp"></use>
-    </svg>
-    <svg class="temp-icon">
-      <use xlink:href="#diceTemp"></use>
-    </svg>
-    <svg class="temp-icon">
-      <use xlink:href="#diceTemp"></use>
-    </svg>
-    <svg class="temp-icon">
-      <use xlink:href="#diceTemp"></use>
-    </svg>
-  </div>
-  <div class="box-dice">
-    <svg class="temp-icon">
-      <use xlink:href="#diceTemp"></use>
-    </svg>
-    <svg class="temp-icon">
-      <use xlink:href="#diceTemp"></use>
-    </svg>
-    <svg class="temp-icon">
-      <use xlink:href="#diceTemp"></use>
-    </svg>
-    <svg class="temp-icon">
-      <use xlink:href="#diceTemp"></use>
-    </svg>
-    <svg class="temp-icon">
-      <use xlink:href="#diceTemp"></use>
-    </svg>
-  </div>
-  </v-layout>
-</v-container>
+    <v-layout
+      justify-space-around
+      column
+      fill-height
+    >
+      <div class="box-dice">
+        <svg class="temp-icon">
+          <use xlink:href="#diceTemp" />
+        </svg>
+        <svg class="temp-icon">
+          <use xlink:href="#diceTemp" />
+        </svg>
+        <svg class="temp-icon">
+          <use xlink:href="#diceTemp" />
+        </svg>
+        <svg class="temp-icon">
+          <use xlink:href="#diceTemp" />
+        </svg>
+        <svg class="temp-icon">
+          <use xlink:href="#diceTemp" />
+        </svg>
+      </div>
+      <div class="box-dice">
+        <svg class="temp-icon">
+          <use xlink:href="#diceTemp" />
+        </svg>
+        <svg class="temp-icon">
+          <use xlink:href="#diceTemp" />
+        </svg>
+        <svg class="temp-icon">
+          <use xlink:href="#diceTemp" />
+        </svg>
+        <svg class="temp-icon">
+          <use xlink:href="#diceTemp" />
+        </svg>
+        <svg class="temp-icon">
+          <use xlink:href="#diceTemp" />
+        </svg>
+      </div>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -51,13 +71,13 @@
 import DiceBox from '../components/DiceBox'
 
 export default {
+  components: {
+    DiceBox
+  },
   data () {
     return {
       greeting: 'Hi,'
     }
-  },
-  components: {
-    DiceBox
   },
   methods: {
     updateMainButtonState () {

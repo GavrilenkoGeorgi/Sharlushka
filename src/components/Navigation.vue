@@ -1,5 +1,9 @@
 <template>
-  <v-layout align-center row id="gameNavigation">
+  <v-layout
+    id="gameNavigation"
+    align-center
+    row
+  >
     <!--v-toolbar dark color="purple darken-3 navbar">
     <v-flex xs2 v-if="!this.networkStatus">
       <v-dialog
@@ -32,7 +36,7 @@
         </v-card>
       </v-dialog>
     </v-flex-->
-      <!--v-btn fab flat icon>
+    <!--v-btn fab flat icon>
         <v-icon>more_vert</v-icon>
       </v-btn-->
     <!--/v-toolbar-->

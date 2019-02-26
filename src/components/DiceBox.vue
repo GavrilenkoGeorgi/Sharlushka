@@ -1,45 +1,81 @@
 <template>
-  <v-flex d-flex ma-0 pa-0 id="diceControls">
-<!-- Dice box -->
-    <v-layout row align-center class="dice-box-layout">
-      <v-flex d-flex xs9 class="game-dice-container dice-box"
-        v-bind:class="{ hidden: this.getCurrentGameState.gameEnded
-          || this.getCurrentGameState.currentRollCount === 3 }">
-        <svg class="dice-icon default animated"
-          v-for="dice in this.getDiceArray"
+  <v-flex
+    id="diceControls"
+    d-flex
+    ma-0
+    pa-0
+  >
+    <!-- Dice box -->
+    <v-layout
+      row
+      align-center
+      class="dice-box-layout"
+    >
+      <v-flex
+        d-flex
+        xs9
+        class="game-dice-container dice-box"
+        :class="{ hidden: getCurrentGameState.gameEnded
+          || getCurrentGameState.currentRollCount === 3 }"
+      >
+        <svg
+          v-for="dice in getDiceArray"
+          :id="dice.id"
           :key="dice.id"
-          v-bind:class="{ chosen:dice.chosen }"
-          v-bind:id="dice.id"
-          v-on:click="selectDice"
-          fill="none">
-          <use v-bind="{'xlink:href':'#' + dice.currentIcon}"
-            class="game-dice animated fadeIn">
-          </use>
+          class="dice-icon default animated"
+          :class="{ chosen:dice.chosen }"
+          fill="none"
+          @click="selectDice"
+        >
+          <use
+            v-bind="{'xlink:href':'#' + dice.currentIcon}"
+            class="game-dice animated fadeIn"
+          />
         </svg>
       </v-flex>
-<!-- Main button -->
-      <v-flex class="main-button animated"
-          @click.prevent="handleMainGameButtonClick"
-          aria-label="Main game button"
-          type="button"
-          v-bind:class="{ save: this.mainButtonState.save,
-          bounce: this.mainButtonState.save,
-          fadeOut: this.getCurrentGameState.gameEnded,
-          hidden: this.getCurrentGameState.gameEnded }">
-        <v-layout align-center justify-center row fill-height>
-          <v-flex xs2 class="play-arrow animated fadeIn" v-if=" this.mainButtonState.play">
-          </v-flex>
-          <v-flex v-if=" this.mainButtonState.roll &&
-            this.getCurrentGameState.rollsCountForButton <= 3 "
-            class="circle-container animated fadeIn">
-            <v-layout row justify-center>
-              <div v-for="(value, index) in this.getCurrentGameState.rollsCountForButton"
-                :key="index" class="roll-circle animated fadeIn">
-              </div>
+      <!-- Main button -->
+      <v-flex
+        class="main-button animated"
+        aria-label="Main game button"
+        type="button"
+        :class="{ save: mainButtonState.save,
+                  bounce: mainButtonState.save,
+                  fadeOut: getCurrentGameState.gameEnded,
+                  hidden: getCurrentGameState.gameEnded }"
+        @click.prevent="handleMainGameButtonClick"
+      >
+        <v-layout
+          align-center
+          justify-center
+          row
+          fill-height
+        >
+          <v-flex
+            v-if="mainButtonState.play"
+            xs2
+            class="play-arrow animated fadeIn"
+          />
+          <v-flex
+            v-if="mainButtonState.roll &&
+              getCurrentGameState.rollsCountForButton <= 3 "
+            class="circle-container animated fadeIn"
+          >
+            <v-layout
+              row
+              justify-center
+            >
+              <div
+                v-for="(value, index) in getCurrentGameState.rollsCountForButton"
+                :key="index"
+                class="roll-circle animated fadeIn"
+              />
             </v-layout>
           </v-flex>
-          <v-flex xs4 v-if=" this.mainButtonState.save" class="stop-brick animated fadeIn">
-          </v-flex>
+          <v-flex
+            v-if="mainButtonState.save"
+            xs4
+            class="stop-brick animated fadeIn"
+          />
         </v-layout>
       </v-flex>
     </v-layout>
@@ -54,7 +90,12 @@ import store from '../store/store'
 
 export default {
   name: 'DiceBox',
-  props: ['turnCompleted'],
+  props: {
+    turnCompleted: {
+      type: Boolean,
+      required: true,
+    }
+  },
   data () {
     return {
       navigatorSupported: false,
@@ -65,6 +106,24 @@ export default {
         roll: false,
         save: false,
         disabled: false
+      }
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'getDiceArray',
+      'getCurrentGameState'
+    ])
+  },
+  watch: {
+    turnCompleted: {
+      // the callback will be called immediately after the start of the observation
+      immediate: true,
+      handler () {
+        if (!this.getCurrentGameState.gameEnded) {
+          this.updateMainButtonState()
+          // this.hidden = !this.hidden
+        }
       }
     }
   },
@@ -79,24 +138,6 @@ export default {
         // navigator.vibrate([5, 200, 20])
       }
     })
-  },
-  watch: {
-    turnCompleted: {
-      // the callback will be called immediately after the start of the observation
-      immediate: true,
-      handler () {
-        if (!this.getCurrentGameState.gameEnded) {
-          this.updateMainButtonState()
-          // this.hidden = !this.hidden
-        }
-      }
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'getDiceArray',
-      'getCurrentGameState'
-    ])
   },
   methods: {
     vibrate () {

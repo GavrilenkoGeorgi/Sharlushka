@@ -1,74 +1,98 @@
 <template>
-  <v-container fluid id="register">
+  <v-container
+    id="register"
+    fluid
+  >
     <v-layout column>
-      <closeButton></closeButton>
+      <closeButton />
       <v-alert
         :value="errorMessage"
         dismissible
         outline
-        type="error">
+        type="error"
+      >
         {{ errorMessage }}
       </v-alert>
       <v-flex class="register-title text-xs-center py-4">
         <h1>{{ pageTitle }}</h1>
       </v-flex>
-      <v-layout justify-center class="register-form pb-4">
+      <v-layout
+        justify-center
+        class="register-form pb-4"
+      >
         <v-flex xs9>
-        <v-form ref="form" v-model="valid" lazy-validation>
-        <v-text-field
-          v-model="name"
-          :rules="nameRules"
-          :counter="10"
-          label="Name"
-          autocomplete="username"
-          color="purple accent-4">
-        </v-text-field>
-        <v-text-field
-          v-model="email"
-          :rules="emailRules"
-          label="E-mail"
-          autocomplete="email"
-          color="purple accent-4"
-          required>
-        </v-text-field>
-        <v-text-field
-          v-model="password"
-          :type="'password'"
-          :rules="passwordRules"
-          label="Password"
-          autocomplete="current-password"
-          color="purple accent-4"
-          required>
-        </v-text-field>
-        <v-text-field
-          v-model="confirmPassword"
-          :rules="[comparePasswords]"
-          :type="'password'"
-          label="Confirm password"
-          autocomplete="off"
-          color="purple accent-4"
-          required>
-        </v-text-field>
-    </v-form>
+          <v-form
+            ref="form"
+            v-model="valid"
+            lazy-validation
+          >
+            <v-text-field
+              v-model="name"
+              :rules="nameRules"
+              :counter="10"
+              label="Name"
+              autocomplete="username"
+              color="purple accent-4"
+            />
+            <v-text-field
+              v-model="email"
+              :rules="emailRules"
+              label="E-mail"
+              autocomplete="email"
+              color="purple accent-4"
+              required
+            />
+            <v-text-field
+              v-model="password"
+              :type="'password'"
+              :rules="passwordRules"
+              label="Password"
+              autocomplete="current-password"
+              color="purple accent-4"
+              required
+            />
+            <v-text-field
+              v-model="confirmPassword"
+              :rules="[comparePasswords]"
+              :type="'password'"
+              label="Confirm password"
+              autocomplete="off"
+              color="purple accent-4"
+              required
+            />
+          </v-form>
         </v-flex>
-    </v-layout>
-      <v-layout justify-center class="buttons text-xs-center">
-        <v-flex xs5 d-flex>
-          <v-btn :disabled="!valid"
-            @click.prevent="signUp"
+      </v-layout>
+      <v-layout
+        justify-center
+        class="buttons text-xs-center"
+      >
+        <v-flex
+          xs5
+          d-flex
+        >
+          <v-btn
+            :disabled="!valid"
             :loading="registering"
             class="white--text"
             large
-            color="orange">
+            color="orange"
+            @click.prevent="signUp"
+          >
             register
           </v-btn>
         </v-flex>
-        <v-flex xs5 d-flex>
-          <v-btn @click="clear"
+        <v-flex
+          xs5
+          d-flex
+        >
+          <v-btn
             :disabled="valid"
             class="button white--text"
             large
-            color="purple darken-1">
+            color="purple darken-1"
+            @click="clear"
+          >
             clear
           </v-btn>
         </v-flex>
@@ -85,7 +109,10 @@ import 'firebase/auth'
 import closeButton from './CloseBtn.vue'
 
 export default {
-  name: 'register',
+  name: 'Register',
+  components: {
+    closeButton
+  },
   data: () => ({
     registering: false,
     users: [],
@@ -116,13 +143,29 @@ export default {
     ],
     checkbox: false
   }),
-  components: {
-    closeButton
-  },
   computed: {
     comparePasswords () {
       return this.password !== this.confirmPassword ? 'Passwords do not match' : true
     }
+  },
+  created () {
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig)
+    }
+    console.log(`Register page created`)
+    /*
+    db.collection('users').get().then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        console.log(doc.id)
+        const data = {
+          'id': doc.id,
+          'name': doc.data().name,
+          'type': doc.data().type
+        }
+        console.log(data)
+        this.users.push(data)
+      })
+    }) */
   },
   methods: {
     signUp () {
@@ -223,25 +266,6 @@ export default {
     clear () {
       this.$refs.form.reset()
     }
-  },
-  created () {
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig)
-    }
-    console.log(`Register page created`)
-    /*
-    db.collection('users').get().then(querySnapshot => {
-      querySnapshot.forEach(doc => {
-        console.log(doc.id)
-        const data = {
-          'id': doc.id,
-          'name': doc.data().name,
-          'type': doc.data().type
-        }
-        console.log(data)
-        this.users.push(data)
-      })
-    }) */
   }
 }
 </script>

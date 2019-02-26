@@ -1,22 +1,30 @@
 <template>
-  <v-layout column id="leaderboard">
+  <v-layout
+    id="leaderboard"
+    column
+  >
     <v-flex>
-<!-- Close button -->
-      <closeBtn></closeBtn>
+      <!-- Close button -->
+      <closeBtn />
     </v-flex>
-<!-- Title -->
+    <!-- Title -->
     <v-flex class="text-xs-center py-4">
       <h1 class="leaderboard-title text-capitalize">
         {{ title }}
       </h1>
     </v-flex>
-<!-- Users leaderboard legend -->
+    <!-- Users leaderboard legend -->
     <v-flex class="leaderboard-legend text-xs-center pl-1 py-2">
       <v-layout align-center>
         <v-flex xs1>
-          <v-icon color="purple darken-2">import_export</v-icon>
+          <v-icon color="purple darken-2">
+            import_export
+          </v-icon>
         </v-flex>
-        <v-flex xs3 class="text-xs-left">
+        <v-flex
+          xs3
+          class="text-xs-left"
+        >
           Name
         </v-flex>
         <v-flex xs2>
@@ -33,21 +41,36 @@
         </v-flex>
       </v-layout>
     </v-flex>
-<!-- No leaderboard message -->
-    <v-flex class="leader-board-message text-xs-center" py-4
-      v-if="noLeaderboardMessage">
+    <!-- No leaderboard message -->
+    <v-flex
+      v-if="noLeaderboardMessage"
+      class="leader-board-message text-xs-center"
+      py-4
+    >
       {{ noLeaderboardMessage }}
     </v-flex>
-<!-- Users leaderboard layout -->
-    <v-flex class="leaderboard text-xs-center"
-      v-if="noLeaderboardMessage === null">
-      <v-layout v-for="(user, index) in leaderboard" :key="index"
+    <!-- Users leaderboard layout -->
+    <v-flex
+      v-if="noLeaderboardMessage === null"
+      class="leaderboard text-xs-center"
+    >
+      <v-layout
+        v-for="(user, index) in leaderboard"
+        :key="index"
         class="leaderboard-item"
-        v-bind:class="{ 'orange--text': getUserData.name === user.userName }" py-2>
-        <v-flex xs1 class="text-xs-center">
+        :class="{ 'orange--text': getUserData.name === user.userName }"
+        py-2
+      >
+        <v-flex
+          xs1
+          class="text-xs-center"
+        >
           {{ index + 1 }}
         </v-flex>
-        <v-flex xs3 class="text-xs-left">
+        <v-flex
+          xs3
+          class="text-xs-left"
+        >
           {{ user.userName }}
         </v-flex>
         <v-flex xs2>
@@ -74,6 +97,9 @@ import db from '../components/firebaseInit'
 
 export default {
   name: 'Leaderboard',
+  components: {
+    closeBtn
+  },
   data: () => ({
     title: 'leaderboard',
     userName: null,
@@ -81,8 +107,12 @@ export default {
     userDataFromDB: [],
     noLeaderboardMessage: null
   }),
-  components: {
-    closeBtn
+  computed: {
+    ...mapGetters([
+      'getDefaultUserName',
+      'getUserData',
+      'getMaxPossibleScore'
+    ])
   },
   mounted () {
     this.$nextTick(() => {
@@ -95,13 +125,6 @@ export default {
         this.noLeaderboardMessage = `Hi, ${this.userName}, log in to view the leaderboard.`
       }
     })
-  },
-  computed: {
-    ...mapGetters([
-      'getDefaultUserName',
-      'getUserData',
-      'getMaxPossibleScore'
-    ])
   },
   methods: {
     getDataForLeaderboard () {
