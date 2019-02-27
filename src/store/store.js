@@ -12,25 +12,25 @@ const state = getDefaultState()
 const actions = {
   /* increment: (context, payload) => context.commit('increment'), */
   setCurrentIcon: ({
-    commit,
+    commit
   }) => commit(`setCurrentIcon`),
   resetGameState: ({
-    commit,
+    commit
   }) => commit(`resetState`),
   computeScore: ({
-    commit,
+    commit
   }) => commit(`computeScore`),
   rollDice: ({
-    commit,
+    commit
   }) => commit(`rollDice`),
   nextTurn: ({
-    commit,
-  }) => commit(`nextTurn`),
+    commit
+  }) => commit(`nextTurn`)
 }
 
 export default new Vuex.Store({
   state,
   getters,
   mutations,
-  actions,
+  actions
 })

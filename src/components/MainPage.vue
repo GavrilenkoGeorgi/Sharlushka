@@ -19,11 +19,9 @@
       </v-flex>
       <v-flex
         justify-center
-        style="padding: 0em 4em 0em 4em"
+        style="padding: 2em 4em 0em 4em"
       >
-        <!--v-img max-width="12em" :src="require('./startPageDice.svg')" contain></v-img-->
-        <!--span v-html="require(`../assets/icons/startPageDice.svg`)" /-->
-        <!--div v-html="require(`./startPageDice.svg`)"></div-->
+        <SharlushkaLogo />
       </v-flex>
       <v-flex
         d-flex
@@ -47,13 +45,15 @@
           <v-btn
             to="/game"
             ripple
+            outline
             color="purple darken-1"
             aria-label="Start game"
             :class="{orange:$store.state.currentGameTurn > 1}"
           >
-            <v-icon color="white">
+            <v-icon color="purple darken-1">
               done
             </v-icon>
+            play
           </v-btn>
         </v-flex>
         <v-flex
@@ -63,13 +63,15 @@
         >
           <v-btn
             to="/login"
+            outline
             ripple
             color="purple darken-1"
             aria-label="Register or change name"
           >
-            <v-icon color="white">
+            <v-icon color="purple darken-1">
               how_to_reg
             </v-icon>
+            login
           </v-btn>
         </v-flex>
       </v-layout>
@@ -103,135 +105,28 @@
 </template>
 
 <script>
-import db from './firebaseInit'
-// import firebase from 'firebase/app'
-// import 'firebase/auth'
-import {mapGetters, mapActions} from 'vuex'
-// import firebaseConfig from './firebaseConfig'
-
+import SharlushkaLogo from '../assets/icons/sharlushkaLogo.svg'
 export default {
   name: `Main`,
+  components: {
+    SharlushkaLogo
+  },
   data() {
     return {
       gameName: `Sharlushka`,
       userName: `empty string`,
       greeting: `Hi,`,
-      exclamation: `.`,
+      exclamation: `.`
     }
-  },
-  computed: {
-    ...mapGetters([
-      `getUserData`,
-      `getDefaultUserName`,
-    ]),
   },
   mounted() {
     this.$nextTick(() => {
       console.log(`Main page mounted.`)
-      //
-      // Here
-      //
-      /*
-      if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig)
-        console.log(`Init firebase`)
-      } else {
-        console.log(`No firebase init`)
-        // firebase.firestore().settings({timestampsInSnapshots: true})
-      } */
-      /*
-      const initializeAuth = new Promise(resolve => {
-        // this adds a hook for the initial auth-change event
-        firebase.auth().onAuthStateChanged(user => {
-          if (user) {
-            authService.setUser(user)
-            resolve(user)
-          } else {
-            console.log(`No user!`)
-          }
-        })
-      })
-      const authService = {
-        userUid: null,
-        authenticated () {
-          return initializeAuth.then(user => {
-            return user && !user.isAnonymous
-          })
-        },
-        setUser (user) {
-          this.userUid = user.uid
-          console.log(`User set ${user.email}`)
-        }
-      } */
-      /*
-      if (true) {
-        authService.authenticated().then((result) => {
-          // this.userName = authService.userUid
-          // console.log(`Setting uid ${authService.userUid}`)
-          let nameToSet = getUserNameFromDB(authService.userUid)
-          if (result) {
-            let currentUserData = {
-              isAuthenticated: true,
-              uid: authService.userUid,
-              name: nameToSet
-            }
-            store.commit(`setUser`, currentUserData)
-          }
-        }).catch((error) => {
-          console.log(`Error ${error}`)
-        })
+      if (localStorage.hasOwnProperty(`userName`)) {
+        this.userName = localStorage.getItem(`userName`)
       }
-      */
-      /*
-      if (this.getUserData.isAuthenticated) {
-        console.log(`Setting user score from db...`)
-        this.setUserScoreDataFromDB(this.getUserData.uid)
-      } else {
-        this.userName = this.getDefaultUserName
-        if (localStorage.getItem(`schoolScores`) === null) {
-          localStorage.setItem(`schoolScores`, ``)
-          localStorage.setItem(`lastScoresArray`, ``)
-          localStorage.setItem(`highestScore`, ``)
-        }
-      } */
     })
-  },
-  methods: {
-    ...mapActions([
-      `newGame`,
-    ]),
-    startNewGame() {
-      // window.location.replace('/game')
-      this.$router.push(`/`)
-    },
-    setUserScoreDataFromDB(uid) {
-      console.log(`Getting user scores for uid ${uid}`)
-      db.collection(`users`).where(`uid`, `==`, uid)
-        .get()
-        .then(function(querySnapshot) {
-          let userScores = {}
-          querySnapshot.forEach(function(doc) {
-          // doc.data() is never undefined for query doc snapshots
-            if (doc.data().uid === uid) {
-              userScores = {
-                hiScore: doc.data().hiScore,
-                resultsArray: doc.data().resultsArray,
-                schoolResultsArray: doc.data().schoolResultsArray,
-              }
-            }
-          })
-          return userScores
-        })
-        .then((userScores) => {
-          localStorage.setItem(`highestScore`, userScores.hiScore)
-          localStorage.setItem(`lastScoresArray`, userScores.resultsArray)
-          localStorage.setItem(`schoolScores`, userScores.schoolResultsArray)
-        })
-        .catch(function(error) {
-          console.log(`Error getting documents: `, error)
-        })
-    },
-  },
+  }
 }
 </script>
 

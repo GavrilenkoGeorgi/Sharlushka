@@ -21,7 +21,7 @@ export default {
     this.$nextTick(() => {
       console.log(`App started.`)
     })
-  },
+  }
 }
 </script>
 

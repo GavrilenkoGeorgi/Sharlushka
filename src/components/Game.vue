@@ -393,7 +393,7 @@ export default {
   name: `Game`,
   components: {
     DiceBox,
-    NetworkCheck,
+    NetworkCheck
   },
   data: () => ({
     title: `Sharlushka`,
@@ -405,24 +405,24 @@ export default {
       {
         path: `/help`,
         icon: `trending_up`,
-        text: `School results & help`,
+        text: `School results & help`
       },
       {
-        path: `/settings`,
+        path: `/userstats`,
         icon: `equalizer`,
-        text: `User stats`,
+        text: `User stats`
       },
       {
         path: `/leaderboard`,
         icon: `import_export`,
-        text: `Leaderboard`,
+        text: `Leaderboard`
       },
       {
         path: `/login`,
         icon: `exit_to_app`,
-        text: `Log in/out`,
-      },
-    ],
+        text: `Log in/out`
+      }
+    ]
   }),
   computed: {
     ...mapGetters([
@@ -434,7 +434,7 @@ export default {
       `getDiceArray`,
       `getCurrentGameState`,
       `getTotalScore`,
-      `getUserName`,
+      `getUserName`
     ]),
     gameName() {
       return `Sharlushka`
@@ -451,14 +451,14 @@ export default {
       } else {
         return this.getUserName
       }
-    },
+    }
   },
   watch: {
     turnState: {
       immediate: true,
       handler() { // some spaghetti code
         this.turnCompleted = !this.turnState
-      },
+      }
     },
     progressBarState: {
       immediate: true,
@@ -468,8 +468,8 @@ export default {
         } else {
           return false
         }
-      },
-    },
+      }
+    }
   },
   mounted() {
     const highestScore = localStorage.getItem(`highestScore`)
@@ -483,7 +483,7 @@ export default {
     ...mapActions([
       `nextTurn`,
       // 'newGame',
-      `computeScore`,
+      `computeScore`
       // 'setDiceChosenState',
       // 'incrementAsync'
     ]),
@@ -632,8 +632,8 @@ export default {
       }
       this.turnCompleted = true
       console.log(`Turn completed`)
-    }, // end of record result method
-  }, // end of methods
+    } // end of record result method
+  } // end of methods
 }
 </script>
 

@@ -98,21 +98,21 @@ import db from '../components/firebaseInit'
 export default {
   name: `Leaderboard`,
   components: {
-    closeBtn,
+    closeBtn
   },
   data: () => ({
     title: `leaderboard`,
     userName: null,
     leaderboard: [],
     userDataFromDB: [],
-    noLeaderboardMessage: null,
+    noLeaderboardMessage: null
   }),
   computed: {
     ...mapGetters([
       `getDefaultUserName`,
       `getUserData`,
-      `getMaxPossibleScore`,
-    ]),
+      `getMaxPossibleScore`
+    ])
   },
   mounted() {
     this.$nextTick(() => {
@@ -131,44 +131,44 @@ export default {
     getDataForLeaderboard() {
       const usersDataRef = db.collection(`users`)
       usersDataRef.orderBy(`hiScore`).get()
-          .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              const userData = {
-                id: doc.id,
-                userName: doc.data().name,
-                hiScore: doc.data().hiScore,
-                resultsArray: doc.data().resultsArray,
-              }
-              this.userDataFromDB.push(userData)
-            })
-          })
-          .then(() => {
-            for (const user of this.userDataFromDB) {
-            // prepare data for leaderboard display
-              const arraySum = (accumulator, currentValue) =>
-                accumulator + currentValue
-              const userResultsArray = user.resultsArray.split(`,`).map(Number)
-              const averageScore = parseInt(userResultsArray.reduce(arraySum) /
-                userResultsArray.length)
-              const percent = Math.floor(averageScore /
-                this.getMaxPossibleScore * 100)
-              const leaderBoardUserData = {
-                id: user.id,
-                userName: user.userName,
-                hiScore: parseInt(user.hiScore),
-                averageScore: averageScore,
-                percentFromMax: percent,
-                gamesPlayed: userResultsArray.length,
-              }
-              this.leaderboard.push(leaderBoardUserData)
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            const userData = {
+              id: doc.id,
+              userName: doc.data().name,
+              hiScore: doc.data().hiScore,
+              resultsArray: doc.data().resultsArray
             }
-            this.leaderboard.reverse()
+            this.userDataFromDB.push(userData)
           })
-          .catch(function(error) {
-            console.log(`Error getting documents: `, error)
-          })
-    },
-  },
+        })
+        .then(() => {
+          for (const user of this.userDataFromDB) {
+            // prepare data for leaderboard display
+            const arraySum = (accumulator, currentValue) =>
+              accumulator + currentValue
+            const userResultsArray = user.resultsArray.split(`,`).map(Number)
+            const averageScore = parseInt(userResultsArray.reduce(arraySum) /
+                userResultsArray.length)
+            const percent = Math.floor(averageScore /
+                this.getMaxPossibleScore * 100)
+            const leaderBoardUserData = {
+              id: user.id,
+              userName: user.userName,
+              hiScore: parseInt(user.hiScore),
+              averageScore: averageScore,
+              percentFromMax: percent,
+              gamesPlayed: userResultsArray.length
+            }
+            this.leaderboard.push(leaderBoardUserData)
+          }
+          this.leaderboard.reverse()
+        })
+        .catch(function(error) {
+          console.log(`Error getting documents: `, error)
+        })
+    }
+  }
 }
 </script>
 

@@ -10,7 +10,7 @@ export default {
       gameEnded: state.gameEnded,
       diceRollInProgress: state.diceRollInProgress,
       gameCheck: state.gameCheck,
-      gameInProgress: state.gameInProgress,
+      gameInProgress: state.gameInProgress
     }
     return currentGameState
   },
@@ -60,7 +60,7 @@ export default {
         const info = {
           // name: state.diceArray[key].id,
           chosen: state.diceArray[key].chosen,
-          firstDice: state.diceArray[0].chosen,
+          firstDice: state.diceArray[0].chosen
           // value: state.diceArray[key].value
         }
         return info
@@ -76,5 +76,5 @@ export default {
     return state.scoreArray.filter((score) => {
       return score.value !== `` && !score.final
     })
-  },
+  }
 }

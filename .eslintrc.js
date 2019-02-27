@@ -31,6 +31,7 @@ module.exports = {
     "padded-blocks": ['error', { blocks: 'never', classes: 'never', switches: 'never' }],
     // "no-extra-parens": "error", // later
     "semi": ["error", "never"],
+    "comma-dangle": ["error", "never"],
     "no-console": "off",
     // allow async-await
     "generator-star-spacing": "off",

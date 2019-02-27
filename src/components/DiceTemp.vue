@@ -72,11 +72,11 @@ import DiceBox from '../components/DiceBox'
 
 export default {
   components: {
-    DiceBox,
+    DiceBox
   },
   data() {
     return {
-      greeting: `Hi,`,
+      greeting: `Hi,`
     }
   },
   methods: {
@@ -109,8 +109,8 @@ export default {
       } else {
         return false
       }
-    },
-  },
+    }
+  }
 }
 </script>
 

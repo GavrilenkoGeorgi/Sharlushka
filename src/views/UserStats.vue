@@ -1,6 +1,5 @@
 <template>
-  <v-container id="gameSettings">
-    <!-- Maybe stats? -->
+  <v-container id="userStats">
     <!-- Close button -->
     <closeBtn />
     <v-layout
@@ -16,12 +15,18 @@
           <h2 class="user-name">
             {{ userName }}!
           </h2>
+          <!--h3
+            v-if="anonymousUser"
+            class="message-to-anonymous"
+          >
+            {{ messageToAnonymous }}
+          </h3-->
           <h3
             v-if="highestScore"
             class="hi-score"
           >
             {{ hiscoreGreeting }} {{ highestScore }}{{ exclamation }}
-          </h3><!-- Safari -->
+          </h3><!-- Safari ??? -->
         </v-layout>
       </v-flex>
       <!-- Chart -->
@@ -43,12 +48,17 @@
         align-end
         class="last-scores-heading text-xs-center"
       >
-        <h3>{{ lastScoresHeadingPartOne }} {{ lastScoresHeadingPartTwo }}</h3>
+        <h3
+          v-if="lastScoresToDisplay"
+        >
+          {{ lastScoresHeading }}
+        </h3>
       </v-flex>
       <v-flex>
         <v-layout
           align-space-around
           column
+          mb-1
         >
           <v-flex
             d-flex
@@ -82,51 +92,28 @@
       </v-flex>
       <!-- Buttons -->
       <v-layout
-        mt-3
+        py-3
         row
         align-center
         justify-space-around
       >
         <v-flex
-          xs4
-          lg2
           class="text-xs-center"
         >
           <v-btn
             ripple
-            block
-            class="ui-button"
             large
+            outline
             color="orange"
             @click="restartGame"
           >
             <v-icon
               medium
-              color="white"
+              color="orange"
             >
               replay
             </v-icon>
-          </v-btn>
-        </v-flex>
-        <v-flex
-          xs4
-          lg2
-          class="text-xs-center"
-        >
-          <v-btn
-            ripple
-            block
-            class="ui-button"
-            large
-            color="purple darken-1"
-            to="/help"
-          >
-            <v-icon
-              medium
-              color="white"
-            >
-              help_outline
-            </v-icon>
+            restart
           </v-btn>
         </v-flex>
       </v-layout>
@@ -136,31 +123,32 @@
 
 <script>
 // import store from '../store/store' // for reset state button
-import {mapGetters} from 'vuex'
-import closeBtn from './CloseBtn.vue'
-import db from './firebaseInit'
+import { mapGetters } from 'vuex'
+import closeBtn from '../components/CloseBtn.vue'
+import db from '../components/firebaseInit'
 
 export default {
-  name: `Settings`,
+  name: `UserStats`,
   components: {
-    closeBtn,
+    closeBtn
   }, // change to statss
   data() {
     return {
       userName: ``,
+      anonymousUser: false,
+      messageToAnonymous: null,
       helpTitle: `About`,
       helpButtonText: `Help!`,
       highestScore: ``,
       hiscoreGreeting: `Your highest score is`,
       exclamation: `.`, // some over-engineering
-      lastScoresHeadingPartOne: `Most recent`,
-      lastScoresHeadingPartTwo: `scores are`,
+      lastScoresHeading: `Most recent scores are`,
       userScoresArray: ``,
       lastScoresToDisplay: ``,
       userGamesPlayed: ``,
       chartData: {
         labels: [],
-        series: [],
+        series: []
         // labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
         // series: [[333, 125, 256, 368, 129, 234, 623, 546, 345, 324, 34, 342]]
       },
@@ -171,39 +159,55 @@ export default {
           // We can disable the grid for this axis
           showGrid: false,
           // and also don't show the label
-          showLabel: true,
-        },
+          showLabel: true
+        }
       },
       newStats: {
         gamesPlayed: {
           msg: `Games played`,
-          value: ``,
+          value: ``
         },
         maxPossibleScore: {
           msg: `Max possible score is`,
-          value: ``,
+          value: ``
         },
         percentFromMax: {
           msg: `Percent from max score ~`,
-          value: ``,
+          value: ``
         },
         averageScore: {
           msg: `Your average score equals`,
-          value: ``,
-        },
-      },
+          value: ``
+        }
+      }
     }
   },
   computed: {
     ...mapGetters([
       `getDefaultUserName`,
       `getUserData`,
-      `getMaxPossibleScore`,
-    ]),
+      `getMaxPossibleScore`
+    ])
   },
   mounted() {
-    console.log(`Settings mounted`) // change to about
-    // check if user is authenticated
+    console.log(`User stats page mounted.`)
+    // console.log(`User is ${localStorage.getItem(`userName`)}`)
+    let userUid = null
+    if (localStorage.hasOwnProperty(`userUid`)) {
+      console.log(`User has uid: ${localStorage.getItem(`userUid`)}`)
+      userUid = localStorage.getItem(`userUid`)
+      this.userName = localStorage.getItem(`userName`)
+      this.highestScore = localStorage.getItem(`highestScore`)
+      this.userScoresArray = this.assembleLastScoresArray()
+      this.lastScoresToDisplay = this.userScoresArray.slice(0).slice(-12)
+    }
+    if (userUid === ``) { // unknown anonymous user
+      console.log(`You are Anonymous!`)
+      this.anonymousUser = true
+      this.messageToAnonymous = `You have to finish at least one game to
+        calculate stats, school results are in rules section.`
+    }
+    /*
     if (!this.getUserData.isAuthenticated) {
       console.log(`You are anonymous!`)
       this.userName = this.getDefaultUserName
@@ -231,9 +235,19 @@ export default {
     if (this.userScoresArray.length) {
       this.chartData.labels = this.prepareLabelsForChart(this.userScoresArray.length)
       this.chartData.series = [this.lastScoresToDisplay]
-    }
+    } */
   },
   methods: {
+    assembleLastScoresArray() {
+      console.log(`Preparing last scores array.`)
+      if (localStorage.hasOwnProperty(`lastScoresArray`)) {
+        let lastScoresString = localStorage.getItem(`lastScoresArray`)
+        return lastScoresString.split(`,`)
+      } else {
+        console.log(`You have to finish at least one game to
+        calculate stats, school results are in rules section.`)
+      }
+    },
     restartGame() {
       console.log(`Restarting.`)
       this.$store.commit(`resetState`)
@@ -259,38 +273,28 @@ export default {
         return labelsArray.reverse()
       }
     },
-    assembleLastScoresArray() {
-      console.log(`Preparing array`)
-      const lastScoresString = localStorage.getItem(`lastScoresArray`)
-      if (!lastScoresString) {
-        console.log(`You have to finish at least one game to calculate stats, school results are in rules section.`)
-        return false
-      } else {
-        return lastScoresString.split(`,`)
-      }
-    },
     setUserScoreDataFromDB(uid) {
       console.log(`Getting user scores for uid ${uid}`)
       db.collection(`users`).where(`uid`, `==`, uid)
-          .get()
-          .then(function(querySnapshot) {
-            let scoreArray
+        .get()
+        .then(function(querySnapshot) {
+          let scoreArray
 
-            querySnapshot.forEach(function(doc) {
+          querySnapshot.forEach(function(doc) {
             // doc.data() is never undefined for query doc snapshots
-              if (doc.data().uid === uid) {
-                scoreArray = doc.data().resultsArray
-              }
-            })
-            return scoreArray
+            if (doc.data().uid === uid) {
+              scoreArray = doc.data().resultsArray
+            }
           })
-          .then((scoreArray) => {
-            localStorage.setItem(`lastScoresArray`, scoreArray)
-            console.log(`Setting users score array to local storage ${scoreArray}`)
-          })
-          .catch(function(error) {
-            console.log(`Error getting documents: `, error)
-          })
+          return scoreArray
+        })
+        .then((scoreArray) => {
+          localStorage.setItem(`lastScoresArray`, scoreArray)
+          console.log(`Setting users score array to local storage ${scoreArray}`)
+        })
+        .catch(function(error) {
+          console.log(`Error getting documents: `, error)
+        })
     },
     computeAverageScore() {
       if (this.userScoresArray) {
@@ -314,8 +318,8 @@ export default {
       } else {
         return ``
       }
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -376,7 +380,7 @@ export default {
   }
 }
 
-#gameSettings {
+#userStats {
   height: 100%;
 }
 

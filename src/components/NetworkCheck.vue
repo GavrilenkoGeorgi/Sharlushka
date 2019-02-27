@@ -48,12 +48,12 @@
 export default {
   name: `NetworkCheck`,
   data: () => ({
-    offlineMessage: false,
+    offlineMessage: false
   }),
   computed: {
     networkStatus() {
       return this.isOnline ? `ok` : null
-    },
-  },
+    }
+  }
 }
 </script>

@@ -67,12 +67,7 @@ const config = {
       },
       {
         test: /\.svg$/,
-        use: [{
-          loader: 'html-loader',
-          options: {
-            minimize: true
-          }
-        }]
+        loader: 'vue-svg-loader',
       },
       {
         test: /\.scss|.css$/,

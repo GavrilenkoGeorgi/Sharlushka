@@ -3,7 +3,7 @@ export default function() {
     user: {
       isAuthenticated: false,
       uid: null,
-      name: ``,
+      name: ``
     },
     debug: false,
     error: `No error`,
@@ -28,130 +28,130 @@ export default function() {
       value: ``, // school combinations
       final: false,
       id: `ones`,
-      icon: `diceOnes`,
+      icon: `diceOnes`
     },
     {
       value: ``,
       final: false,
       id: `twos`,
-      icon: `diceTwos`,
+      icon: `diceTwos`
     },
     {
       value: ``,
       final: false,
       id: `threes`,
-      icon: `diceThrees`,
+      icon: `diceThrees`
     },
     {
       value: ``,
       final: false,
       id: `fours`,
-      icon: `diceFours`,
+      icon: `diceFours`
     },
     {
       value: ``,
       final: false,
       id: `fives`,
-      icon: `diceFives`,
+      icon: `diceFives`
     },
     {
       value: ``,
       final: false,
       id: `sixes`,
-      icon: `diceSixes`, // 5
+      icon: `diceSixes` // 5
     },
     { // game combinations
       value: ``,
       displayValues: [],
       final: false,
       id: `pair`,
-      fullName: `Pair`, // 6
+      fullName: `Pair` // 6
     },
     {
       value: ``,
       displayValues: [],
       final: false,
       id: `twoPairs`,
-      fullName: `Two Pairs`, // 7
+      fullName: `Two Pairs` // 7
     },
     {
       value: ``,
       displayValues: [],
       final: false,
       id: `threeOfAKind`,
-      fullName: `Three O.A.K`, // 8
+      fullName: `Three O.A.K` // 8
     },
     {
       value: ``,
       displayValues: [],
       final: false,
       id: `full`,
-      fullName: `Full`, // 9
+      fullName: `Full` // 9
     },
     {
       value: ``,
       displayValues: [],
       final: false,
       id: `quads`,
-      fullName: `Quads`, // 10
+      fullName: `Quads` // 10
     },
     {
       value: ``,
       displayValues: [],
       final: false,
       id: `poker`,
-      fullName: `Poker`, // 11
+      fullName: `Poker` // 11
     },
     {
       value: ``,
       displayValues: [],
       final: false,
       id: `small`,
-      fullName: `Small`, // 12
+      fullName: `Small` // 12
     },
     {
       value: ``,
       displayValues: [],
       final: false,
       id: `large`,
-      fullName: `Large`, // 13
+      fullName: `Large` // 13
     },
     {
       value: ``,
       displayValues: [],
       final: false,
       id: `chance`,
-      fullName: `Chance`, // 14
+      fullName: `Chance` // 14
     }],
     diceArray: [{ // dice Array
       value: `#`,
       chosen: false,
       id: `first`,
-      currentIcon: ``,
+      currentIcon: ``
     },
     {
       value: `#`,
       chosen: false,
       id: `second`,
-      currentIcon: ``,
+      currentIcon: ``
     },
     {
       value: `#`,
       chosen: false,
       id: `third`,
-      currentIcon: ``,
+      currentIcon: ``
     },
     {
       value: `#`,
       chosen: false,
       id: `fourth`,
-      currentIcon: ``,
+      currentIcon: ``
     },
     {
       value: `#`,
       chosen: false,
       id: `fifth`,
-      currentIcon: ``,
-    }],
+      currentIcon: ``
+    }]
   }
 }

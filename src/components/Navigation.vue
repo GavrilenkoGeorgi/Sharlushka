@@ -54,14 +54,14 @@ export default {
     navDrawer: true,
     admins: [
       [`Management`, `people_outline`],
-      [`Settings`, `settings`],
+      [`Settings`, `settings`]
     ],
     cruds: [
       [`Create`, `add`],
       [`Read`, `insert_drive_file`],
       [`Update`, `update`],
-      [`Delete`, `delete`],
-    ],
+      [`Delete`, `delete`]
+    ]
   }),
   computed: {
     networkStatus() {
@@ -72,8 +72,8 @@ export default {
     },
     rollsLeft: function() {
       return store.state.rollCount
-    },
-  },
+    }
+  }
 }
 </script>
 

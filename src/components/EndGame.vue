@@ -95,7 +95,7 @@ import db from './firebaseInit'
 
 export default {
   components: {
-    closeBtn,
+    closeBtn
   },
   data() {
     return {
@@ -108,7 +108,7 @@ export default {
       hiscoreGreeting: `Your highest score is`,
       exclamation: `!`, // some over-engeneering
       lastScores: [],
-      schoolScores: [],
+      schoolScores: []
     }
   },
   computed: {
@@ -117,8 +117,8 @@ export default {
       `getSchoolScore`,
       `getCurrentGameState`,
       `getDefaultUserName`,
-      `getUserData`,
-    ]),
+      `getUserData`
+    ])
   },
   mounted() {
     this.$nextTick(() => {
@@ -209,36 +209,36 @@ export default {
       console.log(`Syncing score for uid ${this.getUserData.uid}`)
       const uid = this.getUserData.uid
       db.collection(`users`).where(`uid`, `==`, uid)
-          .get()
-          .then(function(querySnapshot) {
-            let docToUpdateId
-            querySnapshot.forEach(function(doc) {
+        .get()
+        .then(function(querySnapshot) {
+          let docToUpdateId
+          querySnapshot.forEach(function(doc) {
             // doc.data() is never undefined for query doc snapshots
-              if (doc.data().uid === uid) {
-                docToUpdateId = doc.id
-              }
-            })
-            return docToUpdateId
+            if (doc.data().uid === uid) {
+              docToUpdateId = doc.id
+            }
           })
-          .then((docToUpdateId) => {
-            const docRef = db.collection(`users`).doc(docToUpdateId)
-            const resultsArrayToUpdate = localStorage.getItem(`lastScoresArray`)
-            // you really should check if it is actually higher
-            const highestScoreToUpdate = localStorage.getItem(`highestScore`)
-            const schoolScoresToUpdate = localStorage.getItem(`schoolScores`)
-            const updateDocRef = docRef.update({
-              resultsArray: resultsArrayToUpdate,
-              schoolResultsArray: schoolScoresToUpdate,
-              hiScore: highestScoreToUpdate,
-            })
-            console.log(`...updating user stats`)
-            return updateDocRef // ? true
+          return docToUpdateId
+        })
+        .then((docToUpdateId) => {
+          const docRef = db.collection(`users`).doc(docToUpdateId)
+          const resultsArrayToUpdate = localStorage.getItem(`lastScoresArray`)
+          // you really should check if it is actually higher
+          const highestScoreToUpdate = localStorage.getItem(`highestScore`)
+          const schoolScoresToUpdate = localStorage.getItem(`schoolScores`)
+          const updateDocRef = docRef.update({
+            resultsArray: resultsArrayToUpdate,
+            schoolResultsArray: schoolScoresToUpdate,
+            hiScore: highestScoreToUpdate
           })
-          .catch(function(error) {
-            console.log(`Error getting documents: `, error)
-          })
-    },
-  },
+          console.log(`...updating user stats`)
+          return updateDocRef // ? true
+        })
+        .catch(function(error) {
+          console.log(`Error getting documents: `, error)
+        })
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

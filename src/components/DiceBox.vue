@@ -93,8 +93,8 @@ export default {
   props: {
     turnCompleted: {
       type: Boolean,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
@@ -105,15 +105,15 @@ export default {
         play: true,
         roll: false,
         save: false,
-        disabled: false,
-      },
+        disabled: false
+      }
     }
   },
   computed: {
     ...mapGetters([
       `getDiceArray`,
-      `getCurrentGameState`,
-    ]),
+      `getCurrentGameState`
+    ])
   },
   watch: {
     turnCompleted: {
@@ -124,8 +124,8 @@ export default {
           this.updateMainButtonState()
           // this.hidden = !this.hidden
         }
-      },
-    },
+      }
+    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -224,8 +224,8 @@ export default {
       }
       store.commit(`setDiceChosenState`, elementToAdd.id)
       store.commit(`computeScore`)
-    },
-  },
+    }
+  }
 }
 </script>
 

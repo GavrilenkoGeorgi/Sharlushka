@@ -264,14 +264,14 @@ import closeBtn from '../components/CloseBtn.vue'
 export default {
   name: `Help`,
   components: {
-    closeBtn,
+    closeBtn
   },
   data() {
     return {
       schoolScores: ``,
       chartData: {
         labels: [],
-        series: [],
+        series: []
         // labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
         // series: [[12, 14, 36, 34, 23, 12, -24, 14, 36, 44, 23, -12, 12, 14, 36, -24, 23]]
       },
@@ -284,8 +284,8 @@ export default {
           // We can disable the grid for this axis
           showGrid: true,
           // and also don't show the label
-          showLabel: true,
-        },
+          showLabel: true
+        }
       },
       overall: `Три броска, для того чтобы собрать комбинацию. Первый раз бросаются все пять кубиков.
         Дополнительно два раза можно перебрасывать часть кубиков, оставляя нужные,
@@ -336,21 +336,21 @@ export default {
         {title: `Poker`, quantity: [4, 4, 4, 4, 4], scoreValue: `100`},
         {title: `Small`, quantity: [1, 2, 3, 4, 5], scoreValue: `15`},
         {title: `Large`, quantity: [2, 3, 4, 5, 6], scoreValue: `20`},
-        {title: `Chance`, quantity: [2, 6, 1, 3, 4], scoreValue: `16`},
-      ],
+        {title: `Chance`, quantity: [2, 6, 1, 3, 4], scoreValue: `16`}
+      ]
     }
   },
   computed: {
     ...mapGetters([
       `getDiceIds`,
-      `getUserData`,
+      `getUserData`
     ]),
     computedGameScore: function() {
       return store.state.schoolScoreTotal + store.state.gameTotal
     },
     rollsLeft: function() { // ???
       return store.state.rollCount
-    },
+    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -420,8 +420,8 @@ export default {
       console.log(`Restarting`)
       store.commit(`resetState`)
       this.$router.push(`/`)
-    },
-  },
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

@@ -111,7 +111,7 @@ import closeButton from './CloseBtn.vue'
 export default {
   name: `Register`,
   components: {
-    closeButton,
+    closeButton
   },
   data: () => ({
     registering: false,
@@ -121,17 +121,17 @@ export default {
     valid: true,
     name: ``,
     nameRules: [
-      (v) => (!v || v.length <= 10) || `Name must be less than 10 characters`,
+      (v) => (!v || v.length <= 10) || `Name must be less than 10 characters`
     ],
     email: ``,
     emailRules: [
       (v) => !!v || `E-mail is required`,
-      (v) => /.+@.+/.test(v) || `E-mail must be valid`,
+      (v) => /.+@.+/.test(v) || `E-mail must be valid`
     ],
     password: ``,
     passwordRules: [
       (v) => !!v || `Password is required`,
-      (v) => (v && v.length <= 12) || `Password must be less than 12 characters`,
+      (v) => (v && v.length <= 12) || `Password must be less than 12 characters`
     ],
     confirmPassword: ``,
     select: null,
@@ -139,14 +139,14 @@ export default {
       `Item 1`,
       `Item 2`,
       `Item 3`,
-      `Item 4`,
+      `Item 4`
     ],
-    checkbox: false,
+    checkbox: false
   }),
   computed: {
     comparePasswords() {
       return this.password !== this.confirmPassword ? `Passwords do not match` : true
-    },
+    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -159,8 +159,8 @@ export default {
       if (this.email && this.password) {
         this.registering = true
         firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-            .then((response) => {
-              console.log(response.user)
+          .then((response) => {
+            console.log(response.user)
             /*
             // set current user in store
             const newUser = {
@@ -203,11 +203,11 @@ export default {
             this.verifyUserEmail()
             this.$router.push(`/`)
             */
-            })
-            .catch((err) => {
-              console.log(err.message)
-              this.errorMessage = err.message
-            })
+          })
+          .catch((err) => {
+            console.log(err.message)
+            this.errorMessage = err.message
+          })
       }
     },
     addNewUser(userData) {
@@ -239,8 +239,8 @@ export default {
     },
     clear() {
       this.$refs.form.reset()
-    },
-  },
+    }
+  }
 }
 </script>
 

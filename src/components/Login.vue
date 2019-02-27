@@ -74,7 +74,6 @@
           xs5
         >
           <v-btn
-            :disabled="logginIn"
             :type="'submit'"
             :loading="logginIn"
             large
@@ -159,7 +158,7 @@ import closeBtn from '../components/CloseBtn.vue'
 export default {
   name: `Login`,
   components: {
-    closeBtn,
+    closeBtn
   },
   data: () => ({
     // loader: null,
@@ -173,51 +172,30 @@ export default {
     name: ``,
     nameRules: [
       (v) => !!v || `Name is required`,
-      (v) => v && v.length <= 10 || `Name must be less than 10 characters`,
+      (v) => v && v.length <= 10 || `Name must be less than 10 characters`
     ],
     email: ``,
     emailRules: [
       (v) => !!v || `E-mail is required`,
-      (v) => /.+@.+/.test(v) || `E-mail must be valid`,
+      (v) => /.+@.+/.test(v) || `E-mail must be valid`
     ],
     password: ``,
     passwordRules: [
       (v) => !!v || `Password is required`,
-      (v) => v && v.length <= 12 || `Password must be less than 12 characters`,
+      (v) => v && v.length <= 12 || `Password must be less than 12 characters`
     ],
     confirmPassword: ``,
-    /*
-    select: null,
-    items: [
-      `Item 1`,
-      `Item 2`,
-      `Item 3`,
-      `Item 4`
-    ],
-    checkbox: false */
-    usersCollRef: `users`,
+    usersCollRef: `users`
   }),
   computed: {
     ...mapGetters([
       `getError`,
       `getUserAuthState`,
-      `getUserName`,
+      `getUserName`
     ]),
     comparePasswords() {
       return this.password !== this.confirmPassword ? `Passwords do not match` : true
-    },
-    /*
-    logInOrSignOut () {
-      let answer
-      if (this.getUserAuthState) {
-        console.log('User exists')
-        answer = true
-      } else {
-        // console.log('No user yet')
-        answer = false
-      }
-      return answer
-    } */
+    }
   },
 
   mounted() {
@@ -225,140 +203,57 @@ export default {
     for (let i in 100) {
       console.log(i)
     }
-
-    // const auth = firebase.auth()
-    // console.log(auth)
-    /*
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig)
-    }
-    */
-    /*
-    let check = true
-    if (check) {
-      console.log('User authenticated')
-      const initializeAuth = new Promise(resolve => {
-      // this adds a hook for the initial auth-change event
-        firebase.auth().onAuthStateChanged(user => {
-          const currentUser = firebase.auth().currentUser
-          console.log(`Current user is ${currentUser.uid}`)
-        })
-      })
-      initializeAuth.then(function (user) {
-        console.log(`Current user is ${user}`)
-      }).catch((reason) => {
-        console.log(`Something went wrong ${reason}`)
-      })
-    } else {
-      console.log('No, user is not authentificated')
-    } */
-    /*
-    const initializeAuth = new Promise(resolve => {
-    // this adds a hook for the initial auth-change event
-      firebase.auth().onAuthStateChanged(user => {
-        const currentUser = firebase.auth().currentUser
-        console.log(`Current user is ${currentUser.uid}`)
-      })
-    })
-    initializeAuth.then(function () {
-      const currentUser = firebase.auth().currentUser
-      console.log(`Current user is ${currentUser.email}`)
-    }) */
-    /*
-    db.collection('users').get().then(querySnapshot => {
-      querySnapshot.forEach(doc => {
-        console.log(doc.id)
-        const data = {
-          'id': doc.id,
-          'name': doc.data().name,
-          'type': doc.data().type
-        }
-        console.log(data)
-        this.users.push(data)
-      })
-    }) */
   },
   methods: {
-    /*
-    getUsersList () {
-      db.collection('users').get().then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          console.log(doc.id)
-          const data = {
-            'id': doc.id,
-            'name': doc.data().name,
-            'type': doc.data().type
-          }
-          console.log(data)
-          this.users.push(data)
-        })
-      })
+    toggleButtonLoadingState(button) {
+      console.log(`Button to toggle ${button}`)
+      if (button === `login`) {
+        this.logginIn = !this.logginIn
+        return true
+      } else {
+        console.log(`Nothing to toggle, button is ${typeof button}`)
+        return false
+      }
     },
-    */
-    setLoginLoadingState() {
-      this.logginIn = !this.logginIn
-      return true
-    },
-    getUserNameFromDB(uid) {
-      console.log(`Getting user name for uid ${uid}`)
-      console.log(`Colletion ref is --> `)
-      console.log(this.usersCollRef)
-      const docRef = db.this.usersCollRef.doc(uid)
-
-      docRef.get().then(function(doc) {
-        if (doc.exists) {
-          console.log(`Document data:`, doc.data())
-        } else {
-          // doc.data() will be undefined in this case
-          console.log(`No such document!`)
-        }
-      }).catch(function(error) {
-        console.log(`Error getting document:`, error)
-      })
-
-      /*
-      db.collection(`users`).where(`uid`, `==`, uid)
+    getUserDataFromDB(uid) {
+      // console.log(`Getting user name for uid ${uid}`)
+      db.collection(this.usersCollRef).where(`uid`, `==`, uid)
         .get()
-        .then(function (querySnapshot) {
-          let userName
-          querySnapshot.forEach(function (doc) {
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
             if (doc.data().uid === uid) {
-              userName = doc.data().name
+              // to local storage
+              localStorage.setItem(`userName`, doc.data().name)
+              localStorage.setItem(`userUid`, doc.data().uid)
+              localStorage.setItem(`highestScore`, doc.data().hiScore)
+              localStorage.setItem(`lastScoresArray`, doc.data().resultsArray)
+              localStorage.setItem(`schoolScores`, doc.data().schoolResultsArray)
             }
           })
-          store.commit(`setUserName`, userName)
-          console.log(`Setting user name: ${userName}`)
-          return userName
         })
-        .catch(function (error) {
+        .catch(error => {
           console.log(`Error getting documents: `, error)
-        }) */
+        })
     },
     login() {
-      this.errorMessage = undefined
+      this.errorMessage = undefined // null
       if (this.email && this.password) { // need some proper validation
-        this.setLoginLoadingState()
+        this.toggleButtonLoadingState(`login`)
+
         firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-          .then((response) => {
-            console.log(`You are logged in as`)
-            // console.log(response.user.email)
-            console.log(response.user)
-            const tempName = this.getUserNameFromDB(response.user.uid)
-            console.log(`User name is ${tempName}`)
-            /*
-            const newUser = {
-              isAuthenticated: true,
-              uid: response.user.uid,
-              name: tempName
-            } */
-            // localStorage.setItem(`userName`, tempName)
-            // this.$store.commit(`setUser`, newUser)
-            // this.$router.push(`/`)
-          },
-          (err) => {
+          .then(response => {
+            console.log(`Loggin in user with id ${response.user.uid}`)
+            // console.log(response.user)
+            this.getUserDataFromDB(response.user.uid)
+            // console.log(`response from get user data is ${temp}`)
+          }).then(() => {
+            this.toggleButtonLoadingState(`login`)
+            this.$router.push(`/`)
+          }).catch(err => {
             console.log(err.message)
             this.errorMessage = err.message
-            this.setLoginLoadingState()
+            this.toggleButtonLoadingState(`login`)
+            return false
           })
         return true
       }
@@ -390,8 +285,8 @@ export default {
     }, */
     clear() {
       this.$refs.form.reset()
-    },
-  },
+    }
+  }
 }
 </script>
 
