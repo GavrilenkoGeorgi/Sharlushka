@@ -3,18 +3,19 @@
 module.exports = {
   root: true,
   parserOptions: {
-    parser: 'babel-eslint'
+    parser: 'babel-eslint',
+    sourceType: 'module'
   },
   env: {
     browser: true,
+    commonjs: true,
+    es6: true,
+    jest: true,
+    node: true
   },
   extends: [
-    // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
-    // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
-    // 'plugin:vue/essential', 
-    'plugin:vue/recommended'
-    // https://github.com/standard/standard/blob/master/docs/RULES-en.md
-    // 'standard'
+    'eslint:recommended',
+    'plugin:vue/recommended',
   ],
   // required to lint *.vue files
   plugins: [
@@ -22,26 +23,31 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
+    "indent": ["error", 2],
+    "no-trailing-spaces": [1, { "skipBlankLines": false }],
+    "no-multiple-empty-lines": ["error", { "max": 1}],
+    "no-multi-spaces": "error",
+    'quotes': [2, "backtick"],
+    "padded-blocks": ['error', { blocks: 'never', classes: 'never', switches: 'never' }],
+    // "no-extra-parens": "error", // later
+    "semi": ["error", "never"],
+    "no-console": "off",
     // allow async-await
-    'generator-star-spacing': 'off',
-    "no-trailing-spaces": [2, { "skipBlankLines": true }],
-    "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
+    "generator-star-spacing": "off",
+    "max-len": ["error", { "code": 130 }], // for now
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
+    "spaced-comment": ["error", "always", {
+      "line": {
+          "markers": ["/"],
+          "exceptions": ["-", "+"]
+      },
+      "block": {
+          "markers": ["!"],
+          "exceptions": ["*"],
+          "balanced": true
+      }
+    }],
+    "vue/array-bracket-spacing": "error"
   }
 }
-
-/*
-module.exports = {
-  extends: [
-      
-      // These four options are more or less levels of strictness, give the above URL a read through and decide how strict you want your linting to be
-      //   Also note we're not setting this up with general JS linting here, just .vue linting
-      
-      // 'plugin:vue/base',
-      // 'plugin:vue/essential',
-      'plugin:vue/strongly-recommended',
-      // 'plugin:vue/recommended',
-  ],
-}
-*/

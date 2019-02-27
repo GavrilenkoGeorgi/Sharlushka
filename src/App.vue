@@ -16,17 +16,12 @@
 
 <script>
 export default {
-  name: 'App',
-  data: () => ({
-    userName: 'Anonymous'
-  }),
-  mounted () {
-    /*
+  name: `App`,
+  mounted() {
     this.$nextTick(() => {
       console.log(`App started.`)
     })
-    */
-  }
+  },
 }
 </script>
 

@@ -103,98 +103,86 @@
 
 <script>
 import db from './firebaseInit'
-import firebaseConfig from './firebaseConfig'
+// import firebaseConfig from './firebaseConfig'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import closeButton from './CloseBtn.vue'
 
 export default {
-  name: 'Register',
+  name: `Register`,
   components: {
-    closeButton
+    closeButton,
   },
   data: () => ({
     registering: false,
     users: [],
-    errorMessage: '',
-    pageTitle: 'Register',
+    errorMessage: ``,
+    pageTitle: `Register`,
     valid: true,
-    name: '',
+    name: ``,
     nameRules: [
-      v => (!v || v.length <= 10) || 'Name must be less than 10 characters'
+      (v) => (!v || v.length <= 10) || `Name must be less than 10 characters`,
     ],
-    email: '',
+    email: ``,
     emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+/.test(v) || 'E-mail must be valid'
+      (v) => !!v || `E-mail is required`,
+      (v) => /.+@.+/.test(v) || `E-mail must be valid`,
     ],
-    password: '',
+    password: ``,
     passwordRules: [
-      v => !!v || 'Password is required',
-      v => (v && v.length <= 12) || 'Password must be less than 12 characters'
+      (v) => !!v || `Password is required`,
+      (v) => (v && v.length <= 12) || `Password must be less than 12 characters`,
     ],
-    confirmPassword: '',
+    confirmPassword: ``,
     select: null,
     items: [
-      'Item 1',
-      'Item 2',
-      'Item 3',
-      'Item 4'
+      `Item 1`,
+      `Item 2`,
+      `Item 3`,
+      `Item 4`,
     ],
-    checkbox: false
+    checkbox: false,
   }),
   computed: {
-    comparePasswords () {
-      return this.password !== this.confirmPassword ? 'Passwords do not match' : true
-    }
+    comparePasswords() {
+      return this.password !== this.confirmPassword ? `Passwords do not match` : true
+    },
   },
-  created () {
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig)
-    }
-    console.log(`Register page created`)
-    /*
-    db.collection('users').get().then(querySnapshot => {
-      querySnapshot.forEach(doc => {
-        console.log(doc.id)
-        const data = {
-          'id': doc.id,
-          'name': doc.data().name,
-          'type': doc.data().type
-        }
-        console.log(data)
-        this.users.push(data)
-      })
-    }) */
+  mounted() {
+    this.$nextTick(() => {
+      console.log(`Register page mounted`)
+    })
   },
   methods: {
-    signUp () {
-      this.errorMessage = '' // clear error message?
+    signUp() {
+      this.errorMessage = `` // clear error message?
       if (this.email && this.password) {
         this.registering = true
         firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-          .then(response => {
+            .then((response) => {
+              console.log(response.user)
+            /*
             // set current user in store
             const newUser = {
               isAuthenticated: true,
               uid: response.user.uid
             }
-            this.$store.commit('setUser', newUser)
+            this.$store.commit(`setUser`, newUser)
             // add new user data to db
-            if (this.name === '') { // it is optional, privacy meh
-              this.name = 'Anonymous' // get default name??
+            if (this.name === ``) { // it is optional, privacy meh
+              this.name = `Anonymous` // get default name??
             }
 
-            let hiScoreToSet = localStorage.getItem('highestScore')
+            let hiScoreToSet = localStorage.getItem(`highestScore`)
             let scoresArrayToSet
             let schoolResultsToSet
             if (hiScoreToSet) {
-              scoresArrayToSet = localStorage.getItem('lastScoresArray')
-              schoolResultsToSet = localStorage.getItem('schoolScores') // !do something about naming here
+              scoresArrayToSet = localStorage.getItem(`lastScoresArray`)
+              schoolResultsToSet = localStorage.getItem(`schoolScores`) // !do something about naming here
             } else {
-              hiScoreToSet = ''
-              scoresArrayToSet = ''
-              schoolResultsToSet = ''
+              hiScoreToSet = ``
+              scoresArrayToSet = ``
+              schoolResultsToSet = ``
             }
 
             const newUserData = {
@@ -213,33 +201,19 @@ export default {
             // this.addNewUser(response.user.email, response.user.uid, this.name)
             console.log(`User added ${response.user.email}`)
             this.verifyUserEmail()
-            this.$router.push('/')
-            /*
-            firebase
-              .auth()
-              .signInWithEmailAndPassword(this.email, this.password)
-              .then(
-                response => {
-                  console.log(`Login in after registration`)
-                  console.log(response.user.email)
-                  this.$router.push('/')
-                },
-                err => {
-                  console.dir(err)
-                  this.errorMessage = err.message
-                })
-              */
-          })
-          .catch(err => {
-            console.log(err.message)
-            this.errorMessage = err.message
-          })
+            this.$router.push(`/`)
+            */
+            })
+            .catch((err) => {
+              console.log(err.message)
+              this.errorMessage = err.message
+            })
       }
     },
-    addNewUser (userData) {
+    addNewUser(userData) {
       console.log(`Adding user`)
       // Add a new document with a generated id.
-      const newUserRef = db.collection('users').doc()
+      const newUserRef = db.collection(`users`).doc()
       /*
       let newUserData = {
         name: 'Anonymous',
@@ -253,20 +227,20 @@ export default {
       // console.dir(this.$store.state.user.uid)
       // userData.ownerId = newUserRef.id
       newUserRef.set(userData)
-      console.log('Document successfully written!')
+      console.log(`Document successfully written!`)
     }, // end of user adding
-    verifyUserEmail () {
-      let user = firebase.auth().currentUser
-      user.sendEmailVerification().then(function () {
-        console.log('Email sent')
-      }).catch(function (error) {
+    verifyUserEmail() {
+      const user = firebase.auth().currentUser
+      user.sendEmailVerification().then(function() {
+        console.log(`Email sent`)
+      }).catch(function(error) {
         console.log(`Error! ${error}`)
       })
     },
-    clear () {
+    clear() {
       this.$refs.form.reset()
-    }
-  }
+    },
+  },
 }
 </script>
 

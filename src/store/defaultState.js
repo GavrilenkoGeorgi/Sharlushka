@@ -1,14 +1,14 @@
-export default function () {
+export default function() {
   return {
     user: {
       isAuthenticated: false,
       uid: null,
-      name: ''
+      name: ``,
     },
     debug: false,
-    error: 'No error',
+    error: `No error`,
     processing: false,
-    defaultUserName: 'Anonymous',
+    defaultUserName: `Anonymous`,
     newTurn: true,
     diceRollInProgress: false, // not needed?
     schoolScoreTotal: 0, // total school score
@@ -25,133 +25,133 @@ export default function () {
     maxPossibleScore: 879,
     combinationArray: [],
     scoreArray: [{
-      value: '', // school combinations
+      value: ``, // school combinations
       final: false,
-      id: 'ones',
-      icon: 'diceOnes'
+      id: `ones`,
+      icon: `diceOnes`,
     },
     {
-      value: '',
+      value: ``,
       final: false,
-      id: 'twos',
-      icon: 'diceTwos'
+      id: `twos`,
+      icon: `diceTwos`,
     },
     {
-      value: '',
+      value: ``,
       final: false,
-      id: 'threes',
-      icon: 'diceThrees'
+      id: `threes`,
+      icon: `diceThrees`,
     },
     {
-      value: '',
+      value: ``,
       final: false,
-      id: 'fours',
-      icon: 'diceFours'
+      id: `fours`,
+      icon: `diceFours`,
     },
     {
-      value: '',
+      value: ``,
       final: false,
-      id: 'fives',
-      icon: 'diceFives'
+      id: `fives`,
+      icon: `diceFives`,
     },
     {
-      value: '',
+      value: ``,
       final: false,
-      id: 'sixes',
-      icon: 'diceSixes' // 5
+      id: `sixes`,
+      icon: `diceSixes`, // 5
     },
     { // game combinations
-      value: '',
+      value: ``,
       displayValues: [],
       final: false,
-      id: 'pair',
-      fullName: 'Pair' // 6
+      id: `pair`,
+      fullName: `Pair`, // 6
     },
     {
-      value: '',
+      value: ``,
       displayValues: [],
       final: false,
-      id: 'twoPairs',
-      fullName: 'Two Pairs' // 7
+      id: `twoPairs`,
+      fullName: `Two Pairs`, // 7
     },
     {
-      value: '',
+      value: ``,
       displayValues: [],
       final: false,
-      id: 'threeOfAKind',
-      fullName: 'Three O.A.K' // 8
+      id: `threeOfAKind`,
+      fullName: `Three O.A.K`, // 8
     },
     {
-      value: '',
+      value: ``,
       displayValues: [],
       final: false,
-      id: 'full',
-      fullName: 'Full' // 9
+      id: `full`,
+      fullName: `Full`, // 9
     },
     {
-      value: '',
+      value: ``,
       displayValues: [],
       final: false,
-      id: 'quads',
-      fullName: 'Quads' // 10
+      id: `quads`,
+      fullName: `Quads`, // 10
     },
     {
-      value: '',
+      value: ``,
       displayValues: [],
       final: false,
-      id: 'poker',
-      fullName: 'Poker' // 11
+      id: `poker`,
+      fullName: `Poker`, // 11
     },
     {
-      value: '',
+      value: ``,
       displayValues: [],
       final: false,
-      id: 'small',
-      fullName: 'Small' // 12
+      id: `small`,
+      fullName: `Small`, // 12
     },
     {
-      value: '',
+      value: ``,
       displayValues: [],
       final: false,
-      id: 'large',
-      fullName: 'Large' // 13
+      id: `large`,
+      fullName: `Large`, // 13
     },
     {
-      value: '',
+      value: ``,
       displayValues: [],
       final: false,
-      id: 'chance',
-      fullName: 'Chance' // 14
+      id: `chance`,
+      fullName: `Chance`, // 14
     }],
     diceArray: [{ // dice Array
-      value: '#',
+      value: `#`,
       chosen: false,
-      id: 'first',
-      currentIcon: ''
+      id: `first`,
+      currentIcon: ``,
     },
     {
-      value: '#',
+      value: `#`,
       chosen: false,
-      id: 'second',
-      currentIcon: ''
+      id: `second`,
+      currentIcon: ``,
     },
     {
-      value: '#',
+      value: `#`,
       chosen: false,
-      id: 'third',
-      currentIcon: ''
+      id: `third`,
+      currentIcon: ``,
     },
     {
-      value: '#',
+      value: `#`,
       chosen: false,
-      id: 'fourth',
-      currentIcon: ''
+      id: `fourth`,
+      currentIcon: ``,
     },
     {
-      value: '#',
+      value: `#`,
       chosen: false,
-      id: 'fifth',
-      currentIcon: ''
-    }]
+      id: `fifth`,
+      currentIcon: ``,
+    }],
   }
 }

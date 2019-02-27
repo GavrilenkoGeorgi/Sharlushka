@@ -1,48 +1,48 @@
 export default {
-  computeScore (state) { // biggest chunk of javaScript
+  computeScore(state) { // biggest chunk of javaScript
     if (!state.turnCompleted) {
       // empty array for calculating score
-      let arrayToAnalyse = [[], [], [], [], [], []]
+      const arrayToAnalyse = [[], [], [], [], [], []]
       // dice are with values from 1 to 6, quantity: 5 pieces
       // for any game combination except chances and school we need at least a pair of dice
       // if it is larger than 0, we have at least one dice to calculate
       if (state.combinationArray.length > 0) {
-        for (let key in state.combinationArray) {
+        for (const key in state.combinationArray) {
           // fill the 2D array to analyse it
           switch (state.combinationArray[key]) {
-            case 1:
-              arrayToAnalyse[0].push(state.combinationArray[key])
-              break
-            case 2:
-              arrayToAnalyse[1].push(state.combinationArray[key])
-              break
-            case 3:
-              arrayToAnalyse[2].push(state.combinationArray[key])
-              break
-            case 4:
-              arrayToAnalyse[3].push(state.combinationArray[key])
-              break
-            case 5:
-              arrayToAnalyse[4].push(state.combinationArray[key])
-              break
-            case 6:
-              arrayToAnalyse[5].push(state.combinationArray[key])
-              break
-            default:
-              console.log(`Can't create array to analyse`)
-              return false
+          case 1:
+            arrayToAnalyse[0].push(state.combinationArray[key])
+            break
+          case 2:
+            arrayToAnalyse[1].push(state.combinationArray[key])
+            break
+          case 3:
+            arrayToAnalyse[2].push(state.combinationArray[key])
+            break
+          case 4:
+            arrayToAnalyse[3].push(state.combinationArray[key])
+            break
+          case 5:
+            arrayToAnalyse[4].push(state.combinationArray[key])
+            break
+          case 6:
+            arrayToAnalyse[5].push(state.combinationArray[key])
+            break
+          default:
+            console.log(`Can't create array to analyse`)
+            return false
           }
         }
         /* ---------------School score calculation--------------- */
         if (!state.schoolCompleted) {
           // initialise score var
           let schoolScore
-          for (let key in arrayToAnalyse) {
+          for (const key in arrayToAnalyse) {
             // key is _the_ key!
             // by checking first item we get dice type -- 'ones', 'twos', 'threes' ... 'sixes'
-            let currentDice = arrayToAnalyse[key][0]
+            const currentDice = arrayToAnalyse[key][0]
             if (!currentDice && state.scoreArray[key].final !== true) {
-              state.scoreArray[key].value = '' // if there is no dice of this kind
+              state.scoreArray[key].value = `` // if there is no dice of this kind
             }
             if (arrayToAnalyse[key].length === 3) {
               // we got three equal dice and the score for that is zero points
@@ -61,15 +61,15 @@ export default {
           } /* ---------------End of school score calculation--------------- */
         } else {
           /* ---------------Game score calculation--------------- */
-          let pairsArray = []
-          let tripleArray = []
-          let quadsArray = []
-          let smallLargeCheckArray = []
+          const pairsArray = []
+          const tripleArray = []
+          const quadsArray = []
+          const smallLargeCheckArray = []
           const scoreSum = (accumulator, currentValue) => accumulator + currentValue
-          for (let key in arrayToAnalyse) {
+          for (const key in arrayToAnalyse) {
             // key is _the_ key
             // get the first value form array with current _key_
-            let currentDice = arrayToAnalyse[key][0]
+            const currentDice = arrayToAnalyse[key][0]
             if (currentDice) { // start
               // collect dice into helper arrays
               if (arrayToAnalyse[currentDice - 1].length === 2) {
@@ -91,7 +91,7 @@ export default {
                 // in case of pairs array
                 let highestScoringPair = 0
                 if (pairsArray.length > 0) {
-                  highestScoringPair = (pairsArray[0] * 2)
+                  highestScoringPair = pairsArray[0] * 2
                   state.scoreArray[6].value = highestScoringPair
                 }
                 if (pairsArray.length > 1) {
@@ -107,7 +107,7 @@ export default {
                 }
                 if (tripleArray.length === 1) {
                   // check if it is bigger than what we have already
-                  let tripleArrayValue = tripleArray[0] * 2
+                  const tripleArrayValue = tripleArray[0] * 2
                   if (tripleArrayValue > highestScoringPair) {
                     state.scoreArray[6].value = tripleArrayValue
                   } else {
@@ -116,31 +116,31 @@ export default {
                 }
                 // state.scoreArray[6].value = highestScoringPair
               } else if (!state.scoreArray[6].final) {
-                state.scoreArray[6].value = ''
+                state.scoreArray[6].value = ``
               }
 
               // check for two pairs
               if (pairsArray.length === 2 && !state.scoreArray[7].final) {
                 state.scoreArray[7].value = (pairsArray[0] * 2) + (pairsArray[1] * 2)
               } else if (pairsArray.length === 1 && tripleArray.length === 1 && !state.scoreArray[7].final) {
-                let xpScore = (pairsArray[0] * 2) + (tripleArray[0] * 2)
+                const xpScore = (pairsArray[0] * 2) + (tripleArray[0] * 2)
                 state.scoreArray[7].value = xpScore
               } else if (pairsArray.length < 2 && !state.scoreArray[7].final) {
-                state.scoreArray[7].value = '' // do something with this
+                state.scoreArray[7].value = `` // do something with this
               }
 
               // check for three of a kind
               if (tripleArray.length === 1 && !state.scoreArray[8].final) {
                 state.scoreArray[8].value = tripleArray[0] * 3
               } else if (!state.scoreArray[8].final) {
-                state.scoreArray[8].value = ''
+                state.scoreArray[8].value = ``
               }
 
               // check for full
               if (tripleArray.length === 1 && pairsArray.length === 1 && !state.scoreArray[9].final) {
                 state.scoreArray[9].value = (tripleArray[0] * 3) + (pairsArray[0] * 2)
               } else if (!state.scoreArray[9].final) {
-                state.scoreArray[9].value = ''
+                state.scoreArray[9].value = ``
               }
 
               // check for quads
@@ -162,7 +162,7 @@ export default {
                 // finally clear all previous result calculations
                 // need this for proper results clearing onscreen
                 // when user deciding which combination to choose
-                state.scoreArray[10].value = ''
+                state.scoreArray[10].value = ``
               }
 
               // check for poker
@@ -184,7 +184,7 @@ export default {
                   state.scoreArray[6].value = arrayToAnalyse[currentDice - 1] * 2
                 }
               } else if (!state.scoreArray[11].final) {
-                state.scoreArray[11].value = ''
+                state.scoreArray[11].value = ``
               }
               // check for 'small' and 'large' combinations
               if (arrayToAnalyse[currentDice - 1].length === 1) {
@@ -207,16 +207,16 @@ export default {
                   }
                 }
               } else if (!state.scoreArray[12].final) {
-                state.scoreArray[12].value = ''
+                state.scoreArray[12].value = ``
               } else if (!state.scoreArray[13].final) {
-                state.scoreArray[13].value = ''
+                state.scoreArray[13].value = ``
               }
               // check for chance
-              let chanceScore = state.combinationArray.reduce(scoreSum)
+              const chanceScore = state.combinationArray.reduce(scoreSum)
               if (!state.scoreArray[14].final) {
                 state.scoreArray[14].value = chanceScore
               } else if (!state.scoreArray[14].final) {
-                state.scoreArray[14].value = ''
+                state.scoreArray[14].value = ``
               }
             }
           }
@@ -225,9 +225,9 @@ export default {
       } else if (state.combinationArray.length === 0) { // if combination array is empty,
         // clear all temporary calculation results onscreen
         console.log(`Ain't got shit, captain`)
-        for (let key in state.scoreArray) { // there should be one storage array for school and game
+        for (const key in state.scoreArray) { // there should be one storage array for school and game
           if (state.scoreArray[key].final !== true) { // to clear unconfirmed results properly
-            state.scoreArray[key].value = ''
+            state.scoreArray[key].value = ``
           }
         }
       } else {
@@ -235,33 +235,33 @@ export default {
       }
     }
   },
-  setDiceChosenState (state, diceId) {
-    for (let key in state.diceArray) {
+  setDiceChosenState(state, diceId) {
+    for (const key in state.diceArray) {
       if (state.diceArray[key].id === diceId) {
         if (!state.diceArray[key].chosen) {
           state.combinationArray.push(state.diceArray[key].value)
           state.diceArray[key].chosen = true
         } else {
           state.diceArray[key].chosen = false
-          let value = state.diceArray[key].value
-          let indexToRemove = state.combinationArray.indexOf(value)
+          const value = state.diceArray[key].value
+          const indexToRemove = state.combinationArray.indexOf(value)
           state.combinationArray.splice(indexToRemove, 1)
         }
       }
     }
   },
-  rollDice (state) {
+  rollDice(state) {
     state.newTurn = false
     state.diceRollInProgress = true // what is this?
     state.rollCount--
     // state.diceRolled = false
-    function getRandomInt (max) {
+    function getRandomInt(max) {
       return Math.floor(Math.random() * Math.floor(max))
     }
-    for (let dice of state.diceArray) {
+    for (const dice of state.diceArray) {
       if (!dice.chosen) {
         // let numbah = Math.floor((Math.random() * 6) + 1)
-        let numbah = getRandomInt(6) + 1 // shifting stuff
+        const numbah = getRandomInt(6) + 1 // shifting stuff
         // set dice value
         dice.value = numbah
         // set dice icon svg image
@@ -271,15 +271,15 @@ export default {
     // on last roll in school on the sixth turn we check if we can continue
     if (state.rollCount === 0 && state.currentGameTurn <= 6 && !state.turnCompleted) {
       // check if we can record some result, if no -- game over
-      let emptyDice = []
+      const emptyDice = []
       for (let index = 0; index <= 5; index++) {
         // check if all results are set
-        if (state.scoreArray[index].value === '' || !state.scoreArray[index].final) {
+        if (state.scoreArray[index].value === `` || !state.scoreArray[index].final) {
           emptyDice.push(index + 1)
         }
       }
-      for (let value of emptyDice) {
-        for (let key in state.diceArray) {
+      for (const value of emptyDice) {
+        for (const key in state.diceArray) {
           if (state.diceArray[key].value === value) {
             console.log(`All ok, one found at ${state.diceArray[key].id} with value ${state.diceArray[key].value}`)
             state.gameCheck = true
@@ -298,7 +298,7 @@ export default {
     }
     state.diceBoxHidden = false
   },
-  nextTurn (state) {
+  nextTurn(state) {
     state.newTurn = true
     state.gameCheck = false
     state.zeroCheck = false
@@ -306,17 +306,17 @@ export default {
     state.currentGameTurn++ // increment turn counter
     state.turnCompleted = false // set new turn state
     state.rollCount = 3 // set roll count to intial value of three
-    for (let key in state.diceArray) {
-      state.diceArray[key].value = '#'// reset all dice
+    for (const key in state.diceArray) {
+      state.diceArray[key].value = `#`// reset all dice
       state.diceArray[key].chosen = false
     }
     state.combinationArray = []
     // clear unsaved results onscreen
   },
-  stopDiceRollProcess (state) {
+  stopDiceRollProcess(state) {
     state.diceRollInProgress = false
   },
-  resetState (state) { // reset state
+  resetState(state) { // reset state
     /*
     // hard reset
     // Object.assign(state, getDefaultState())
@@ -337,39 +337,39 @@ export default {
     state.gameEnded = false
     state.combinationArray = []
     // and clear results
-    for (let result of state.scoreArray) {
-      result.value = ''
+    for (const result of state.scoreArray) {
+      result.value = ``
       result.final = false
       if (result.displayValues) {
         result.displayValues = []
       }
     }
     // and all dice chosen states and current value
-    for (let dice of state.diceArray) {
-      dice.value = '#'
+    for (const dice of state.diceArray) {
+      dice.value = `#`
       dice.chosen = false
     }
   },
-  setUser (state, payload) {
+  setUser(state, payload) {
     state.user = payload
   },
-  setUserName (state, name) {
+  setUserName(state, name) {
     state.user.name = name
   },
-  setAuthState (state, authState) {
+  setAuthState(state, authState) {
     if (!authState) {
       state.user.isAuthenticated = false
-      state.user.uid = ''
-      state.user.name = ''
+      state.user.uid = ``
+      state.user.name = ``
     }
   },
-  SET_PROCESSING (state, payload) {
+  SET_PROCESSING(state, payload) {
     state.processing = payload
   },
-  SET_ERROR (state, payload) {
+  SET_ERROR(state, payload) {
     state.error = payload
   },
-  CLEAR_ERROR (state) {
+  CLEAR_ERROR(state) {
     state.error = null
-  }
+  },
 }

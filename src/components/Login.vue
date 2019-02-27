@@ -118,7 +118,6 @@
         >
           <v-btn
             :loading="loggingOut"
-            :disabled="!getUserAuthState"
             large
             ripple
             class="button white--text"
@@ -150,17 +149,17 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import db from '../components/firebaseInit'
+import {mapGetters} from 'vuex'
 import firebase from 'firebase/app'
+import db from '../components/firebaseInit'
 import 'firebase/auth'
-import store from '../store/store'
+// import store from '../store/store'
 import closeBtn from '../components/CloseBtn.vue'
 
 export default {
-  name: 'Login',
+  name: `Login`,
   components: {
-    closeBtn
+    closeBtn,
   },
   data: () => ({
     // loader: null,
@@ -168,43 +167,45 @@ export default {
     loggingOut: false,
     users: [],
     errorMessage: undefined,
-    newUserBtnText: 'Add user',
-    pageTitle: 'Log In',
+    newUserBtnText: `Add user`,
+    pageTitle: `Log In`,
     valid: true,
-    name: '',
+    name: ``,
     nameRules: [
-      v => !!v || 'Name is required',
-      v => (v && v.length <= 10) || 'Name must be less than 10 characters'
+      (v) => !!v || `Name is required`,
+      (v) => v && v.length <= 10 || `Name must be less than 10 characters`,
     ],
-    email: '',
+    email: ``,
     emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+/.test(v) || 'E-mail must be valid'
+      (v) => !!v || `E-mail is required`,
+      (v) => /.+@.+/.test(v) || `E-mail must be valid`,
     ],
-    password: '',
+    password: ``,
     passwordRules: [
-      v => !!v || 'Password is required',
-      v => (v && v.length <= 12) || 'Password must be less than 12 characters'
+      (v) => !!v || `Password is required`,
+      (v) => v && v.length <= 12 || `Password must be less than 12 characters`,
     ],
-    confirmPassword: '',
+    confirmPassword: ``,
+    /*
     select: null,
     items: [
-      'Item 1',
-      'Item 2',
-      'Item 3',
-      'Item 4'
+      `Item 1`,
+      `Item 2`,
+      `Item 3`,
+      `Item 4`
     ],
-    checkbox: false
+    checkbox: false */
+    usersCollRef: `users`,
   }),
   computed: {
     ...mapGetters([
-      'getError',
-      'getUserAuthState',
-      'getUserName'
+      `getError`,
+      `getUserAuthState`,
+      `getUserName`,
     ]),
-    comparePasswords () {
-      return this.password !== this.confirmPassword ? 'Passwords do not match' : true
-    }
+    comparePasswords() {
+      return this.password !== this.confirmPassword ? `Passwords do not match` : true
+    },
     /*
     logInOrSignOut () {
       let answer
@@ -218,8 +219,15 @@ export default {
       return answer
     } */
   },
-  mounted () {
+
+  mounted() {
     console.log(`Login page mounted`)
+    for (let i in 100) {
+      console.log(i)
+    }
+
+    // const auth = firebase.auth()
+    // console.log(auth)
     /*
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig)
@@ -287,13 +295,29 @@ export default {
       })
     },
     */
-    setLoginLoadingState () {
+    setLoginLoadingState() {
       this.logginIn = !this.logginIn
       return true
     },
-    getUserNameFromDB (uid) {
-      // console.log(`Getting user name for uid ${uid}`)
-      db.collection('users').where('uid', '==', uid)
+    getUserNameFromDB(uid) {
+      console.log(`Getting user name for uid ${uid}`)
+      console.log(`Colletion ref is --> `)
+      console.log(this.usersCollRef)
+      const docRef = db.this.usersCollRef.doc(uid)
+
+      docRef.get().then(function(doc) {
+        if (doc.exists) {
+          console.log(`Document data:`, doc.data())
+        } else {
+          // doc.data() will be undefined in this case
+          console.log(`No such document!`)
+        }
+      }).catch(function(error) {
+        console.log(`Error getting document:`, error)
+      })
+
+      /*
+      db.collection(`users`).where(`uid`, `==`, uid)
         .get()
         .then(function (querySnapshot) {
           let userName
@@ -302,54 +326,56 @@ export default {
               userName = doc.data().name
             }
           })
-          store.commit('setUserName', userName)
+          store.commit(`setUserName`, userName)
           console.log(`Setting user name: ${userName}`)
           return userName
         })
         .catch(function (error) {
-          console.log('Error getting documents: ', error)
-        })
+          console.log(`Error getting documents: `, error)
+        }) */
     },
-    login: function () {
+    login() {
       this.errorMessage = undefined
       if (this.email && this.password) { // need some proper validation
         this.setLoginLoadingState()
         firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-          .then(
-            response => {
-              console.log(`You are logged in as`)
-              console.log(response.user.email)
-              console.log(response.user.uid)
-              let tempName = this.getUserNameFromDB(response.user.uid)
-              const newUser = {
-                isAuthenticated: true,
-                uid: response.user.uid,
-                name: tempName
-              }
-              this.$store.commit('setUser', newUser)
-              this.$router.push('/')
-            },
-            err => {
-              console.log(err.message)
-              this.errorMessage = err.message
-              this.setLoginLoadingState()
-            })
+          .then((response) => {
+            console.log(`You are logged in as`)
+            // console.log(response.user.email)
+            console.log(response.user)
+            const tempName = this.getUserNameFromDB(response.user.uid)
+            console.log(`User name is ${tempName}`)
+            /*
+            const newUser = {
+              isAuthenticated: true,
+              uid: response.user.uid,
+              name: tempName
+            } */
+            // localStorage.setItem(`userName`, tempName)
+            // this.$store.commit(`setUser`, newUser)
+            // this.$router.push(`/`)
+          },
+          (err) => {
+            console.log(err.message)
+            this.errorMessage = err.message
+            this.setLoginLoadingState()
+          })
         return true
       }
     },
-    signOut () {
+    signOut() {
       this.loggingOut = !this.loggingOut
       firebase.auth().signOut().then(() => {
-        console.log('Signed Out')
-        localStorage.removeItem('highestScore')
-        localStorage.removeItem('lastScoresArray')
-        localStorage.removeItem('schoolScores')
-        store.commit('setAuthState', false)
-        store.commit('setUserName', 'Anonymous')
+        console.log(`Signing user out`)
+        // localStorage.removeItem(`highestScore`)
+        // localStorage.removeItem(`lastScoresArray`)
+        // localStorage.removeItem(`schoolScores`)
+        // store.commit(`setAuthState`, false)
+        // store.commit(`setUserName`, `Anonymous`)
         this.loggingOut = !this.loggingOut
-        this.$router.push('/')
-      }).catch(error => {
-        console.error('Sign Out Error', error)
+        // this.$router.push(`/`)
+      }).catch((error) => {
+        console.error(`Sign Out Error`, error)
         this.loggingOut = !this.loggingOut
       })
     },
@@ -362,10 +388,10 @@ export default {
         .then(docRef => console.log(`User added`))
         .catch(error => console.log(error))
     }, */
-    clear () {
+    clear() {
       this.$refs.form.reset()
-    }
-  }
+    },
+  },
 }
 </script>
 

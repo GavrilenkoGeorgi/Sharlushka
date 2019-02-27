@@ -72,16 +72,16 @@ import DiceBox from '../components/DiceBox'
 
 export default {
   components: {
-    DiceBox
+    DiceBox,
   },
-  data () {
+  data() {
     return {
-      greeting: 'Hi,'
+      greeting: `Hi,`,
     }
   },
   methods: {
-    updateMainButtonState () {
-      let button = document.querySelector('.main-button')
+    updateMainButtonState() {
+      const button = document.querySelector(`.main-button`)
       this.mainButtonState.play = true
       this.mainButtonState.save = false
       this.mainButtonState.roll = false
@@ -105,12 +105,12 @@ export default {
         this.mainButtonState.disabled = true
         // window.navigator.vibrate(200)
         // navigator.vibrate([500, 250, 500, 250, 500, 250, 500, 250, 500, 250, 500])
-        button.classList.add('bounce')
+        button.classList.add(`bounce`)
       } else {
         return false
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

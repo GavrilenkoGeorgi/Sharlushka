@@ -19,6 +19,6 @@
 
 <script>
 export default {
-  name: 'CloseBtn'
+  name: `CloseBtn`,
 }
 </script>

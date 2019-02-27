@@ -47,33 +47,33 @@
 import store from '../store/store' // ??
 
 export default {
-  name: 'Navigation',
+  name: `Navigation`,
   data: () => ({
-    title: 'Sharlushka',
+    title: `Sharlushka`,
     offlineMessage: false,
     navDrawer: true,
     admins: [
-      ['Management', 'people_outline'],
-      ['Settings', 'settings']
+      [`Management`, `people_outline`],
+      [`Settings`, `settings`],
     ],
     cruds: [
-      ['Create', 'add'],
-      ['Read', 'insert_drive_file'],
-      ['Update', 'update'],
-      ['Delete', 'delete']
-    ]
+      [`Create`, `add`],
+      [`Read`, `insert_drive_file`],
+      [`Update`, `update`],
+      [`Delete`, `delete`],
+    ],
   }),
   computed: {
-    networkStatus () {
-      return this.isOnline ? 'ok' : null
+    networkStatus() {
+      return this.isOnline ? `ok` : null
     },
-    computedGameScore: function () {
+    computedGameScore: function() {
       return store.state.schoolScoreTotal + store.state.gameTotal
     },
-    rollsLeft: function () {
+    rollsLeft: function() {
       return store.state.rollCount
-    }
-  }
+    },
+  },
 }
 </script>
 

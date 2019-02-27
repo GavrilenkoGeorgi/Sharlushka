@@ -384,95 +384,95 @@
 
 <script>
 import NetworkCheck from './NetworkCheck.vue'
-import { mapGetters, mapActions } from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 import store from '../store/store'
 // import Navigation from '../components/Navigation'
 import DiceBox from './DiceBox.vue'
 
 export default {
-  name: 'Game',
+  name: `Game`,
   components: {
     DiceBox,
-    NetworkCheck
+    NetworkCheck,
   },
   data: () => ({
-    title: 'Sharlushka',
+    title: `Sharlushka`,
     highestScore: 0,
     turnCompleted: false,
     progressBarLength: 3,
     navDrawer: false,
     navDrawerLinks: [
       {
-        path: '/help',
-        icon: 'trending_up',
-        text: 'School results & help'
+        path: `/help`,
+        icon: `trending_up`,
+        text: `School results & help`,
       },
       {
-        path: '/settings',
-        icon: 'equalizer',
-        text: 'User stats'
+        path: `/settings`,
+        icon: `equalizer`,
+        text: `User stats`,
       },
       {
-        path: '/leaderboard',
-        icon: 'import_export',
-        text: 'Leaderboard'
+        path: `/leaderboard`,
+        icon: `import_export`,
+        text: `Leaderboard`,
       },
       {
-        path: '/login',
-        icon: 'exit_to_app',
-        text: 'Log in/out'
-      }
-    ]
+        path: `/login`,
+        icon: `exit_to_app`,
+        text: `Log in/out`,
+      },
+    ],
   }),
   computed: {
     ...mapGetters([
-      'debugInfo',
-      'chosenDiceArray',
-      'currentValuesInScoreArray',
-      'getSchoolArray',
-      'getCombinationArray',
-      'getDiceArray',
-      'getCurrentGameState',
-      'getTotalScore',
-      'getUserName'
+      `debugInfo`,
+      `chosenDiceArray`,
+      `currentValuesInScoreArray`,
+      `getSchoolArray`,
+      `getCombinationArray`,
+      `getDiceArray`,
+      `getCurrentGameState`,
+      `getTotalScore`,
+      `getUserName`,
     ]),
-    gameName () {
-      return 'Sharlushka'
+    gameName() {
+      return `Sharlushka`
     },
-    turnState: function () { // wtf???
+    turnState: function() { // wtf???
       return store.state.newTurn
     },
-    progressBarState: function () {
+    progressBarState: function() {
       return store.state.rollCount
     },
-    currentUserName () {
-      if (this.getUserName === '') {
-        return 'Anonymous'
+    currentUserName() {
+      if (this.getUserName === ``) {
+        return `Anonymous`
       } else {
         return this.getUserName
       }
-    }
+    },
   },
   watch: {
     turnState: {
       immediate: true,
-      handler () { // some spaghetti code
+      handler() { // some spaghetti code
         this.turnCompleted = !this.turnState
-      }
+      },
     },
     progressBarState: {
       immediate: true,
-      handler () {
-        if (document.querySelector('.progress-bar')) { // content onload?
+      handler() {
+        if (document.querySelector(`.progress-bar`)) { // content onload?
           this.updateProgressBar()
         } else {
           return false
         }
-      }
-    }
+      },
+    },
   },
-  mounted () {
-    let highestScore = localStorage.getItem('highestScore')
+  mounted() {
+    const highestScore = localStorage.getItem(`highestScore`)
     if (highestScore) {
       this.highestScore = highestScore
     }
@@ -481,52 +481,52 @@ export default {
   },
   methods: {
     ...mapActions([
-      'nextTurn',
+      `nextTurn`,
       // 'newGame',
-      'computeScore'
+      `computeScore`,
       // 'setDiceChosenState',
       // 'incrementAsync'
     ]),
-    manipulateDrawer () {
+    manipulateDrawer() {
       this.navDrawer = !this.navDrawer
     },
-    updateOnlineStatus () {
+    updateOnlineStatus() {
       if (navigator.onLine) {
-        console.log('online')
+        console.log(`online`)
         // document.documentElement.classList.remove('is-offline');
         // document.querySelector('.connection-status').innerHTML = 'Online';
       } else {
-        console.log('offline')
+        console.log(`offline`)
         // document.documentElement.classList.add('is-offline');
         // document.querySelector('.connection-status').innerHTML = 'Offline';
       }
     },
-    updateProgressBar () {
-      let progressBar = document.querySelector('.progress-bar')
+    updateProgressBar() {
+      const progressBar = document.querySelector(`.progress-bar`)
       if (store.state.rollCount === 2) {
-        progressBar.style.width = '33%'
+        progressBar.style.width = `33%`
       } else if (store.state.rollCount === 1) {
-        progressBar.style.width = '66%'
+        progressBar.style.width = `66%`
       } else if (store.state.rollCount === 0) {
-        progressBar.style.width = '100%'
-        progressBar.classList.add('full')
+        progressBar.style.width = `100%`
+        progressBar.classList.add(`full`)
       } else if (store.state.rollCount === 3) {
-        progressBar.style.width = '0%'
-        progressBar.classList.remove('full')
+        progressBar.style.width = `0%`
+        progressBar.classList.remove(`full`)
       }
     },
-    handleBoardClick (event) {
+    handleBoardClick(event) {
       let idFound = false
       let scoreId = null
       let elementToCheck = event.target
       while (!idFound && elementToCheck) {
-        if (elementToCheck.classList.contains('school-dice-icon') ||
-          elementToCheck.classList.contains('dice-icon') ||
-          elementToCheck.classList.contains('game-combination')) {
+        if (elementToCheck.classList.contains(`school-dice-icon`) ||
+          elementToCheck.classList.contains(`dice-icon`) ||
+          elementToCheck.classList.contains(`game-combination`)) {
           scoreId = elementToCheck.id
           idFound = true
-        } else if (elementToCheck.getAttribute('resultId')) {
-          scoreId = elementToCheck.getAttribute('resultId')
+        } else if (elementToCheck.getAttribute(`resultId`)) {
+          scoreId = elementToCheck.getAttribute(`resultId`)
           idFound = true
         } else {
           elementToCheck = elementToCheck.parentElement
@@ -538,31 +538,31 @@ export default {
         console.log(`Nothing to record Id is: ${scoreId}`)
       }
     },
-    clearResultBox () {
+    clearResultBox() {
       // clear all temp results in store
-      for (let key in store.state.scoreArray) {
+      for (const key in store.state.scoreArray) {
         if (!store.state.scoreArray[key].final) {
-          store.state.scoreArray[key].value = ''
+          store.state.scoreArray[key].value = ``
         }
       }
       // deselect all dice
-      for (let key in store.state.diceArray) {
+      for (const key in store.state.diceArray) {
         if (store.state.diceArray[key].chosen) {
           store.state.diceArray[key].chosen = false
         }
       }
     },
-    debugMode () {
+    debugMode() {
       store.state.debug = true
     },
-    recordResult (id) {
-      console.log('Recording result..')
+    recordResult(id) {
+      console.log(`Recording result..`)
       store.state.gameInProgress = true // should be just ones
       // this.turnCompleted = true
-      let combinationId = id // ?
-      const combinationIndexInArray = store.state.scoreArray.map(dice => dice.id).indexOf(combinationId)
+      const combinationId = id // ?
+      const combinationIndexInArray = store.state.scoreArray.map((dice) => dice.id).indexOf(combinationId)
       if (!store.state.schoolCompleted &&
-          store.state.scoreArray[combinationIndexInArray].value !== '' &&
+          store.state.scoreArray[combinationIndexInArray].value !== `` &&
           !store.state.turnCompleted &&
           !store.state.scoreArray[combinationIndexInArray].final) {
         store.state.scoreArray[combinationIndexInArray].final = true
@@ -574,7 +574,7 @@ export default {
         }
         this.clearResultBox()
         // this.removeCurrentHighlight()
-      } else if (store.state.scoreArray[combinationIndexInArray].value !== '' &&
+      } else if (store.state.scoreArray[combinationIndexInArray].value !== `` &&
                   store.state.scoreArray[combinationIndexInArray].displayValues &&
                   store.state.scoreArray[combinationIndexInArray].displayValues.length < 3 &&
                   !store.state.turnCompleted) {
@@ -584,13 +584,13 @@ export default {
         store.state.gameTotal += store.state.scoreArray[combinationIndexInArray].value
         if (store.state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
           store.state.scoreArray[combinationIndexInArray].final = true
-          store.state.scoreArray[combinationIndexInArray].value = ''
+          store.state.scoreArray[combinationIndexInArray].value = ``
         }
         // this.clearResultInStore()
         this.clearResultBox()
         // this.removeCurrentHighlight()
       } else if (!store.state.turnCompleted && // this really should be a single check
-        store.state.scoreArray[combinationIndexInArray].value === '' &&
+        store.state.scoreArray[combinationIndexInArray].value === `` &&
         !store.state.scoreArray[combinationIndexInArray].final &&
         store.state.schoolCompleted &&
         store.state.rollCount === 0 &&
@@ -622,18 +622,18 @@ export default {
         store.state.gameEnded = true
         // this.$router.push('/endgame')
         setTimeout(() => {
-          console.log('Timer!')
-          this.$router.push('/endgame')
+          console.log(`Timer!`)
+          this.$router.push(`/endgame`)
         }, 1500)
       } else {
         this.turnCompleted = true
-        store.commit('nextTurn')
+        store.commit(`nextTurn`)
         this.updateProgressBar()
       }
       this.turnCompleted = true
-      console.log('Turn completed')
-    } // end of record result method
-  } // end of methods
+      console.log(`Turn completed`)
+    }, // end of record result method
+  }, // end of methods
 }
 </script>
 

@@ -92,79 +92,83 @@
 
 <script>
 import closeBtn from '../components/CloseBtn.vue'
-import { mapGetters } from 'vuex'
+import {mapGetters} from 'vuex'
 import db from '../components/firebaseInit'
 
 export default {
-  name: 'Leaderboard',
+  name: `Leaderboard`,
   components: {
-    closeBtn
+    closeBtn,
   },
   data: () => ({
-    title: 'leaderboard',
+    title: `leaderboard`,
     userName: null,
     leaderboard: [],
     userDataFromDB: [],
-    noLeaderboardMessage: null
+    noLeaderboardMessage: null,
   }),
   computed: {
     ...mapGetters([
-      'getDefaultUserName',
-      'getUserData',
-      'getMaxPossibleScore'
-    ])
+      `getDefaultUserName`,
+      `getUserData`,
+      `getMaxPossibleScore`,
+    ]),
   },
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
-      console.log('Leaderboard mounted')
+      console.log(`Leaderboard mounted`)
       if (this.getUserData.isAuthenticated) {
         console.log(`Getting leaderboard data from db...`)
         this.getDataForLeaderboard()
       } else {
         this.userName = this.getDefaultUserName
-        this.noLeaderboardMessage = `Hi, ${this.userName}, log in to view the leaderboard.`
+        this.noLeaderboardMessage = `Hi, ${this.userName},
+        log in to view the leaderboard.`
       }
     })
   },
   methods: {
-    getDataForLeaderboard () {
-      let usersDataRef = db.collection('users')
-      usersDataRef.orderBy('hiScore').get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(doc => {
-            let userData = {
-              id: doc.id,
-              userName: doc.data().name,
-              hiScore: doc.data().hiScore,
-              resultsArray: doc.data().resultsArray
-            }
-            this.userDataFromDB.push(userData)
+    getDataForLeaderboard() {
+      const usersDataRef = db.collection(`users`)
+      usersDataRef.orderBy(`hiScore`).get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              const userData = {
+                id: doc.id,
+                userName: doc.data().name,
+                hiScore: doc.data().hiScore,
+                resultsArray: doc.data().resultsArray,
+              }
+              this.userDataFromDB.push(userData)
+            })
           })
-        })
-        .then(() => {
-          for (let user of this.userDataFromDB) {
+          .then(() => {
+            for (const user of this.userDataFromDB) {
             // prepare data for leaderboard display
-            const arraySum = (accumulator, currentValue) => accumulator + currentValue
-            let userResultsArray = user.resultsArray.split(',').map(Number)
-            let averageScore = parseInt(userResultsArray.reduce(arraySum) / userResultsArray.length)
-            let percent = Math.floor(averageScore / this.getMaxPossibleScore * 100)
-            let leaderBoardUserData = {
-              id: user.id,
-              userName: user.userName,
-              hiScore: parseInt(user.hiScore),
-              averageScore: averageScore,
-              percentFromMax: percent,
-              gamesPlayed: userResultsArray.length
+              const arraySum = (accumulator, currentValue) =>
+                accumulator + currentValue
+              const userResultsArray = user.resultsArray.split(`,`).map(Number)
+              const averageScore = parseInt(userResultsArray.reduce(arraySum) /
+                userResultsArray.length)
+              const percent = Math.floor(averageScore /
+                this.getMaxPossibleScore * 100)
+              const leaderBoardUserData = {
+                id: user.id,
+                userName: user.userName,
+                hiScore: parseInt(user.hiScore),
+                averageScore: averageScore,
+                percentFromMax: percent,
+                gamesPlayed: userResultsArray.length,
+              }
+              this.leaderboard.push(leaderBoardUserData)
             }
-            this.leaderboard.push(leaderBoardUserData)
-          }
-          this.leaderboard.reverse()
-        })
-        .catch(function (error) {
-          console.log('Error getting documents: ', error)
-        })
-    }
-  }
+            this.leaderboard.reverse()
+          })
+          .catch(function(error) {
+            console.log(`Error getting documents: `, error)
+          })
+    },
+  },
 }
 </script>
 

@@ -88,40 +88,40 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import {mapGetters} from 'vuex'
 import store from '../store/store'
 import closeBtn from '../components/CloseBtn.vue'
 import db from './firebaseInit'
 
 export default {
   components: {
-    closeBtn
+    closeBtn,
   },
-  data () {
+  data() {
     return {
-      message: 'Game over,',
-      messageText: 'Your score is',
-      graduationMessage: 'You can\'t even finish the school.',
-      schoolScoreMessage: 'Your score is',
-      userName: '',
+      message: `Game over,`,
+      messageText: `Your score is`,
+      graduationMessage: `You can't even finish the school.`,
+      schoolScoreMessage: `Your score is`,
+      userName: ``,
       highestScore: null,
-      hiscoreGreeting: 'Your highest score is',
-      exclamation: '!', // some over-engeneering
+      hiscoreGreeting: `Your highest score is`,
+      exclamation: `!`, // some over-engeneering
       lastScores: [],
-      schoolScores: []
+      schoolScores: [],
     }
   },
   computed: {
     ...mapGetters([
-      'getTotalScore',
-      'getSchoolScore',
-      'getCurrentGameState',
-      'getDefaultUserName',
-      'getUserData'
-    ])
+      `getTotalScore`,
+      `getSchoolScore`,
+      `getCurrentGameState`,
+      `getDefaultUserName`,
+      `getUserData`,
+    ]),
   },
-  mounted () {
-    this.$nextTick(function () {
+  mounted() {
+    this.$nextTick(() => {
       console.log(`Game over`)
       // check user status
       if (this.getUserData.isAuthenticated) {
@@ -131,20 +131,20 @@ export default {
       }
       if (this.getCurrentGameState.gameInProgress) {
         // collect them when mounted and game finished
-        if (localStorage.getItem('highestScore') === null) { // check if localStorage set
+        if (localStorage.getItem(`highestScore`) === null) { // check if localStorage set
           console.log(`No local storage score array yet exist, creating one`)
           this.lastScores = [] // initial values
           this.schoolScores = []
           this.highestScore = this.getTotalScore // first run
-          localStorage.setItem('lastScoresArray', this.lastScores)
-          localStorage.setItem('schoolScores', this.schoolScores)
-          localStorage.setItem('highestScore', this.getTotalScore)
+          localStorage.setItem(`lastScoresArray`, this.lastScores)
+          localStorage.setItem(`schoolScores`, this.schoolScores)
+          localStorage.setItem(`highestScore`, this.getTotalScore)
           // and
           this.addScoreToDatabase()
         } else {
-          this.lastScores = localStorage.getItem('lastScoresArray')
-          this.schoolScores = localStorage.getItem('schoolScores')
-          this.highestScore = localStorage.getItem('highestScore')
+          this.lastScores = localStorage.getItem(`lastScoresArray`)
+          this.schoolScores = localStorage.getItem(`schoolScores`)
+          this.highestScore = localStorage.getItem(`highestScore`)
           // just add it already
           this.addScoreToDatabase()
         }
@@ -157,29 +157,29 @@ export default {
     })
   },
   methods: {
-    restartGame () {
+    restartGame() {
       console.log(`Restarting game`)
-      store.commit('resetState')
-      this.$router.push('/game')
+      store.commit(`resetState`)
+      this.$router.push(`/game`)
     },
     // add anonymous score to local storage
-    addScoreToDatabase () {
+    addScoreToDatabase() {
       console.log(`Adding score`)
       // one function?
-      if (this.lastScores === '') {
+      if (this.lastScores === ``) {
         this.lastScores = [] // first run
       } else {
-        this.lastScores = this.lastScores.split(',')
+        this.lastScores = this.lastScores.split(`,`)
       }
-      if (this.schoolScores === '') {
+      if (this.schoolScores === ``) {
         this.schoolScores = []
       } else {
-        this.schoolScores = this.schoolScores.split(',')
+        this.schoolScores = this.schoolScores.split(`,`)
       }
       // check for new highest score
       if (this.getTotalScore > this.highestScore) {
         this.highestScore = this.getTotalScore
-        localStorage.setItem('highestScore', this.getTotalScore)
+        localStorage.setItem(`highestScore`, this.getTotalScore)
       } else {
         console.log(`Your score is not so high: ${this.getTotalScore}`)
       }
@@ -187,15 +187,15 @@ export default {
       if (this.getCurrentGameState.schoolCompleted) {
         // record game result if school completed
         this.lastScores.push(this.getTotalScore)
-        localStorage.setItem('lastScoresArray', this.lastScores)
+        localStorage.setItem(`lastScoresArray`, this.lastScores)
         // and school result for stats
         this.schoolScores.push(this.getSchoolScore)
-        localStorage.setItem('schoolScores', this.schoolScores)
+        localStorage.setItem(`schoolScores`, this.schoolScores)
       } else {
         // game ended in school,
         // so we have only school result to save
         this.schoolScores.push(this.getSchoolScore)
-        localStorage.setItem('schoolScores', this.schoolScores)
+        localStorage.setItem(`schoolScores`, this.schoolScores)
       }
       // finally if user is registered
       if (this.getUserData.isAuthenticated) {
@@ -205,40 +205,40 @@ export default {
       }
     },
     // if user exists add score to the account
-    syncScoreInFirebase () {
+    syncScoreInFirebase() {
       console.log(`Syncing score for uid ${this.getUserData.uid}`)
-      let uid = this.getUserData.uid
-      db.collection('users').where('uid', '==', uid)
-        .get()
-        .then(function (querySnapshot) {
-          let docToUpdateId
-          querySnapshot.forEach(function (doc) {
+      const uid = this.getUserData.uid
+      db.collection(`users`).where(`uid`, `==`, uid)
+          .get()
+          .then(function(querySnapshot) {
+            let docToUpdateId
+            querySnapshot.forEach(function(doc) {
             // doc.data() is never undefined for query doc snapshots
-            if (doc.data().uid === uid) {
-              docToUpdateId = doc.id
-            }
+              if (doc.data().uid === uid) {
+                docToUpdateId = doc.id
+              }
+            })
+            return docToUpdateId
           })
-          return docToUpdateId
-        })
-        .then((docToUpdateId) => {
-          var docRef = db.collection('users').doc(docToUpdateId)
-          let resultsArrayToUpdate = localStorage.getItem('lastScoresArray')
-          // you really should check if it is actually higher
-          let highestScoreToUpdate = localStorage.getItem('highestScore')
-          let schoolScoresToUpdate = localStorage.getItem('schoolScores')
-          var updateDocRef = docRef.update({
-            resultsArray: resultsArrayToUpdate,
-            schoolResultsArray: schoolScoresToUpdate,
-            hiScore: highestScoreToUpdate
+          .then((docToUpdateId) => {
+            const docRef = db.collection(`users`).doc(docToUpdateId)
+            const resultsArrayToUpdate = localStorage.getItem(`lastScoresArray`)
+            // you really should check if it is actually higher
+            const highestScoreToUpdate = localStorage.getItem(`highestScore`)
+            const schoolScoresToUpdate = localStorage.getItem(`schoolScores`)
+            const updateDocRef = docRef.update({
+              resultsArray: resultsArrayToUpdate,
+              schoolResultsArray: schoolScoresToUpdate,
+              hiScore: highestScoreToUpdate,
+            })
+            console.log(`...updating user stats`)
+            return updateDocRef // ? true
           })
-          console.log('...updating user stats')
-          return updateDocRef // ? true
-        })
-        .catch(function (error) {
-          console.log('Error getting documents: ', error)
-        })
-    }
-  }
+          .catch(function(error) {
+            console.log(`Error getting documents: `, error)
+          })
+    },
+  },
 }
 </script>
 <style lang="scss" scoped>

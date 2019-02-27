@@ -104,43 +104,30 @@
 
 <script>
 import db from './firebaseInit'
-import { mapGetters, mapActions } from 'vuex'
-import firebase from 'firebase/app'
+// import firebase from 'firebase/app'
+// import 'firebase/auth'
+import {mapGetters, mapActions} from 'vuex'
 // import firebaseConfig from './firebaseConfig'
-import 'firebase/auth'
 
 export default {
-  name: 'Main',
-  data () {
+  name: `Main`,
+  data() {
     return {
-      gameName: 'Sharlushka',
-      userName: '1',
-      greeting: 'Hi,',
-      exclamation: '.'
+      gameName: `Sharlushka`,
+      userName: `empty string`,
+      greeting: `Hi,`,
+      exclamation: `.`,
     }
   },
   computed: {
     ...mapGetters([
-      // 'getUserName', // remove this
-      // 'getUserAuthState',
-      'getUserData',
-      'getDefaultUserName'
+      `getUserData`,
+      `getDefaultUserName`,
     ]),
-    userNameChanged: function () {
-      return this.getUserData.name
-    }
   },
-  watch: {
-    userNameChanged: {
-      immediate: true,
-      handler () { // some spaghetti code
-        this.userName = this.getUserData.name
-      }
-    }
-  },
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
-      console.log('Main page mounted. Time to check if user is logged in')
+      console.log(`Main page mounted.`)
       //
       // Here
       //
@@ -152,6 +139,7 @@ export default {
         console.log(`No firebase init`)
         // firebase.firestore().settings({timestampsInSnapshots: true})
       } */
+      /*
       const initializeAuth = new Promise(resolve => {
         // this adds a hook for the initial auth-change event
         firebase.auth().onAuthStateChanged(user => {
@@ -174,7 +162,8 @@ export default {
           this.userUid = user.uid
           console.log(`User set ${user.email}`)
         }
-      }
+      } */
+      /*
       if (true) {
         authService.authenticated().then((result) => {
           // this.userName = authService.userUid
@@ -186,62 +175,63 @@ export default {
               uid: authService.userUid,
               name: nameToSet
             }
-            store.commit('setUser', currentUserData)
+            store.commit(`setUser`, currentUserData)
           }
         }).catch((error) => {
           console.log(`Error ${error}`)
         })
       }
-
+      */
+      /*
       if (this.getUserData.isAuthenticated) {
         console.log(`Setting user score from db...`)
         this.setUserScoreDataFromDB(this.getUserData.uid)
       } else {
         this.userName = this.getDefaultUserName
-        if (localStorage.getItem('schoolScores') === null) {
-          localStorage.setItem('schoolScores', '')
-          localStorage.setItem('lastScoresArray', '')
-          localStorage.setItem('highestScore', '')
+        if (localStorage.getItem(`schoolScores`) === null) {
+          localStorage.setItem(`schoolScores`, ``)
+          localStorage.setItem(`lastScoresArray`, ``)
+          localStorage.setItem(`highestScore`, ``)
         }
-      }
+      } */
     })
   },
   methods: {
     ...mapActions([
-      'newGame'
+      `newGame`,
     ]),
-    startNewGame () {
+    startNewGame() {
       // window.location.replace('/game')
-      this.$router.push('/')
+      this.$router.push(`/`)
     },
-    setUserScoreDataFromDB (uid) {
+    setUserScoreDataFromDB(uid) {
       console.log(`Getting user scores for uid ${uid}`)
-      db.collection('users').where('uid', '==', uid)
+      db.collection(`users`).where(`uid`, `==`, uid)
         .get()
-        .then(function (querySnapshot) {
+        .then(function(querySnapshot) {
           let userScores = {}
-          querySnapshot.forEach(function (doc) {
-            // doc.data() is never undefined for query doc snapshots
+          querySnapshot.forEach(function(doc) {
+          // doc.data() is never undefined for query doc snapshots
             if (doc.data().uid === uid) {
               userScores = {
                 hiScore: doc.data().hiScore,
                 resultsArray: doc.data().resultsArray,
-                schoolResultsArray: doc.data().schoolResultsArray
+                schoolResultsArray: doc.data().schoolResultsArray,
               }
             }
           })
           return userScores
         })
         .then((userScores) => {
-          localStorage.setItem('highestScore', userScores.hiScore)
-          localStorage.setItem('lastScoresArray', userScores.resultsArray)
-          localStorage.setItem('schoolScores', userScores.schoolResultsArray)
+          localStorage.setItem(`highestScore`, userScores.hiScore)
+          localStorage.setItem(`lastScoresArray`, userScores.resultsArray)
+          localStorage.setItem(`schoolScores`, userScores.schoolResultsArray)
         })
-        .catch(function (error) {
-          console.log('Error getting documents: ', error)
+        .catch(function(error) {
+          console.log(`Error getting documents: `, error)
         })
-    }
-  }
+    },
+  },
 }
 </script>
 

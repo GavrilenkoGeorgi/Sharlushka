@@ -10,7 +10,6 @@
     "test": "npm run unit && npm run e2e",
     "e2e": "node test/e2e/runner.js",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
-    "lintFix": "eslint --fix .js, .vue src",
     "unit": "jest --config test/unit/jest.conf.js --coverage"
   },
   "dependencies": {
@@ -46,6 +45,8 @@
     "cross-spawn": "^5.0.1",
     "css-loader": "^0.28.11",
     "eslint": "^5.14.1",
+    "eslint-config-google": "^0.12.0",
+    "eslint-config-recommended": "^4.0.0",
     "eslint-loader": "^2.1.2",
     "eslint-plugin-vue": "^5.2.2",
     "friendly-errors-webpack-plugin": "^1.6.1",

@@ -13,14 +13,27 @@ import store from './store/store'
 // import VueOffline from 'vue-offline'
 
 // import 'material-design-icons-iconfont/dist/material-design-icons.css'
-// import firebaseConfig from './components/firebaseConfig'
+import firebaseConfig from './components/firebaseConfig'
 // import db from './components/firebaseInit'
-// import firebase from 'firebase/app'
-// import 'firebase/auth'
-/*
+import firebase from 'firebase/app'
+import 'firebase/auth'
+
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig)
 }
+
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    console.log(`User logged in: ${user.email}.`)
+  } else {
+    console.log(`User logged out.`)
+  }
+})
+
+// const auth = firebase.auth()
+// console.log(auth)
+
+/*
 firebase.firestore().settings({timestampsInSnapshots: true})
 
 const initializeAuth = new Promise(resolve => {
@@ -48,7 +61,7 @@ const authService = {
     console.log(`User set ${user.email}`)
   }
 } */
-  /*
+/*
   login (email, password) {
     return firebase.auth().signInWithEmailAndPassword(email, password)
   },
@@ -101,21 +114,21 @@ if (!this.getUserAuthState || this.getUserData.name === '') {
 Vue.config.productionTip = false
 
 Vue.use(Vuetify, {
-  iconfont: 'md' // 'md' || 'mdi' || 'fa' || 'fa4'
+  iconfont: `md`, // 'md' || 'mdi' || 'fa' || 'fa4'
 })
 
 // Vue.use(VueOffline)
 
-Vue.use(require('vue-chartist'))
+Vue.use(require(`vue-chartist`))
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
+  el: `#app`,
   store,
   router,
   components: {
-    AsyncComponent: () => import('./App.vue')
+    AsyncComponent: () => import(`./App.vue`),
   },
   // components: { App },
   // template: '<App/>',
-  render: h => h(App)
+  render: (h) => h(App),
 })

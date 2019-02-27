@@ -85,53 +85,53 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import {mapGetters} from 'vuex'
 import store from '../store/store'
 
 export default {
-  name: 'DiceBox',
+  name: `DiceBox`,
   props: {
     turnCompleted: {
       type: Boolean,
       required: true,
-    }
+    },
   },
-  data () {
+  data() {
     return {
       navigatorSupported: false,
       // hidden: false,
-      zzz: 'zzz',
+      zzz: `zzz`,
       mainButtonState: {
         play: true,
         roll: false,
         save: false,
-        disabled: false
-      }
+        disabled: false,
+      },
     }
   },
   computed: {
     ...mapGetters([
-      'getDiceArray',
-      'getCurrentGameState'
-    ])
+      `getDiceArray`,
+      `getCurrentGameState`,
+    ]),
   },
   watch: {
     turnCompleted: {
       // the callback will be called immediately after the start of the observation
       immediate: true,
-      handler () {
+      handler() {
         if (!this.getCurrentGameState.gameEnded) {
           this.updateMainButtonState()
           // this.hidden = !this.hidden
         }
-      }
-    }
+      },
+    },
   },
-  mounted () {
-    this.$nextTick(function () {
-      console.log('Dice box component mounted')
+  mounted() {
+    this.$nextTick(() => {
+      console.log(`Dice box component mounted`)
       this.updateMainButtonState()
-      if ('vibrate' in navigator) {
+      if (`vibrate` in navigator) {
         this.navigatorSupported = true
         // vibration API supported
         // console.log(`Vibrate in navigator is ${'vibrate' in navigator}`)
@@ -140,21 +140,21 @@ export default {
     })
   },
   methods: {
-    vibrate () {
-      console.log('zzz')
-      this.zzz += '-zzz'
-      let pattern = [5, 75, 66, 300, 33, 150, 15]
+    vibrate() {
+      console.log(`zzz`)
+      this.zzz += `-zzz`
+      const pattern = [5, 75, 66, 300, 33, 150, 15]
       navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate
       navigator.vibrate(pattern)
     },
-    vibrateOnce () {
+    vibrateOnce() {
       console.log(`One z`)
-      let pattern = [10]
+      const pattern = [10]
       navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate
       navigator.vibrate(pattern)
     },
-    updateMainButtonState () {
-      let button = document.querySelector('.main-button')
+    updateMainButtonState() {
+      const button = document.querySelector(`.main-button`)
       if (button) { // do something with this, looks weird
         this.mainButtonState.play = true
         this.mainButtonState.save = false
@@ -181,51 +181,51 @@ export default {
           this.mainButtonState.save = true
           this.mainButtonState.disabled = true
           // this.vibrate()
-          button.classList.add('bounce')
+          button.classList.add(`bounce`)
         }
       } else {
         return false
       }
     },
-    handleMainGameButtonClick () {
+    handleMainGameButtonClick() {
       if (this.getCurrentGameState.rollsCountForButton > 0 &&
         !this.getCurrentGameState.turnCompleted) {
         // this.vibrateOnce()
-        store.commit('rollDice')
+        store.commit(`rollDice`)
         if (this.getCurrentGameState.diceRollInProgress) {
-          let diceToAnimateOnRoll = document.querySelectorAll('.dice-icon:not(.chosen)')
-          for (let dice of diceToAnimateOnRoll) {
-            dice.classList.add('zoomIn')
+          const diceToAnimateOnRoll = document.querySelectorAll(`.dice-icon:not(.chosen)`)
+          for (const dice of diceToAnimateOnRoll) {
+            dice.classList.add(`zoomIn`)
           }
         }
         if (this.getCurrentGameState.currentRollCount === 0 &&
             this.getCurrentGameState.currentGameTurn <= 6 &&
             !this.getCurrentGameState.gameCheck) {
-          this.$router.push({ path: '/endgame' })
+          this.$router.push({path: `/endgame`})
         }
-        setTimeout(function () {
+        setTimeout(function() {
           // not the best way to do it, but
           // console.log(`timing!`)
-          let diceToRemoveAnimFrom = document.querySelectorAll('.dice-icon')
-          for (let dice of diceToRemoveAnimFrom) {
-            dice.classList.remove('zoomIn')
+          const diceToRemoveAnimFrom = document.querySelectorAll(`.dice-icon`)
+          for (const dice of diceToRemoveAnimFrom) {
+            dice.classList.remove(`zoomIn`)
           }
         }, 500)
       }
       this.updateMainButtonState()
     },
-    selectDice (event) {
-      let elementToAdd = event.currentTarget
-      let diceBox = document.querySelector('.dice-box')
-      if (elementToAdd.classList.contains('chosen')) {
+    selectDice(event) {
+      const elementToAdd = event.currentTarget
+      const diceBox = document.querySelector(`.dice-box`)
+      if (elementToAdd.classList.contains(`chosen`)) {
         diceBox.appendChild(elementToAdd)
       } else {
         diceBox.insertBefore(elementToAdd, diceBox.childNodes[0])
       }
-      store.commit('setDiceChosenState', elementToAdd.id)
-      store.commit('computeScore')
-    }
-  }
+      store.commit(`setDiceChosenState`, elementToAdd.id)
+      store.commit(`computeScore`)
+    },
+  },
 }
 </script>
 

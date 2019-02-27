@@ -258,20 +258,20 @@
 
 <script>
 import store from '../store/store'
-import { mapGetters } from 'vuex'
+import {mapGetters} from 'vuex'
 import closeBtn from '../components/CloseBtn.vue'
 
 export default {
-  name: 'Help',
+  name: `Help`,
   components: {
-    closeBtn
+    closeBtn,
   },
-  data () {
+  data() {
     return {
-      schoolScores: '',
+      schoolScores: ``,
       chartData: {
         labels: [],
-        series: []
+        series: [],
         // labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
         // series: [[12, 14, 36, 34, 23, 12, -24, 14, 36, 44, 23, -12, 12, 14, 36, -24, 23]]
       },
@@ -284,8 +284,8 @@ export default {
           // We can disable the grid for this axis
           showGrid: true,
           // and also don't show the label
-          showLabel: true
-        }
+          showLabel: true,
+        },
       },
       overall: `Три броска, для того чтобы собрать комбинацию. Первый раз бросаются все пять кубиков.
         Дополнительно два раза можно перебрасывать часть кубиков, оставляя нужные,
@@ -298,12 +298,12 @@ export default {
         number of dice, providing a score is taken on the last roll. It is the skillful use of these
         two optional rolls of the dice that can turn an unlucky first or second roll into a high
         scoring turn.`,
-      userName: '',
-      highestScore: '',
-      hiscoreGreeting: 'Your highest score is',
-      exclamation: '!', // some over-engeneering
+      userName: ``,
+      highestScore: ``,
+      hiscoreGreeting: `Your highest score is`,
+      exclamation: `!`, // some over-engeneering
       helpMenuHidden: true,
-      rulesHeading: 'Help',
+      rulesHeading: `Help`,
       /*
       combinationsDescr: [
         { text: 'Один кубик с единицей', iconId: 'diceOnes', quantity: 1, scoreValue: '-2' },
@@ -318,54 +318,50 @@ export default {
         { text: 'Три одинаковых', iconId: 'diceFours', quantity: 3, scoreValue: '12' },
         { text: 'Каре', iconId: 'diceTwos', quantity: 4, scoreValue: '8' },
         { text: 'Покер', iconId: 'diceFours', quantity: 5, scoreValue: '100' }
-      ],
-      combinationsDescrMk2: [
-        { text: 'Фулл', iconTypeOne: 'diceOnes', iconTypeTwo: 'diceSixes', quantity: [3, 2], scoreValue: '19' },
-        { text: 'Сложная комбинация', iconTypeOne: 'diceOnes', iconTypeTwo: 'diceSixes', quantity: [3, 2], scoreValue: '19' }
       ], */
       combinationsDescrMk3: [
-        { title: 'Single dice with ace', quantity: [1], scoreValue: '-2' },
-        { title: 'Two aces', quantity: [1, 1], scoreValue: '-1' },
-        { title: 'Three', quantity: [1, 1, 1], scoreValue: '0' },
-        { title: 'Four', quantity: [1, 1, 1, 1], scoreValue: '+1' },
-        { title: 'Five', quantity: [1, 1, 1, 1, 1], scoreValue: '+2' },
-        { title: 'One six', quantity: [6], scoreValue: '-12' },
-        { title: 'Three sixes', quantity: [6, 6, 6], scoreValue: '0' },
-        { title: 'Five sixes in school', quantity: [6, 6, 6, 6, 6], scoreValue: '+12' },
-        { title: 'Pair', quantity: [4, 4], scoreValue: '8' },
-        { title: 'Two pairs', quantity: [5, 5, 3, 3], scoreValue: '16' },
-        { title: 'Three of a kind', quantity: [2, 2, 2], scoreValue: '6' },
-        { title: 'Full', quantity: [3, 3, 3, 5, 5], scoreValue: '19' },
-        { title: 'Quads', quantity: [6, 6, 6, 6], scoreValue: '24' },
-        { title: 'Poker', quantity: [4, 4, 4, 4, 4], scoreValue: '100' },
-        { title: 'Small', quantity: [1, 2, 3, 4, 5], scoreValue: '15' },
-        { title: 'Large', quantity: [2, 3, 4, 5, 6], scoreValue: '20' },
-        { title: 'Chance', quantity: [2, 6, 1, 3, 4], scoreValue: '16' }
-      ]
+        {title: `Single dice with ace`, quantity: [1], scoreValue: `-2`},
+        {title: `Two aces`, quantity: [1, 1], scoreValue: `-1`},
+        {title: `Three`, quantity: [1, 1, 1], scoreValue: `0`},
+        {title: `Four`, quantity: [1, 1, 1, 1], scoreValue: `+1`},
+        {title: `Five`, quantity: [1, 1, 1, 1, 1], scoreValue: `+2`},
+        {title: `One six`, quantity: [6], scoreValue: `-12`},
+        {title: `Three sixes`, quantity: [6, 6, 6], scoreValue: `0`},
+        {title: `Five sixes in school`, quantity: [6, 6, 6, 6, 6], scoreValue: `+12`},
+        {title: `Pair`, quantity: [4, 4], scoreValue: `8`},
+        {title: `Two pairs`, quantity: [5, 5, 3, 3], scoreValue: `16`},
+        {title: `Three of a kind`, quantity: [2, 2, 2], scoreValue: `6`},
+        {title: `Full`, quantity: [3, 3, 3, 5, 5], scoreValue: `19`},
+        {title: `Quads`, quantity: [6, 6, 6, 6], scoreValue: `24`},
+        {title: `Poker`, quantity: [4, 4, 4, 4, 4], scoreValue: `100`},
+        {title: `Small`, quantity: [1, 2, 3, 4, 5], scoreValue: `15`},
+        {title: `Large`, quantity: [2, 3, 4, 5, 6], scoreValue: `20`},
+        {title: `Chance`, quantity: [2, 6, 1, 3, 4], scoreValue: `16`},
+      ],
     }
   },
   computed: {
     ...mapGetters([
-      'getDiceIds',
-      'getUserData'
+      `getDiceIds`,
+      `getUserData`,
     ]),
-    computedGameScore: function () {
+    computedGameScore: function() {
       return store.state.schoolScoreTotal + store.state.gameTotal
     },
-    rollsLeft: function () { // ???
+    rollsLeft: function() { // ???
       return store.state.rollCount
-    }
+    },
   },
-  mounted () {
-    this.$nextTick(function () {
+  mounted() {
+    this.$nextTick(() => {
       console.log(`Rules page mounted ${this.schoolScores}`)
-      this.highestScore = localStorage.getItem('highestScore')
-      this.schoolScores = localStorage.getItem('schoolScores')
+      this.highestScore = localStorage.getItem(`highestScore`)
+      this.schoolScores = localStorage.getItem(`schoolScores`)
       this.userName = this.getUserData.name
       // this.chartData.labels = this.prepareLabelsForChart(this.schoolScores.split(',').length)
       if (this.schoolScores) {
-        let arrayToDisplay = this.schoolScores.split(',')
-        let slicedArray = arrayToDisplay.slice(-12)
+        const arrayToDisplay = this.schoolScores.split(`,`)
+        const slicedArray = arrayToDisplay.slice(-12)
         console.log(`Sliced array is ${slicedArray}`)
         this.chartData.series = [slicedArray]
       }
@@ -385,12 +381,12 @@ export default {
     })
   },
   methods: {
-    prepareLabelsForChart (numOfLabels) {
+    prepareLabelsForChart(numOfLabels) {
       // console.log(`Preparing labels ${typeof numOfLabels}`)
       // let resultsToDisplay = numOfLabels // More than twelve
       console.log(`Results to display ${numOfLabels}`)
       // let lastLabelToDisplay = numOfLabels - resultsToDisplay
-      let labelsArray = []
+      const labelsArray = []
       while (numOfLabels !== 1) {
         labelsArray.push(numOfLabels)
         numOfLabels--
@@ -412,7 +408,7 @@ export default {
         return labelsArray.reverse()
       } */
     },
-    openHelpMenu () {
+    openHelpMenu() {
       console.log(`Help menu!`)
       if (this.helpMenuHidden) {
         this.helpMenuHidden = false
@@ -420,12 +416,12 @@ export default {
         this.helpMenuHidden = true
       }
     },
-    restartGame () {
+    restartGame() {
       console.log(`Restarting`)
-      store.commit('resetState')
-      this.$router.push('/')
-    }
-  }
+      store.commit(`resetState`)
+      this.$router.push(`/`)
+    },
+  },
 }
 </script>
 <style lang="scss" scoped>
