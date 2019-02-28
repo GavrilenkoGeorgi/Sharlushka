@@ -16,16 +16,23 @@ if (!firebase.apps.length) {
 
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
-    console.log(`User logged in: ${user.email}.`)
-    // Data is already in localstorage
+    console.log(`User is logged in: ${user.email}.`)
+    // Data is already in localstorage after logging in
+    let userData = {
+      isAuthenticated: true
+    }
+    store.commit(`setUserIsLoggedIn`, userData)
   } else {
-    console.log(`User logged out.`)
+    console.log(`User is not logged in. Hi, Anonymous.`)
     // set default local storage values
-    localStorage.setItem(`userName`, `Anonymous`)
-    localStorage.setItem(`userUid`, ``)
-    localStorage.setItem(`highestScore`, ``)
-    localStorage.setItem(`lastScoresArray`, ``)
-    localStorage.setItem(`schoolScores`, ``)
+    // and gather data until user regs or logs in
+    if (!localStorage.hasOwnProperty(`userName`)) {
+      localStorage.setItem(`userName`, `Anonymous`)
+      localStorage.setItem(`userUid`, ``)
+      localStorage.setItem(`highestScore`, ``)
+      localStorage.setItem(`lastScoresArray`, ``)
+      localStorage.setItem(`schoolScores`, ``)
+    }
   }
 })
 

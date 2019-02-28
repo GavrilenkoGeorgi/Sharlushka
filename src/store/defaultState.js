@@ -1,9 +1,7 @@
 export default function() {
   return {
     user: {
-      isAuthenticated: false,
-      uid: null,
-      name: ``
+      isAuthenticated: false
     },
     debug: false,
     error: `No error`,

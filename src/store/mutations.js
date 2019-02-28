@@ -353,6 +353,10 @@ export default {
   setUser(state, payload) {
     state.user = payload
   },
+  setUserIsLoggedIn(state, payload) {
+    // console.log(`Changing user auth state. ${payload}`)
+    state.user = payload
+  },
   setUserName(state, name) {
     state.user.name = name
   },
@@ -362,6 +366,9 @@ export default {
       state.user.uid = ``
       state.user.name = ``
     }
+  },
+  stopGame (state) {
+    state.gameInProgress = false
   },
   SET_PROCESSING(state, payload) {
     state.processing = payload

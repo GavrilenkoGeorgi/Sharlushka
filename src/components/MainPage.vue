@@ -38,7 +38,8 @@
         justify-space-around
       >
         <v-flex
-          xs4
+          d-flex
+          xs5
           lg2
           class="text-xs-center"
         >
@@ -57,7 +58,8 @@
           </v-btn>
         </v-flex>
         <v-flex
-          xs4
+          d-flex
+          xs5
           lg2
           class="text-xs-center"
         >
@@ -114,7 +116,7 @@ export default {
   data() {
     return {
       gameName: `Sharlushka`,
-      userName: `empty string`,
+      userName: `Anonymous`,
       greeting: `Hi,`,
       exclamation: `.`
     }

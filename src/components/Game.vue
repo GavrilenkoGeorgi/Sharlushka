@@ -624,7 +624,7 @@ export default {
         setTimeout(() => {
           console.log(`Timer!`)
           this.$router.push(`/endgame`)
-        }, 1500)
+        }, 1000)
       } else {
         this.turnCompleted = true
         store.commit(`nextTurn`)

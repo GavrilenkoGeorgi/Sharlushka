@@ -75,8 +75,8 @@
         >
           <v-btn
             :type="'submit'"
-            :loading="logginIn"
-            large
+            :loading="loggingIn"
+            outline
             ripple
             class="button white--text"
             color="orange"
@@ -92,11 +92,11 @@
         >
           <v-btn
             :disabled="valid"
-            large
+            outline
             ripple
             class="button white--text"
             color="purple darken-1"
-            @click="clear"
+            @click="clearForm"
           >
             clear
           </v-btn>
@@ -116,8 +116,9 @@
           xs5
         >
           <v-btn
-            :loading="loggingOut"
-            large
+            :loading="signingOut"
+            :disabled="!getUserAuthState"
+            outline
             ripple
             class="button white--text"
             color="purple darken-1"
@@ -133,7 +134,7 @@
         >
           <v-btn
             to="/register"
-            large
+            outline
             ripple
             class="button white--text"
             color="purple darken-1"
@@ -148,11 +149,10 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 import firebase from 'firebase/app'
 import db from '../components/firebaseInit'
 import 'firebase/auth'
-// import store from '../store/store'
 import closeBtn from '../components/CloseBtn.vue'
 
 export default {
@@ -161,19 +161,12 @@ export default {
     closeBtn
   },
   data: () => ({
-    // loader: null,
-    logginIn: false,
-    loggingOut: false,
-    users: [],
+    loggingIn: false,
+    signingOut: false,
     errorMessage: undefined,
-    newUserBtnText: `Add user`,
+    newUserBtnText: `Register`,
     pageTitle: `Log In`,
     valid: true,
-    name: ``,
-    nameRules: [
-      (v) => !!v || `Name is required`,
-      (v) => v && v.length <= 10 || `Name must be less than 10 characters`
-    ],
     email: ``,
     emailRules: [
       (v) => !!v || `E-mail is required`,
@@ -189,40 +182,58 @@ export default {
   }),
   computed: {
     ...mapGetters([
-      `getError`,
-      `getUserAuthState`,
-      `getUserName`
+      `getUserAuthState`
     ]),
     comparePasswords() {
       return this.password !== this.confirmPassword ? `Passwords do not match` : true
     }
   },
-
   mounted() {
-    console.log(`Login page mounted`)
-    for (let i in 100) {
-      console.log(i)
-    }
+    console.log(`Login page mounted.`)
   },
   methods: {
-    toggleButtonLoadingState(button) {
-      console.log(`Button to toggle ${button}`)
-      if (button === `login`) {
-        this.logginIn = !this.logginIn
+    login() {
+      console.log(`Signing user in.`)
+      this.errorMessage = undefined // null
+      if (this.email && this.password) { // need some proper validation
+        this.toggleButtonLoadingState(`login`)
+        firebase.auth()
+          .signInWithEmailAndPassword(this.email, this.password)
+          .then(response => {
+            this.getUserDataFromDB(response.user.uid)
+          }).then(() => {
+            this.toggleButtonLoadingState(`login`)
+            this.$router.push(`/game`)
+          }).catch(err => {
+            console.log(err.message)
+            this.errorMessage = err.message
+            this.toggleButtonLoadingState(`login`)
+            return false
+          })
         return true
-      } else {
-        console.log(`Nothing to toggle, button is ${typeof button}`)
-        return false
       }
     },
+    signOut() {
+      console.log(`Signing user out.`)
+      this.toggleButtonLoadingState(`signout`)
+      firebase.auth().signOut().then(() => {
+        this.loggingOut = !this.loggingOut
+        this.$store.commit(`setUserIsLoggedIn`, false)
+        localStorage.clear()
+        this.$router.push(`/`)
+        this.toggleButtonLoadingState(`signout`)
+      }).catch((error) => {
+        console.error(`Sign Out Error:`, error)
+        this.toggleButtonLoadingState(`signout`)
+      })
+    },
     getUserDataFromDB(uid) {
-      // console.log(`Getting user name for uid ${uid}`)
       db.collection(this.usersCollRef).where(`uid`, `==`, uid)
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
             if (doc.data().uid === uid) {
-              // to local storage
+              // save to local storage
               localStorage.setItem(`userName`, doc.data().name)
               localStorage.setItem(`userUid`, doc.data().uid)
               localStorage.setItem(`highestScore`, doc.data().hiScore)
@@ -235,55 +246,20 @@ export default {
           console.log(`Error getting documents: `, error)
         })
     },
-    login() {
-      this.errorMessage = undefined // null
-      if (this.email && this.password) { // need some proper validation
-        this.toggleButtonLoadingState(`login`)
-
-        firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-          .then(response => {
-            console.log(`Loggin in user with id ${response.user.uid}`)
-            // console.log(response.user)
-            this.getUserDataFromDB(response.user.uid)
-            // console.log(`response from get user data is ${temp}`)
-          }).then(() => {
-            this.toggleButtonLoadingState(`login`)
-            this.$router.push(`/`)
-          }).catch(err => {
-            console.log(err.message)
-            this.errorMessage = err.message
-            this.toggleButtonLoadingState(`login`)
-            return false
-          })
+    toggleButtonLoadingState(btn) {
+      console.log(`Button to toggle ${btn}`)
+      if (btn === `login`) {
+        this.loggingIn = !this.loggingIn
         return true
+      } else if (btn === `signout`) {
+        this.signingOut = !this.signingOut
+        return true
+      } else {
+        console.log(`Nothing to toggle, button is ${typeof button}`)
+        return false
       }
     },
-    signOut() {
-      this.loggingOut = !this.loggingOut
-      firebase.auth().signOut().then(() => {
-        console.log(`Signing user out`)
-        // localStorage.removeItem(`highestScore`)
-        // localStorage.removeItem(`lastScoresArray`)
-        // localStorage.removeItem(`schoolScores`)
-        // store.commit(`setAuthState`, false)
-        // store.commit(`setUserName`, `Anonymous`)
-        this.loggingOut = !this.loggingOut
-        // this.$router.push(`/`)
-      }).catch((error) => {
-        console.error(`Sign Out Error`, error)
-        this.loggingOut = !this.loggingOut
-      })
-    },
-    /*
-    addNewUser () {
-      db.collection('users').add({
-        name: this.name
-        // type: this.email
-      })
-        .then(docRef => console.log(`User added`))
-        .catch(error => console.log(error))
-    }, */
-    clear() {
+    clearForm() {
       this.$refs.form.reset()
     }
   }
@@ -293,55 +269,12 @@ export default {
 <style lang="scss">
 @import '../assets/scss/index.scss';
 
-#login {
-  height: 100%;
-}
-
 .login-form, .page-title, .info-text, .button {
   font-family: $text-font;
-  // font-family: 'Courier New', Courier, monospace;
-  // font-weight: 700;
 }
 .info-text {
   color: $color-primary-0;
   font-size: 1.4em;
   font-weight: 700;
 }
-
-.custom-loader {
-    animation: loader 1s infinite;
-    display: flex;
-  }
-  @-moz-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  @-webkit-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  @-o-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  @keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
 </style>

@@ -18,7 +18,7 @@ export default new Router({
       path: `/register`,
       name: `Register`,
       // component: Register
-      component: () => import(/* webpackChunkName: "register" */ `../components/Register.vue`)
+      component: () => import(/* webpackChunkName: "register" */ `../views/Register.vue`)
     },
     {
       path: `/userstats`,
@@ -47,7 +47,7 @@ export default new Router({
     {
       path: `/login`,
       name: `Login`,
-      component: () => import(/* webpackChunkName: "login" */ `../components/Login.vue`)
+      component: () => import(/* webpackChunkName: "login" */ `../views/Login.vue`)
     },
     {
       path: `/leaderboard`,
