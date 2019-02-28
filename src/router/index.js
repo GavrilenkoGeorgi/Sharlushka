@@ -36,7 +36,7 @@ export default new Router({
       path: `/endgame`,
       name: `EndGame`,
       // component: EndGame
-      component: () => import(/* webpackChunkName: "endgame" */ `../components/EndGame.vue`)
+      component: () => import(/* webpackChunkName: "endgame" */ `../views/EndGame.vue`)
     },
     {
       path: `/help`,
