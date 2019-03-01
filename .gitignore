@@ -1,7 +1,5 @@
 .DS_Store
 node_modules/
-/www/dist/
-/public.bak
 dist/
 platforms/
 npm-debug.log*
@@ -10,11 +8,8 @@ yarn-error.log*
 /test/unit/coverage/
 /test/e2e/reports/
 selenium-debug.log
-/src/components/Register.vue.bak
-/src/components/firebaseConfig.js
+/src/firebase/firebaseConfig.js
 /src/store/debugState.js
-temp.css
-temp.html
 
 # Editor directories and files
 .idea
