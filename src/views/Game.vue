@@ -85,6 +85,7 @@
           v-for="link in navDrawerLinks"
           :key="link.path"
           :to="{ path: link.path }"
+          @click="navDrawer = false"
         >
           <v-list-tile-action>
             <v-flex class="text-xs-center">
@@ -383,11 +384,10 @@
 </template>
 
 <script>
-import NetworkCheck from './NetworkCheck.vue'
-import {mapGetters, mapActions} from 'vuex'
+import NetworkCheck from '../components/NetworkCheck.vue'
+import { mapGetters, mapActions } from 'vuex'
 import store from '../store/store'
-// import Navigation from '../components/Navigation'
-import DiceBox from './DiceBox.vue'
+import DiceBox from '../components/DiceBox.vue'
 
 export default {
   name: `Game`,
@@ -426,15 +426,11 @@ export default {
   }),
   computed: {
     ...mapGetters([
-      `debugInfo`,
-      `chosenDiceArray`,
-      `currentValuesInScoreArray`,
       `getSchoolArray`,
       `getCombinationArray`,
-      `getDiceArray`,
       `getCurrentGameState`,
       `getTotalScore`,
-      `getUserName`
+      `getDefaultUserName`
     ]),
     gameName() {
       return `Sharlushka`
@@ -446,10 +442,10 @@ export default {
       return store.state.rollCount
     },
     currentUserName() {
-      if (this.getUserName === ``) {
-        return `Anonymous`
+      if (localStorage.hasOwnProperty(`userName`)) {
+        return localStorage.getItem(`userName`)
       } else {
-        return this.getUserName
+        return this.getDefaultUserName
       }
     }
   },
@@ -472,12 +468,12 @@ export default {
     }
   },
   mounted() {
-    const highestScore = localStorage.getItem(`highestScore`)
-    if (highestScore) {
-      this.highestScore = highestScore
-    }
-    // message()
-    // console.log(message)
+    this.$nextTick(() => {
+      const highestScore = localStorage.getItem(`highestScore`)
+      if (highestScore) {
+        this.highestScore = highestScore
+      }
+    })
   },
   methods: {
     ...mapActions([
@@ -490,6 +486,7 @@ export default {
     manipulateDrawer() {
       this.navDrawer = !this.navDrawer
     },
+    /*
     updateOnlineStatus() {
       if (navigator.onLine) {
         console.log(`online`)
@@ -501,6 +498,7 @@ export default {
         // document.querySelector('.connection-status').innerHTML = 'Offline';
       }
     },
+    */
     updateProgressBar() {
       const progressBar = document.querySelector(`.progress-bar`)
       if (store.state.rollCount === 2) {
@@ -622,7 +620,7 @@ export default {
         store.state.gameEnded = true
         // this.$router.push('/endgame')
         setTimeout(() => {
-          console.log(`Timer!`)
+          // console.log(`Not so fast.. let the user appreciate the results )`)
           this.$router.push(`/endgame`)
         }, 1000)
       } else {
@@ -641,11 +639,6 @@ export default {
 
 @import "../assets/scss/index.scss";
 
-#gameView {
-  // border: 1px solid green;
-  // display: flex;
-  // height: 85vh;
-}
 .game-layout {
   padding-top: 3.5em;
   // height: 100vh;
@@ -658,11 +651,6 @@ export default {
   // transition-timing-function: ease-in;
 }
 
-.school-dice-container {
-  // height: 2.4em;
-  // padding: .3em 0em .3em 0em;
-  // border: 1px solid pink;
-}
 .set {
   background-color: $color-pale-primary;
   color: $color-chosen;
@@ -674,15 +662,10 @@ export default {
     background-color: inherit;
   }
 }
-/*
-.school-dice-icon {
-  // background-color: yellow;
-  // height: 3.8em;
-}
-
 .school-results-layout {
-  border: 1px solid pink;
-} */
+  // border: 1px solid pink;
+  height: 2em;
+}
 .school-result {
   // height: .8em;
   text-align: center;
@@ -732,6 +715,7 @@ export default {
 
 .navigation-drawer {
   font-family: $text-font;
+  border-left: 2px solid $color-primary-0;
 }
 .drawer-menu-item {
   font-family: $text-font;
@@ -765,25 +749,26 @@ export default {
 // Landscape mode
 @media screen and (orientation: landscape) {
   #gameView {
-  // border: 1px solid green;
-  // display: flex;
-  height: 80vh;
+    display: flex;
+    height: 100vh;
   }
   .game-layout {
     flex-direction: row;
     // padding-top: 3em;
     // border: 1px solid red;
-    padding-bottom: .4em;
+    // padding-bottom: .4em;
   }
   .school-dice-container {
     flex-direction: column;
   }
   .school-dice-icon {
+    // height: 1em;
     margin: .2em 0em .2em 0em;
   }
   .school-results-layout {
     width: 15em;
     flex-direction: column;
+    height: 100%;
   }
   .game-combinations-layout {
     width: 100em;
@@ -848,9 +833,7 @@ export default {
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) { // ipadPro
-.game-layout {
-  // padding-top: 7em;
-}
+
 .school-dice-icon {
    height: 8em;
   }
@@ -867,10 +850,10 @@ export default {
 }
 
 @media screen and (max-resolution: 96dpi) and (max-width: 480px) { // fly iq4415
-.school-dice-icon {
-  // background-color: yellow;
-  height: 4.6em;
-}
+  .school-dice-icon {
+    // background-color: yellow;
+    height: 4.6em;
+  }
   .game-combinations-layout {
     padding-bottom: .3em;
   }
@@ -882,9 +865,6 @@ export default {
   }
 }
 @media screen and (max-resolution: 96dpi) and (min-width: 481px) { // fly iq4415
-  .game-layout {
-    // padding-top: 5em;
-    }
   .school-dice-icon {
     height: 6em;
   }

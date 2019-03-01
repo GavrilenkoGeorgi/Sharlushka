@@ -257,8 +257,7 @@
 </template>
 
 <script>
-import store from '../store/store'
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 import closeBtn from '../components/CloseBtn.vue'
 
 export default {
@@ -298,27 +297,7 @@ export default {
         number of dice, providing a score is taken on the last roll. It is the skillful use of these
         two optional rolls of the dice that can turn an unlucky first or second roll into a high
         scoring turn.`,
-      userName: ``,
-      highestScore: ``,
-      hiscoreGreeting: `Your highest score is`,
-      exclamation: `!`, // some over-engeneering
-      helpMenuHidden: true,
       rulesHeading: `Help`,
-      /*
-      combinationsDescr: [
-        { text: 'Один кубик с единицей', iconId: 'diceOnes', quantity: 1, scoreValue: '-2' },
-        { text: 'Два кубика', iconId: 'diceOnes', quantity: 2, scoreValue: '-1' },
-        { text: 'Три', iconId: 'diceOnes', quantity: 3, scoreValue: '0' },
-        { text: 'Четыре', iconId: 'diceOnes', quantity: 4, scoreValue: '+1' },
-        { text: 'Пять', iconId: 'diceOnes', quantity: 5, scoreValue: '+2' },
-        { text: 'Одна шестёрка', iconId: 'diceSixes', quantity: 1, scoreValue: '-12' },
-        { text: 'Три шестёрки', iconId: 'diceSixes', quantity: 3, scoreValue: '0' },
-        { text: 'Пять', iconId: 'diceSixes', quantity: 5, scoreValue: '+12' },
-        { text: 'Пара', iconId: 'diceFives', quantity: 2, scoreValue: '10' },
-        { text: 'Три одинаковых', iconId: 'diceFours', quantity: 3, scoreValue: '12' },
-        { text: 'Каре', iconId: 'diceTwos', quantity: 4, scoreValue: '8' },
-        { text: 'Покер', iconId: 'diceFours', quantity: 5, scoreValue: '100' }
-      ], */
       combinationsDescrMk3: [
         {title: `Single dice with ace`, quantity: [1], scoreValue: `-2`},
         {title: `Two aces`, quantity: [1, 1], scoreValue: `-1`},
@@ -342,84 +321,28 @@ export default {
   },
   computed: {
     ...mapGetters([
-      `getDiceIds`,
-      `getUserData`
-    ]),
-    computedGameScore: function() {
-      return store.state.schoolScoreTotal + store.state.gameTotal
-    },
-    rollsLeft: function() { // ???
-      return store.state.rollCount
-    }
+      `getDiceIds`
+    ])
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(`Rules page mounted ${this.schoolScores}`)
-      this.highestScore = localStorage.getItem(`highestScore`)
+      console.log(`Rules page mounted.`)
       this.schoolScores = localStorage.getItem(`schoolScores`)
-      this.userName = this.getUserData.name
-      // this.chartData.labels = this.prepareLabelsForChart(this.schoolScores.split(',').length)
       if (this.schoolScores) {
         const arrayToDisplay = this.schoolScores.split(`,`)
         const slicedArray = arrayToDisplay.slice(-12)
-        console.log(`Sliced array is ${slicedArray}`)
         this.chartData.series = [slicedArray]
       }
-      // console.log(`Scores are split ${this.schoolScores.split(',').length}`)
-      // this.chartData.series = this.schoolScores
-      // this.schoolScores = [12, 14, 36, 34, 23, 12, -24, 14, 36, 44, 23, -12, 12, 14, 36, -24, 23]
-      // this.schoolScores = '12, 14, 36, 34, 23, 12, -24, 14, 36, 44, 23, -12, 12, 14, 36, -24, 23'
-      /*
-      if (this.schoolScores !== '') {
-        this.chartData.labels = this.prepareLabelsForChart(this.schoolScores.length)
-        if (this.schoolScores.length >= 1) {
-          // this.userScoresArray = lastScoresString.split(',')
-          this.chartData.series = this.schoolScores.split(',')
-        }
-      }
-      */
     })
   },
   methods: {
     prepareLabelsForChart(numOfLabels) {
-      // console.log(`Preparing labels ${typeof numOfLabels}`)
-      // let resultsToDisplay = numOfLabels // More than twelve
-      console.log(`Results to display ${numOfLabels}`)
-      // let lastLabelToDisplay = numOfLabels - resultsToDisplay
       const labelsArray = []
       while (numOfLabels !== 1) {
         labelsArray.push(numOfLabels)
         numOfLabels--
       }
       return labelsArray.reverse()
-      /*
-      if (numOfLabels >= resultsToDisplay) {
-        while (numOfLabels !== lastLabelToDisplay) {
-          labelsArray.push(numOfLabels)
-          numOfLabels--
-        }
-        return labelsArray.reverse()
-      } else {
-        while (numOfLabels !== 0) {
-          labelsArray.push(numOfLabels)
-          numOfLabels--
-          console.log('Scaaary..')
-        }
-        return labelsArray.reverse()
-      } */
-    },
-    openHelpMenu() {
-      console.log(`Help menu!`)
-      if (this.helpMenuHidden) {
-        this.helpMenuHidden = false
-      } else {
-        this.helpMenuHidden = true
-      }
-    },
-    restartGame() {
-      console.log(`Restarting`)
-      store.commit(`resetState`)
-      this.$router.push(`/`)
     }
   }
 }

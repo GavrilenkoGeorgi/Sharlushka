@@ -3,19 +3,20 @@
   "short_name": "Sharlushka",
   "icons": [
       {
-          "src": "/static/android-chrome-192x192.png?v=wAXgREFfG",
+          "src": "android-chrome-192x192.png?v=wAXgREFfG",
           "sizes": "192x192",
           "type": "image/png"
       },
       {
-        "src": "/static/android-chrome-512x512.png?v=wAXgREFfG",
+        "src": "android-chrome-512x512.png?v=wAXgREFfG",
         "sizes": "512x512",
         "type": "image/png"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "theme_color": "#79008f",
   "background_color": "#79008f",
   "display": "standalone",
+  "scope": "/",
   "description": "Sharlushka is a game written using JavaScript."
 }

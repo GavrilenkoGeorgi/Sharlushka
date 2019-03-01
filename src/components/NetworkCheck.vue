@@ -12,28 +12,28 @@
       dark
     >
       <v-icon
-        size="2em"
+        medium
         class="blink"
         color="orange"
       >
         cloud_off
       </v-icon>
     </v-btn>
-    <v-card>
-      <v-card-text class="text-xs-center offline-message-text">
+    <v-card class="offline-message">
+      <v-card-text class="offline-message-text">
         Check your connection to save results.
       </v-card-text>
       <v-card-actions>
         <v-spacer />
         <v-btn
-          color="primary"
-          small
-          icon
+          color="orange"
           flat
+          outline
+          ripple
           @click="offlineMessage = false"
         >
           <v-icon
-            size="2em"
+            large
             color="orange"
           >
             done
@@ -57,3 +57,17 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+@import '../assets/fonts/fonts.scss';
+@import '../assets/scss/vars/colors.scss';
+
+.offline-message {
+  border: 1px solid $color-primary-0;
+}
+
+.offline-message-text {
+  font-size: 1.5em;
+  font-family: $text-font;
+  color: $color-primary-3;
+}
+</style>

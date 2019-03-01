@@ -151,7 +151,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import firebase from 'firebase/app'
-import db from '../components/firebaseInit'
+import db from '../firebase/firebaseInit'
 import 'firebase/auth'
 import closeBtn from '../components/CloseBtn.vue'
 
@@ -189,7 +189,9 @@ export default {
     }
   },
   mounted() {
-    console.log(`Login page mounted.`)
+    this.$nextTick(() => {
+      console.log(`Login page mounted.`)
+    })
   },
   methods: {
     login() {

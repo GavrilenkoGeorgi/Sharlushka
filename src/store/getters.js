@@ -34,14 +34,8 @@ export default {
     const combinationArray = state.scoreArray.slice(state.diceArray.length + 1, state.scoreArray.length)
     return combinationArray
   },
-  /*
-  getDiceArray (state) {
-    return state.diceArray
-  },
-  */
   getMaxPossibleScore: (state) => state.maxPossibleScore,
   getUserAuthState: (state) => state.user.isAuthenticated, // ?
-  getUserName: (state) => state.user.name,
   getDiceArray: (state) => state.diceArray,
   getTotalScore(state) {
     return state.schoolScoreTotal + state.gameTotal

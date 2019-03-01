@@ -82,6 +82,47 @@
         </v-flex>
       </v-layout>
     </v-layout>
+    <!-- Offline save dialog -->
+    <v-dialog
+      v-model="networkProblemDialog"
+      width="20em"
+    >
+      <v-card>
+        <v-card-text class="text-xs-center offline-save-message">
+          {{ offlineSaveUserMessage }}
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="orange"
+            outline
+            :loading="tryAgainBtnLoading"
+            @click="syncScoreWithFirestore"
+          >
+            <v-icon
+              color="orange"
+            >
+              done
+            </v-icon>
+            Try again
+          </v-btn>
+          <v-btn
+            outline
+            ripple
+            color="purple darken-1"
+            @click="networkProblemDialog = false"
+          >
+            <v-icon
+              color="purple darken-1"
+            >
+              cancel
+            </v-icon>
+            Cancel
+          </v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -89,7 +130,7 @@
 import {mapGetters} from 'vuex'
 import store from '../store/store'
 import closeBtn from '../components/CloseBtn.vue'
-import db from '../components/firebaseInit'
+import db from '../firebase/firebaseInit'
 
 export default {
   components: {
@@ -103,6 +144,9 @@ export default {
       schoolScoreMessage: `Your score is`,
       userName: ``,
       highestScore: null,
+      networkProblemDialog: false,
+      tryAgainBtnLoading: false,
+      offlineSaveUserMessage: `You are offline, connect to the internet to save results.`,
       hiscoreGreeting: `Your highest score is`,
       exclamation: `!`, // some over-engeneering
       lastScores: ``,
@@ -121,7 +165,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(`Game over`)
+      console.log(`Game over.`)
       // check user auth status
       if (this.getUserData.isAuthenticated) {
         this.userName = localStorage.getItem(`userName`)
@@ -150,6 +194,7 @@ export default {
         // to this page won't fill our array with zeroes
         // store.state.gameInProgress = false // mutation?
         store.commit(`stopGame`)
+        // console.log(`Save current score state to db`)
       } else {
         console.log(`Nothing to record, play the game.`)
       }
@@ -182,7 +227,6 @@ export default {
       } else {
         console.log(`Your score is not so high: ${this.getTotalScore}`)
       }
-
       if (this.getCurrentGameState.schoolCompleted) {
         // record game result if school completed
         this.lastScores.push(this.getTotalScore)
@@ -196,15 +240,26 @@ export default {
         this.schoolScores.push(this.getSchoolScore)
         localStorage.setItem(`schoolScores`, this.schoolScores)
       }
-      // finally if user is registered
-      if (this.getUserData.isAuthenticated) {
-        this.syncScoreInFirebase()
-      } else {
+      //
+      // finally check if user is registered
+      //
+      if (!this.getUserData.isAuthenticated) {
         console.log(`Anonymous! To save results please register.`)
+      } else if (this.getUserData.isAuthenticated && this.isOnline) {
+        console.log(`User is authenticated and network is online. Syncing with firestore.`)
+        this.syncScoreWithFirestore()
+      } else if (this.getUserData.isAuthenticated &&
+        !this.isOnline &&
+        this.getCurrentGameState.gameInProgress) {
+        console.log(`User is authenticated but network is offline.`)
+        this.networkProblemDialog = true
+      } else {
+        console.log(`Something went wrong in the piping system.`)
       }
     },
     // if user exists add score to the account
-    syncScoreInFirebase() {
+    syncScoreWithFirestore() {
+      this.tryAgainBtnLoading = !this.tryAgainBtnLoading
       console.log(`Syncing score for user ${localStorage.getItem(`userName`)}`)
       const uid = localStorage.getItem(`userUid`)
       db.collection(this.dbUsersCollRef).where(`uid`, `==`, uid)
@@ -230,9 +285,12 @@ export default {
             hiScore: highestScoreToUpdate
           })
           console.log(`...updating user stats`)
+          this.tryAgainBtnLoading = !this.tryAgainBtnLoading
+          this.networkProblemDialog = !this.networkProblemDialog
           return updateDocRef // ? true
         })
         .catch(error => {
+          this.tryAgainBtnLoading = !this.tryAgainBtnLoading
           console.log(`Error getting documents: `, error)
         })
     }
@@ -242,7 +300,7 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/scss/index.scss";
 
-.user-name-game-end, .message-school, .message-game {
+.user-name-game-end, .message-school, .message-game, .offline-save-message {
   font-family: $text-font;
 }
 .user-name-game-end {
@@ -253,5 +311,4 @@ export default {
 .message-school {
   line-height: 1.5;
 }
-
 </style>

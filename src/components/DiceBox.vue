@@ -129,7 +129,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(`Dice box component mounted`)
+      // console.log(`Dice box component mounted.`)
       this.updateMainButtonState()
       if (`vibrate` in navigator) {
         this.navigatorSupported = true
@@ -260,7 +260,7 @@ export default {
 
 .main-button {
   margin-right: .4em;
-  color: $color-light;
+  // color: $main-button-brick-color;
   border-radius: .25em;
   height: 3.6em;
   background-color: $color-primary-0;
@@ -283,8 +283,8 @@ export default {
   width: 1em;
   height: 1em;
   margin: .2em;
-  background: $color-stop-brick;
-  box-shadow: 0em 0em .4em .05em $color-stop-brick;
+  background: $main-button-brick-color;
+  box-shadow: 0em 0em .4em .05em $main-button-brick-color;
 }
 .save {
   // color: $color-light;
@@ -299,7 +299,7 @@ export default {
     flex-direction: column;
     // border: 1px solid red;
     // padding-top: .15em;
-    height: 80vh;
+    // height: 80vh;
     width: 10em;
   }
   .dice-box {

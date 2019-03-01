@@ -93,7 +93,7 @@
 <script>
 import closeBtn from '../components/CloseBtn.vue'
 import {mapGetters} from 'vuex'
-import db from '../components/firebaseInit'
+import db from '../firebase/firebaseInit'
 
 export default {
   name: `Leaderboard`,

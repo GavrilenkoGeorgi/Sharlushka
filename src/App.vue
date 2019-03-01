@@ -6,7 +6,7 @@
         name="custom-classes-transition"
         mode="out-in"
         enter-active-class="animated fadeIn"
-        leave-active-class="animated fadeOutLeft"
+        leave-active-class="animated fadeOutRight"
       >
         <router-view />
       </transition>
@@ -134,6 +134,23 @@ export default {
   100% {
     opacity: 0;
   }
+}
+
+@keyframes fadeOutRight {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+.fadeOutRight {
+  -webkit-animation-name: fadeOutRight;
+  animation-name: fadeOutRight;
 }
 
 </style>

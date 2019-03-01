@@ -3,10 +3,9 @@ import Vuetify from 'vuetify'
 import App from './App.vue'
 import router from './router'
 import store from './store/store'
-
 import VueOffline from 'vue-offline'
 
-import firebaseConfig from './components/firebaseConfig'
+import firebaseConfig from './firebase/firebaseConfig.js'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 
@@ -27,6 +26,7 @@ firebase.auth().onAuthStateChanged((user) => {
     // set default local storage values
     // and gather data until user regs or logs in
     if (!localStorage.hasOwnProperty(`userName`)) {
+      // seems like it the first run
       localStorage.setItem(`userName`, `Anonymous`)
       localStorage.setItem(`userUid`, ``)
       localStorage.setItem(`highestScore`, ``)

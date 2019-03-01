@@ -17,12 +17,11 @@
           {{ gameName }}
         </h1>
       </v-flex>
-      <v-flex
-        justify-center
-        style="padding: 2em 4em 0em 4em"
-      >
-        <SharlushkaLogo />
-      </v-flex>
+      <v-layout justify-center>
+        <v-flex xs8>
+          <SharlushkaLogo />
+        </v-flex>
+      </v-layout>
       <v-flex
         d-flex
         align-center
@@ -107,7 +106,8 @@
 </template>
 
 <script>
-import SharlushkaLogo from '../assets/icons/sharlushkaLogo.svg'
+import SharlushkaLogo from '../assets/images/sharlushkaLogo.svg'
+
 export default {
   name: `Main`,
   components: {

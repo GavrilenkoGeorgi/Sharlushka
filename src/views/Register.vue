@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import db from '../components/firebaseInit'
+import db from '../firebase/firebaseInit'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import closeButton from '../components/CloseBtn.vue'
@@ -151,8 +151,6 @@ export default {
         this.registering = true
         firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
           .then(response => {
-            console.log(`Firestore returned user -->`)
-            console.log(response.user)
             // add new user data to db
             if (this.userNameFormValue === ``) { // it is optional, privacy meh
               this.userNameFormValue = `Anonymous` // get default name??
