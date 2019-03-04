@@ -1,11 +1,10 @@
-const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
-const { VueLoaderPlugin } = require('vue-loader')
-const path = require('path')
-// const webpack = require('webpack')
-const MinifyPlugin = require("babel-minify-webpack-plugin")
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
+const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
+const { VueLoaderPlugin } = require('vue-loader');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const PUBLIC_PATH = '/';
 
 module.exports = (env, argv) => ({
   mode: argv && argv.mode || 'development',
@@ -15,7 +14,8 @@ module.exports = (env, argv) => ({
 
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[contenthash].js'
+    filename: '[name].[contenthash].js',
+    publicPath: PUBLIC_PATH
   },
 
   node: false,
@@ -76,23 +76,19 @@ module.exports = (env, argv) => ({
       template: path.resolve(__dirname, 'static', 'index.html'),
       inject: true,
     }),
-    new MinifyPlugin({}, {
-      comments: false
-    }),
     new SWPrecacheWebpackPlugin({
-      cacheId: 'my-pwa-vue-app',
-      filename: 'service-worker-cache.js',
-      staticFileGlobs: ['dist/**/*.{js,css}', '/'],
-      minify: true,
-      stripPrefix: 'dist/',
-      dontCacheBustUrlsMatching: /\.\w{6}\./
+      cacheId: 'sharlushkaMk1',
+        dontCacheBustUrlsMatching: /\.\w{8}\./,
+        filename: 'service-worker.js',
+        minify: true,
+        navigateFallback: PUBLIC_PATH + 'index.html',
+        staticFileGlobsIgnorePatterns: [/\.map$/, /manifest\.json$/]
     }),
     new CopyWebpackPlugin([{
       from: path.resolve(__dirname, 'static'),
       to: path.resolve(__dirname, 'dist'),
       toType: 'dir'
     }])
-    // new webpack.HashedModuleIdsPlugin() // so that file hashes don't change unexpectedly
   ],
   optimization: {
     splitChunks: {
