@@ -1,21 +1,21 @@
 {
-  "name": "Sharlushka The Dice Game",
+  "name": "Sharlushka",
   "short_name": "Sharlushka",
   "icons": [
       {
-          "src": "android-chrome-192x192.png?v=wAXgREFfG",
+          "src": "android-chrome-192x192.png",
           "sizes": "192x192",
           "type": "image/png"
       },
       {
-        "src": "android-chrome-512x512.png?v=wAXgREFfG",
+        "src": "android-chrome-512x512.png",
         "sizes": "512x512",
         "type": "image/png"
     }
   ],
-  "start_url": "/",
-  "theme_color": "#79008f",
-  "background_color": "#79008f",
+  "start_url": "/index.html",
+  "theme_color": "#7B1FA2",
+  "background_color": "#7B1FA2",
   "display": "standalone",
   "scope": "/",
   "description": "Sharlushka is a game written using JavaScript."
