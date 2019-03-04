@@ -2,6 +2,7 @@
   <v-container
     id="register"
     fluid
+    pa-0
   >
     <v-layout column>
       <closeButton />

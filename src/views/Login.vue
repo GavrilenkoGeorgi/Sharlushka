@@ -2,6 +2,7 @@
   <v-container
     id="login"
     fluid
+    pa-0
     class="text-xs-center"
   >
     <!-- Close button -->

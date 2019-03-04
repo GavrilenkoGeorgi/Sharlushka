@@ -1,7 +1,7 @@
 <template>
   <v-container
     id="userStats"
-    pb-0
+    pa-0
   >
     <!-- Close button -->
     <closeBtn />

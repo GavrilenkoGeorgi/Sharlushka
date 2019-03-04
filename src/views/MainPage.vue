@@ -17,10 +17,15 @@
           {{ gameName }}
         </h1>
       </v-flex>
-      <v-layout justify-center>
-        <v-flex xs8>
-          <SharlushkaLogo />
-        </v-flex>
+      <v-layout
+        justify-center
+        align-center
+      >
+        <!--v-flex-->
+        <SharlushkaLogo
+          class="logo"
+        />
+        <!--/v-flex-->
       </v-layout>
       <v-flex
         d-flex
@@ -142,6 +147,9 @@ export default {
   font-size: 3em;
   color: $color-primary-0;
 }
+.logo {
+  height: 12em;
+}
 .user-name {
   font-size: 2em;
 }
@@ -157,6 +165,9 @@ export default {
 @media screen and (orientation: landscape) {
   .game-name {
     font-size: 2.8em;
+  }
+  .logo {
+    height: 10em;
   }
 }
 

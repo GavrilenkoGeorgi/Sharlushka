@@ -1,259 +1,259 @@
 <template>
-  <v-container fill-height>
-    <v-layout
-      row
-      wrap
-    >
-      <closeBtn />
-      <v-flex xs12>
-        <h1 class="text-xs-center mb-2 rules-heading">
-          {{ rulesHeading }}
-        </h1>
-        <h4
-          v-if="schoolScores !== ''"
-          class="text-xs-center mb-2 rules-heading"
-        >
-          Your recent school results
-        </h4>
-        <!-- Chart -->
-        <v-flex
-          d-flex
-          align-center
-          my-2
-        >
-          <chartist
-            ratio="ct-major-twelfth"
-            type="Line"
-            :data="chartData"
-            :options="chartOptions"
-          />
-        </v-flex>
-        <p class="rules-text">
-          {{ overall }}
-        </p>
-        <p class="rules-text-eng">
-          {{ overallEng }}
-        </p>
-      </v-flex>
-      <!-- Combination descriptions -->
-      <v-flex xs12>
-        <v-flex
-          v-for="(combination, index) in combinationsDescrMk3"
-          :key="index"
-          class="combination-descr"
-        >
-          <v-layout align-center>
-            <p>
-              {{ combination.title }}
-            </p>
-            <v-layout justify-end>
-              <svg
-                v-for="(icon, value) of combination.quantity"
-                :key="value"
-                class="help-dice-icon"
-              >
-                <use v-bind="{'xlink:href':'#' + getDiceIds[icon - 1]}" />
-              </svg>
-            </v-layout>
-            <p class="score-value">
-              {{ combination.scoreValue }}
-            </p>
-          </v-layout>
-        </v-flex>
-      </v-flex>
-      <!-- Icon definitions remove this -->
-      <svg
-        version="1.1"
-        style="display: none;"
-        xmlns="http://www.w3.org/2000/svg"
+  <v-layout
+    row
+    wrap
+  >
+    <closeBtn />
+    <v-flex xs12>
+      <h1 class="text-xs-center rules-heading">
+        {{ rulesHeading }}
+      </h1>
+      <h4
+        v-if="schoolScores !== ''"
+        class="text-xs-center rules-heading"
       >
-        <symbol
-          id="diceOnes"
-          viewBox="0 0 200 200"
-        >
-          <circle
-            fill="currentColor"
-            cx="100"
-            cy="100"
-            r="18"
-          />
-          <path
-            stroke-width=".4em"
-            d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
-          />
-        </symbol>
-        <symbol
-          id="diceTwos"
-          viewBox="0 0 200 200"
-        >
-          <circle
-            fill="currentColor"
-            cx="50"
-            cy="150"
-            r="18"
-          />
-          <circle
-            fill="currentColor"
-            cx="150"
-            cy="50"
-            r="18"
-          />
-          <path
-            stroke-width=".4em"
-            d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
-          />
-        </symbol>
-        <symbol
-          id="diceThrees"
-          class="dice"
-          viewBox="0 0 200 200"
-        >
-          <circle
-            fill="currentColor"
-            cx="50"
-            cy="150"
-            r="18"
-          />
-          <circle
-            fill="currentColor"
-            cx="100"
-            cy="100"
-            r="18"
-          />
-          <circle
-            fill="currentColor"
-            cx="150"
-            cy="50"
-            r="18"
-          />
-          <path
-            stroke-width=".4em"
-            d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
-          />
-        </symbol>
-        <symbol
-          id="diceFours"
-          class="dice"
-          viewBox="0 0 200 200"
-        >
-          <circle
-            fill="currentColor"
-            cx="150"
-            cy="50"
-            r="18"
-          />
-          <circle
-            fill="currentColor"
-            cx="150"
-            cy="150"
-            r="18"
-          />
-          <circle
-            fill="currentColor"
-            cx="50"
-            cy="150"
-            r="18"
-          />
-          <circle
-            fill="currentColor"
-            cx="50"
-            cy="50"
-            r="18"
-          />
-          <path
-            stroke-width=".4em"
-            d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
-          />
-        </symbol>
-        <symbol
-          id="diceFives"
-          class="dice"
-          viewBox="0 0 200 200"
-        >
-          <circle
-            fill="currentColor"
-            cx="100"
-            cy="100"
-            r="18"
-          />
-          <circle
-            fill="currentColor"
-            cx="150"
-            cy="50"
-            r="18"
-          />
-          <circle
-            fill="currentColor"
-            cx="150"
-            cy="150"
-            r="18"
-          />
-          <circle
-            fill="currentColor"
-            cx="50"
-            cy="150"
-            r="18"
-          />
-          <circle
-            fill="currentColor"
-            cx="50"
-            cy="50"
-            r="18"
-          />
-          <path
-            stroke-width=".4em"
-            d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
-          />
-        </symbol>
-        <symbol
-          id="diceSixes"
-          class="dice"
-          viewBox="0 0 200 200"
-        >
-          <circle
-            fill="currentColor"
-            cx="150"
-            cy="100"
-            r="18"
-          />
-          <circle
-            fill="currentColor"
-            cx="150"
-            cy="50"
-            r="18"
-          />
-          <circle
-            fill="currentColor"
-            cx="150"
-            cy="150"
-            r="18"
-          />
-          <circle
-            fill="currentColor"
-            cx="50"
-            cy="150"
-            r="18"
-          />
-          <circle
-            fill="currentColor"
-            cx="50"
-            cy="100"
-            r="18"
-          />
-          <circle
-            fill="currentColor"
-            cx="50"
-            cy="50"
-            r="18"
-          />
-          <path
-            stroke-width=".4em"
-            d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
-          />
-        </symbol>
-      </svg>
-    </v-layout>
-  </v-container>
+        Your recent school results
+      </h4>
+      <!-- Chart -->
+      <v-flex
+        d-flex
+        align-center
+        my-2
+        pr-3
+      >
+        <chartist
+          ratio="ct-major-twelfth"
+          type="Line"
+          :data="chartData"
+          :options="chartOptions"
+        />
+      </v-flex>
+      <p class="rules-text">
+        {{ overall }}
+      </p>
+      <p class="rules-text-eng">
+        {{ overallEng }}
+      </p>
+    </v-flex>
+    <!-- Combination descriptions -->
+    <v-flex xs12>
+      <v-flex
+        v-for="(combination, index) in combinationsDescrMk3"
+        :key="index"
+        class="combination-descr"
+        px-3
+      >
+        <v-layout align-center>
+          <p>
+            {{ combination.title }}
+          </p>
+          <v-layout justify-end>
+            <svg
+              v-for="(icon, value) of combination.quantity"
+              :key="value"
+              class="help-dice-icon"
+            >
+              <use v-bind="{'xlink:href':'#' + getDiceIds[icon - 1]}" />
+            </svg>
+          </v-layout>
+          <p class="score-value">
+            {{ combination.scoreValue }}
+          </p>
+        </v-layout>
+      </v-flex>
+    </v-flex>
+    <!-- Icon definitions remove this -->
+    <svg
+      version="1.1"
+      style="display: none;"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <symbol
+        id="diceOnes"
+        viewBox="0 0 200 200"
+      >
+        <circle
+          fill="currentColor"
+          cx="100"
+          cy="100"
+          r="18"
+        />
+        <path
+          stroke-width=".4em"
+          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
+        />
+      </symbol>
+      <symbol
+        id="diceTwos"
+        viewBox="0 0 200 200"
+      >
+        <circle
+          fill="currentColor"
+          cx="50"
+          cy="150"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="150"
+          cy="50"
+          r="18"
+        />
+        <path
+          stroke-width=".4em"
+          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
+        />
+      </symbol>
+      <symbol
+        id="diceThrees"
+        class="dice"
+        viewBox="0 0 200 200"
+      >
+        <circle
+          fill="currentColor"
+          cx="50"
+          cy="150"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="100"
+          cy="100"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="150"
+          cy="50"
+          r="18"
+        />
+        <path
+          stroke-width=".4em"
+          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
+        />
+      </symbol>
+      <symbol
+        id="diceFours"
+        class="dice"
+        viewBox="0 0 200 200"
+      >
+        <circle
+          fill="currentColor"
+          cx="150"
+          cy="50"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="150"
+          cy="150"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="50"
+          cy="150"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="50"
+          cy="50"
+          r="18"
+        />
+        <path
+          stroke-width=".4em"
+          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
+        />
+      </symbol>
+      <symbol
+        id="diceFives"
+        class="dice"
+        viewBox="0 0 200 200"
+      >
+        <circle
+          fill="currentColor"
+          cx="100"
+          cy="100"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="150"
+          cy="50"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="150"
+          cy="150"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="50"
+          cy="150"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="50"
+          cy="50"
+          r="18"
+        />
+        <path
+          stroke-width=".4em"
+          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
+        />
+      </symbol>
+      <symbol
+        id="diceSixes"
+        class="dice"
+        viewBox="0 0 200 200"
+      >
+        <circle
+          fill="currentColor"
+          cx="150"
+          cy="100"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="150"
+          cy="50"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="150"
+          cy="150"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="50"
+          cy="150"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="50"
+          cy="100"
+          r="18"
+        />
+        <circle
+          fill="currentColor"
+          cx="50"
+          cy="50"
+          r="18"
+        />
+        <path
+          stroke-width=".4em"
+          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
+        />
+      </symbol>
+    </svg>
+  </v-layout>
 </template>
 
 <script>
@@ -355,12 +355,14 @@ export default {
   font-family: $text-font;
 }
 .rules-text {
+  padding: 0em 1em 0em 1em;
   line-height: 1.4em;
   font-size: 1.25em;
   text-indent: 1em;
   font-family: $cyrillic-font;
 }
 .rules-text-eng {
+  padding: 0em 1em 0em 1em;
   text-indent: 1em;
   font-family: $text-font;
   font-size: 1.4em;
