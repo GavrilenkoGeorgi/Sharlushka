@@ -33,6 +33,7 @@
           dark
           small
           flat
+          aria-label="settings"
           @click="manipulateDrawer"
         >
           <v-icon large>

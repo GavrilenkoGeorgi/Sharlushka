@@ -87,8 +87,13 @@
       v-model="networkProblemDialog"
       width="20em"
     >
-      <v-card>
-        <v-card-text class="text-xs-center offline-save-message">
+      <v-card class="text-xs-center">
+        <v-flex style="height: 3em">
+          <NetworkCheck />
+        </v-flex>
+        <v-card-text
+          class="text-xs-center offline-save-message"
+        >
           {{ offlineSaveUserMessage }}
         </v-card-text>
         <v-card-actions>
@@ -129,12 +134,14 @@
 <script>
 import {mapGetters} from 'vuex'
 import store from '../store/store'
-import closeBtn from '../components/CloseBtn.vue'
 import db from '../firebase/firebaseInit'
+import closeBtn from '../components/CloseBtn.vue'
+import NetworkCheck from '../components/NetworkCheck.vue'
 
 export default {
   components: {
-    closeBtn
+    closeBtn,
+    NetworkCheck
   },
   data() {
     return {
@@ -146,7 +153,11 @@ export default {
       highestScore: null,
       networkProblemDialog: false,
       tryAgainBtnLoading: false,
-      offlineSaveUserMessage: `You are offline, connect to the internet to save results.`,
+      offlineSaveUserMessage: `You are offline,
+        connect to the internet to save results.
+        If you choose to cancel, results are saved
+        in local storage and will be saved to DB
+        next time you finish the game.`,
       hiscoreGreeting: `Your highest score is`,
       exclamation: `!`, // some over-engeneering
       lastScores: ``,
@@ -248,11 +259,11 @@ export default {
       } else if (this.getUserData.isAuthenticated && this.isOnline) {
         console.log(`User is authenticated and network is online. Syncing with firestore.`)
         this.syncScoreWithFirestore()
-      } else if (this.getUserData.isAuthenticated &&
-        !this.isOnline &&
+      } else if (this.getUserData.isAuthenticated && !this.isOnline &&
         this.getCurrentGameState.gameInProgress) {
         console.log(`User is authenticated but network is offline.`)
-        this.networkProblemDialog = true
+        // this.networkProblemDialog = true
+        this.toggleNetworkProblemDialog()
       } else {
         console.log(`Something went wrong in the piping system.`)
       }
@@ -279,20 +290,25 @@ export default {
           const resultsArrayToUpdate = localStorage.getItem(`lastScoresArray`)
           const highestScoreToUpdate = localStorage.getItem(`highestScore`)
           const schoolScoresToUpdate = localStorage.getItem(`schoolScores`)
-          const updateDocRef = docRef.update({
+          docRef.update({
             resultsArray: resultsArrayToUpdate,
             schoolResultsArray: schoolScoresToUpdate,
             hiScore: highestScoreToUpdate
           })
           console.log(`...updating user stats`)
           this.tryAgainBtnLoading = !this.tryAgainBtnLoading
-          this.networkProblemDialog = !this.networkProblemDialog
-          return updateDocRef // ? true
+          this.networkProblemDialog = false
+          // this.networkProblemDialog = !this.networkProblemDialog
+          // this.toggleNetworkProblemDialog()
+          return true
         })
         .catch(error => {
           this.tryAgainBtnLoading = !this.tryAgainBtnLoading
           console.log(`Error getting documents: `, error)
         })
+    },
+    toggleNetworkProblemDialog () {
+      this.networkProblemDialog = !this.networkProblemDialog
     }
   }
 }
@@ -310,5 +326,8 @@ export default {
 }
 .message-school {
   line-height: 1.5;
+}
+.offline-save-message {
+  font-size: 1.2em;
 }
 </style>

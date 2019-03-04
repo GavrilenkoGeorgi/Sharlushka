@@ -36,10 +36,24 @@ firebase.auth().onAuthStateChanged((user) => {
   }
 })
 
+if (`serviceWorker` in navigator) {
+  window.addEventListener(`load`, function() {
+    navigator.serviceWorker.register(`/service-worker.js`).then(function(registration) {
+      console.log(`ServiceWorker registration successful with scope: `, registration.scope)
+    }, function(err) {
+      console.log(`ServiceWorker registration failed: `, err)
+    })
+  })
+}
+/*
+self.addEventListener(`fetch`, function(event) {
+  event.respondWith(caches.match(event.request))
+})
+*/
 Vue.config.productionTip = false
 
 Vue.use(Vuetify, {
-  iconfont: `md` // 'md' || 'mdi' || 'fa' || 'fa4'
+  iconfont: `md` // `md` || `mdi` || `fa` || `fa4`
 })
 
 Vue.use(VueOffline)
@@ -54,6 +68,6 @@ new Vue({
     AsyncComponent: () => import(`./App.vue`)
   },
   // components: { App },
-  // template: '<App/>',
+  // template: `<App/>`,
   render: (h) => h(App)
 })
