@@ -133,7 +133,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import store from '../store/store'
+import store from '../store/store' // $this.store?
 import db from '../firebase/firebaseInit'
 import closeBtn from '../components/CloseBtn.vue'
 import NetworkCheck from '../components/NetworkCheck.vue'

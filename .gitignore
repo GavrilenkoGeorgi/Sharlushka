@@ -10,6 +10,7 @@ yarn-error.log*
 selenium-debug.log
 /src/firebase/firebaseConfig.js
 /src/store/debugState.js
+/platforms/android/
 
 # Editor directories and files
 .idea

@@ -10,6 +10,7 @@
     <v-toolbar
       absolute
       dense
+      height="40"
       color="purple darken-2"
       class="text-xs-center"
     >
@@ -29,16 +30,16 @@
       <v-toolbar-items>
         <v-spacer />
         <v-btn
-          fab
-          dark
-          small
-          flat
+          icon
           aria-label="settings"
           @click="manipulateDrawer"
         >
-          <v-icon large>
+          <settingsIcon
+            class="settings-icon"
+          />
+          <!--v-icon large>
             more_vert
-          </v-icon>
+          </v-icon-->
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
@@ -352,7 +353,9 @@
           :class="{ set:combination.final }"
           @click="handleBoardClick"
         >
-          <v-layout>
+          <v-layout
+            :class="{ highlighted:!combination.final && combination.value }"
+          >
             <v-flex
               xs6
               pl-2
@@ -389,12 +392,14 @@ import NetworkCheck from '../components/NetworkCheck.vue'
 import { mapGetters, mapActions } from 'vuex'
 import store from '../store/store'
 import DiceBox from '../components/DiceBox.vue'
+import settingsIcon from '../assets/icons/baseline-more_vert-24px.svg'
 
 export default {
   name: `Game`,
   components: {
     DiceBox,
-    NetworkCheck
+    NetworkCheck,
+    settingsIcon
   },
   data: () => ({
     title: `Sharlushka`,
@@ -638,10 +643,13 @@ export default {
 
 <style lang="scss" scoped>
 
-@import "../assets/scss/index.scss";
+// @import "../assets/scss/index.scss";
+
+@import "../assets/fonts/fonts.scss";
+@import "../assets/scss/vars/colors.scss";
 
 .game-layout {
-  padding-top: 3.5em;
+  padding-top: 3.1em;
   // height: 100vh;
   font-family: $text-font;
   // background: $color-pale-primary;
@@ -653,15 +661,16 @@ export default {
 }
 
 .set {
-  background-color: $color-pale-primary;
+  // background-color: $color-pale-primary;
   color: $color-chosen;
 }
 .game-ended {
   background: $color-pale-primary;
+  /*
   .set {
     transition: background-color 1s ease-out;
     background-color: inherit;
-  }
+  }*/
 }
 .school-results-layout {
   // border: 1px solid pink;
@@ -678,7 +687,7 @@ export default {
   color: $color-primary-0;
 }
 .game-combination {
-  padding: 0.1em; // padding messes up with the toolbar in apk
+  padding: .2em 0em .2em 0em;
 }
 .blink {
   color: $color-primary-1;
@@ -730,7 +739,7 @@ export default {
   // line-height: 1;
 }
 .score {
-  color: white;
+  color: $color-white;
   font-size: 2em;
   font-family: $text-font;
   text-align: center;
@@ -739,8 +748,8 @@ export default {
 .game-name {
   // font-weight: 700;
   a {
-    color: white;
-    font-size: 1.3em;
+    color: $color-pale-primary-lightest;
+    font-size: 1.1em;
     font-family: $text-font;
     text-transform: capitalize;
     text-decoration: none;
@@ -897,4 +906,11 @@ export default {
   }
 }
 
+.settings-icon {
+  fill: $color-white;
+}
+
+.highlighted {
+  background-color: $color-combination-hightlight;
+}
 </style>

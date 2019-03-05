@@ -3,7 +3,7 @@
     id="diceControls"
     d-flex
     ma-0
-    pa-0
+    pb-1
   >
     <!-- Dice box -->
     <v-layout
@@ -242,7 +242,6 @@ export default {
   border: 1px solid pink;
 }
 */
-
 .game-dice-container {
   height: 3.6em;
   margin-left: .3em;

@@ -10,7 +10,7 @@ module.exports = (env, argv) => ({
   mode: argv && argv.mode || 'development',
   devtool: (argv && argv.mode || 'development') === 'production' ? 'source-map' : 'eval',
 
-  entry: './src/App.js',
+  entry: './src/index.js',
 
   output: {
     path: path.resolve(__dirname, 'dist'),

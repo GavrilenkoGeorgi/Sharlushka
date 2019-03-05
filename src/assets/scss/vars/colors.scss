@@ -4,8 +4,26 @@
 
 // As hex codes */
 
-// $color-primary-0: #79008f;
+// toolabar
 $color-primary-0: #7B1FA2; // purple darken-2
+
+// game name
+$color-pale-primary-lightest: #e4c2ff;
+
+//chosen state, should really be one i guess
+$color-orange: #FF9800;
+$color-chosen: #FF9800;
+
+// main button brick color
+$main-button-brick-color: #fff;
+
+// white
+$color-white: #fff;
+
+// combination hightlight
+$color-combination-hightlight: #f9f2ff;
+
+// something
 $color-primary-1: #B380D7;
 $color-primary-2: #7B4B9D;
 $color-primary-3: #301246;
@@ -14,9 +32,6 @@ $some-color: #ECF0F1; //??
 $some-color2: #2C2F38; //??
 $some-color3: #D1D4D1; //??
 
-// main button brick color
-$main-button-brick-color: #fff;
-
 $color-light: #fff;
 $color-light-gray: rgb(219, 219, 219);
 $color-very-red: rgba(180, 0, 0, 1);
@@ -24,11 +39,10 @@ $color-red-darker: rgb(90, 0, 0);
 // $color-stop-brick: rgb(255, 180, 180);
 // $color-red-darker: #fff;
 $color-very-red-transparent: rgba(180, 0, 0, .9);
-$color-orange: #FF9800;
-$color-chosen: #FF9800;
+
 $color-orange-light: hsla(36, 100%, 50%, .5);
 $color-pale-primary: rgba(242, 225, 255, .5);
-$color-pale-primary-lightest: #dfb6ff;
+
 $color-black-transparent: rgba(0, 0, 0, .5);
 $color-primary-transparent: rgba( 48, 18, 70, .95);
 $color-primary-tint: rgba( 48, 18, 70, .05);
