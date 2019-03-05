@@ -51,14 +51,17 @@
             to="/game"
             ripple
             outline
-            color="purple darken-1"
+            color="purple darken-2"
             aria-label="Start game"
-            :class="{orange:$store.state.currentGameTurn > 1}"
+            :class="{ orange:isGameInProgress }"
           >
-            <v-icon color="purple darken-1">
-              done
-            </v-icon>
-            play
+            <doneIcon
+              class="main-page-button"
+              :class="{ highlighted:isGameInProgress }"
+            />
+            <span :class="{ highlighted:isGameInProgress }">
+              play
+            </span>
           </v-btn>
         </v-flex>
         <v-flex
@@ -74,9 +77,9 @@
             color="purple darken-1"
             aria-label="Register or change name"
           >
-            <v-icon color="purple darken-1">
-              how_to_reg
-            </v-icon>
+            <regIcon
+              class="main-page-button"
+            />
             login
           </v-btn>
         </v-flex>
@@ -111,12 +114,17 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import SharlushkaLogo from '../assets/images/sharlushkaLogo.svg'
+import doneIcon from '../assets/icons/baseline-done-24px.svg'
+import regIcon from '../assets/icons/baseline-how_to_reg-24px.svg'
 
 export default {
   name: `Main`,
   components: {
-    SharlushkaLogo
+    SharlushkaLogo,
+    doneIcon,
+    regIcon
   },
   data() {
     return {
@@ -124,6 +132,14 @@ export default {
       userName: `Anonymous`,
       greeting: `Hi,`,
       exclamation: `.`
+    }
+  },
+  computed: {
+    ...mapGetters([
+      `getCurrentGameState`
+    ]),
+    isGameInProgress () {
+      return this.getCurrentGameState.gameInProgress ? true : false
     }
   },
   mounted() {
@@ -138,8 +154,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../assets/fonts/fonts.scss";
+@import "../assets/scss/vars/colors.scss";
 
-@import "../assets/scss/index.scss";
 .game-name, .user-name, .user-name-main-page, .copyrights {
   font-family: $text-font;
 }
@@ -159,7 +176,7 @@ export default {
 }
 .copyrights {
   font-size: .9em;
-  color: rgb(83, 83, 83);
+  color: rgb(83, 83, 83); //?
 }
 
 @media screen and (orientation: landscape) {
@@ -180,4 +197,12 @@ export default {
   }
 }
 
+.main-page-button {
+  fill: $color-primary-0;
+}
+
+.highlighted {
+  fill: $color-orange;
+  color: $color-orange;
+}
 </style>
