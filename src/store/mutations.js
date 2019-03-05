@@ -205,11 +205,10 @@ export default {
                     // we got large combination
                     state.scoreArray[13].value = smallLargeCheckArray.reduce(scoreSum)
                   }
+                } else {
+                  state.scoreArray[12].value = ``
+                  state.scoreArray[13].value = ``
                 }
-              } else if (!state.scoreArray[12].final) {
-                state.scoreArray[12].value = ``
-              } else if (!state.scoreArray[13].final) {
-                state.scoreArray[13].value = ``
               }
               // check for chance
               const chanceScore = state.combinationArray.reduce(scoreSum)
