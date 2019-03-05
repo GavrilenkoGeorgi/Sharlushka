@@ -37,9 +37,6 @@
           <settingsIcon
             class="settings-icon"
           />
-          <!--v-icon large>
-            more_vert
-          </v-icon-->
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
@@ -58,14 +55,9 @@
           @click="manipulateDrawer"
         >
           <v-list-tile-action>
-            <v-flex class="text-xs-center">
-              <v-icon
-                large
-                color="orange"
-              >
-                keyboard_backspace
-              </v-icon>
-            </v-flex>
+            <v-layout justify-center>
+              <backIcon class="highlighted" />
+            </v-layout>
           </v-list-tile-action>
           <v-list-tile-title class="drawer-menu-item">
             Back
@@ -90,11 +82,12 @@
           @click="navDrawer = false"
         >
           <v-list-tile-action>
-            <v-flex class="text-xs-center">
-              <v-icon color="purple darken-2">
-                {{ link.icon }}
-              </v-icon>
-            </v-flex>
+            <v-layout justify-center>
+              <component
+                :is="link.icon"
+                class="nav-drawer-link-icon"
+              />
+            </v-layout>
           </v-list-tile-action>
           <v-list-tile-title class="drawer-menu-item subheading">
             {{ link.text }}
@@ -354,7 +347,7 @@
           @click="handleBoardClick"
         >
           <v-layout
-            :class="{ highlighted:!combination.final && combination.value }"
+            :class="{ accented:!combination.final && combination.value }"
           >
             <v-flex
               xs6
@@ -392,17 +385,28 @@ import NetworkCheck from '../components/NetworkCheck.vue'
 import { mapGetters, mapActions } from 'vuex'
 import store from '../store/store'
 import DiceBox from '../components/DiceBox.vue'
-import settingsIcon from '../assets/icons/baseline-more_vert-24px.svg'
+import settingsIcon from '../assets/icons/baseline-menu-24px.svg'
+import helpIcon from '../assets/icons/baseline-trending_up-24px.svg'
+import userStatsIcon from '../assets/icons/baseline-equalizer-24px.svg'
+import leaderBoardIcon from '../assets/icons/baseline-import_export-24px.svg'
+import logInOutIcon from '../assets/icons/baseline-exit_to_app-24px.svg'
+import backIcon from '../assets/icons/baseline-keyboard_backspace-24px.svg'
 
 export default {
   name: `Game`,
   components: {
     DiceBox,
     NetworkCheck,
-    settingsIcon
+    settingsIcon,
+    helpIcon,
+    userStatsIcon,
+    leaderBoardIcon,
+    logInOutIcon,
+    backIcon
   },
   data: () => ({
     title: `Sharlushka`,
+    icon:`settingsIcon`,
     highestScore: 0,
     turnCompleted: false,
     progressBarLength: 3,
@@ -410,22 +414,22 @@ export default {
     navDrawerLinks: [
       {
         path: `/help`,
-        icon: `trending_up`,
+        icon: `helpIcon`,
         text: `School results & help`
       },
       {
         path: `/userstats`,
-        icon: `equalizer`,
+        icon: `userStatsIcon`,
         text: `User stats`
       },
       {
         path: `/leaderboard`,
-        icon: `import_export`,
+        icon: `leaderBoardIcon`,
         text: `Leaderboard`
       },
       {
         path: `/login`,
-        icon: `exit_to_app`,
+        icon: `logInOutIcon`,
         text: `Log in/out`
       }
     ]
@@ -642,9 +646,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-// @import "../assets/scss/index.scss";
-
 @import "../assets/fonts/fonts.scss";
 @import "../assets/scss/vars/colors.scss";
 
@@ -910,7 +911,11 @@ export default {
   fill: $color-white;
 }
 
-.highlighted {
+.accented {
   background-color: $color-combination-hightlight;
+}
+
+.nav-drawer-link-icon {
+  fill: $color-primary-0;
 }
 </style>

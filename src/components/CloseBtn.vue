@@ -7,18 +7,26 @@
       dark
       @click="$router.go(-1)"
     >
-      <v-icon
-        size="3em"
-        color="#79008f"
-      >
-        close
-      </v-icon>
+      <closeIcon class="close-btn" />
     </v-btn>
   </v-flex>
 </template>
 
 <script>
+import closeIcon from '../assets/icons/baseline-close-24px.svg'
+
 export default {
-  name: `CloseBtn`
+  name: `CloseBtn`,
+  components: {
+    closeIcon
+  }
 }
 </script>
+
+<style lang="scss" scoped>
+@import "../assets/scss/vars/colors.scss";
+
+.close-btn {
+  fill: $color-primary-0;
+}
+</style>

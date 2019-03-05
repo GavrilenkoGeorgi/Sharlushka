@@ -16,11 +16,7 @@
     <!-- Users leaderboard legend -->
     <v-flex class="leaderboard-legend text-xs-center pl-1 py-2">
       <v-layout align-center>
-        <v-flex xs1>
-          <v-icon color="purple darken-2">
-            import_export
-          </v-icon>
-        </v-flex>
+        <listIcon class="default-icon-color" />
         <v-flex
           xs3
           class="text-xs-left"
@@ -92,13 +88,15 @@
 
 <script>
 import closeBtn from '../components/CloseBtn.vue'
+import listIcon from '../assets/icons/baseline-import_export-24px.svg'
 import {mapGetters} from 'vuex'
 import db from '../firebase/firebaseInit'
 
 export default {
   name: `Leaderboard`,
   components: {
-    closeBtn
+    closeBtn,
+    listIcon
   },
   data: () => ({
     title: `leaderboard`,

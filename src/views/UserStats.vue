@@ -111,12 +111,7 @@
             color="orange"
             @click="restartGame"
           >
-            <v-icon
-              medium
-              color="orange"
-            >
-              replay
-            </v-icon>
+            <restartIcon class="highlighted" />
             restart
           </v-btn>
         </v-flex>
@@ -128,13 +123,15 @@
 <script>
 import { mapGetters } from 'vuex'
 import closeBtn from '../components/CloseBtn.vue'
+import restartIcon from '../assets/icons/baseline-replay-24px.svg'
 // import db from '../firebase/firebaseInit'
 
 export default {
   name: `UserStats`,
   components: {
-    closeBtn
-  }, // change to stats
+    closeBtn,
+    restartIcon
+  },
   data() {
     return {
       userName: ``,
@@ -338,4 +335,7 @@ export default {
   padding: 2em 0em 2em 0em;
 }
 
+.highlighted {
+  fill: $color-orange;
+}
 </style>

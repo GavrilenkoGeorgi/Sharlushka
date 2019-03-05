@@ -6,18 +6,17 @@
   >
     <v-btn
       slot="activator"
-      small
       icon
-      fab
-      dark
+      aria-label="network check"
     >
-      <v-icon
+      <cloudOffIcon class="cloud-icon blink" />
+      <!--v-icon
         medium
         class="blink"
         color="orange"
       >
         cloud_off
-      </v-icon>
+      </v-icon-->
     </v-btn>
     <v-card class="offline-message">
       <v-card-text class="offline-message-text">
@@ -32,12 +31,13 @@
           ripple
           @click="offlineMessage = false"
         >
-          <v-icon
+          <doneIcon class="highlighted" />
+          <!--v-icon
             large
             color="orange"
           >
             done
-          </v-icon>
+          </v-icon-->
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -45,8 +45,15 @@
 </template>
 
 <script>
+import cloudOffIcon from '../assets/icons/baseline-cloud_off-24px.svg'
+import doneIcon from '../assets/icons/baseline-done-24px.svg'
+
 export default {
   name: `NetworkCheck`,
+  components: {
+    cloudOffIcon,
+    doneIcon
+  },
   data: () => ({
     offlineMessage: false
   }),
@@ -61,12 +68,16 @@ export default {
 @import '../assets/fonts/fonts.scss';
 @import '../assets/scss/vars/colors.scss';
 
+.cloud-icon {
+  fill: $color-orange;
+}
+
 .offline-message {
   border: 1px solid $color-primary-0;
 }
 
 .offline-message-text {
-  font-size: 1.5em;
+  font-size: 1.2em;
   font-family: $text-font;
   color: $color-primary-3;
 }

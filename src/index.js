@@ -45,17 +45,10 @@ if (`serviceWorker` in navigator) {
     })
   })
 }
-/*
-self.addEventListener(`fetch`, function(event) {
-  event.respondWith(caches.match(event.request))
-})
-*/
+
 Vue.config.productionTip = false
 
-Vue.use(Vuetify, {
-  iconfont: `md` // `md` || `mdi` || `fa` || `fa4`
-})
-
+Vue.use(Vuetify)
 Vue.use(VueOffline)
 
 Vue.use(require(`vue-chartist`))

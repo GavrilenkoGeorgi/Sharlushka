@@ -2,6 +2,8 @@
   <v-container
     id="endGame"
     fill-height
+    pa-0
+    mp-0
   >
     <!-- Close button -->
     <v-layout
@@ -50,12 +52,7 @@
             color="orange"
             @click="restartGame"
           >
-            <v-icon
-              medium
-              color="orange"
-            >
-              replay
-            </v-icon>
+            <restartIcon class="highlighted" />
             restart
           </v-btn>
         </v-flex>
@@ -71,12 +68,7 @@
             color="purple darken-1"
             :to="'/userstats'"
           >
-            <v-icon
-              medium
-              color="purple darken-1"
-            >
-              trending_up
-            </v-icon>
+            <statsIcon class="default-icon-color" />
             stats
           </v-btn>
         </v-flex>
@@ -137,11 +129,15 @@ import store from '../store/store' // $this.store?
 import db from '../firebase/firebaseInit'
 import closeBtn from '../components/CloseBtn.vue'
 import NetworkCheck from '../components/NetworkCheck.vue'
+import restartIcon from '../assets/icons/baseline-replay-24px.svg'
+import statsIcon from '../assets/icons/baseline-equalizer-24px.svg'
 
 export default {
   components: {
     closeBtn,
-    NetworkCheck
+    NetworkCheck,
+    statsIcon,
+    restartIcon
   },
   data() {
     return {
