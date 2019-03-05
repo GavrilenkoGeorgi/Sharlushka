@@ -347,6 +347,7 @@
           @click="handleBoardClick"
         >
           <v-layout
+            class="background-transition"
             :class="{ accented:!combination.final && combination.value }"
           >
             <v-flex
@@ -650,7 +651,7 @@ export default {
 @import "../assets/scss/vars/colors.scss";
 
 .game-layout {
-  padding-top: 3.1em;
+  padding-top: 3.3em;
   // height: 100vh;
   font-family: $text-font;
   // background: $color-pale-primary;
@@ -688,7 +689,7 @@ export default {
   color: $color-primary-0;
 }
 .game-combination {
-  padding: .2em 0em .2em 0em;
+  padding: .15em 0em .15em 0em;
 }
 .blink {
   color: $color-primary-1;
@@ -917,5 +918,9 @@ export default {
 
 .nav-drawer-link-icon {
   fill: $color-primary-0;
+}
+
+.background-transition {
+  transition: background-color .6s ease-in;
 }
 </style>

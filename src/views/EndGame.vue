@@ -84,7 +84,7 @@
           <NetworkCheck />
         </v-flex>
         <v-card-text
-          class="text-xs-center offline-save-message"
+          class="text-xs-left offline-save-message"
         >
           {{ offlineSaveUserMessage }}
         </v-card-text>
@@ -96,24 +96,16 @@
             :loading="tryAgainBtnLoading"
             @click="syncScoreWithFirestore"
           >
-            <v-icon
-              color="orange"
-            >
-              done
-            </v-icon>
+            <restartIcon class="highlighted" />
             Try again
           </v-btn>
           <v-btn
             outline
             ripple
-            color="purple darken-1"
+            color="purple darken-2"
             @click="networkProblemDialog = false"
           >
-            <v-icon
-              color="purple darken-1"
-            >
-              cancel
-            </v-icon>
+            <cancelIcon class="default-icon-color" />
             Cancel
           </v-btn>
           <v-spacer />
@@ -131,13 +123,15 @@ import closeBtn from '../components/CloseBtn.vue'
 import NetworkCheck from '../components/NetworkCheck.vue'
 import restartIcon from '../assets/icons/baseline-replay-24px.svg'
 import statsIcon from '../assets/icons/baseline-equalizer-24px.svg'
+import cancelIcon from '../assets/icons/baseline-cancel-24px.svg'
 
 export default {
   components: {
     closeBtn,
     NetworkCheck,
     statsIcon,
-    restartIcon
+    restartIcon,
+    cancelIcon
   },
   data() {
     return {

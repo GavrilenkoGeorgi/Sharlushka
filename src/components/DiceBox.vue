@@ -3,7 +3,7 @@
     id="diceControls"
     d-flex
     ma-0
-    pb-1
+    pb-2
   >
     <!-- Dice box -->
     <v-layout
