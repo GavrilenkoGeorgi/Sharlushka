@@ -16,10 +16,8 @@ export default {
   },
   getDiceIds(state) {
     const diceIdsContainer = state.scoreArray.slice(0, state.diceArray.length + 1)
-    console.log(`diceIdsContainer inside getter`)
-    console.log(diceIdsContainer)
-    const diceIds = []
-    for (const id of diceIdsContainer) {
+    let diceIds = []
+    for (let id of diceIdsContainer) {
       diceIds.push(id.icon)
       // console.log(`Inside get ids ${id.icon}`)
     }

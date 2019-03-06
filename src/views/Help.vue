@@ -9,7 +9,7 @@
         {{ rulesHeading }}
       </h1>
       <h4
-        v-if="schoolScores !== ''"
+        v-if="schoolScores !== ``"
         class="text-xs-center rules-heading"
       >
         Your recent school results
@@ -44,226 +44,58 @@
         px-3
       >
         <v-layout align-center>
-          <p>
+          <v-flex class="text-xs-left">
             {{ combination.title }}
-          </p>
+          </v-flex>
+          <!-- Layout for icons in each combination -->
           <v-layout justify-end>
-            <svg
+            <v-flex
               v-for="(icon, value) of combination.quantity"
               :key="value"
-              class="help-dice-icon"
+              pa-1
+              d-flex
+              shrink
             >
-              <use v-bind="{'xlink:href':'#' + getDiceIds[icon - 1]}" />
-            </svg>
+              <!-- The tricky part with dice ids,
+                there are six ids and five dices -->
+              <component
+                :is="getDiceIds[icon - 1]"
+                class="help-section-dice-icon"
+              />
+            </v-flex>
           </v-layout>
-          <p class="score-value">
+          <v-flex
+            xs1
+            class="score-value text-xs-right"
+          >
             {{ combination.scoreValue }}
-          </p>
+          </v-flex>
         </v-layout>
       </v-flex>
     </v-flex>
-    <!-- Icon definitions remove this -->
-    <svg
-      version="1.1"
-      style="display: none;"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <symbol
-        id="diceOnes"
-        viewBox="0 0 200 200"
-      >
-        <circle
-          fill="currentColor"
-          cx="100"
-          cy="100"
-          r="18"
-        />
-        <path
-          stroke-width=".4em"
-          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
-        />
-      </symbol>
-      <symbol
-        id="diceTwos"
-        viewBox="0 0 200 200"
-      >
-        <circle
-          fill="currentColor"
-          cx="50"
-          cy="150"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="150"
-          cy="50"
-          r="18"
-        />
-        <path
-          stroke-width=".4em"
-          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
-        />
-      </symbol>
-      <symbol
-        id="diceThrees"
-        class="dice"
-        viewBox="0 0 200 200"
-      >
-        <circle
-          fill="currentColor"
-          cx="50"
-          cy="150"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="100"
-          cy="100"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="150"
-          cy="50"
-          r="18"
-        />
-        <path
-          stroke-width=".4em"
-          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
-        />
-      </symbol>
-      <symbol
-        id="diceFours"
-        class="dice"
-        viewBox="0 0 200 200"
-      >
-        <circle
-          fill="currentColor"
-          cx="150"
-          cy="50"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="150"
-          cy="150"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="50"
-          cy="150"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="50"
-          cy="50"
-          r="18"
-        />
-        <path
-          stroke-width=".4em"
-          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
-        />
-      </symbol>
-      <symbol
-        id="diceFives"
-        class="dice"
-        viewBox="0 0 200 200"
-      >
-        <circle
-          fill="currentColor"
-          cx="100"
-          cy="100"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="150"
-          cy="50"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="150"
-          cy="150"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="50"
-          cy="150"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="50"
-          cy="50"
-          r="18"
-        />
-        <path
-          stroke-width=".4em"
-          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
-        />
-      </symbol>
-      <symbol
-        id="diceSixes"
-        class="dice"
-        viewBox="0 0 200 200"
-      >
-        <circle
-          fill="currentColor"
-          cx="150"
-          cy="100"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="150"
-          cy="50"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="150"
-          cy="150"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="50"
-          cy="150"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="50"
-          cy="100"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="50"
-          cy="50"
-          r="18"
-        />
-        <path
-          stroke-width=".4em"
-          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
-        />
-      </symbol>
-    </svg>
   </v-layout>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import closeBtn from '../components/CloseBtn.vue'
+import diceOnes from '../assets/icons/diceOnes.svg'
+import diceTwos from '../assets/icons/diceTwos.svg'
+import diceThrees from '../assets/icons/diceThrees.svg'
+import diceFours from '../assets/icons/diceFours.svg'
+import diceFives from '../assets/icons/diceFives.svg'
+import diceSixes from '../assets/icons/diceSixes.svg'
 
 export default {
   name: `Help`,
   components: {
-    closeBtn
+    closeBtn,
+    diceOnes,
+    diceTwos,
+    diceThrees,
+    diceFours,
+    diceFives,
+    diceSixes
   },
   data() {
     return {
@@ -298,6 +130,16 @@ export default {
         two optional rolls of the dice that can turn an unlucky first or second roll into a high
         scoring turn.`,
       rulesHeading: `Help`,
+      //
+      // Combinations display
+      //
+      // by changing the numbers in `quantity` array
+      // we can choose how many dice with which id to display
+      // e.g. quantity: [6, 6, 6] is three dice with ids -->
+      // `diceSixes, diceSixes, diceSixes`
+      // quantity: [2, 6, 1, 3, 4] is five dices -->
+      // `diceTwos, diceSixes, diceOnes, diceThrees, diceFours`
+      // ids are in the store
       combinationsDescrMk3: [
         {title: `Single dice with ace`, quantity: [1], scoreValue: `-2`},
         {title: `Two aces`, quantity: [1, 1], scoreValue: `-1`},
@@ -315,7 +157,8 @@ export default {
         {title: `Poker`, quantity: [4, 4, 4, 4, 4], scoreValue: `100`},
         {title: `Small`, quantity: [1, 2, 3, 4, 5], scoreValue: `15`},
         {title: `Large`, quantity: [2, 3, 4, 5, 6], scoreValue: `20`},
-        {title: `Chance`, quantity: [2, 6, 1, 3, 4], scoreValue: `16`}
+        {title: `Chance`, quantity: [2, 6, 1, 3, 4], scoreValue: `16`},
+        {title: `Another chance`, quantity: [4, 1, 2, 1, 5], scoreValue: `13`}
       ]
     }
   },
@@ -367,38 +210,23 @@ export default {
   font-family: $text-font;
   font-size: 1.4em;
 }
-.help-dice-icon {
-  display: block;
-  fill: none;
-  width: 100%;
-  height: 1.25em;
-  width: 1.25em;
-  color: $color-primary-0;
-  // stroke-width: 1em;
-  margin: 0em .15em 0em .15em;
-  stroke: $color-primary-0;
-}
+
 .score-value {
-  // border: 1px solid green;
-  width: 2em;
-  text-align: right;
   font-weight: 500;
   color: $color-chosen;
 }
 
 .combination-descr {
   font-size: 1.2em;
-  // font-weight: 700;
-  // color: red;
+  font-weight: 500;
   font-family: $text-font;
-  padding: .2em;
-  p {
-    margin: 0;
-  }
-  transition: background-color 500ms;
+  transition: background-color 500ms ease-in-out;
 }
 .combination-descr:hover {
   background-color: $color-pale-primary;
+  .dice-icon {
+    color: $color-chosen;
+  }
 }
 
 @media screen and (orientation: landscape) {
@@ -407,4 +235,12 @@ export default {
   }
 }
 
+.help-section-dice-icon {
+  height: 1.4em;
+}
+
+.dice-icon {
+  color: $color-primary-0;
+  transition: color 500ms ease-in-out;
+}
 </style>
