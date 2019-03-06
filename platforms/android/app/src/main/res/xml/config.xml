@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.github.sharlushka" version="1.2.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.github.sharlushka" version="1.4.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <feature name="Whitelist">
         <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
         <param name="onload" value="true" />
@@ -7,7 +7,7 @@
     <name>Sharlushka</name>
     <icon platform="android" src="res/icon/android/icon-144-xxhdpi.png" />
     <description>
-        Simple puzzle game.
+        Simple dice game.
     </description>
     <author email="gavrilenko.georgi@gmail.com" href="http://gavrilenkogeorgi.github.io">
         Gavrilenko Georgi
@@ -22,5 +22,5 @@
     <allow-intent href="geo:*" />
     <allow-intent href="market:*" />
     <preference name="loglevel" value="DEBUG" />
-    <preference name="HeaderColor" value="#B380D7" />
+    <preference name="HeaderColor" value="#7B1FA2" />
 </widget>

@@ -21,11 +21,11 @@ apply plugin: 'com.android.application'
 
 ext.versionMajor = 1
 ext.versionMinor = 4
-ext.versionPatch = 2
+ext.versionPatch = 3
 // ext.versionClassifier = null
 ext.versionClassifier = 'beta'
 ext.isSnapshot = false
-ext.minimumSdkVersion = 19
+ext.minimumSdkVersion = 21
 
 buildscript {
     repositories {

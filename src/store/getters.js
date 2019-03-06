@@ -14,10 +14,10 @@ export default {
     }
     return currentGameState
   },
-  getProcessing: (state) => state.processing,
-  getError: (state) => state.error,
   getDiceIds(state) {
     const diceIdsContainer = state.scoreArray.slice(0, state.diceArray.length + 1)
+    console.log(`diceIdsContainer inside getter`)
+    console.log(diceIdsContainer)
     const diceIds = []
     for (const id of diceIdsContainer) {
       diceIds.push(id.icon)
@@ -25,6 +25,7 @@ export default {
     }
     return diceIds
   },
+  getDiceArray: (state) => state.diceArray,
   getSchoolArray(state) {
     const schoolArray = state.scoreArray.slice(0, state.diceArray.length + 1)
     return schoolArray
@@ -35,8 +36,8 @@ export default {
     return combinationArray
   },
   getMaxPossibleScore: (state) => state.maxPossibleScore,
-  getUserAuthState: (state) => state.user.isAuthenticated, // ?
-  getDiceArray: (state) => state.diceArray,
+  getUserAuthState: (state) => state.user.isAuthenticated,
+  getUserData: (state) => state.user, // ?
   getTotalScore(state) {
     return state.schoolScoreTotal + state.gameTotal
   },
@@ -45,8 +46,10 @@ export default {
   },
   getDefaultUserName(state) {
     return state.defaultUserName
-  },
-  getUserData: (state) => state.user,
+  }
+  // getProcessing: (state) => state.processing,
+  // getError: (state) => state.error,
+  /*
   debugInfo(state) {
     // console.log(`Debug on`)
     for (const key in state.diceArray) {
@@ -62,13 +65,13 @@ export default {
     }
   },
   chosenDiceArray(state) {
-    return state.diceArray.filter((dice) => {
+    return state.diceArray.filter(dice => {
       return dice.chosen
     })
   },
   currentValuesInScoreArray(state) {
-    return state.scoreArray.filter((score) => {
+    return state.scoreArray.filter(score => {
       return score.value !== `` && !score.final
     })
-  }
+  } */
 }

@@ -80,7 +80,7 @@
       width="20em"
     >
       <v-card class="text-xs-center">
-        <v-flex style="height: 3em">
+        <v-flex class="network-check-background">
           <NetworkCheck />
         </v-flex>
         <v-card-text
@@ -319,5 +319,10 @@ export default {
 }
 .offline-save-message {
   font-size: 1.2em;
+  padding-top: 0;
+  text-indent: 1em;
+}
+.network-check-background {
+  height: 3em;
 }
 </style>
