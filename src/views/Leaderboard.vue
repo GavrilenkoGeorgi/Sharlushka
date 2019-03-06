@@ -54,7 +54,7 @@
         v-for="(user, index) in leaderboard"
         :key="index"
         class="leaderboard-item"
-        :class="{ 'orange--text': getUserData.name === user.userName }"
+        :class="{ 'orange--text': user.userName === userName }"
         py-2
       >
         <v-flex
@@ -118,6 +118,7 @@ export default {
       if (this.getUserData.isAuthenticated) {
         console.log(`Getting leaderboard data from db...`)
         this.getDataForLeaderboard()
+        this.userName = localStorage.getItem(`userName`)
       } else {
         this.userName = this.getDefaultUserName
         this.noLeaderboardMessage = `Hi, ${this.userName},
