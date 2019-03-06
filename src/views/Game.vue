@@ -6,95 +6,8 @@
     ma-0
     pa-0
   >
-    <!-- Toolbar -->
-    <v-toolbar
-      absolute
-      dense
-      height="40"
-      color="purple darken-2"
-      class="text-xs-center"
-    >
-      <span class="score pl-3">
-        {{ getTotalScore }}
-      </span>
-      <v-spacer />
-      <v-toolbar-title
-        class="game-name"
-      >
-        <router-link :to="{ path: '/' }">
-          {{ gameName }}
-        </router-link>
-      </v-toolbar-title>
-      <v-spacer />
-      <NetworkCheck />
-      <v-toolbar-items>
-        <v-spacer />
-        <v-btn
-          icon
-          aria-label="settings"
-          @click="manipulateDrawer"
-        >
-          <settingsIcon
-            class="settings-icon"
-          />
-        </v-btn>
-      </v-toolbar-items>
-    </v-toolbar>
-    <!-- Navigation drawer -->
-    <v-navigation-drawer
-      v-model="navDrawer"
-      temporary
-      width="295"
-      fixed
-      right
-      class="navigation-drawer"
-    >
-      <v-list>
-        <v-list-tile
-          class="pb-3"
-          @click="manipulateDrawer"
-        >
-          <v-list-tile-action>
-            <v-layout justify-center>
-              <backIcon class="highlighted" />
-            </v-layout>
-          </v-list-tile-action>
-          <v-list-tile-title class="drawer-menu-item">
-            Back
-          </v-list-tile-title>
-        </v-list-tile>
-        <!-- Greeting -->
-        <v-list-tile>
-          <v-list-tile-action>
-            <v-flex class="text-xs-center">
-              <NetworkCheck />
-            </v-flex>
-          </v-list-tile-action>
-          <v-list-tile-content class="drawer-menu-item pa-0 user-name">
-            Hi,&nbsp;{{ currentUserName }}.
-          </v-list-tile-content>
-        </v-list-tile>
-        <!-- Nav drawer links -->
-        <v-list-tile
-          v-for="link in navDrawerLinks"
-          :key="link.path"
-          :to="{ path: link.path }"
-          @click="navDrawer = false"
-        >
-          <v-list-tile-action>
-            <v-layout justify-center>
-              <component
-                :is="link.icon"
-                class="nav-drawer-link-icon"
-              />
-            </v-layout>
-          </v-list-tile-action>
-          <v-list-tile-title class="drawer-menu-item subheading">
-            {{ link.text }}
-          </v-list-tile-title>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
+    <!-- Navigation bar -->
+    <navBar />
     <svg
       version="1.1"
       style="display: none;"
@@ -382,84 +295,41 @@
 </template>
 
 <script>
-import NetworkCheck from '../components/NetworkCheck.vue'
 import { mapGetters, mapActions } from 'vuex'
 import store from '../store/store'
 import DiceBox from '../components/DiceBox.vue'
-import settingsIcon from '../assets/icons/baseline-menu-24px.svg'
-import helpIcon from '../assets/icons/baseline-trending_up-24px.svg'
-import userStatsIcon from '../assets/icons/baseline-equalizer-24px.svg'
-import leaderBoardIcon from '../assets/icons/baseline-import_export-24px.svg'
-import logInOutIcon from '../assets/icons/baseline-exit_to_app-24px.svg'
-import backIcon from '../assets/icons/baseline-keyboard_backspace-24px.svg'
+import navBar from '../components/Navbar.vue'
 
 export default {
   name: `Game`,
   components: {
     DiceBox,
-    NetworkCheck,
-    settingsIcon,
-    helpIcon,
-    userStatsIcon,
-    leaderBoardIcon,
-    logInOutIcon,
-    backIcon
+    navBar
   },
   data: () => ({
     title: `Sharlushka`,
-    icon:`settingsIcon`,
+    // icon:`settingsIcon`,
     highestScore: 0,
     turnCompleted: false,
-    progressBarLength: 3,
-    navDrawer: false,
-    navDrawerLinks: [
-      {
-        path: `/help`,
-        icon: `helpIcon`,
-        text: `School results & help`
-      },
-      {
-        path: `/userstats`,
-        icon: `userStatsIcon`,
-        text: `User stats`
-      },
-      {
-        path: `/leaderboard`,
-        icon: `leaderBoardIcon`,
-        text: `Leaderboard`
-      },
-      {
-        path: `/login`,
-        icon: `logInOutIcon`,
-        text: `Log in/out`
-      }
-    ]
+    progressBarLength: 3
   }),
   computed: {
     ...mapGetters([
       `getSchoolArray`,
       `getCombinationArray`,
-      `getCurrentGameState`,
-      `getTotalScore`,
-      `getDefaultUserName`
-    ]),
-    gameName() {
-      return `Sharlushka`
-    },
+      `getCurrentGameState`
+      // `getTotalScore`
+      // `getDefaultUserName`
+    ])
+    /*
     turnState: function() { // wtf???
       return store.state.newTurn
     },
     progressBarState: function() {
       return store.state.rollCount
-    },
-    currentUserName() {
-      if (localStorage.hasOwnProperty(`userName`)) {
-        return localStorage.getItem(`userName`)
-      } else {
-        return this.getDefaultUserName
-      }
-    }
+    } */
   },
+  /*
   watch: {
     turnState: {
       immediate: true,
@@ -477,13 +347,15 @@ export default {
         }
       }
     }
-  },
+  }, */
   mounted() {
     this.$nextTick(() => {
+      console.log(`Game view mounted.`)
+      /*
       const highestScore = localStorage.getItem(`highestScore`)
       if (highestScore) {
         this.highestScore = highestScore
-      }
+      } */
     })
   },
   methods: {
@@ -494,9 +366,6 @@ export default {
       // 'setDiceChosenState',
       // 'incrementAsync'
     ]),
-    manipulateDrawer() {
-      this.navDrawer = !this.navDrawer
-    },
     /*
     updateOnlineStatus() {
       if (navigator.onLine) {
@@ -725,39 +594,6 @@ export default {
   box-shadow: 0em .2em .8em 0em red;
 }
 
-.navigation-drawer {
-  font-family: $text-font;
-  border-left: 2px solid $color-primary-0;
-}
-.drawer-menu-item {
-  font-family: $text-font;
-  font-weight: 700;
-  font-size: 1.4em;
-  color: $color-primary-3;
-}
-.user-name {
-  color: $color-primary-0;
-  font-size: 2em;
-  // line-height: 1;
-}
-.score {
-  color: $color-white;
-  font-size: 2em;
-  font-family: $text-font;
-  text-align: center;
-}
-
-.game-name {
-  // font-weight: 700;
-  a {
-    color: $color-pale-primary-lightest;
-    font-size: 1.1em;
-    font-family: $text-font;
-    text-transform: capitalize;
-    text-decoration: none;
-  }
-}
-
 // Landscape mode
 @media screen and (orientation: landscape) {
   #gameView {
@@ -908,16 +744,8 @@ export default {
   }
 }
 
-.settings-icon {
-  fill: $color-white;
-}
-
 .accented {
   background-color: $color-combination-hightlight;
-}
-
-.nav-drawer-link-icon {
-  fill: $color-primary-0;
 }
 
 .background-transition {
