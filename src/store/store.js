@@ -14,6 +14,24 @@ const actions = {
   setCurrentIcon: ({
     commit
   }) => commit(`setCurrentIcon`),
+  endGame ({ commit }) {
+    return new Promise((resolve) => {
+      commit(`endGame`)
+      resolve()
+    })
+  },
+  clearResultBox ({ commit }) {
+    return new Promise((resolve) => {
+      commit(`clearResultBox`)
+      resolve()
+    })
+  },
+  recordResultMk2 ({ commit }, id) {
+    return new Promise((resolve) => {
+      commit(`recordResultMk2`, id)
+      resolve()
+    })
+  },
   resetGameState: ({
     commit
   }) => commit(`resetState`),

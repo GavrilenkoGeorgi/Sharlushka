@@ -161,7 +161,8 @@ export default {
       `getSchoolScore`,
       `getCurrentGameState`,
       `getDefaultUserName`,
-      `getUserData`
+      `getUserData`,
+      `isGameEnded`
     ])
   },
   mounted() {
@@ -173,7 +174,7 @@ export default {
       } else {
         this.userName = this.getDefaultUserName
       }
-      if (this.getCurrentGameState.gameInProgress) {
+      if (this.$store.state.gameOver === true) {
         // collect them when game finished
         // i.e. user played the game till the end
         // and not actually reloading the page
@@ -191,10 +192,11 @@ export default {
           // just add it already
           this.addScoreToDatabase()
         }
+        store.commit(`gameOver`)
         // set to default state so repeating visits
         // to this page won't fill our array with zeroes
         // store.state.gameInProgress = false // mutation?
-        store.commit(`stopGame`)
+        // store.commit(`gameOver`)
         // console.log(`Save current score state to db`)
       } else {
         console.log(`Nothing to record, play the game.`)

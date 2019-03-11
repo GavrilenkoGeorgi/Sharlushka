@@ -1,14 +1,15 @@
 <template>
   <!-- Toolbar -->
-  <v-flex>
+  <nav v-if="!['MainPage'].includes($route.name)">
     <v-toolbar
-      absolute
-      dense
+      app
       height="40"
       color="purple darken-2"
       class="text-xs-center"
     >
-      <span class="score pl-3">
+      <span
+        class="score pl-3"
+      >
         {{ getTotalScore }}
       </span>
       <v-spacer />
@@ -37,9 +38,7 @@
     <!-- Navigation drawer -->
     <v-navigation-drawer
       v-model="navDrawer"
-      temporary
-      width="295"
-      fixed
+      app
       right
       class="navigation-drawer"
     >
@@ -89,7 +88,7 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-  </v-flex>
+  </nav>
 </template>
 
 <script>
@@ -154,14 +153,6 @@ export default {
         return this.getDefaultUserName
       }
     }
-  },
-  mounted() {
-    this.$nextTick(() => {
-      const highestScore = localStorage.getItem(`highestScore`)
-      if (highestScore) {
-        this.highestScore = highestScore
-      }
-    })
   },
   methods: {
     manipulateDrawer() {

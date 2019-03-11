@@ -295,13 +295,13 @@ export default {
       state.gameEnded = true
       return false
     }
-    state.diceBoxHidden = false
+    // state.diceBoxHidden = false
   },
   nextTurn(state) {
     state.newTurn = true
     state.gameCheck = false
     state.zeroCheck = false
-    state.diceBoxHidden = true
+    // state.diceBoxHidden = true
     state.currentGameTurn++ // increment turn counter
     state.turnCompleted = false // set new turn state
     state.rollCount = 3 // set roll count to intial value of three
@@ -312,9 +312,11 @@ export default {
     state.combinationArray = []
     // clear unsaved results onscreen
   },
+  /*
   stopDiceRollProcess(state) {
     state.diceRollInProgress = false
   },
+  */
   resetState(state) { // reset state
     /*
     // hard reset
@@ -366,16 +368,141 @@ export default {
       state.user.name = ``
     }
   },
-  stopGame (state) {
-    state.gameInProgress = false
+  // visibility - boolean
+  diceBoxHidden (state, visibility) {
+    state.diceBoxHidden = visibility
   },
-  SET_PROCESSING(state, payload) {
-    state.processing = payload
+  gameOver (state) {
+    state.gameOver = false
   },
-  SET_ERROR(state, payload) {
-    state.error = payload
+  clearResultBox(state) {
+    // clear all temp results in store
+    for (const key in state.scoreArray) {
+      if (!state.scoreArray[key].final) {
+        state.scoreArray[key].value = ``
+      }
+    }
+    // deselect all dice
+    for (const key in state.diceArray) {
+      if (state.diceArray[key].chosen) {
+        state.diceArray[key].chosen = false
+      }
+    }
   },
-  CLEAR_ERROR(state) {
-    state.error = null
+  recordResultMk2 (state, id) {
+    console.log(`Recording result.`)
+    // console.log(`Id in mk2 is ${id}`)
+    // state.gameInProgress = true // should be just ones
+    // state.gameOver = false
+    const combinationId = id
+    const combinationIndexInArray = state.scoreArray.map((dice) => dice.id).indexOf(combinationId)
+    // check if it is school result
+    if (combinationIndexInArray <= 5 && !state.schoolCompleted && !state.newTurn) {
+      if (!state.scoreArray[combinationIndexInArray].final
+        && state.scoreArray[combinationIndexInArray].value !== ``) {
+        // console.log(`Saving school result`)
+        state.scoreArray[combinationIndexInArray].final = true
+        state.schoolScoreTotal += state.scoreArray[combinationIndexInArray].value
+        if (state.currentGameTurn === 6) {
+          state.schoolCompleted = true
+        }
+        state.newTurn = true
+      } else {
+        console.log(`You clicked on an empty field.`)
+        state.newTurn = false
+        return false
+      }
+    } else if (state.schoolCompleted && combinationIndexInArray >= 5) {
+      // record game result
+      if (state.scoreArray[combinationIndexInArray].value !== `` &&
+        state.scoreArray[combinationIndexInArray].displayValues.length < 3) {
+        // console.log(`Saving game result.`)
+        state.scoreArray[combinationIndexInArray].displayValues.push(state.scoreArray[combinationIndexInArray].value)
+        state.gameTotal += state.scoreArray[combinationIndexInArray].value
+        state.newTurn = true
+      } else if (!state.newTurn &&
+        state.scoreArray[combinationIndexInArray].value === `` &&
+        !state.scoreArray[combinationIndexInArray].final &&
+        state.schoolCompleted &&
+        state.rollCount === 0 &&
+        !state.zeroCheck) {
+        // that means if there is no combination to record user can mark one empty
+        // field per turn as cancelled
+        // and it won't be used to calculate score
+        if (state.scoreArray[combinationIndexInArray].displayValues.length < 3) {
+          state.scoreArray[combinationIndexInArray].displayValues.push(0)
+          // zero saved during this turn
+          state.zeroCheck = true
+        }
+        state.newTurn = true
+      }
+      if (state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
+        state.scoreArray[combinationIndexInArray].final = true
+        // clear temporary display value
+        state.scoreArray[combinationIndexInArray].value = ``
+      }
+    } else if (state.currentGameTurn === 32) {
+      console.log(`Game over after last save.`)
+    } else {
+      console.log(`Not saving game result.`)
+    }
   }
 }
+
+/*
+    if (!state.schoolCompleted &&
+        state.scoreArray[combinationIndexInArray].value !== `` &&
+        !state.newTurn &&
+        !state.scoreArray[combinationIndexInArray].final) {
+      state.scoreArray[combinationIndexInArray].final = true
+      state.schoolScoreTotal += state.scoreArray[combinationIndexInArray].value
+      // set school completed to display game score on the board
+      if (state.currentGameTurn === 6) {
+        state.schoolCompleted = true
+      }
+      console.log(`Recording school result`)
+    } else if (state.scoreArray[combinationIndexInArray].value !== `` &&
+                state.scoreArray[combinationIndexInArray].displayValues &&
+                state.scoreArray[combinationIndexInArray].displayValues.length < 3 &&
+                !state.turnCompleted) {
+      // state.turnCompleted = true // another turn completed in store?
+      // push result into display values array
+      state.scoreArray[combinationIndexInArray].displayValues.push(state.scoreArray[combinationIndexInArray].value)
+      state.gameTotal += state.scoreArray[combinationIndexInArray].value
+      if (state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
+        state.scoreArray[combinationIndexInArray].final = true
+        state.scoreArray[combinationIndexInArray].value = ``
+      }
+      // this.clearResultInStore()
+      // this.clearResultBox()
+      // this.turnCompleted = true
+      // this.removeCurrentHighlight()
+    } else if (!state.turnCompleted && // this really should be a single check
+      state.scoreArray[combinationIndexInArray].value === `` &&
+      !state.scoreArray[combinationIndexInArray].final &&
+      state.schoolCompleted &&
+      state.rollCount === 0 &&
+      !state.zeroCheck) {
+      // that means if there is no combination to record user can mark one empty
+      // field per turn as cancelled
+      // and it won't be used to calculate score
+      if (state.scoreArray[combinationIndexInArray].displayValues.length < 3) {
+        state.scoreArray[combinationIndexInArray].displayValues.push(0)
+        // zero saved during this turn
+        state.zeroCheck = true
+        // this.clearResultBox()
+        // this.turnCompleted = true
+        // this.removeCurrentHighlight()
+        // state.turnCompleted = true
+        // this.mainButtonState.disabled = false
+      }
+      // check if combination is full (it has three results)
+      if (state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
+        state.scoreArray[combinationIndexInArray].final = true
+      }
+      state.turnCompleted = true
+    } else {
+      console.log(`Nothing to record in mutations!`)
+      // state.turnCompleted = false
+      return false
+    } */

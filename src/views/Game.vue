@@ -1,228 +1,41 @@
 <template>
   <v-container
     id="gameView"
-    fill-height
-    fluid
     ma-0
     pa-0
+    fill-height
   >
     <!-- Navigation bar -->
-    <navBar />
-    <svg
-      version="1.1"
-      style="display: none;"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <symbol
-        id="diceOnes"
-        viewBox="0 0 200 200"
-      >
-        <circle
-          fill="currentColor"
-          cx="100"
-          cy="100"
-          r="18"
-        />
-        <path
-          stroke-width=".4em"
-          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
-        />
-      </symbol>
-      <symbol
-        id="diceTwos"
-        viewBox="0 0 200 200"
-      >
-        <circle
-          fill="currentColor"
-          cx="50"
-          cy="150"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="150"
-          cy="50"
-          r="18"
-        />
-        <path
-          stroke-width=".4em"
-          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
-        />
-      </symbol>
-      <symbol
-        id="diceThrees"
-        class="dice"
-        viewBox="0 0 200 200"
-      >
-        <circle
-          fill="currentColor"
-          cx="50"
-          cy="150"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="100"
-          cy="100"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="150"
-          cy="50"
-          r="18"
-        />
-        <path
-          stroke-width=".4em"
-          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
-        />
-      </symbol>
-      <symbol
-        id="diceFours"
-        class="dice"
-        viewBox="0 0 200 200"
-      >
-        <circle
-          fill="currentColor"
-          cx="150"
-          cy="50"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="150"
-          cy="150"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="50"
-          cy="150"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="50"
-          cy="50"
-          r="18"
-        />
-        <path
-          stroke-width=".4em"
-          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
-        />
-      </symbol>
-      <symbol
-        id="diceFives"
-        class="dice"
-        viewBox="0 0 200 200"
-      >
-        <circle
-          fill="currentColor"
-          cx="100"
-          cy="100"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="150"
-          cy="50"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="150"
-          cy="150"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="50"
-          cy="150"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="50"
-          cy="50"
-          r="18"
-        />
-        <path
-          stroke-width=".4em"
-          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
-        />
-      </symbol>
-      <symbol
-        id="diceSixes"
-        class="dice"
-        viewBox="0 0 200 200"
-      >
-        <circle
-          fill="currentColor"
-          cx="150"
-          cy="100"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="150"
-          cy="50"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="150"
-          cy="150"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="50"
-          cy="150"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="50"
-          cy="100"
-          r="18"
-        />
-        <circle
-          fill="currentColor"
-          cx="50"
-          cy="50"
-          r="18"
-        />
-        <path
-          stroke-width=".4em"
-          d="M20,5H180a15,15,0,0,1,15,15V180a15,15,0,0,1-15,15H20A15,15,0,0,1,5,180V20A15,15,0,0,1,20,5Z"
-        />
-      </symbol>
-    </svg>
+    <!--navBar /-->
     <v-layout
       column
       class="game-layout"
-      :class="{ 'game-ended': getCurrentGameState.gameEnded }"
+      :class="{ 'game-ended': getCurrentGameState.gameOver }"
     >
       <!-- School dice display -->
-      <v-layout row>
+      <!--v-layout row-->
+      <v-flex
+        d-flex
+        align-center
+        class="school-dice-container"
+      >
         <v-flex
-          d-flex
-          align-center
-          class="school-dice-container"
+          v-for="dice in getSchoolArray"
+          :id="dice.id"
+          :key="dice.id"
+          class="dice-wrapper"
+          pa-1
         >
-          <svg
-            v-for="dice in getSchoolArray"
+          <component
+            :is="dice.icon"
             :id="dice.id"
-            :key="dice.id"
-            class="school-dice-icon default"
+            class="school-score-dice-icon"
             :class="{ chosen:dice.final }"
-            fill="none"
-            @click="handleBoardClick"
-          >
-            <use v-bind="{'xlink:href':'#' + dice.icon}" />
-          </svg>
+            @click="recordResult(dice.id)"
+          />
         </v-flex>
-      </v-layout>
+      </v-flex>
+      <!--/v-layout-->
       <!-- School results display -->
       <v-layout
         row
@@ -237,8 +50,8 @@
           align-center
           justify-center
           class="school-result"
-          :class="{ saved:result.final, blink:!result.final }"
-          @click="handleBoardClick"
+          :class="{ chosen:result.final, blink:!result.final }"
+          @click="recordResult(result.id)"
         >
           <span :resultId="result.id">{{ result.value }}</span>
         </v-flex>
@@ -257,7 +70,7 @@
           align-center
           class="game-combination"
           :class="{ set:combination.final }"
-          @click="handleBoardClick"
+          @click="recordResult(combination.id)"
         >
           <v-layout
             class="background-transition"
@@ -287,154 +100,115 @@
           </v-layout>
         </v-flex>
       </v-layout>
-      <!-- Dice controls -->
-      <DiceBox :turn-completed="turnCompleted" />
+      <DiceBox />
+      <v-progress-linear
+        :value="progressBarState"
+        color="purple darken-2"
+      />
     </v-layout>
-    <div class="progress-bar" />
+    <!--div class="progress-bar" /-->
   </v-container>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import store from '../store/store'
 import DiceBox from '../components/DiceBox.vue'
-import navBar from '../components/Navbar.vue'
+import diceOnes from '../assets/icons/diceOnes.svg'
+import diceTwos from '../assets/icons/diceTwos.svg'
+import diceThrees from '../assets/icons/diceThrees.svg'
+import diceFours from '../assets/icons/diceFours.svg'
+import diceFives from '../assets/icons/diceFives.svg'
+import diceSixes from '../assets/icons/diceSixes.svg'
 
 export default {
   name: `Game`,
   components: {
     DiceBox,
-    navBar
+    diceOnes,
+    diceTwos,
+    diceThrees,
+    diceFours,
+    diceFives,
+    diceSixes
   },
   data: () => ({
-    title: `Sharlushka`,
-    // icon:`settingsIcon`,
-    highestScore: 0,
-    turnCompleted: false,
-    progressBarLength: 3
+    title: `Sharlushka`
   }),
   computed: {
     ...mapGetters([
       `getSchoolArray`,
       `getCombinationArray`,
-      `getCurrentGameState`
-      // `getTotalScore`
-      // `getDefaultUserName`
+      `getCurrentGameState`,
+      `progressBarState`,
+      `isNewTurn`
     ])
-    /*
-    turnState: function() { // wtf???
-      return store.state.newTurn
-    },
-    progressBarState: function() {
-      return store.state.rollCount
-    } */
   },
-  /*
-  watch: {
-    turnState: {
-      immediate: true,
-      handler() { // some spaghetti code
-        this.turnCompleted = !this.turnState
-      }
-    },
-    progressBarState: {
-      immediate: true,
-      handler() {
-        if (document.querySelector(`.progress-bar`)) { // content onload?
-          this.updateProgressBar()
-        } else {
-          return false
-        }
-      }
-    }
-  }, */
   mounted() {
     this.$nextTick(() => {
       console.log(`Game view mounted.`)
-      /*
-      const highestScore = localStorage.getItem(`highestScore`)
-      if (highestScore) {
-        this.highestScore = highestScore
-      } */
     })
   },
   methods: {
     ...mapActions([
       `nextTurn`,
-      // 'newGame',
-      `computeScore`
-      // 'setDiceChosenState',
-      // 'incrementAsync'
+      `recordResultMk2`,
+      `clearResultBox`
     ]),
-    /*
-    updateOnlineStatus() {
-      if (navigator.onLine) {
-        console.log(`online`)
-        // document.documentElement.classList.remove('is-offline');
-        // document.querySelector('.connection-status').innerHTML = 'Online';
+    recordResult(id) { // this really belongs to mutations (
+      if (!this.isNewTurn) {
+        this.$store.dispatch(`recordResultMk2`, id).then(() => {
+          // console.log(`Then after dispatch if new turn is true`)
+          // console.log(this.isNewTurn)
+          this.$store.commit(`clearResultBox`)
+          this.$store.commit(`diceBoxHidden`, true)
+          this.$store.commit(`nextTurn`)
+        })
       } else {
-        console.log(`offline`)
-        // document.documentElement.classList.add('is-offline');
-        // document.querySelector('.connection-status').innerHTML = 'Offline';
+        console.log(`Roll some dice.`)
       }
-    },
-    */
-    updateProgressBar() {
-      const progressBar = document.querySelector(`.progress-bar`)
-      if (store.state.rollCount === 2) {
-        progressBar.style.width = `33%`
-      } else if (store.state.rollCount === 1) {
-        progressBar.style.width = `66%`
-      } else if (store.state.rollCount === 0) {
-        progressBar.style.width = `100%`
-        progressBar.classList.add(`full`)
-      } else if (store.state.rollCount === 3) {
-        progressBar.style.width = `0%`
-        progressBar.classList.remove(`full`)
-      }
-    },
-    handleBoardClick(event) {
-      let idFound = false
-      let scoreId = null
-      let elementToCheck = event.target
-      while (!idFound && elementToCheck) {
-        if (elementToCheck.classList.contains(`school-dice-icon`) ||
-          elementToCheck.classList.contains(`dice-icon`) ||
-          elementToCheck.classList.contains(`game-combination`)) {
-          scoreId = elementToCheck.id
-          idFound = true
-        } else if (elementToCheck.getAttribute(`resultId`)) {
-          scoreId = elementToCheck.getAttribute(`resultId`)
-          idFound = true
-        } else {
-          elementToCheck = elementToCheck.parentElement
-        }
-      }
-      if (scoreId) {
-        this.recordResult(scoreId)
+      // this.$store.commit(`diceBoxHidden`, true)
+      // console.log(`Turn completed`)
+      // console.log(`This.isGame ended`)
+      // console.log(this.isGameEnded)
+      // this.turnCompleted = true
+      // this.$store.commit(`nextTurn`)
+      // last checks after recording or not recording the result
+      // check if gameEnded
+      // console.log(`Is game ended? ${this.isGameEnded}`)
+      // let gameEnded = this.isGameEnded
+      // console.log(result)
+      /*
+      if (gameEnded === true) {
+        console.log(`Game Over!`)
+        // store.state.gameEnded = true
+        // this.$router.push('/endgame')
+        setTimeout(() => {
+          // console.log(`Not so fast.. let the user appreciate the results )`)
+          // this.$router.push(`/endgame`)
+        }, 750)
       } else {
-        console.log(`Nothing to record Id is: ${scoreId}`)
-      }
-    },
-    clearResultBox() {
-      // clear all temp results in store
-      for (const key in store.state.scoreArray) {
-        if (!store.state.scoreArray[key].final) {
-          store.state.scoreArray[key].value = ``
-        }
-      }
-      // deselect all dice
-      for (const key in store.state.diceArray) {
-        if (store.state.diceArray[key].chosen) {
-          store.state.diceArray[key].chosen = false
-        }
-      }
-    },
-    debugMode() {
-      store.state.debug = true
-    },
-    recordResult(id) {
-      console.log(`Recording result..`)
+        // this.turnCompleted = true
+        console.log(`Commiting next turn!`)
+        this.$store.commit(`nextTurn`)
+      } */
+      // console.log(gameEnded)
+      /*
+      if (gameEnded) {
+        console.log(`Game Over!`)
+        // store.state.gameEnded = true
+        // this.$router.push('/endgame')
+        setTimeout(() => {
+          // console.log(`Not so fast.. let the user appreciate the results )`)
+          // this.$router.push(`/endgame`)
+        }, 750)
+      } else {
+        // this.turnCompleted = true
+        console.log(`Commiting next turn!`)
+        this.$store.commit(`nextTurn`)
+      } */
+      // this.turnCompleted = false
+      // this.newTurn1 = true
+      /*
       store.state.gameInProgress = true // should be just ones
       // this.turnCompleted = true
       const combinationId = id // ?
@@ -451,6 +225,7 @@ export default {
           store.state.schoolCompleted = true
         }
         this.clearResultBox()
+        // this.turnCompleted = true
         // this.removeCurrentHighlight()
       } else if (store.state.scoreArray[combinationIndexInArray].value !== `` &&
                   store.state.scoreArray[combinationIndexInArray].displayValues &&
@@ -466,6 +241,7 @@ export default {
         }
         // this.clearResultInStore()
         this.clearResultBox()
+        // this.turnCompleted = true
         // this.removeCurrentHighlight()
       } else if (!store.state.turnCompleted && // this really should be a single check
         store.state.scoreArray[combinationIndexInArray].value === `` &&
@@ -481,6 +257,7 @@ export default {
           // zero saved during this turn
           store.state.zeroCheck = true
           this.clearResultBox()
+          // this.turnCompleted = true
           // this.removeCurrentHighlight()
           store.state.turnCompleted = true
           // this.mainButtonState.disabled = false
@@ -493,8 +270,9 @@ export default {
       } else {
         // console.log(`Nothing to record!`)
         return false
-      }
+      } */
       // last checks after recording or not recording the result
+      /*
       if (store.state.currentGameTurn === 33 && store.state.turnCompleted) {
         console.log(`Game Over!`)
         store.state.gameEnded = true
@@ -504,12 +282,14 @@ export default {
           this.$router.push(`/endgame`)
         }, 750)
       } else {
-        this.turnCompleted = true
+        // this.turnCompleted = true
+        console.log(`Commiting next turn!`)
         store.commit(`nextTurn`)
-        this.updateProgressBar()
       }
-      this.turnCompleted = true
-      console.log(`Turn completed`)
+      // this.turnCompleted = false
+      // this.newTurn1 = true
+      this.$store.commit(`diceBoxHidden`, true)
+      console.log(`Turn completed`) */
     } // end of record result method
   } // end of methods
 }
@@ -520,7 +300,7 @@ export default {
 @import "../assets/scss/vars/colors.scss";
 
 .game-layout {
-  padding-top: 3.3em;
+  // padding-top: 3.3em;
   // height: 100vh;
   font-family: $text-font;
   // background: $color-pale-primary;
@@ -551,11 +331,10 @@ export default {
   // height: .8em;
   text-align: center;
 }
-.saved {
-  color: $color-orange;
-}
+
 .game-combinations-layout {
   color: $color-primary-0;
+  font-size: 2em;
 }
 .game-combination {
   padding: .15em 0em .15em 0em;
@@ -585,6 +364,7 @@ export default {
   box-shadow: 0px 1px 10px 0px $color-primary-4;
   height: .2em;
   position: fixed;
+  border: 10px solid green;
   bottom: 0;
   width: 0%;
   transition: width 1.75s cubic-bezier(.27,.13,.46,.96);
@@ -597,10 +377,14 @@ export default {
 // Landscape mode
 @media screen and (orientation: landscape) {
   #gameView {
-    display: flex;
-    height: 100vh;
+    border: 1px solid pink;
+    // display: flex;
+    // height: 100vh;
   }
   .game-layout {
+    border: 1px solid blue;
+    display: flex;
+    width: 100%;
     flex-direction: row;
     // padding-top: 3em;
     // border: 1px solid red;
@@ -608,27 +392,33 @@ export default {
   }
   .school-dice-container {
     flex-direction: column;
+    // border: 1px solid green;
+  }
+  .dice-wrapper {
+    border: 1px solid red;
   }
   .school-dice-icon {
     // height: 1em;
-    margin: .2em 0em .2em 0em;
+    // margin: .2em 0em .2em 0em;
   }
   .school-results-layout {
-    width: 15em;
+    width: 1em;
     flex-direction: column;
     height: 100%;
+    border: 1px solid yellow;
   }
   .game-combinations-layout {
-    width: 100em;
-    padding: 0em;
+    border: 1px solid yellowgreen;
+    // width: 25em;
+    // padding: 0em;
     font-size: .81em;
   }
   .game-combination {
-    padding: 0px;
-    margin: 0px;
+    // padding: 0px;
+    // margin: 0px;
   }
 }
-
+/*
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) { // iphone5
   .school-dice-icon {
     // margin: .2em 0em .2em 0em;
@@ -727,28 +517,33 @@ export default {
   }
 }
 
-@media screen and (max-resolution: 96dpi) and (min-width: 768px) { // fly iq4415
-  .game-combinations-layout {
-    padding-bottom: .3em;
-  }
-}
-
 @media screen and (max-resolution: 96dpi) and (orientation: landscape) { // desktop default window proportions
   .game-layout {
     // padding-top: 6em;
-    padding-bottom: .6em;
+    // padding-bottom: .6em;
   }
   .school-result, .game-combination {
     // color: red;
     font-size: 4em;
   }
 }
-
+*/
 .accented {
   background-color: $color-combination-hightlight;
 }
 
 .background-transition {
   transition: background-color .6s ease-in;
+}
+
+.school-score-dice-icon {
+  color: $color-primary-0;
+}
+.chosen {
+  color: $color-chosen;
+}
+
+.v-progress-linear {
+  margin: 0em;
 }
 </style>

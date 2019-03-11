@@ -8,18 +8,19 @@ export default () => {
     processing: false,
     defaultUserName: `Anonymous`,
     newTurn: true,
+    diceBoxHidden: true, // turn 1, no rolls, dicebox invisible till the first roll
     diceRollInProgress: false, // not needed?
     schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score
-    schoolCompleted: false, // check if school is completed
-    currentGameTurn: 1, // game turns counter
-    gameInProgress: false,
+    schoolCompleted: true, // check if school is completed
+    currentGameTurn: 32, // game turns counter
+    turnCompleted: false,
+    gameOver: false,
     maxGameTurns: 33,
     rollCount: 3, // roll counter for the current turn
     gameCheck: false, // to check if there are any combinations left to record
     // zeroCheck: false,
-    turnCompleted: false,
-    gameEnded: false,
+    // gameEnded: false,
     maxPossibleScore: 879,
     combinationArray: [],
     scoreArray: [{
@@ -125,31 +126,31 @@ export default () => {
       value: `#`,
       chosen: false,
       id: `first`,
-      currentIcon: ``
+      currentIcon: `diceOnes`
     },
     {
       value: `#`,
       chosen: false,
       id: `second`,
-      currentIcon: ``
+      currentIcon: `diceTwos`
     },
     {
       value: `#`,
       chosen: false,
       id: `third`,
-      currentIcon: ``
+      currentIcon: `diceThrees`
     },
     {
       value: `#`,
       chosen: false,
       id: `fourth`,
-      currentIcon: ``
+      currentIcon: `diceFours`
     },
     {
       value: `#`,
       chosen: false,
       id: `fifth`,
-      currentIcon: ``
+      currentIcon: `diceFives`
     }]
   }
 }

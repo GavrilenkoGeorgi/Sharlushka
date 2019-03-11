@@ -10,9 +10,16 @@ export default {
       gameEnded: state.gameEnded,
       diceRollInProgress: state.diceRollInProgress,
       gameCheck: state.gameCheck,
-      gameInProgress: state.gameInProgress
+      gameInProgress: state.gameInProgress,
+      newTurn: state.newTurn
     }
     return currentGameState
+  },
+  progressBarState(state) {
+    let fraction = 3
+    let numbah = state.rollCount - fraction
+    let percent = fraction * numbah * 11.075
+    return Math.round(Math.abs(percent))
   },
   getDiceIds(state) {
     const diceIdsContainer = state.scoreArray.slice(0, state.diceArray.length + 1)
@@ -27,6 +34,22 @@ export default {
   getSchoolArray(state) {
     const schoolArray = state.scoreArray.slice(0, state.diceArray.length + 1)
     return schoolArray
+  },
+  isGameEnded (state) {
+    if (state.currentGameTurn === 33 && state.newTurn === true) { // the last one
+      // console.log(`Ending game in isGame Ended.`)
+      state.gameOver = true
+      return true
+    } else {
+      // console.log(`Game not ended in mutations!`)
+      return false
+    }
+  },
+  isNewTurn (state) {
+    return state.newTurn ? true : false
+  },
+  isLastRollInGame (state) {
+    return state.currentGameTurn === state.maxGameTurns ? true : false
   },
   getCombinationArray(state) {
     // another one for export
@@ -44,10 +67,12 @@ export default {
   },
   getDefaultUserName(state) {
     return state.defaultUserName
-  }
-  // getProcessing: (state) => state.processing,
-  // getError: (state) => state.error,
-  /*
+  },
+  isDiceBoxHidden: (state) => state.newTurn
+}
+// getProcessing: (state) => state.processing,
+// getError: (state) => state.error,
+/*
   debugInfo(state) {
     // console.log(`Debug on`)
     for (const key in state.diceArray) {
@@ -72,4 +97,4 @@ export default {
       return score.value !== `` && !score.final
     })
   } */
-}
+

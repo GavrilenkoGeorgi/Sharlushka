@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <navBar />
     <v-content>
       <!-- Router view -->
       <transition
@@ -15,8 +16,13 @@
 </template>
 
 <script>
+import navBar from './components/Navbar.vue'
+
 export default {
   name: `App`,
+  components: {
+    navBar
+  },
   mounted() {
     this.$nextTick(() => {
       console.log(`App started.`)

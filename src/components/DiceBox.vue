@@ -1,100 +1,108 @@
 <template>
-  <v-flex
-    id="diceControls"
-    d-flex
-    ma-0
-    pb-2
+  <!-- Dice box -->
+  <v-layout
+    row
   >
-    <!-- Dice box -->
-    <v-layout
-      row
-      align-center
-      class="dice-box-layout"
+    <v-flex
+      v-if="!isGameEnded"
+      xs9
     >
-      <v-flex
-        d-flex
-        xs9
-        class="game-dice-container dice-box"
-        :class="{ hidden: getCurrentGameState.gameEnded
-          || getCurrentGameState.currentRollCount === 3 }"
-      >
-        <svg
+      <v-layout>
+        <v-flex
           v-for="dice in getDiceArray"
           :id="dice.id"
           :key="dice.id"
-          class="dice-icon default animated"
-          :class="{ chosen:dice.chosen }"
-          fill="none"
-          @click="selectDice"
+          pa-1
+          d-flex
+          shrink
+          class="game-dice animated fadeIn"
+          :class="{ chosen: dice.chosen,
+                    hidden: isDiceBoxHidden
+          }"
+          @click="selectDice(dice.id)"
         >
-          <use
-            v-bind="{'xlink:href':'#' + dice.currentIcon}"
-            class="game-dice animated fadeIn"
+          <component
+            :is="dice.currentIcon"
           />
-        </svg>
-      </v-flex>
-      <!-- Main button -->
-      <v-flex
-        class="main-button animated"
-        aria-label="Main game button"
-        type="button"
-        :class="{ save: mainButtonState.save,
-                  bounce: mainButtonState.save,
-                  fadeOut: getCurrentGameState.gameEnded,
-                  hidden: getCurrentGameState.gameEnded }"
-        @click.prevent="handleMainGameButtonClick"
+        </v-flex>
+      </v-layout>
+    </v-flex>
+    <!-- Main button do something with the margins -->
+    <v-flex
+      xs3
+      class="main-button animated"
+      :class="{ save: mainButtonStateCheck }"
+      aria-label="Main game button"
+      type="button"
+      @click.prevent="handleMainGameButtonClick"
+    >
+      <v-layout
+        align-center
+        justify-center
+        row
+        fill-height
       >
-        <v-layout
-          align-center
-          justify-center
-          row
-          fill-height
+        <v-flex
+          v-if="getCurrentGameState.currentRollCount === 3 && !isGameEnded"
+          xs2
+          class="play-arrow animated fadeIn"
+        />
+        <!-- Button roll state -->
+        <v-flex
+          v-if="getCurrentGameState.currentRollCount < 3"
+          class="circle-container"
         >
-          <v-flex
-            v-if="mainButtonState.play"
-            xs2
-            class="play-arrow animated fadeIn"
-          />
-          <v-flex
-            v-if="mainButtonState.roll &&
-              getCurrentGameState.rollsCountForButton <= 3 "
-            class="circle-container animated fadeIn"
+          <v-layout
+            row
+            justify-center
           >
-            <v-layout
-              row
-              justify-center
-            >
-              <div
-                v-for="(value, index) in getCurrentGameState.rollsCountForButton"
-                :key="index"
-                class="roll-circle animated fadeIn"
-              />
-            </v-layout>
-          </v-flex>
-          <v-flex
-            v-if="mainButtonState.save"
-            xs4
-            class="stop-brick animated fadeIn"
-          />
-        </v-layout>
-      </v-flex>
-    </v-layout>
-    <!--div class="debug">Navigator suported is: {{ navigatorSupported }}<br/>{{ zzz }}</div-->
-  </v-flex>
-<!-- fill="none" stroke-width=".7em" in case of flyiq4415 or firefox-->
+            <div
+              v-for="(value, index) in getCurrentGameState.rollsCountForButton"
+              :key="index"
+              class="roll-circle animated fadeIn"
+            />
+          </v-layout>
+        </v-flex>
+        <!-- Button save state -->
+        <v-flex
+          v-if="getCurrentGameState.currentRollCount === 0"
+          d-flex
+          xs4
+          class="stop-brick animated fadeIn"
+        />
+      </v-layout>
+    </v-flex>
+    <!-- End Game button -->
+    <v-flex
+      v-if="isGameEnded"
+      xs12
+    >
+      <v-btn>
+        Game Over
+      </v-btn>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 import store from '../store/store'
+import diceOnes from '../assets/icons/diceOnes.svg'
+import diceTwos from '../assets/icons/diceTwos.svg'
+import diceThrees from '../assets/icons/diceThrees.svg'
+import diceFours from '../assets/icons/diceFours.svg'
+import diceFives from '../assets/icons/diceFives.svg'
+import diceSixes from '../assets/icons/diceSixes.svg'
 
 export default {
   name: `DiceBox`,
-  props: {
-    turnCompleted: {
-      type: Boolean,
-      required: true
-    }
+  components: {
+    diceOnes,
+    diceTwos,
+    diceThrees,
+    diceFours,
+    diceFives,
+    diceSixes
   },
   data() {
     return {
@@ -102,35 +110,23 @@ export default {
       // hidden: false,
       zzz: `zzz`,
       mainButtonState: {
-        play: true,
-        roll: false,
-        save: false,
-        disabled: false
+        save: false
       }
     }
   },
   computed: {
     ...mapGetters([
       `getDiceArray`,
-      `getCurrentGameState`
-    ])
-  },
-  watch: {
-    turnCompleted: {
-      // the callback will be called immediately after the start of the observation
-      immediate: true,
-      handler() {
-        if (!this.getCurrentGameState.gameEnded) {
-          this.updateMainButtonState()
-          // this.hidden = !this.hidden
-        }
-      }
-    }
+      `getCurrentGameState`,
+      `isDiceBoxHidden`,
+      `isGameEnded`,
+      `isLastRollInGame`
+    ]),
+    mainButtonStateCheck:() => store.state.rollCount === 0 ? true : false
   },
   mounted() {
     this.$nextTick(() => {
-      // console.log(`Dice box component mounted.`)
-      this.updateMainButtonState()
+      console.log(`Dice box mounted. Updating main button state.`)
       if (`vibrate` in navigator) {
         this.navigatorSupported = true
         // vibration API supported
@@ -153,77 +149,57 @@ export default {
       navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate
       navigator.vibrate(pattern)
     },
-    updateMainButtonState() {
-      const button = document.querySelector(`.main-button`)
-      if (button) { // do something with this, looks weird
-        this.mainButtonState.play = true
-        this.mainButtonState.save = false
-        this.mainButtonState.roll = false
-        if (this.getCurrentGameState.rollsCountForButton === 3 &&
-            !this.getCurrentGameState.turnCompleted) {
-          this.mainButtonState.play = true
-        }
-        if (this.getCurrentGameState.rollsCountForButton <= 2 &&
-            !this.getCurrentGameState.turnCompleted) {
-          // trigger render circles
-          this.mainButtonState.play = false
-          this.mainButtonState.roll = true
-        }
-        if (this.getCurrentGameState.turnCompleted) {
-          this.mainButtonState.roll = false
-          this.mainButtonState.play = true
-          this.mainButtonState.disabled = false
-        }
-        if (this.getCurrentGameState.rollsCountForButton === 0 &&
-            !this.getCurrentGameState.turnCompleted) {
-          this.mainButtonState.roll = false
-          this.mainButtonState.play = false
-          this.mainButtonState.save = true
-          this.mainButtonState.disabled = true
-          // this.vibrate()
-          button.classList.add(`bounce`)
-        }
-      } else {
-        return false
-      }
-    },
     handleMainGameButtonClick() {
-      if (this.getCurrentGameState.rollsCountForButton > 0 &&
-        !this.getCurrentGameState.turnCompleted) {
-        // this.vibrateOnce()
-        store.commit(`rollDice`)
-        if (this.getCurrentGameState.diceRollInProgress) {
-          const diceToAnimateOnRoll = document.querySelectorAll(`.dice-icon:not(.chosen)`)
-          for (const dice of diceToAnimateOnRoll) {
-            dice.classList.add(`zoomIn`)
-          }
-        }
-        if (this.getCurrentGameState.currentRollCount === 0 &&
-            this.getCurrentGameState.currentGameTurn <= 6 &&
-            !this.getCurrentGameState.gameCheck) {
-          this.$router.push({path: `/endgame`})
-        }
-        setTimeout(function() {
-          // not the best way to do it, but
-          // console.log(`timing!`)
-          const diceToRemoveAnimFrom = document.querySelectorAll(`.dice-icon`)
-          for (const dice of diceToRemoveAnimFrom) {
-            dice.classList.remove(`zoomIn`)
-          }
-        }, 500)
-      }
-      this.updateMainButtonState()
-    },
-    selectDice(event) {
-      const elementToAdd = event.currentTarget
-      const diceBox = document.querySelector(`.dice-box`)
-      if (elementToAdd.classList.contains(`chosen`)) {
-        diceBox.appendChild(elementToAdd)
+      store.commit(`diceBoxHidden`, false)
+      const checkForlastRollInGame = () => this.isLastRollInGame ? true : false
+      let lastRoll = checkForlastRollInGame()
+      if (lastRoll) {
+        console.log(`Last roll in game is ${lastRoll}`)
+        this.$router.push({path: `/endgame`})
       } else {
-        diceBox.insertBefore(elementToAdd, diceBox.childNodes[0])
+        console.log(`Last roll in game is ${lastRoll}`)
+        const diceToAnimateOnRoll = document.querySelectorAll(`.game-dice:not(.chosen)`)
+        for (const dice of diceToAnimateOnRoll) {
+          dice.classList.add(`zoomIn`)
+          // console.log(`Adding zoom`)
+          void dice.offsetWidth
+          dice.classList.remove(`zoomIn`)
+        }
+        if (this.getCurrentGameState.currentRollCount === 0) {
+          this.mainButtonState.save = true
+        }
+        if (this.getCurrentGameState.rollsCountForButton > 0
+          && !this.getCurrentGameState.turnCompleted) {
+          // this.vibrateOnce()
+          store.commit(`rollDice`)
+          // console.log(`Rolling dice ${this.getCurrentGameState.diceRollInProgress}`)
+          // if this.getCurrentGameState.gameCheck
+          // is false and certain condidtions are met, e.g.
+          // empty `sixes` combination at school
+          // and no sixes for three rolls on the last
+          // sixth turn in school
+          if (this.getCurrentGameState.currentRollCount === 0 &&
+              this.getCurrentGameState.currentGameTurn <= 6 &&
+              !this.getCurrentGameState.gameCheck) {
+            // game over
+            // this.$router.push({path: `/endgame`})
+          }
+        }
       }
-      store.commit(`setDiceChosenState`, elementToAdd.id)
-      store.commit(`computeScore`)
+    },
+    selectDice(id) {
+      if (!this.getCurrentGameState.newTurn) {
+        this.$store.commit(`setDiceChosenState`, id)
+        this.$store.commit(`computeScore`)
+        const dice = document.getElementById(id)
+        const diceBox = dice.parentElement
+        // get chosen dice quantity if any
+        // to add or remove dice on user click
+        let chosenDiceQuantity = diceBox.querySelectorAll(`.chosen`).length
+        diceBox.insertBefore(dice, diceBox.childNodes[chosenDiceQuantity])
+      } else {
+        console.log(`Roll some dice, duh.`)
+      }
     }
   }
 }
@@ -231,37 +207,42 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/scss/index.scss";
-/*
-.debug {
-  position: fixed;
-  top: 24%;
-  left: 45%;
-  font-size: .9em;
-  line-height: 1.8;
-  padding: .3em;
-  border: 1px solid pink;
-}
-*/
+
 .game-dice-container {
-  height: 3.6em;
-  margin-left: .3em;
-  margin-right: .2em; // this
+  // height: .6em;
+  // border: 1px solid blue;
+  // margin-left: .3em;
+  // margin-right: .2em; // this
   transition: opacity 800ms cubic-bezier(.33,.15,.33,.98) ;
 }
-.hidden {
-  opacity: 0; // ??
+
+.dice-icon {
+  // height: 3.6em;
 }
+
 .game-dice {
-  height: .6em;
+  svg {
+    color: $color-primary-0;
+  }
+}
+.chosen {
+  svg {
+    color: $color-chosen;
+  }
+}
+.hidden {
+  opacity: 0;
+  svg {
+    opacity: 0;
+  }
 }
 
 /* main button */
-
 .main-button {
-  margin-right: .4em;
+  // margin-right: .4em;
   // color: $main-button-brick-color;
   border-radius: .25em;
-  height: 3.6em;
+  // height: 3.6em;
   background-color: $color-primary-0;
   box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
 }
@@ -287,6 +268,7 @@ export default {
 }
 .save {
   // color: $color-light;
+  animation-name: bounce;
   background-color: $color-very-red;
   // box-shadow: 0em 0em .3em $color-very-red;
 }
@@ -295,15 +277,15 @@ export default {
 @media screen and (orientation: landscape) {
   .dice-box-layout {
     // display: flex;
-    flex-direction: column;
+    // flex-direction: column;
     // border: 1px solid red;
     // padding-top: .15em;
     // height: 80vh;
-    width: 10em;
+    // width: 10em;
   }
   .dice-box {
-    display: flex;
-    flex-direction: column;
+    // display: flex;
+    // flex-direction: column;
   }
   .game-combination {
     font-size: 1em;
@@ -312,27 +294,27 @@ export default {
   .game-dice-container {
     // display: flex;
     // height: 1em;
-    flex-direction: column;
+    // flex-direction: column;
     // border: 1px solid red;
   }
   .dice-icon {
-    margin: .1em 0em .1em 0em;
-    height: 1em;
+    // margin: .1em 0em .1em 0em;
+    // height: 1em;
   }
   .main-button {
-    width:75%;
+    // width:75%;
     // margin: .4em;
   }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) { // ipad
   .dice-icon {
-    height: 5.8em;
+    // height: 5.8em;
     // border: 1px solid green;
   }
   .main-button {
     border-radius: .5em;
-    height: 5.8em;
+    // height: 5.8em;
   }
   .play-arrow {
     border-top: 1.5em solid transparent;
@@ -347,12 +329,11 @@ export default {
 
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) { // ipadPro
   .dice-icon {
-    height: 8em;
+    // height: 8em;
     // border: 1px solid green;
   }
   .main-button {
-    border-radius: .5em;
-    height: 8em;
+    // height: 8em;
     border-radius: 1em;
   }
   .play-arrow {
@@ -372,10 +353,10 @@ export default {
 @media screen and (max-resolution: 96dpi) and (max-width: 480px) { // fly iq4415
   .dice-icon {
     // border: 1px solid pink;
-    height: 4.6em;
+    // height: 4.6em;
   }
   .main-button {
-    height: 4.6em;
+    // height: 4.6em;
     // border-radius: .4em;
   }
   .play-arrow {
@@ -395,10 +376,10 @@ export default {
 @media screen and (max-resolution: 96dpi) and (min-width: 481px) { // fly iq4415
   .dice-icon {
     // border: 1px solid red;
-    height: 6em;
+    // height: 6em;
   }
   .main-button {
-    height: 5.4em; // really need this?
+    // height: 5.4em; // really need this?
     border-radius: .4em;
   }
   .play-arrow {
@@ -418,10 +399,10 @@ export default {
 @media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
   .dice-icon {
     // border: 1px solid orange;
-    height: 6em;
+    // height: 6em;
   }
   .main-button {
-    height: 6em;
+    // height: 6em;
     border-radius: .6em;
   }
   .play-arrow {
@@ -437,9 +418,8 @@ export default {
     height: 2em;
   }
 }
-
 /*
-// @media screen and (max-resolution: 96dpi) and (min-width: 500px) { // desktop
+@media screen and (max-resolution: 96dpi) and (min-width: 500px) { // desktop
   .dice-box-layout {
     width: 12em;
   }
@@ -461,7 +441,6 @@ export default {
   }
 }
 */
-
 @keyframes bounce {
   from,
   20%,
@@ -490,21 +469,6 @@ export default {
 .bounce {
   animation-name: bounce;
   transform-origin: center bottom;
-}
-
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-  }
-}
-
-.fadeOut {
-  -webkit-animation-name: fadeOut;
-  animation-name: fadeOut;
 }
 
 </style>
