@@ -1,19 +1,13 @@
 <template>
-  <v-container
-    id="gameView"
-    ma-0
-    pa-0
-    fill-height
+  <!-- Navigation bar -->
+  <!--navBar /-->
+  <v-layout
+    column
+    class="game-layout"
+    :class="{ 'game-ended': getCurrentGameState.gameOver }"
   >
-    <!-- Navigation bar -->
-    <!--navBar /-->
-    <v-layout
-      column
-      class="game-layout"
-      :class="{ 'game-ended': getCurrentGameState.gameOver }"
-    >
-      <!-- School dice display -->
-      <!--v-layout row-->
+    <!-- School dice display -->
+    <v-layout align-center>
       <v-flex
         d-flex
         align-center
@@ -35,79 +29,78 @@
           />
         </v-flex>
       </v-flex>
-      <!--/v-layout-->
-      <!-- School results display -->
-      <v-layout
-        row
-        class="school-results-layout"
-        align-center
-      >
-        <v-flex
-          v-for="result in getSchoolArray"
-          :key="result.id"
-          d-flex
-          xs2
-          align-center
-          justify-center
-          class="school-result"
-          :class="{ chosen:result.final, blink:!result.final }"
-          @click="recordResult(result.id)"
-        >
-          <span :resultId="result.id">{{ result.value }}</span>
-        </v-flex>
-      </v-layout>
-      <!-- Game combinations display -->
-      <v-layout
-        column
-        justify-center
-        class="game-combinations-layout"
-      >
-        <v-flex
-          v-for="combination in getCombinationArray"
-          :id="combination.id"
-          :key="combination.id"
-          d-flex
-          align-center
-          class="game-combination"
-          :class="{ set:combination.final }"
-          @click="recordResult(combination.id)"
-        >
-          <v-layout
-            class="background-transition"
-            :class="{ accented:!combination.final && combination.value }"
-          >
-            <v-flex
-              xs6
-              pl-2
-            >
-              {{ combination.fullName }}
-            </v-flex>
-            <v-flex
-              v-for="(value, index) in combination.displayValues"
-              :key="index"
-              xs2
-              class="text-xs-center"
-            >
-              {{ value }}
-            </v-flex>
-            <v-flex
-              v-if="combination.value"
-              xs2
-              class="blink text-xs-center"
-            >
-              {{ combination.value }}
-            </v-flex>
-          </v-layout>
-        </v-flex>
-      </v-layout>
-      <DiceBox />
-      <v-progress-linear
-        :value="progressBarState"
-        color="purple darken-2"
-      />
     </v-layout>
-    <!--div class="progress-bar" /-->
-  </v-container>
+    <!-- School results display -->
+    <v-layout
+      row
+      class="school-results-layout"
+      align-center
+    >
+      <v-flex
+        v-for="result in getSchoolArray"
+        :key="result.id"
+        d-flex
+        xs2
+        align-center
+        justify-center
+        class="school-result"
+        :class="{ chosen:result.final, blink:!result.final }"
+        @click="recordResult(result.id)"
+      >
+        <span :resultId="result.id">{{ result.value }}</span>
+      </v-flex>
+    </v-layout>
+    <!-- Game combinations display -->
+    <v-layout
+      column
+      justify-center
+      class="game-combinations-layout"
+    >
+      <v-flex
+        v-for="combination in getCombinationArray"
+        :id="combination.id"
+        :key="combination.id"
+        d-flex
+        align-center
+        class="game-combination"
+        :class="{ set:combination.final }"
+        @click="recordResult(combination.id)"
+      >
+        <v-layout
+          class="background-transition"
+          :class="{ accented:!combination.final && combination.value }"
+        >
+          <v-flex
+            xs6
+            pl-2
+          >
+            {{ combination.fullName }}
+          </v-flex>
+          <v-flex
+            v-for="(value, index) in combination.displayValues"
+            :key="index"
+            xs2
+            class="text-xs-center"
+          >
+            {{ value }}
+          </v-flex>
+          <v-flex
+            v-if="combination.value"
+            xs2
+            class="blink text-xs-center"
+          >
+            {{ combination.value }}
+          </v-flex>
+        </v-layout>
+      </v-flex>
+    </v-layout>
+    <DiceBox />
+    <v-progress-linear
+      :value="progressBarState"
+      color="purple darken-2"
+      height="4"
+    />
+  </v-layout>
 </template>
 
 <script>
@@ -307,6 +300,7 @@ export default {
   // padding-bottom: .2em;
   // border: 1px solid green;
   transition: background-color 1s ease-in;
+  // font-size: 1.9em;
   // transition-duration: 1s;
   // transition-timing-function: ease-in;
 }
@@ -325,7 +319,8 @@ export default {
 }
 .school-results-layout {
   // border: 1px solid pink;
-  height: 2em;
+  height: 1em;
+  font-size: 1.6em;
 }
 .school-result {
   // height: .8em;
@@ -334,7 +329,7 @@ export default {
 
 .game-combinations-layout {
   color: $color-primary-0;
-  font-size: 2em;
+  font-size: 1.9em;
 }
 .game-combination {
   padding: .15em 0em .15em 0em;
@@ -402,9 +397,9 @@ export default {
     // margin: .2em 0em .2em 0em;
   }
   .school-results-layout {
-    width: 1em;
+    // width: 1em;
     flex-direction: column;
-    height: 100%;
+    // height: 100%;
     border: 1px solid yellow;
   }
   .game-combinations-layout {

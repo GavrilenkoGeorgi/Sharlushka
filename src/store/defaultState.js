@@ -4,7 +4,7 @@ export default () => {
       isAuthenticated: false
     },
     debug: false,
-    error: `No error`,
+    error: `No error`, // ?
     processing: false,
     defaultUserName: `Anonymous`,
     newTurn: true,

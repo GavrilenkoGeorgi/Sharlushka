@@ -1,28 +1,29 @@
 <template>
   <!-- Dice box -->
   <v-layout
-    row
+    v-if="!isGameEnded"
+    align-center
   >
-    <v-flex
-      v-if="!isGameEnded"
-      xs9
-    >
-      <v-layout>
+    <v-flex xs9>
+      <v-layout
+        v-if="getCurrentGameState.currentRollCount <= 2"
+        row
+        justify-space-around
+        px-1
+      >
         <v-flex
           v-for="dice in getDiceArray"
           :id="dice.id"
           :key="dice.id"
-          pa-1
           d-flex
           shrink
           class="game-dice animated fadeIn"
-          :class="{ chosen: dice.chosen,
-                    hidden: isDiceBoxHidden
-          }"
+          :class="{ chosen: dice.chosen }"
           @click="selectDice(dice.id)"
         >
           <component
             :is="dice.currentIcon"
+            class="dice-box-icon"
           />
         </v-flex>
       </v-layout>
@@ -34,6 +35,7 @@
       :class="{ save: mainButtonStateCheck }"
       aria-label="Main game button"
       type="button"
+      mr-1
       @click.prevent="handleMainGameButtonClick"
     >
       <v-layout
@@ -49,7 +51,7 @@
         />
         <!-- Button roll state -->
         <v-flex
-          v-if="getCurrentGameState.currentRollCount < 3"
+          v-if="mainButtonIsRolling === true"
           class="circle-container"
         >
           <v-layout
@@ -66,19 +68,45 @@
         <!-- Button save state -->
         <v-flex
           v-if="getCurrentGameState.currentRollCount === 0"
-          d-flex
           xs4
           class="stop-brick animated fadeIn"
         />
       </v-layout>
     </v-flex>
+  </v-layout>
+  <v-layout
+    v-else
+    align-center
+    justify-center
+  >
     <!-- End Game button -->
     <v-flex
-      v-if="isGameEnded"
-      xs12
+      d-flex
+      xs6
     >
-      <v-btn>
-        Game Over
+      <v-btn
+        flat
+        outline
+        color="purple darken-2"
+        :to="'/endgame'"
+      >
+        <saveIcon class="default-icon-color button-icon-margin" />
+        Save result
+      </v-btn>
+    </v-flex>
+    <!-- Restart button -->
+    <v-flex
+      d-flex
+      xs6
+    >
+      <v-btn
+        flat
+        outline
+        color="orange"
+        @click="restartGame"
+      >
+        <restartIcon class="chosen button-icon-margin" />
+        Restart
       </v-btn>
     </v-flex>
   </v-layout>
@@ -93,6 +121,8 @@ import diceThrees from '../assets/icons/diceThrees.svg'
 import diceFours from '../assets/icons/diceFours.svg'
 import diceFives from '../assets/icons/diceFives.svg'
 import diceSixes from '../assets/icons/diceSixes.svg'
+import restartIcon from '../assets/icons/baseline-replay-24px.svg'
+import saveIcon from '../assets/icons/baseline-save-24px.svg'
 
 export default {
   name: `DiceBox`,
@@ -102,7 +132,9 @@ export default {
     diceThrees,
     diceFours,
     diceFives,
-    diceSixes
+    diceSixes,
+    restartIcon,
+    saveIcon
   },
   data() {
     return {
@@ -120,7 +152,8 @@ export default {
       `getCurrentGameState`,
       `isDiceBoxHidden`,
       `isGameEnded`,
-      `isLastRollInGame`
+      `isLastRollInGame`,
+      `mainButtonIsRolling`
     ]),
     mainButtonStateCheck:() => store.state.rollCount === 0 ? true : false
   },
@@ -136,6 +169,12 @@ export default {
     })
   },
   methods: {
+    restartGame() {
+      console.log(`Restarting game.`)
+      store.commit(`resetState`)
+      // cause of the same route
+      this.$router.go(`/game`)
+    },
     vibrate() {
       console.log(`zzz`)
       this.zzz += `-zzz`
@@ -150,18 +189,18 @@ export default {
       navigator.vibrate(pattern)
     },
     handleMainGameButtonClick() {
-      store.commit(`diceBoxHidden`, false)
+      // store.commit(`diceBoxHidden`, false)
       const checkForlastRollInGame = () => this.isLastRollInGame ? true : false
       let lastRoll = checkForlastRollInGame()
       if (lastRoll) {
         console.log(`Last roll in game is ${lastRoll}`)
-        this.$router.push({path: `/endgame`})
+        // this.$router.push({path: `/endgame`})
       } else {
         console.log(`Last roll in game is ${lastRoll}`)
         const diceToAnimateOnRoll = document.querySelectorAll(`.game-dice:not(.chosen)`)
         for (const dice of diceToAnimateOnRoll) {
           dice.classList.add(`zoomIn`)
-          // console.log(`Adding zoom`)
+          console.log(`Adding zoom`)
           void dice.offsetWidth
           dice.classList.remove(`zoomIn`)
         }
@@ -226,6 +265,9 @@ export default {
   }
 }
 .chosen {
+  fill: $color-chosen;
+  // two types of icons UI and game dice
+  // change `fill` to `currentColor` inside svg
   svg {
     color: $color-chosen;
   }
@@ -471,4 +513,14 @@ export default {
   transform-origin: center bottom;
 }
 
+.dice-box-icon, .main-button {
+  height: 3.45em; // starting from nokia 5 screen size
+  color: $color-primary-0;
+}
+.button-icon-margin {
+  margin: 0em .2em 0em .2em;
+}
+.default-icon-color {
+  fill: $color-primary-0;
+}
 </style>

@@ -292,7 +292,7 @@ export default {
         !state.turnCompleted &&
         !state.gameCheck) {
       console.log(`You can't even finish the school... Score is: ${state.schoolScoreTotal}`)
-      state.gameEnded = true
+      state.gameOver = true
       return false
     }
     // state.diceBoxHidden = false
@@ -397,7 +397,7 @@ export default {
     const combinationId = id
     const combinationIndexInArray = state.scoreArray.map((dice) => dice.id).indexOf(combinationId)
     // check if it is school result
-    if (combinationIndexInArray <= 5 && !state.schoolCompleted && !state.newTurn) {
+    if (combinationIndexInArray <= 6 && !state.schoolCompleted && !state.newTurn) {
       if (!state.scoreArray[combinationIndexInArray].final
         && state.scoreArray[combinationIndexInArray].value !== ``) {
         // console.log(`Saving school result`)

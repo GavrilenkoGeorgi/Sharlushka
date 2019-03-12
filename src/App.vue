@@ -3,14 +3,20 @@
     <navBar />
     <v-content>
       <!-- Router view -->
-      <transition
-        name="custom-classes-transition"
-        mode="out-in"
-        enter-active-class="animated fadeIn"
-        leave-active-class="animated fadeOutRight"
+      <v-container
+        ma-0
+        pa-0
+        fill-height
       >
-        <router-view />
-      </transition>
+        <transition
+          name="custom-classes-transition"
+          mode="out-in"
+          enter-active-class="animated fadeIn"
+          leave-active-class="animated fadeOutRight"
+        >
+          <router-view />
+        </transition>
+      </v-container>
     </v-content>
   </v-app>
 </template>

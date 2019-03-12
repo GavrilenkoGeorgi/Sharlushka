@@ -4,7 +4,7 @@
     wrap
   >
     <closeBtn />
-    <v-flex xs12>
+    <!--v-flex xs12>
       <h1 class="text-xs-center rules-heading">
         {{ rulesHeading }}
       </h1>
@@ -13,8 +13,8 @@
         class="text-xs-center rules-heading"
       >
         Your recent school results
-      </h4>
-      <!-- Chart -->
+      </h4-->
+    <!-- Chart>
       <v-flex
         d-flex
         align-center
@@ -34,7 +34,7 @@
       <p class="rules-text-eng">
         {{ overallEng }}
       </p>
-    </v-flex>
+    </v-flex-->
     <!-- Combination descriptions -->
     <v-flex xs12>
       <v-flex
@@ -141,7 +141,8 @@ export default {
       // `diceTwos, diceSixes, diceOnes, diceThrees, diceFours`
       // ids are in the store
       combinationsDescrMk3: [
-        {title: `Single dice with ace`, quantity: [1], scoreValue: `-2`},
+        {title: `Single dice with ace`, quantity: [1], scoreValue: `-2`}
+        /*
         {title: `Two aces`, quantity: [1, 1], scoreValue: `-1`},
         {title: `Three`, quantity: [1, 1, 1], scoreValue: `0`},
         {title: `Four`, quantity: [1, 1, 1, 1], scoreValue: `+1`},
@@ -158,7 +159,7 @@ export default {
         {title: `Small`, quantity: [1, 2, 3, 4, 5], scoreValue: `15`},
         {title: `Large`, quantity: [2, 3, 4, 5, 6], scoreValue: `20`},
         {title: `Chance`, quantity: [2, 6, 1, 3, 4], scoreValue: `16`},
-        {title: `Another chance`, quantity: [4, 1, 2, 1, 5], scoreValue: `13`}
+        {title: `Another chance`, quantity: [4, 1, 2, 1, 5], scoreValue: `13`} */
       ]
     }
   },

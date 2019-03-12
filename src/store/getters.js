@@ -21,6 +21,15 @@ export default {
     let percent = fraction * numbah * 11.075
     return Math.round(Math.abs(percent))
   },
+  mainButtonIsRolling(state) {
+    if (!state.newTurn
+      && state.rollCount === 2
+      || state.rollCount === 1) {
+      return true
+    } else {
+      return false
+    }
+  },
   getDiceIds(state) {
     const diceIdsContainer = state.scoreArray.slice(0, state.diceArray.length + 1)
     let diceIds = []
@@ -37,11 +46,13 @@ export default {
   },
   isGameEnded (state) {
     if (state.currentGameTurn === 33 && state.newTurn === true) { // the last one
-      // console.log(`Ending game in isGame Ended.`)
+      console.log(`Last turn, game over.`)
       state.gameOver = true
       return true
+    } else if (state.currentGameTurn <= 6 && state.gameOver === true){
+      console.log(`School not finished.`)
+      return true
     } else {
-      // console.log(`Game not ended in mutations!`)
       return false
     }
   },

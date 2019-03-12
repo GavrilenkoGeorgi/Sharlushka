@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import getters from './getters'
 import mutations from './mutations'
-import getDefaultState from './defaultState.js'
-// import getDefaultState from './debugState.js'
+// import getDefaultState from './defaultState.js'
+import getDefaultState from './debugState.js'
 
 Vue.use(Vuex)
 // initial state
