@@ -3,8 +3,7 @@
     row
     wrap
   >
-    <closeBtn />
-    <!--v-flex xs12>
+    <v-flex xs12>
       <h1 class="text-xs-center rules-heading">
         {{ rulesHeading }}
       </h1>
@@ -13,8 +12,8 @@
         class="text-xs-center rules-heading"
       >
         Your recent school results
-      </h4-->
-    <!-- Chart>
+      </h4>
+      <!-- Chart-->
       <v-flex
         d-flex
         align-center
@@ -34,7 +33,7 @@
       <p class="rules-text-eng">
         {{ overallEng }}
       </p>
-    </v-flex-->
+    </v-flex>
     <!-- Combination descriptions -->
     <v-flex xs12>
       <v-flex
@@ -78,7 +77,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import closeBtn from '../components/CloseBtn.vue'
 import diceOnes from '../assets/icons/diceOnes.svg'
 import diceTwos from '../assets/icons/diceTwos.svg'
 import diceThrees from '../assets/icons/diceThrees.svg'
@@ -89,7 +87,6 @@ import diceSixes from '../assets/icons/diceSixes.svg'
 export default {
   name: `Help`,
   components: {
-    closeBtn,
     diceOnes,
     diceTwos,
     diceThrees,

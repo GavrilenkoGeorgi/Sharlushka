@@ -72,12 +72,16 @@
           v-for="link in navDrawerLinks"
           :key="link.path"
           :to="{ path: link.path }"
+          active-class="active-link"
+          :class="link.path === $route.path ? 'active-link' : ''"
           @click="navDrawer = false"
         >
           <v-list-tile-action>
             <v-layout justify-center>
               <component
                 :is="link.icon"
+                active-class="active-link"
+                :class="link.path === $route.path ? 'active-link' : ''"
                 class="nav-drawer-link-icon"
               />
             </v-layout>
@@ -96,11 +100,12 @@ import { mapGetters } from 'vuex'
 
 import NetworkCheck from '../components/NetworkCheck.vue'
 import settingsIcon from '../assets/icons/baseline-menu-24px.svg'
-import helpIcon from '../assets/icons/baseline-trending_up-24px.svg'
 import userStatsIcon from '../assets/icons/baseline-equalizer-24px.svg'
 import leaderBoardIcon from '../assets/icons/baseline-import_export-24px.svg'
 import logInOutIcon from '../assets/icons/baseline-exit_to_app-24px.svg'
 import backIcon from '../assets/icons/baseline-keyboard_backspace-24px.svg'
+import playIcon from '../assets/icons/baseline-play_arrow-24px.svg'
+import helpIcon from '../assets/icons/baseline-help_outline-24px.svg'
 
 export default {
   name: `Navbar`,
@@ -111,15 +116,16 @@ export default {
     userStatsIcon,
     leaderBoardIcon,
     logInOutIcon,
-    backIcon
+    backIcon,
+    playIcon
   },
   data: () => ({
     navDrawer: false,
     navDrawerLinks: [
       {
-        path: `/help`,
-        icon: `helpIcon`,
-        text: `School results & help`
+        path: `/game`,
+        icon: `playIcon`,
+        text: `Play`
       },
       {
         path: `/userstats`,
@@ -130,6 +136,11 @@ export default {
         path: `/leaderboard`,
         icon: `leaderBoardIcon`,
         text: `Leaderboard`
+      },
+      {
+        path: `/help`,
+        icon: `helpIcon`,
+        text: `Help`
       },
       {
         path: `/login`,
@@ -195,7 +206,6 @@ export default {
 .user-name {
   color: $color-primary-0;
   font-size: 2em;
-  // line-height: 1;
 }
 
 .score {
@@ -208,4 +218,12 @@ export default {
 .nav-drawer-link-icon {
   fill: $color-primary-0;
 }
+
+.active-link {
+  color: $color-chosen;
+  svg {
+    fill: $color-chosen;
+  }
+}
+
 </style>

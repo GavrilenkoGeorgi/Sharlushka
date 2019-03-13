@@ -11,6 +11,7 @@ selenium-debug.log
 /src/firebase/firebaseConfig.js
 /src/store/debugState.js
 /platforms/android/
+/platforms
 
 # Editor directories and files
 .idea

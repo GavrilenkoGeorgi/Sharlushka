@@ -5,7 +5,6 @@
     pa-0
   >
     <v-layout column>
-      <closeButton />
       <v-alert
         :value="errorMessage"
         dismissible
@@ -19,7 +18,7 @@
       </v-flex>
       <v-layout
         justify-center
-        class="register-form pb-4"
+        class="register-form py-4"
       >
         <v-flex xs9>
           <v-form
@@ -66,7 +65,7 @@
       </v-layout>
       <v-layout
         justify-center
-        class="buttons text-xs-center"
+        class="buttons text-xs-center py-4"
       >
         <v-flex
           xs5
@@ -106,13 +105,9 @@
 import db from '../firebase/firebaseInit'
 import firebase from 'firebase/app'
 import 'firebase/auth'
-import closeButton from '../components/CloseBtn.vue'
 
 export default {
   name: `Register`,
-  components: {
-    closeButton
-  },
   data: () => ({
     pageTitle: `Register`,
     registering: false,

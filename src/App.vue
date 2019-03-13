@@ -195,4 +195,8 @@ export default {
   transform-origin: center bottom;
 }
 
+.animated.fast {
+  animation-duration: 800ms;
+}
+
 </style>

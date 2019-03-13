@@ -5,14 +5,14 @@
     pa-0
     mp-0
   >
-    <!-- Close button -->
     <v-layout
       column
     >
-      <closeBtn />
       <!-- Messages -->
       <v-flex
         class="user-name-game-end text-xs-center"
+        align-center
+        d-flex
       >
         <h1>
           {{ message }}<br>
@@ -54,22 +54,6 @@
           >
             <restartIcon class="highlighted" />
             restart
-          </v-btn>
-        </v-flex>
-        <v-flex
-          d-flex
-          xs5
-          lg2
-          class="text-xs-center"
-        >
-          <v-btn
-            ripple
-            outline
-            color="purple darken-1"
-            :to="'/userstats'"
-          >
-            <statsIcon class="default-icon-color" />
-            stats
           </v-btn>
         </v-flex>
       </v-layout>
@@ -119,17 +103,13 @@
 import {mapGetters} from 'vuex'
 import store from '../store/store' // $this.store?
 import db from '../firebase/firebaseInit'
-import closeBtn from '../components/CloseBtn.vue'
 import NetworkCheck from '../components/NetworkCheck.vue'
 import restartIcon from '../assets/icons/baseline-replay-24px.svg'
-import statsIcon from '../assets/icons/baseline-equalizer-24px.svg'
 import cancelIcon from '../assets/icons/baseline-cancel-24px.svg'
 
 export default {
   components: {
-    closeBtn,
     NetworkCheck,
-    statsIcon,
     restartIcon,
     cancelIcon
   },
@@ -326,5 +306,9 @@ export default {
 }
 .network-check-background {
   height: 3em;
+}
+
+.chosen {
+  color: red;
 }
 </style>

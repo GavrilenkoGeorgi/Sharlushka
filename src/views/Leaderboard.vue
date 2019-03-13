@@ -3,20 +3,35 @@
     id="leaderboard"
     column
   >
-    <v-flex>
-      <!-- Close button -->
-      <closeBtn />
-    </v-flex>
     <!-- Title -->
-    <v-flex class="text-xs-center py-4">
+    <v-flex
+      xs2
+      d-flex
+      align-center
+      class="text-xs-center"
+    >
       <h1 class="leaderboard-title text-capitalize">
         {{ title }}
       </h1>
     </v-flex>
     <!-- Users leaderboard legend -->
-    <v-flex class="leaderboard-legend text-xs-center pl-1 py-2">
-      <v-layout align-center>
-        <listIcon class="default-icon-color" />
+    <v-flex
+      d-flex
+      xs1
+      align-center
+      class="leaderboard-legend text-xs-center pl-1"
+    >
+      <v-layout
+        align-center
+        justify-center
+        d-flex
+      >
+        <v-flex
+          xs1
+          class="text-xs-center"
+        >
+          <listIcon class="default-icon-color" />
+        </v-flex>
         <v-flex
           xs3
           class="text-xs-left"
@@ -87,7 +102,7 @@
 </template>
 
 <script>
-import closeBtn from '../components/CloseBtn.vue'
+// import closeBtn from '../components/CloseBtn.vue'
 import listIcon from '../assets/icons/baseline-import_export-24px.svg'
 import {mapGetters} from 'vuex'
 import db from '../firebase/firebaseInit'
@@ -95,7 +110,6 @@ import db from '../firebase/firebaseInit'
 export default {
   name: `Leaderboard`,
   components: {
-    closeBtn,
     listIcon
   },
   data: () => ({

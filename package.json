@@ -1,6 +1,7 @@
 {
   "name": "sharlushka",
-  "version": "1.4.3",
+  "version": "1.4.4",
+  "main": "index.js",
   "private": true,
   "description": "Sharlushka App",
   "author": "Gavrilenko <gavrilenko.georgi@gmail.com>",

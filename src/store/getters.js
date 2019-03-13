@@ -35,7 +35,6 @@ export default {
     let diceIds = []
     for (let id of diceIdsContainer) {
       diceIds.push(id.icon)
-      // console.log(`Inside get ids ${id.icon}`)
     }
     return diceIds
   },
@@ -44,18 +43,7 @@ export default {
     const schoolArray = state.scoreArray.slice(0, state.diceArray.length + 1)
     return schoolArray
   },
-  isGameEnded (state) {
-    if (state.currentGameTurn === 33 && state.newTurn === true) { // the last one
-      console.log(`Last turn, game over.`)
-      state.gameOver = true
-      return true
-    } else if (state.currentGameTurn <= 6 && state.gameOver === true){
-      console.log(`School not finished.`)
-      return true
-    } else {
-      return false
-    }
-  },
+  isGameEnded: (state) => state.gameOver,
   isNewTurn (state) {
     return state.newTurn ? true : false
   },
@@ -81,31 +69,4 @@ export default {
   },
   isDiceBoxHidden: (state) => state.newTurn
 }
-// getProcessing: (state) => state.processing,
-// getError: (state) => state.error,
-/*
-  debugInfo(state) {
-    // console.log(`Debug on`)
-    for (const key in state.diceArray) {
-      if (state.diceArray[key].chosen) {
-        const info = {
-          // name: state.diceArray[key].id,
-          chosen: state.diceArray[key].chosen,
-          firstDice: state.diceArray[0].chosen
-          // value: state.diceArray[key].value
-        }
-        return info
-      }
-    }
-  },
-  chosenDiceArray(state) {
-    return state.diceArray.filter(dice => {
-      return dice.chosen
-    })
-  },
-  currentValuesInScoreArray(state) {
-    return state.scoreArray.filter(score => {
-      return score.value !== `` && !score.final
-    })
-  } */
 

@@ -22,7 +22,7 @@
           :key="dice.id"
           d-flex
           shrink
-          class="game-dice animated fadeIn"
+          class="game-dice animated fast fadeIn"
           :class="{ chosen: dice.chosen }"
           @click="selectDice(dice.id)"
         >
@@ -42,7 +42,7 @@
         justify-center
         row
         fill-height
-        class="main-button animated fadeIn"
+        class="main-button animated fast fadeIn"
         :class="{ save: mainButtonStateCheck }"
         aria-label="Main game button"
         type="button"
@@ -51,7 +51,7 @@
         <v-flex
           v-if="getCurrentGameState.currentRollCount === 3 && !isGameEnded"
           xs2
-          class="play-arrow animated fadeIn"
+          class="play-arrow animated fast fadeIn"
         />
         <!-- Button roll state -->
         <v-flex
@@ -65,7 +65,7 @@
             <div
               v-for="(value, index) in getCurrentGameState.rollsCountForButton"
               :key="index"
-              class="roll-circle animated fadeIn"
+              class="roll-circle animated fast fadeIn"
             />
           </v-layout>
         </v-flex>
@@ -73,7 +73,7 @@
         <v-flex
           v-if="getCurrentGameState.currentRollCount === 0"
           xs4
-          class="stop-brick animated fadeIn"
+          class="stop-brick animated fast fadeIn"
         />
       </v-layout>
     </v-flex>
@@ -155,9 +155,7 @@ export default {
     ...mapGetters([
       `getDiceArray`,
       `getCurrentGameState`,
-      `isDiceBoxHidden`,
       `isGameEnded`,
-      `isLastRollInGame`,
       `mainButtonIsRolling`
     ]),
     mainButtonStateCheck:() => store.state.rollCount === 0 ? true : false
@@ -194,40 +192,35 @@ export default {
       navigator.vibrate(pattern)
     },
     handleMainGameButtonClick() {
-      // store.commit(`diceBoxHidden`, false)
-      const checkForlastRollInGame = () => this.isLastRollInGame ? true : false
-      let lastRoll = checkForlastRollInGame()
-      if (lastRoll) {
-        console.log(`Last roll in game is ${lastRoll}`)
-        // this.$router.push({path: `/endgame`})
-      } else {
-        console.log(`Last roll in game is ${lastRoll}`)
-        const diceToAnimateOnRoll = document.querySelectorAll(`.game-dice:not(.chosen)`)
-        for (const dice of diceToAnimateOnRoll) {
-          dice.classList.add(`zoomIn`)
-          console.log(`Adding zoom`)
-          void dice.offsetWidth
-          dice.classList.remove(`zoomIn`)
-        }
-        if (this.getCurrentGameState.currentRollCount === 0) {
-          this.mainButtonState.save = true
-        }
-        if (this.getCurrentGameState.rollsCountForButton > 0
-          && !this.getCurrentGameState.turnCompleted) {
-          // this.vibrateOnce()
-          store.commit(`rollDice`)
-          // console.log(`Rolling dice ${this.getCurrentGameState.diceRollInProgress}`)
-          // if this.getCurrentGameState.gameCheck
-          // is false and certain condidtions are met, e.g.
-          // empty `sixes` combination at school
-          // and no sixes for three rolls on the last
-          // sixth turn in school
-          if (this.getCurrentGameState.currentRollCount === 0 &&
-              this.getCurrentGameState.currentGameTurn <= 6 &&
-              !this.getCurrentGameState.gameCheck) {
-            // game over
-            // this.$router.push({path: `/endgame`})
-          }
+      const diceToAnimateOnRoll = document.querySelectorAll(`.game-dice:not(.chosen)`)
+      // animating dice
+      for (const dice of diceToAnimateOnRoll) {
+        // need to do something about
+        // this animation reapplying thing
+        dice.classList.add(`blink`)
+        void dice.offsetWidth
+        dice.classList.remove(`blink`)
+      }
+      // setting save red button
+      if (this.getCurrentGameState.currentRollCount === 0) {
+        this.mainButtonState.save = true
+      }
+      // if any rolls left and no result saved
+      if (this.getCurrentGameState.rollsCountForButton > 0
+        && !this.$store.newTurn) {
+        // this.vibrateOnce()
+        store.commit(`rollDice`)
+        // console.log(`Rolling dice ${this.getCurrentGameState.diceRollInProgress}`)
+        // if this.getCurrentGameState.gameCheck
+        // is false and certain condidtions are met, e.g.
+        // empty `sixes` combination at school
+        // and no sixes for three rolls on the last
+        // sixth turn in school
+        if (this.getCurrentGameState.currentRollCount === 0 &&
+            this.getCurrentGameState.currentGameTurn <= 6 &&
+            !this.getCurrentGameState.gameCheck) {
+          // game over
+          store.commit(`gameOver`)
         }
       }
     },
@@ -237,7 +230,7 @@ export default {
         this.$store.commit(`computeScore`)
         const dice = document.getElementById(id)
         const diceBox = dice.parentElement
-        // get chosen dice quantity if any
+        // get chosen dice quantity if any,
         // to add or remove dice on user click
         let chosenDiceQuantity = diceBox.querySelectorAll(`.chosen`).length
         diceBox.insertBefore(dice, diceBox.childNodes[chosenDiceQuantity])
@@ -471,4 +464,19 @@ export default {
   }
 }
 */
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.zoomIn {
+  animation-name: zoomIn;
+}
 </style>

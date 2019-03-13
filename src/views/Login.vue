@@ -5,8 +5,6 @@
     pa-0
     class="text-xs-center"
   >
-    <!-- Close button -->
-    <closeBtn />
     <!-- Error message -->
     <v-layout column>
       <v-flex d-flex>
@@ -154,13 +152,9 @@ import { mapGetters } from 'vuex'
 import firebase from 'firebase/app'
 import db from '../firebase/firebaseInit'
 import 'firebase/auth'
-import closeBtn from '../components/CloseBtn.vue'
 
 export default {
   name: `Login`,
-  components: {
-    closeBtn
-  },
   data: () => ({
     loggingIn: false,
     signingOut: false,

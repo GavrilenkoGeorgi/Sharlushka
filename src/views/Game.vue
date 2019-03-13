@@ -145,144 +145,19 @@ export default {
       `recordResultMk2`,
       `clearResultBox`
     ]),
-    recordResult(id) { // this really belongs to mutations (
+    recordResult(id) {
       if (!this.isNewTurn) {
         this.$store.dispatch(`recordResultMk2`, id).then(() => {
-          // console.log(`Then after dispatch if new turn is true`)
-          // console.log(this.isNewTurn)
-          this.$store.commit(`clearResultBox`)
-          this.$store.commit(`diceBoxHidden`, true)
-          this.$store.commit(`nextTurn`)
+          if (this.isNewTurn) {
+            this.$store.commit(`nextTurn`)
+            this.$store.commit(`clearResultBox`)
+          }
         })
       } else {
         console.log(`Roll some dice.`)
       }
-      // this.$store.commit(`diceBoxHidden`, true)
-      // console.log(`Turn completed`)
-      // console.log(`This.isGame ended`)
-      // console.log(this.isGameEnded)
-      // this.turnCompleted = true
-      // this.$store.commit(`nextTurn`)
-      // last checks after recording or not recording the result
-      // check if gameEnded
-      // console.log(`Is game ended? ${this.isGameEnded}`)
-      // let gameEnded = this.isGameEnded
-      // console.log(result)
-      /*
-      if (gameEnded === true) {
-        console.log(`Game Over!`)
-        // store.state.gameEnded = true
-        // this.$router.push('/endgame')
-        setTimeout(() => {
-          // console.log(`Not so fast.. let the user appreciate the results )`)
-          // this.$router.push(`/endgame`)
-        }, 750)
-      } else {
-        // this.turnCompleted = true
-        console.log(`Commiting next turn!`)
-        this.$store.commit(`nextTurn`)
-      } */
-      // console.log(gameEnded)
-      /*
-      if (gameEnded) {
-        console.log(`Game Over!`)
-        // store.state.gameEnded = true
-        // this.$router.push('/endgame')
-        setTimeout(() => {
-          // console.log(`Not so fast.. let the user appreciate the results )`)
-          // this.$router.push(`/endgame`)
-        }, 750)
-      } else {
-        // this.turnCompleted = true
-        console.log(`Commiting next turn!`)
-        this.$store.commit(`nextTurn`)
-      } */
-      // this.turnCompleted = false
-      // this.newTurn1 = true
-      /*
-      store.state.gameInProgress = true // should be just ones
-      // this.turnCompleted = true
-      const combinationId = id // ?
-      const combinationIndexInArray = store.state.scoreArray.map((dice) => dice.id).indexOf(combinationId)
-      if (!store.state.schoolCompleted &&
-          store.state.scoreArray[combinationIndexInArray].value !== `` &&
-          !store.state.turnCompleted &&
-          !store.state.scoreArray[combinationIndexInArray].final) {
-        store.state.scoreArray[combinationIndexInArray].final = true
-        store.state.schoolScoreTotal += store.state.scoreArray[combinationIndexInArray].value
-        store.state.turnCompleted = true
-        // set school completed to display game score on the board
-        if (store.state.currentGameTurn === 6) {
-          store.state.schoolCompleted = true
-        }
-        this.clearResultBox()
-        // this.turnCompleted = true
-        // this.removeCurrentHighlight()
-      } else if (store.state.scoreArray[combinationIndexInArray].value !== `` &&
-                  store.state.scoreArray[combinationIndexInArray].displayValues &&
-                  store.state.scoreArray[combinationIndexInArray].displayValues.length < 3 &&
-                  !store.state.turnCompleted) {
-        store.state.turnCompleted = true // another turn completed in store?
-        // push result into display values array
-        store.state.scoreArray[combinationIndexInArray].displayValues.push(store.state.scoreArray[combinationIndexInArray].value)
-        store.state.gameTotal += store.state.scoreArray[combinationIndexInArray].value
-        if (store.state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
-          store.state.scoreArray[combinationIndexInArray].final = true
-          store.state.scoreArray[combinationIndexInArray].value = ``
-        }
-        // this.clearResultInStore()
-        this.clearResultBox()
-        // this.turnCompleted = true
-        // this.removeCurrentHighlight()
-      } else if (!store.state.turnCompleted && // this really should be a single check
-        store.state.scoreArray[combinationIndexInArray].value === `` &&
-        !store.state.scoreArray[combinationIndexInArray].final &&
-        store.state.schoolCompleted &&
-        store.state.rollCount === 0 &&
-        !store.state.zeroCheck) {
-        // that means if there is no combination to record user can mark one empty
-        // field per turn as cancelled
-        // and it won't be used to calculate score
-        if (store.state.scoreArray[combinationIndexInArray].displayValues.length < 3) {
-          store.state.scoreArray[combinationIndexInArray].displayValues.push(0)
-          // zero saved during this turn
-          store.state.zeroCheck = true
-          this.clearResultBox()
-          // this.turnCompleted = true
-          // this.removeCurrentHighlight()
-          store.state.turnCompleted = true
-          // this.mainButtonState.disabled = false
-        }
-        // check if combination is full (it has three results)
-        if (store.state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
-          store.state.scoreArray[combinationIndexInArray].final = true
-        }
-        store.state.turnCompleted = true
-      } else {
-        // console.log(`Nothing to record!`)
-        return false
-      } */
-      // last checks after recording or not recording the result
-      /*
-      if (store.state.currentGameTurn === 33 && store.state.turnCompleted) {
-        console.log(`Game Over!`)
-        store.state.gameEnded = true
-        // this.$router.push('/endgame')
-        setTimeout(() => {
-          // console.log(`Not so fast.. let the user appreciate the results )`)
-          this.$router.push(`/endgame`)
-        }, 750)
-      } else {
-        // this.turnCompleted = true
-        console.log(`Commiting next turn!`)
-        store.commit(`nextTurn`)
-      }
-      // this.turnCompleted = false
-      // this.newTurn1 = true
-      this.$store.commit(`diceBoxHidden`, true)
-      console.log(`Turn completed`) */
-    } // end of record result method
-  } // end of methods
+    }
+  }
 }
 </script>
 

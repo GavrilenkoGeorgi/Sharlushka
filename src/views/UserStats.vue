@@ -3,8 +3,6 @@
     id="userStats"
     pa-0
   >
-    <!-- Close button -->
-    <closeBtn />
     <v-layout
       align-space-around
       column
@@ -12,7 +10,7 @@
       <!-- Title and user name -->
       <v-flex class="text-xs-center">
         <v-layout column>
-          <h1 class="help-title">
+          <h1 class="help-title py-1">
             {{ helpTitle }}
           </h1>
           <h2 class="user-name">
@@ -29,7 +27,7 @@
             class="hi-score"
           >
             {{ hiscoreGreeting }} {{ highestScore }}{{ exclamation }}
-          </h3><!-- Safari ??? -->
+          </h3>
         </v-layout>
       </v-flex>
       <!-- Chart -->
@@ -37,6 +35,7 @@
         v-if="highestScore"
         d-flex
         align-center
+        py-1
       >
         <chartist
           ratio="ct-major-twelfth"
@@ -89,7 +88,7 @@
           <v-flex
             v-for="item in newStats"
             :key="item.msg"
-            class="stats-display text-xs-center"
+            class="stats-display text-xs-center py-1"
           >
             {{ item.msg }}&nbsp;{{ item.value }}
           </v-flex>
@@ -112,7 +111,7 @@
             @click="restartGame"
           >
             <restartIcon class="highlighted" />
-            restart
+            Play again
           </v-btn>
         </v-flex>
       </v-layout>
@@ -122,14 +121,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import closeBtn from '../components/CloseBtn.vue'
 import restartIcon from '../assets/icons/baseline-replay-24px.svg'
-// import db from '../firebase/firebaseInit'
 
 export default {
   name: `UserStats`,
   components: {
-    closeBtn,
     restartIcon
   },
   data() {
