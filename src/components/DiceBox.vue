@@ -2,14 +2,19 @@
   <!-- Dice box -->
   <v-layout
     v-if="!isGameEnded"
+    class="dice-box-container"
     align-center
   >
-    <v-flex xs9>
+    <v-flex
+      xs9
+    >
       <v-layout
         v-if="getCurrentGameState.currentRollCount <= 2"
         row
         justify-space-around
+        fill-height
         px-1
+        class="dice-icons-layout"
       >
         <v-flex
           v-for="dice in getDiceArray"
@@ -30,19 +35,18 @@
     </v-flex>
     <!-- Main button do something with the margins -->
     <v-flex
-      xs3
-      class="main-button animated"
-      :class="{ save: mainButtonStateCheck }"
-      aria-label="Main game button"
-      type="button"
-      mr-1
-      @click.prevent="handleMainGameButtonClick"
+      class="main-button-container"
     >
       <v-layout
         align-center
         justify-center
         row
         fill-height
+        class="main-button animated fadeIn"
+        :class="{ save: mainButtonStateCheck }"
+        aria-label="Main game button"
+        type="button"
+        @click.prevent="handleMainGameButtonClick"
       >
         <v-flex
           v-if="getCurrentGameState.currentRollCount === 3 && !isGameEnded"
@@ -78,6 +82,7 @@
     v-else
     align-center
     justify-center
+    class="end-game-buttons"
   >
     <!-- End Game button -->
     <v-flex
@@ -91,7 +96,7 @@
         :to="'/endgame'"
       >
         <saveIcon class="default-icon-color button-icon-margin" />
-        Save result
+        Save
       </v-btn>
     </v-flex>
     <!-- Restart button -->
@@ -245,20 +250,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/scss/index.scss";
+@import "../assets/scss/vars/colors.scss";
 
-.game-dice-container {
-  // height: .6em;
-  // border: 1px solid blue;
-  // margin-left: .3em;
-  // margin-right: .2em; // this
-  transition: opacity 800ms cubic-bezier(.33,.15,.33,.98) ;
+.dice-box-container {
+  padding-right: .4em;
 }
-
-.dice-icon {
-  // height: 3.6em;
+.dice-box-icon, .main-button-container {
+  // border: 1px solid pink;
+  height: 3.45em; // starting from nokia 5 screen size
+  color: $color-primary-0;
 }
-
+.default-icon-color {
+  fill: $color-primary-0;
+}
 .game-dice {
   svg {
     color: $color-primary-0;
@@ -272,21 +276,17 @@ export default {
     color: $color-chosen;
   }
 }
-.hidden {
-  opacity: 0;
-  svg {
-    opacity: 0;
-  }
-}
 
 /* main button */
 .main-button {
-  // margin-right: .4em;
-  // color: $main-button-brick-color;
   border-radius: .25em;
-  // height: 3.6em;
   background-color: $color-primary-0;
   box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+.save {
+  animation-name: bounce;
+  background-color: $color-very-red;
+  box-shadow: 0em 0em .3em $color-very-red;
 }
 .play-arrow {
   margin-left: .375em;
@@ -308,47 +308,35 @@ export default {
   background: $main-button-brick-color;
   box-shadow: 0em 0em .4em .05em $main-button-brick-color;
 }
-.save {
-  // color: $color-light;
-  animation-name: bounce;
-  background-color: $color-very-red;
-  // box-shadow: 0em 0em .3em $color-very-red;
-}
 
 // landscape
 @media screen and (orientation: landscape) {
-  .dice-box-layout {
-    // display: flex;
-    // flex-direction: column;
+  .dice-box-container {
     // border: 1px solid red;
-    // padding-top: .15em;
-    // height: 80vh;
-    // width: 10em;
+    width: 20%;
+    height: 100%;
+    flex-direction: column;
+    padding: 0em 0em .3em 0em;
   }
-  .dice-box {
-    // display: flex;
-    // flex-direction: column;
+  .dice-icons-layout {
+    flex-direction: column;
   }
-  .game-combination {
-    font-size: 1em;
-    // border: 1px solid pink;
+  .main-button-container {
+    flex-direction: column;
+    width: 6em;
   }
-  .game-dice-container {
-    // display: flex;
-    // height: 1em;
-    // flex-direction: column;
-    // border: 1px solid red;
+  .dice-box-icon { //dice-icon?
+    height: 3.25em;
   }
-  .dice-icon {
-    // margin: .1em 0em .1em 0em;
-    // height: 1em;
-  }
-  .main-button {
-    // width:75%;
-    // margin: .4em;
+  .end-game-buttons {
+    flex-direction: column;
+    position: absolute;
+    right: 10%;
+    top: 25%;
   }
 }
 
+/*
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) { // ipad
   .dice-icon {
     // height: 5.8em;
@@ -459,7 +447,7 @@ export default {
   .stop-brick {
     height: 2em;
   }
-}
+} */
 /*
 @media screen and (max-resolution: 96dpi) and (min-width: 500px) { // desktop
   .dice-box-layout {
@@ -483,44 +471,4 @@ export default {
   }
 }
 */
-@keyframes bounce {
-  from,
-  20%,
-  53%,
-  80%,
-  to {
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    transform: translate3d(0, 0, 0);
-  }
-
-  40%,
-  43% {
-    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
-    transform: translate3d(0, -25px, 0);
-  }
-
-  70% {
-    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
-    transform: translate3d(0, -12px, 0);
-  }
-
-  90% {
-    transform: translate3d(0, -4px, 0);
-  }
-}
-.bounce {
-  animation-name: bounce;
-  transform-origin: center bottom;
-}
-
-.dice-box-icon, .main-button {
-  height: 3.45em; // starting from nokia 5 screen size
-  color: $color-primary-0;
-}
-.button-icon-margin {
-  margin: 0em .2em 0em .2em;
-}
-.default-icon-color {
-  fill: $color-primary-0;
-}
 </style>

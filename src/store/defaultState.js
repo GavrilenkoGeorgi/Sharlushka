@@ -12,8 +12,8 @@ export default () => {
     diceRollInProgress: false, // not needed?
     schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score
-    schoolCompleted: true, // check if school is completed
-    currentGameTurn: 32, // game turns counter
+    schoolCompleted: false, // check if school is completed
+    currentGameTurn: 1, // game turns counter
     turnCompleted: false,
     gameOver: false,
     maxGameTurns: 33,

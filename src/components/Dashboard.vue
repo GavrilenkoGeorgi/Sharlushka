@@ -1,0 +1,9 @@
+<template>
+  <v-container>
+    <v-layout>
+      <v-flex>
+        <h3>Dashboard></h3>
+      </v-flex>
+    </v-layout>
+  </v-container>
+</template>

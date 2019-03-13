@@ -4,30 +4,27 @@
   <v-layout
     column
     class="game-layout"
-    :class="{ 'game-ended': getCurrentGameState.gameOver }"
   >
     <!-- School dice display -->
-    <v-layout align-center>
+    <v-layout
+      class="school-dice-layout"
+      align-center
+    >
       <v-flex
+        v-for="dice in getSchoolArray"
+        :id="dice.id"
+        :key="dice.id"
         d-flex
+        justify-center
         align-center
-        class="school-dice-container"
+        class="dice-wrapper"
       >
-        <v-flex
-          v-for="dice in getSchoolArray"
+        <component
+          :is="dice.icon"
           :id="dice.id"
-          :key="dice.id"
-          class="dice-wrapper"
-          pa-1
-        >
-          <component
-            :is="dice.icon"
-            :id="dice.id"
-            class="school-score-dice-icon"
-            :class="{ chosen:dice.final }"
-            @click="recordResult(dice.id)"
-          />
-        </v-flex>
+          :class="{ chosen:dice.final }"
+          @click="recordResult(dice.id)"
+        />
       </v-flex>
     </v-layout>
     <!-- School results display -->
@@ -47,7 +44,7 @@
         :class="{ chosen:result.final, blink:!result.final }"
         @click="recordResult(result.id)"
       >
-        <span :resultId="result.id">{{ result.value }}</span>
+        {{ result.value }}
       </v-flex>
     </v-layout>
     <!-- Game combinations display -->
@@ -63,7 +60,7 @@
         d-flex
         align-center
         class="game-combination"
-        :class="{ set:combination.final }"
+        :class="{ chosen:combination.final }"
         @click="recordResult(combination.id)"
       >
         <v-layout
@@ -99,6 +96,7 @@
       :value="progressBarState"
       color="purple darken-2"
       height="4"
+      class="progress-bar"
     />
   </v-layout>
 </template>
@@ -292,48 +290,42 @@ export default {
 @import "../assets/fonts/fonts.scss";
 @import "../assets/scss/vars/colors.scss";
 
+.dice-icon {
+  // class name directly from svg file
+  height: 3.5em;
+}
 .game-layout {
-  // padding-top: 3.3em;
-  // height: 100vh;
   font-family: $text-font;
-  // background: $color-pale-primary;
-  // padding-bottom: .2em;
-  // border: 1px solid green;
   transition: background-color 1s ease-in;
-  // font-size: 1.9em;
-  // transition-duration: 1s;
-  // transition-timing-function: ease-in;
-}
-
-.set {
-  // background-color: $color-pale-primary;
-  color: $color-chosen;
-}
-.game-ended {
-  background: $color-pale-primary;
-  /*
-  .set {
-    transition: background-color 1s ease-out;
-    background-color: inherit;
-  }*/
+  padding: .3em 0em .3em 0em;
+  color: $color-primary-0;
 }
 .school-results-layout {
-  // border: 1px solid pink;
   height: 1em;
   font-size: 1.6em;
+  // border: 1px solid green;
 }
-.school-result {
-  // height: .8em;
-  text-align: center;
-}
-
 .game-combinations-layout {
-  color: $color-primary-0;
   font-size: 1.9em;
 }
 .game-combination {
   padding: .15em 0em .15em 0em;
 }
+.accented {
+  background-color: $color-combination-hightlight;
+}
+.background-transition {
+  transition: background-color .6s ease-in;
+}
+.chosen {
+  color: $color-chosen;
+}
+.v-progress-linear {
+  margin: 0em;
+  position: absolute;
+  bottom: 0;
+}
+
 .blink {
   color: $color-primary-1;
   font-weight: 700;
@@ -354,63 +346,37 @@ export default {
     opacity: 0;
   }
 }
-.progress-bar {
-  background-color: $color-primary-0;
-  box-shadow: 0px 1px 10px 0px $color-primary-4;
-  height: .2em;
-  position: fixed;
-  border: 10px solid green;
-  bottom: 0;
-  width: 0%;
-  transition: width 1.75s cubic-bezier(.27,.13,.46,.96);
-}
-.full { // progress bar state
-  background-color: #AA3838;
-  box-shadow: 0em .2em .8em 0em red;
-}
 
 // Landscape mode
 @media screen and (orientation: landscape) {
-  #gameView {
-    border: 1px solid pink;
-    // display: flex;
-    // height: 100vh;
-  }
   .game-layout {
-    border: 1px solid blue;
-    display: flex;
-    width: 100%;
+    // border: 1px solid blue;
     flex-direction: row;
-    // padding-top: 3em;
-    // border: 1px solid red;
-    // padding-bottom: .4em;
   }
-  .school-dice-container {
+  .school-dice-layout {
+    // border: 1px solid pink;
     flex-direction: column;
-    // border: 1px solid green;
   }
-  .dice-wrapper {
-    border: 1px solid red;
+  .dice-icon {
+    height: 3.2em;
   }
-  .school-dice-icon {
-    // height: 1em;
-    // margin: .2em 0em .2em 0em;
+  .school-dice-layout {
+    width: 15%;
   }
   .school-results-layout {
-    // width: 1em;
     flex-direction: column;
-    // height: 100%;
-    border: 1px solid yellow;
+    width: 15%;
+    padding-right: 2em;
+    height: auto;
   }
   .game-combinations-layout {
-    border: 1px solid yellowgreen;
-    // width: 25em;
-    // padding: 0em;
-    font-size: .81em;
+    // border: 1px solid yellowgreen;
+    font-size: 1.4em;
+    width: 60%;
   }
   .game-combination {
-    // padding: 0px;
-    // margin: 0px;
+    // border: 1px solid purple;
+    padding: 0em;
   }
 }
 /*
@@ -523,22 +489,4 @@ export default {
   }
 }
 */
-.accented {
-  background-color: $color-combination-hightlight;
-}
-
-.background-transition {
-  transition: background-color .6s ease-in;
-}
-
-.school-score-dice-icon {
-  color: $color-primary-0;
-}
-.chosen {
-  color: $color-chosen;
-}
-
-.v-progress-linear {
-  margin: 0em;
-}
 </style>

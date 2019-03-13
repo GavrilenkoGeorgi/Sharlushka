@@ -141,8 +141,7 @@ export default {
       // `diceTwos, diceSixes, diceOnes, diceThrees, diceFours`
       // ids are in the store
       combinationsDescrMk3: [
-        {title: `Single dice with ace`, quantity: [1], scoreValue: `-2`}
-        /*
+        {title: `Single dice with ace`, quantity: [1], scoreValue: `-2`},
         {title: `Two aces`, quantity: [1, 1], scoreValue: `-1`},
         {title: `Three`, quantity: [1, 1, 1], scoreValue: `0`},
         {title: `Four`, quantity: [1, 1, 1, 1], scoreValue: `+1`},
@@ -159,7 +158,7 @@ export default {
         {title: `Small`, quantity: [1, 2, 3, 4, 5], scoreValue: `15`},
         {title: `Large`, quantity: [2, 3, 4, 5, 6], scoreValue: `20`},
         {title: `Chance`, quantity: [2, 6, 1, 3, 4], scoreValue: `16`},
-        {title: `Another chance`, quantity: [4, 1, 2, 1, 5], scoreValue: `13`} */
+        {title: `Another chance`, quantity: [4, 1, 2, 1, 5], scoreValue: `13`}
       ]
     }
   },
