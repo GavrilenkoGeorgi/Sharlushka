@@ -14,9 +14,15 @@ const actions = {
   setCurrentIcon: ({
     commit
   }) => commit(`setCurrentIcon`),
-  endGame ({ commit }) {
+  setLastSave ({ commit }) {
     return new Promise((resolve) => {
-      commit(`endGame`)
+      commit(`setLastSave`)
+      resolve()
+    })
+  },
+  resetGameOver ({ commit }) {
+    return new Promise((resolve) => {
+      commit(`resetGameOver`)
       resolve()
     })
   },
@@ -26,9 +32,9 @@ const actions = {
       resolve()
     })
   },
-  recordResultMk2 ({ commit }, id) {
+  saveResultInStore ({ commit }, id) {
     return new Promise((resolve) => {
-      commit(`recordResultMk2`, id)
+      commit(`saveResultInStore`, id)
       resolve()
     })
   },

@@ -127,11 +127,11 @@ export default {
   }),
   computed: {
     ...mapGetters([
+      `isNewTurn`,
+      `isGameEnded`,
       `getSchoolArray`,
-      `getCombinationArray`,
-      `getCurrentGameState`,
       `progressBarState`,
-      `isNewTurn`
+      `getCombinationArray`
     ])
   },
   mounted() {
@@ -142,15 +142,18 @@ export default {
   methods: {
     ...mapActions([
       `nextTurn`,
-      `recordResultMk2`,
+      `saveResultInStore`,
       `clearResultBox`
     ]),
     recordResult(id) {
+      // if this is new turn then
       if (!this.isNewTurn) {
-        this.$store.dispatch(`recordResultMk2`, id).then(() => {
+        this.$store.dispatch(`saveResultInStore`, id).then(() => {
           if (this.isNewTurn) {
-            this.$store.commit(`nextTurn`)
             this.$store.commit(`clearResultBox`)
+            if (!this.isGameEnded) {
+              this.$store.commit(`nextTurn`)
+            }
           }
         })
       } else {

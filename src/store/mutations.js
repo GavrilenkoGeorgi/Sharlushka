@@ -1,11 +1,11 @@
 export default {
-  computeScore(state) { // biggest chunk of javaScript
+  computeScore(state) { // biggest chunk of javaScript for now i hope
     if (!state.newTurn) {
-      // empty array for calculating score
+      // empty array for calculating score looks like this:
       const arrayToAnalyse = [[], [], [], [], [], []]
       // dice are with values from 1 to 6, quantity: 5 pieces
       // for any game combination except chances and school we need at least a pair of dice
-      // if it is larger than 0, we have at least one dice to calculate
+      // if array is larger than 0, we have at least one dice to calculate
       if (state.combinationArray.length > 0) {
         for (const key in state.combinationArray) {
           // fill the 2D array to analyse it
@@ -234,6 +234,72 @@ export default {
       }
     }
   },
+  saveResultInStore (state, id) {
+    console.log(`Saving to store...`)
+    const combinationIndexToSave = state.scoreArray.map((dice) => dice.id).indexOf(id)
+    // check if it is school result
+    if (!state.schoolCompleted && !state.newTurn) {
+      if (!state.scoreArray[combinationIndexToSave].final
+        && state.scoreArray[combinationIndexToSave].value !== ``) {
+        console.log(`Saved school result.`)
+        state.scoreArray[combinationIndexToSave].final = true
+        state.schoolScoreTotal += state.scoreArray[combinationIndexToSave].value
+        if (state.currentGameTurn === 6) {
+          state.schoolCompleted = true
+        }
+        // new turn after school
+        state.newTurn = true
+      } else {
+        console.log(`You clicked on an empty field
+and you can't save zero to school combination.`)
+      }
+    } else if (state.schoolCompleted && !state.newTurn) {
+      // record game result
+      if (state.scoreArray[combinationIndexToSave].value !== `` &&
+        !state.scoreArray[combinationIndexToSave].final &&
+        state.scoreArray[combinationIndexToSave].displayValues.length < 3) {
+        console.log(`Saved game result.`)
+        state.scoreArray[combinationIndexToSave].displayValues.push(state.scoreArray[combinationIndexToSave].value)
+        state.gameTotal += state.scoreArray[combinationIndexToSave].value
+        // new turn after game
+        state.newTurn = true
+      }
+      if (!state.newTurn &&
+        state.scoreArray[combinationIndexToSave].value === `` &&
+        !state.scoreArray[combinationIndexToSave].final &&
+        state.rollCount === 0 &&
+        !state.zeroCheck) {
+        // that means if there is no combination to record user can mark one empty
+        // field per turn as cancelled
+        // and it won't be used to calculate score
+        console.log(`Saved zero.`)
+        if (state.scoreArray[combinationIndexToSave].displayValues.length < 3) {
+          state.scoreArray[combinationIndexToSave].displayValues.push(0)
+          // zero was saved during this turn
+          state.zeroCheck = true
+          // new turn after zero
+          state.newTurn = true
+        }
+      } else {
+        console.log(`You still have a chance to score.`)
+      }
+      // check if it is the last save
+      if (state.currentGameTurn === state.maxGameTurns && state.newTurn) {
+        console.log(`Last save!`)
+        state.gameOver = true
+        state.lastSave = true
+      }
+      if (state.scoreArray[combinationIndexToSave].displayValues.length === 3) {
+        console.log(`Setting final`)
+        // set it to final
+        state.scoreArray[combinationIndexToSave].final = true
+        // and clear current value so it won't stay onscreen (
+        state.scoreArray[combinationIndexToSave].value = ``
+      }
+    } else {
+      console.log(`No new turn.`)
+    }
+  },
   setDiceChosenState(state, diceId) {
     for (const key in state.diceArray) {
       if (state.diceArray[key].id === diceId) {
@@ -250,10 +316,8 @@ export default {
     }
   },
   rollDice(state) {
-    state.newTurn = false
-    state.diceRollInProgress = true // what is this?
     state.rollCount--
-    // state.diceRolled = false
+    state.newTurn = false
     function getRandomInt(max) {
       return Math.floor(Math.random() * Math.floor(max))
     }
@@ -267,48 +331,48 @@ export default {
         dice.currentIcon = state.scoreArray[numbah - 1].icon
       }
     }
+    // check if user was able to complete school
     // on last roll in school on the sixth turn we check if we can continue
-    if (state.rollCount === 0 && state.currentGameTurn <= 6 && !state.newTurn) {
+    if (state.rollCount === 0 && state.currentGameTurn <= 6 && !state.schoolCompleted) {
       // check if we can record some result, if no -- game over
       const emptyDice = []
       for (let index = 0; index <= 5; index++) {
         // check if all results are set
         if (state.scoreArray[index].value === `` || !state.scoreArray[index].final) {
+          // collecting indexes of those which are not set
           emptyDice.push(index + 1)
+          // [3, 6]
         }
       }
-      for (const value of emptyDice) {
-        for (const key in state.diceArray) {
+      // for each value of this array
+      // value is 1 or 2 .. or 6
+      for (let value of emptyDice) {
+        // key in array of dice in state
+        // has current rolled dice value
+        // for this roll and turn
+        for (let key in state.diceArray) {
+          // if it equal to missing dice key
+          // e.g. value of 6 for emptyDice.push(5 + 1)
           if (state.diceArray[key].value === value) {
-            console.log(`All ok, one found at ${state.diceArray[key].id} with value ${state.diceArray[key].value}`)
-            state.gameCheck = true
+            // really don't need this anymore,
+            // exept maybe for warning, something
+            // like isAbleToCompleteSchool
+            // cause of no zero saving in school
+            console.log(`All ok, one dice found with id ${state.diceArray[key].id}, with value ${state.diceArray[key].value}`)
           }
         }
       }
     }
-    // check if user was able to complete school
-    if (state.currentGameTurn <= 6 &&
-        state.rollCount === 0 &&
-        !state.newTurn &&
-        !state.gameCheck) {
-      console.log(`You can't even finish the school... Score is: ${state.schoolScoreTotal}`)
-      state.gameOver = true
-      state.debug = true
-    }
   },
   nextTurn(state) {
-    state.gameCheck = false
     state.zeroCheck = false
-    // state.diceBoxHidden = true
     state.currentGameTurn++ // increment turn counter
-    state.newTurn = true // set new turn state
     state.rollCount = 3 // set roll count to intial value of three
     for (const key in state.diceArray) {
       state.diceArray[key].value = `#`// reset all dice
       state.diceArray[key].chosen = false
     }
     state.combinationArray = []
-    // clear unsaved results onscreen
   },
   resetState(state) { // reset state
     /*
@@ -316,22 +380,15 @@ export default {
     // Object.assign(state, getDefaultState())
     */
     // or just reset the game variables
-    state.debug = false
-    state.error = `No error` // ?
-    state.processing = false
-    state.defaultUserName = `Anonymous`
-    state.newTurn = true
-    state.diceRollInProgress = false // not needed?
-    state.schoolScoreTotal = 0 // total school score
-    state.gameTotal = 0 // total game score
-    state.schoolCompleted = false // check if school is completed
-    state.currentGameTurn = 1 // game turns counter
-    state.gameOver = false
-    state.maxGameTurns = 33
-    state.rollCount = 3 // roll counter for the current turn
-    state.gameCheck = false // to check if there are any combinations left to record
-    state.zeroCheck = false,
-    state.maxPossibleScore = 879
+    state.rollCount = 3, // roll counter for the current turn
+    state.currentGameTurn = 1, // game turns counter
+    state.newTurn = true, // 1st turn in game is new turn
+    state.schoolCompleted = false, // check if school is completed
+    state.gameOver = false,
+    state.lastSave = false,
+    state.zeroCheck = false, // to check if zero was saving during turn
+    state.schoolScoreTotal = 0, // total school score
+    state.gameTotal = 0, // total game score
     state.combinationArray = []
     // and clear results
     for (const result of state.scoreArray) {
@@ -364,12 +421,11 @@ export default {
       state.user.name = ``
     }
   },
-  // visibility - boolean
-  diceBoxHidden (state, visibility) {
-    state.diceBoxHidden = visibility
+  setLastSave (state) {
+    state.lastSave = true
   },
-  gameOver (state) {
-    state.gameOver = true
+  resetGameOver (state) {
+    state.gameOver = false
   },
   clearResultBox(state) {
     // clear all temp results in store
@@ -383,129 +439,6 @@ export default {
       if (state.diceArray[key].chosen) {
         state.diceArray[key].chosen = false
       }
-    }
-  },
-  recordResultMk2 (state, id) {
-    console.log(`Recording result.`)
-    const combinationId = id
-    const combinationIndexInArray = state.scoreArray.map((dice) => dice.id).indexOf(combinationId)
-    // check if it is school result
-    if (!state.schoolCompleted && !state.newTurn) {
-      if (!state.scoreArray[combinationIndexInArray].final
-        && state.scoreArray[combinationIndexInArray].value !== ``) {
-        // console.log(`Saving school result`)
-        state.scoreArray[combinationIndexInArray].final = true
-        state.schoolScoreTotal += state.scoreArray[combinationIndexInArray].value
-        if (state.currentGameTurn === 6) {
-          state.schoolCompleted = true
-        }
-        // new turn after school
-        state.newTurn = true
-      } else {
-        console.log(`You clicked on an empty field.`)
-      }
-    } else {
-      console.log(`No school result.`)
-    }
-    if (state.schoolCompleted && !state.newTurn) {
-      // record game result
-      if (state.scoreArray[combinationIndexInArray].value !== `` &&
-        state.scoreArray[combinationIndexInArray].displayValues.length < 3) {
-        console.log(`Saving game result.`)
-        state.scoreArray[combinationIndexInArray].displayValues.push(state.scoreArray[combinationIndexInArray].value)
-        state.gameTotal += state.scoreArray[combinationIndexInArray].value
-        // new turn after game
-        state.newTurn = true
-      } else if (!state.newTurn &&
-        state.scoreArray[combinationIndexInArray].value === `` &&
-        !state.scoreArray[combinationIndexInArray].final &&
-        state.schoolCompleted &&
-        state.rollCount === 0 &&
-        !state.zeroCheck) {
-        // that means if there is no combination to record user can mark one empty
-        // field per turn as cancelled
-        // and it won't be used to calculate score
-        console.log(`Saving zero.`)
-        if (state.scoreArray[combinationIndexInArray].displayValues.length < 3) {
-          state.scoreArray[combinationIndexInArray].displayValues.push(0)
-          // zero was saved during this turn
-          state.zeroCheck = true
-        }
-        // new turn after zero
-        state.newTurn = true
-        // check if it is last save
-        if (state.currentGameTurn === 33 && state.newTurn === true) {
-          console.log(`Setting game over.`)
-          state.gameOver = true
-          state.newTurn = false
-          return false
-        }
-      }
-      if (state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
-        state.scoreArray[combinationIndexInArray].final = true
-        // clear temporary display value
-        state.scoreArray[combinationIndexInArray].value = ``
-      }
-    } else {
-      console.log(`No game result.`)
-    }
-  },
-  recordResultMk1 (state, id) {
-    console.log(`Recording result.`)
-    const combinationId = id
-    const combinationIndexInArray = state.scoreArray.map((dice) => dice.id).indexOf(combinationId)
-    // check if it is school result
-    if (combinationIndexInArray <= 6 && !state.schoolCompleted && !state.newTurn) {
-      if (!state.scoreArray[combinationIndexInArray].final
-        && state.scoreArray[combinationIndexInArray].value !== ``) {
-        // console.log(`Saving school result`)
-        state.scoreArray[combinationIndexInArray].final = true
-        state.schoolScoreTotal += state.scoreArray[combinationIndexInArray].value
-        if (state.currentGameTurn === 6) {
-          state.schoolCompleted = true
-        }
-        state.newTurn = true
-      } else {
-        console.log(`You clicked on an empty field.`)
-      }
-    } else if (state.schoolCompleted && combinationIndexInArray >= 5) {
-      // record game result
-      if (state.scoreArray[combinationIndexInArray].value !== `` &&
-        state.scoreArray[combinationIndexInArray].displayValues.length < 3) {
-        console.log(`Saving game result.`)
-        state.scoreArray[combinationIndexInArray].displayValues.push(state.scoreArray[combinationIndexInArray].value)
-        state.gameTotal += state.scoreArray[combinationIndexInArray].value
-        state.newTurn = true
-      } else if (!state.newTurn &&
-        state.scoreArray[combinationIndexInArray].value === `` &&
-        !state.scoreArray[combinationIndexInArray].final &&
-        state.schoolCompleted &&
-        state.rollCount === 0 &&
-        !state.zeroCheck) {
-        // that means if there is no combination to record user can mark one empty
-        // field per turn as cancelled
-        // and it won't be used to calculate score
-        console.log(`Saving zero.`)
-        if (state.scoreArray[combinationIndexInArray].displayValues.length < 3) {
-          state.scoreArray[combinationIndexInArray].displayValues.push(0)
-          // zero saved during this turn
-          state.zeroCheck = true
-        }
-        state.newTurn = true
-      }
-      if (state.scoreArray[combinationIndexInArray].displayValues.length === 3) {
-        state.scoreArray[combinationIndexInArray].final = true
-        // clear temporary display value
-        state.scoreArray[combinationIndexInArray].value = ``
-      }
-      // check if it is last save
-      if (state.currentGameTurn === 32 && state.newTurn === true) {
-        console.log(`Setting game over.`)
-        state.gameOver = true
-      }
-    } else {
-      console.log(`Nothing to record.`)
-      state.newTurn = false
     }
   }
 }

@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import store from '../store/store' // $this.store?
 import db from '../firebase/firebaseInit'
 import NetworkCheck from '../components/NetworkCheck.vue'
@@ -147,14 +147,14 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(`Game over.`)
+      console.log(`Game over view mounted.`)
       // check user auth status
       if (this.getUserData.isAuthenticated) {
         this.userName = localStorage.getItem(`userName`)
       } else {
         this.userName = this.getDefaultUserName
       }
-      if (this.$store.state.gameOver === true) {
+      if (this.isGameEnded) {
         // collect them when game finished
         // i.e. user played the game till the end
         // and not actually reloading the page
@@ -172,18 +172,26 @@ export default {
           // just add it already
           this.addScoreToDatabase()
         }
-        store.commit(`gameOver`)
-        // set to default state so repeating visits
-        // to this page won't fill our array with zeroes
-        // store.state.gameInProgress = false // mutation?
-        // store.commit(`gameOver`)
-        // console.log(`Save current score state to db`)
+        this.$store.dispatch(`setLastSave`).then(() => {
+          // don't show dice box after saving results
+          // till reset
+          console.log(`This was the last save until reset.`)
+        })
+        this.$store.dispatch(`resetGameOver`).then(() => {
+          // set to default state so repeating visits
+          // to this page won't fill our array with zeroes
+          console.log(`Resetting game over.`)
+        })
       } else {
         console.log(`Nothing to record, play the game.`)
       }
     })
   },
   methods: {
+    ...mapActions([
+      `resetGameOver`,
+      `setLastSave`
+    ]),
     restartGame() {
       console.log(`Restarting game.`)
       store.commit(`resetState`)
@@ -232,7 +240,7 @@ export default {
         console.log(`User is authenticated and network is online. Syncing with firestore.`)
         this.syncScoreWithFirestore()
       } else if (this.getUserData.isAuthenticated && !this.isOnline &&
-        this.getCurrentGameState.gameInProgress) {
+        this.isGameEnded) {
         console.log(`User is authenticated but network is offline.`)
         // this.networkProblemDialog = true
         this.toggleNetworkProblemDialog()

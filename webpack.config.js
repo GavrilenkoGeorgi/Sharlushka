@@ -77,7 +77,7 @@ module.exports = (env, argv) => ({
       inject: true,
     }),
     new SWPrecacheWebpackPlugin({
-      cacheId: 'sharlushkaMk3',
+      cacheId: 'sharlushkaMk5',
         dontCacheBustUrlsMatching: /\.\w{8}\./,
         filename: 'service-worker.js',
         minify: true,

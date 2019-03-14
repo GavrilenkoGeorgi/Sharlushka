@@ -1,25 +1,21 @@
 export default () => {
   return {
+    defaultUserName: `Anonymous`,
     user: {
       isAuthenticated: false
     },
-    debug: false,
-    error: `No error`, // ?
-    processing: false,
-    defaultUserName: `Anonymous`,
-    newTurn: true,
-    diceRollInProgress: false, // not needed?
+    currentGameTurn: 1, // game turns counter
+    rollCount: 3, // roll counter for the current turn
+    maxGameTurns: 33, // 6 turns for school, 27 for the game
+    maxPossibleScore: 879,
+    newTurn: true, // 1st turn in game is new turn
+    schoolCompleted: false, // check if school is completed
+    gameOver: false,
+    lastSave: false, // current result saved
+    zeroCheck: false, // to check if zero was saving during turn
     schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score
-    schoolCompleted: false, // check if school is completed
-    currentGameTurn: 1, // game turns counter
-    gameOver: false,
-    maxGameTurns: 33,
-    rollCount: 3, // roll counter for the current turn
-    gameCheck: false, // to check if there are any combinations left to record
-    zeroCheck: false,
-    // gameEnded: false,
-    maxPossibleScore: 879,
+    debug: false,
     combinationArray: [],
     scoreArray: [{
       value: ``, // school combinations

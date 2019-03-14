@@ -88,7 +88,7 @@
           <v-flex
             v-for="item in newStats"
             :key="item.msg"
-            class="stats-display text-xs-center py-1"
+            class="stats-display text-xs-center"
           >
             {{ item.msg }}&nbsp;{{ item.value }}
           </v-flex>

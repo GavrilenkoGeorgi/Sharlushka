@@ -10,13 +10,6 @@
       aria-label="network check"
     >
       <cloudOffIcon class="cloud-icon blink" />
-      <!--v-icon
-        medium
-        class="blink"
-        color="orange"
-      >
-        cloud_off
-      </v-icon-->
     </v-btn>
     <v-card class="offline-message">
       <v-card-text class="offline-message-text">
@@ -32,12 +25,6 @@
           @click="offlineMessage = false"
         >
           <doneIcon class="highlighted" />
-          <!--v-icon
-            large
-            color="orange"
-          >
-            done
-          </v-icon-->
         </v-btn>
       </v-card-actions>
     </v-card>
