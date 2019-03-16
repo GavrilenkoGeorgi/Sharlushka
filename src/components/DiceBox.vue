@@ -182,10 +182,7 @@ export default {
       this.$router.go(`/game`)
     },
     vibrate() {
-      // console.log(`zzz`)
-      // this.zzz += `-zzz`
-      // const pattern = [5, 75, 66, 300, 33, 150, 15]
-      const pattern = [25, 15, 5]
+      const pattern = [175, 150, 125, 75, 60]
       navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate
       navigator.vibrate(pattern)
     },

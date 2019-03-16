@@ -12,7 +12,7 @@
           name="custom-classes-transition"
           mode="out-in"
           enter-active-class="animated fadeIn"
-          leave-active-class="animated fadeOutRight"
+          leave-active-class="animated fadeOutDownBig"
         >
           <router-view />
         </transition>
@@ -60,17 +60,33 @@ export default {
   animation-name: fadeIn;
 }
 
-@keyframes fadeOutLeft {
+@keyframes fadeOut {
   from {
     opacity: 1;
   }
+
   to {
     opacity: 0;
-    transform: translate3d(-100%, 0, 0);
   }
 }
-.fadeOutLeft {
-  animation-name: fadeOutLeft;
+
+.fadeOut {
+  animation-name: fadeOut;
+}
+
+@keyframes fadeOutDownBig {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, 2000px, 0);
+  }
+}
+
+.fadeOutDownBig {
+  animation-name: fadeOutDownBig;
 }
 
 @keyframes zoomIn {
@@ -148,23 +164,6 @@ export default {
   }
 }
 
-@keyframes fadeOutRight {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-    -webkit-transform: translate3d(100%, 0, 0);
-    transform: translate3d(100%, 0, 0);
-  }
-}
-
-.fadeOutRight {
-  -webkit-animation-name: fadeOutRight;
-  animation-name: fadeOutRight;
-}
-
 @keyframes bounce {
   from,
   20%,
@@ -198,5 +197,4 @@ export default {
 .animated.fast {
   animation-duration: 800ms;
 }
-
 </style>

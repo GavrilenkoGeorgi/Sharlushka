@@ -5,35 +5,58 @@
       app
       height="40"
       color="purple darken-2"
-      class="text-xs-center"
     >
-      <span
-        class="score pl-3"
+      <!-- Toolbar items layout -->
+      <v-layout
+        class="toolbar"
+        justify-space-around
       >
-        {{ getTotalScore }}
-      </span>
-      <v-spacer />
-      <v-toolbar-title
-        class="game-name"
-      >
-        <router-link :to="{ path: '/' }">
-          {{ gameName }}
-        </router-link>
-      </v-toolbar-title>
-      <v-spacer />
-      <NetworkCheck />
-      <v-toolbar-items>
-        <v-spacer />
-        <v-btn
-          icon
-          aria-label="settings"
-          @click="manipulateDrawer"
+        <!-- Score display -->
+        <v-flex
+          xs3
+          d-flex
+          align-center
+          align-content-center
+          justify-center
+          class="score"
         >
-          <settingsIcon
-            class="settings-icon"
-          />
-        </v-btn>
-      </v-toolbar-items>
+          {{ getTotalScore }}
+        </v-flex>
+        <!-- Game name display -->
+        <v-flex xs6>
+          <v-toolbar-title
+            class="game-name"
+          >
+            <router-link :to="{ path: '/' }">
+              {{ gameName }}
+            </router-link>
+          </v-toolbar-title>
+        </v-flex>
+        <v-flex
+          xs3
+        >
+          <v-toolbar-items
+            class="toolbar-tems"
+          >
+            <v-layout justify-end>
+              <!-- Network check -->
+              <NetworkCheck />
+              <!-- Setting button -->
+              <v-btn
+                icon
+                small
+                aria-label="settings"
+                class="settings-button"
+                @click="manipulateDrawer"
+              >
+                <settingsIcon
+                  class="settings-icon"
+                />
+              </v-btn>
+            </v-layout>
+          </v-toolbar-items>
+        </v-flex>
+      </v-layout>
     </v-toolbar>
     <!-- Navigation drawer -->
     <v-navigation-drawer
@@ -179,6 +202,11 @@ export default {
 @import "../assets/scss/vars/colors.scss";
 
 .game-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  height: 100%;
   a {
     color: $color-pale-primary-lightest;
     font-size: 1.1em;
@@ -186,6 +214,7 @@ export default {
     text-transform: capitalize;
     text-decoration: none;
   }
+  margin-left: 0px !important;
 }
 
 .settings-icon {
@@ -209,6 +238,9 @@ export default {
 }
 
 .score {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: $color-white;
   font-size: 2em;
   font-family: $text-font;

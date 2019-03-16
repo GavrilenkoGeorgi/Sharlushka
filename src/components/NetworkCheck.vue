@@ -6,6 +6,7 @@
   >
     <v-btn
       slot="activator"
+      small
       icon
       aria-label="network check"
     >
