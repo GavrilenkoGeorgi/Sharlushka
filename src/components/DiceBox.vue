@@ -182,7 +182,8 @@ export default {
       this.$router.go(`/game`)
     },
     vibrate() {
-      const pattern = [175, 150, 125, 75, 60]
+      // const pattern = [175, 150, 125, 75, 60]
+      const pattern = [175, 150, 125, 0]
       navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate
       navigator.vibrate(pattern)
     },
@@ -204,16 +205,17 @@ export default {
       }
     },
     handleMainGameButtonClick() {
-      this.animateDice()
-      // setting save red button
-      if (this.$store.state.rollCount === 0) {
+      if (this.$store.state.rollCount > 0) {
+        // console.log(`Rolling dice.`)
+        store.commit(`rollDice`)
+        this.animateDice()
+      } else if (this.$store.state.rollCount === 0) {
+        // setting save red button
         this.mainButtonState.save = true
         this.vibrate()
-        console.log(`Setting red button and not rolling.`)
-      } else if (this.$store.state.rollCount > 0) {
-        console.log(`Rolling dice.`)
-        store.commit(`rollDice`)
-      } else {
+        // console.log(`Setting red button and not rolling.`)
+      }
+      else {
         console.log(`Something went wrong in the piping system.`)
       }
     },
