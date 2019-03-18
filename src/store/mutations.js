@@ -29,7 +29,7 @@ export default {
             arrayToAnalyse[5].push(state.combinationArray[key])
             break
           default:
-            console.log(`Can't create array to analyse`)
+            console.log(`Can't create array to analyse.`)
             return false
           }
         }
@@ -290,7 +290,7 @@ and you can't save zero to school combination.`)
         state.lastSave = true
       }
       if (state.scoreArray[combinationIndexToSave].displayValues.length === 3) {
-        console.log(`Setting final`)
+        console.log(`Setting combination final.`)
         // set it to final
         state.scoreArray[combinationIndexToSave].final = true
         // and clear current value so it won't stay onscreen (
@@ -335,6 +335,7 @@ and you can't save zero to school combination.`)
     // on last roll in school on the sixth turn we check if we can continue
     if (state.rollCount === 0 && state.currentGameTurn <= 6 && !state.schoolCompleted) {
       // check if we can record some result, if no -- game over
+      state.gameOver = true // cause are checking if it is not
       const emptyDice = []
       for (let index = 0; index <= 5; index++) {
         // check if all results are set
@@ -351,13 +352,16 @@ and you can't save zero to school combination.`)
         // has current rolled dice value
         // for this roll and turn
         for (let key in state.diceArray) {
-          // if it equal to missing dice key
-          // e.g. value of 6 for emptyDice.push(5 + 1)
+        // if it is equal to missing dice key
+        // e.g. value of 6 for emptyDice.push(5 + 1)
+        // all is OK and user was able to complete school
+        //
+        // cause of no zero saving in school
+        // check if there are dice among
+        // that which are not chosen
           if (state.diceArray[key].value === value) {
-            // really don't need this anymore,
-            // exept maybe for warning, something
-            // like isAbleToCompleteSchool
-            // cause of no zero saving in school
+            // a lucky one!
+            state.gameOver = false
             console.log(`All ok, one dice found with id ${state.diceArray[key].id}, with value ${state.diceArray[key].value}`)
           }
         }
@@ -424,8 +428,8 @@ and you can't save zero to school combination.`)
   setLastSave (state) {
     state.lastSave = true
   },
-  resetGameOver (state) {
-    state.gameOver = false
+  resetGameOver (state, value) {
+    state.gameOver = value
   },
   clearResultBox(state) {
     // clear all temp results in store
@@ -440,5 +444,8 @@ and you can't save zero to school combination.`)
         state.diceArray[key].chosen = false
       }
     }
+  },
+  resetUserAbleToCompleteSchool(state, value) {
+    state.wasNotAbleToCompleteSchool = value
   }
 }

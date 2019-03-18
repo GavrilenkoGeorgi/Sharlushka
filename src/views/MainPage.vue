@@ -139,7 +139,7 @@ export default {
       `getCurrentGameState`
     ]),
     isGameInProgress () {
-      return this.getCurrentGameState.gameInProgress ? true : false
+      return (this.$store.state.currentGameTurn >= 1 && this.$store.state.rollCount < 3) ? true : false
     }
   },
   mounted() {

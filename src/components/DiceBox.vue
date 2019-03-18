@@ -86,7 +86,7 @@
   >
     <!-- End Game button -->
     <v-flex
-      v-if="isLastSave && isGameEnded"
+      v-if="isLastSave"
       d-flex
       xs6
     >
@@ -144,12 +144,7 @@ export default {
   },
   data() {
     return {
-      navigatorSupported: false,
-      // hidden: false,
-      zzz: `zzz`,
-      mainButtonState: {
-        save: false
-      }
+      navigatorSupported: false
     }
   },
   computed: {

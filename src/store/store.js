@@ -20,9 +20,9 @@ const actions = {
       resolve()
     })
   },
-  resetGameOver ({ commit }) {
+  resetGameOver ({ commit }, value) {
     return new Promise((resolve) => {
-      commit(`resetGameOver`)
+      commit(`resetGameOver`, value)
       resolve()
     })
   },
@@ -38,12 +38,15 @@ const actions = {
       resolve()
     })
   },
+  computeScore ({ commit }) {
+    return new Promise((resolve) => {
+      commit(`computeScore`)
+      resolve()
+    })
+  },
   resetGameState: ({
     commit
   }) => commit(`resetState`),
-  computeScore: ({
-    commit
-  }) => commit(`computeScore`),
   rollDice: ({
     commit
   }) => commit(`rollDice`),

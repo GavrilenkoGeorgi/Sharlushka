@@ -1,122 +1,122 @@
 <template>
-  <v-container
+  <!--v-container
     id="userStats"
     pa-0
+  -->
+  <v-layout
+    align-space-around
+    column
   >
+    <!-- Title and user name -->
+    <v-flex class="text-xs-center">
+      <v-layout column>
+        <h1 class="help-title py-1">
+          {{ helpTitle }}
+        </h1>
+        <h2 class="user-name">
+          {{ userName }}!
+        </h2>
+        <h3
+          v-if="anonymousUserNoGames"
+          class="message-to-anonymous"
+        >
+          {{ messageToAnonymous }}
+        </h3>
+        <h3
+          v-if="highestScore"
+          class="hi-score"
+        >
+          {{ hiscoreGreeting }} {{ highestScore }}{{ exclamation }}
+        </h3>
+      </v-layout>
+    </v-flex>
+    <!-- Chart -->
+    <v-flex
+      v-if="highestScore"
+      d-flex
+      align-center
+      py-1
+    >
+      <chartist
+        ratio="ct-major-twelfth"
+        type="Bar"
+        :data="chartData"
+        :options="chartOptions"
+      />
+    </v-flex>
+    <!-- Last scores heading and table-->
+    <v-flex
+      v-if="highestScore"
+      d-flex
+      align-end
+      class="last-scores-heading text-xs-center"
+    >
+      <h3
+        v-if="highestScore"
+      >
+        {{ lastScoresHeading }}
+      </h3>
+    </v-flex>
+    <!--v-flex-->
     <v-layout
+      v-if="highestScore"
       align-space-around
       column
     >
-      <!-- Title and user name -->
-      <v-flex class="text-xs-center">
-        <v-layout column>
-          <h1 class="help-title py-1">
-            {{ helpTitle }}
-          </h1>
-          <h2 class="user-name">
-            {{ userName }}!
-          </h2>
-          <h3
-            v-if="anonymousUser"
-            class="message-to-anonymous"
-          >
-            {{ messageToAnonymous }}
-          </h3>
-          <h3
-            v-if="highestScore"
-            class="hi-score"
-          >
-            {{ hiscoreGreeting }} {{ highestScore }}{{ exclamation }}
-          </h3>
-        </v-layout>
-      </v-flex>
-      <!-- Chart -->
       <v-flex
-        v-if="highestScore"
         d-flex
-        align-center
-        py-1
+        class="hi-score-display"
+        py-2
       >
-        <chartist
-          ratio="ct-major-twelfth"
-          type="Bar"
-          :data="chartData"
-          :options="chartOptions"
-        />
-      </v-flex>
-      <!-- Last scores heading and table-->
-      <v-flex
-        v-if="highestScore"
-        d-flex
-        align-end
-        class="last-scores-heading text-xs-center"
-      >
-        <h3
-          v-if="highestScore"
-        >
-          {{ lastScoresHeading }}
-        </h3>
-      </v-flex>
-      <v-flex>
         <v-layout
-          v-if="highestScore"
-          align-space-around
-          column
+          row
+          wrap
+          justify-space-around
         >
           <v-flex
-            d-flex
-            class="hi-score-display"
-            py-2
+            v-for="(value, index) in lastScoresToDisplay"
+            :key="index"
+            xs4
+            sm1
+            ma-0
           >
-            <v-layout
-              row
-              wrap
-              justify-space-around
-            >
-              <v-flex
-                v-for="(value, index) in lastScoresToDisplay"
-                :key="index"
-                xs4
-                sm1
-                ma-0
-              >
-                {{ value }}
-              </v-flex>
-            </v-layout>
-          </v-flex>
-          <!-- Stats display v-if="item.value" -->
-          <v-flex
-            v-for="item in newStats"
-            :key="item.msg"
-            class="stats-display text-xs-center"
-          >
-            {{ item.msg }}&nbsp;{{ item.value }}
+            {{ value }}
           </v-flex>
         </v-layout>
       </v-flex>
-      <!-- Buttons -->
-      <v-layout
-        pt-2
-        row
-        align-center
-        justify-space-around
+      <!-- Stats display v-if="item.value" -->
+      <v-flex
+        v-for="item in newStats"
+        :key="item.msg"
+        class="stats-display text-xs-center"
       >
-        <v-flex
-          class="text-xs-center"
-        >
-          <v-btn
-            ripple
-            outline
-            color="orange"
-            @click="restartGame"
-          >
-            <restartIcon class="highlighted" />
-            Play again
-          </v-btn>
-        </v-flex>
-      </v-layout>
+        {{ item.msg }}&nbsp;{{ item.value }}
+      </v-flex>
     </v-layout>
-  </v-container>
+    <!--/v-flex-->
+    <!-- Buttons -->
+    <v-layout
+      pt-2
+      row
+      align-center
+      justify-space-around
+    >
+      <v-flex
+        class="text-xs-center"
+      >
+        <v-btn
+          ripple
+          outline
+          color="orange"
+          @click="restartGame"
+        >
+          <restartIcon class="highlighted" />
+          Play again
+        </v-btn>
+      </v-flex>
+    </v-layout>
+  </v-layout>
+  <!--/v-container-->
 </template>
 
 <script>
@@ -131,9 +131,10 @@ export default {
   data() {
     return {
       userName: ``,
-      anonymousUser: false,
+      anonymousUserNoGames: false, // really need this?
       messageToAnonymous: null,
       helpTitle: `About`,
+      // if user played at least one game, we have a 'high score'
       highestScore: ``,
       hiscoreGreeting: `Your highest score is`,
       exclamation: `.`, // some over-engineering
@@ -203,7 +204,7 @@ export default {
         if (localStorage.getItem(`highestScore`) == ``) {
           console.log(`You are truly an Anonymous!`)
           this.userName = `Anonymous`
-          this.anonymousUser = true
+          this.anonymousUserNoGames = true
           this.messageToAnonymous = `You have to finish at least one game to
           calculate stats, school results are in rules section.`
         }

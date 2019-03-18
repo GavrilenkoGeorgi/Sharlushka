@@ -56,6 +56,10 @@ export default {
   },
   getDefaultUserName(state) {
     return state.defaultUserName
+  },
+  schoolFinished(state) {
+    return state.schoolCompleted
   }
+  // cantFinishSchool: (state) => state.wasNotAbleToCompleteSchool ? true : false
 }
 

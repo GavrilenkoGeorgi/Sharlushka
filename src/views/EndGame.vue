@@ -177,7 +177,7 @@ export default {
           // till reset
           console.log(`This was the last save until reset.`)
         })
-        this.$store.dispatch(`resetGameOver`).then(() => {
+        this.$store.dispatch(`resetGameOver`, false).then(() => {
           // set to default state so repeating visits
           // to this page won't fill our array with zeroes
           console.log(`Resetting game over.`)

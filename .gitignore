@@ -9,7 +9,6 @@ yarn-error.log*
 /test/e2e/reports/
 selenium-debug.log
 /src/firebase/firebaseConfig.js
-/src/store/debugState.js
 /platforms/android/
 /platforms
 

@@ -98,6 +98,63 @@
       height="4"
       class="progress-bar"
     />
+    <v-dialog
+      v-model="isGameOver"
+      width="20em"
+    >
+      <v-card class="school-not-finished-dialog pb-3">
+        <v-card-text
+          class="game-over-text"
+        >
+          <h3 class="chosen">
+            {{ userName }}!
+          </h3>
+          <p v-if="isGameOver && schoolFinished">
+            Your score is:
+            <span class="chosen">{{ getTotalScore }}</span>.
+          </p>
+          <p v-else>
+            You can't even finish the school, your score is
+            <span class="chosen">{{ getSchoolScore }}</span>.
+          </p>
+        </v-card-text>
+        <v-card-actions>
+          <v-layout justify-space-around>
+            <v-flex
+              v-if="isGameOver && schoolFinished"
+              d-flex
+              xs5
+            >
+              <v-btn
+                flat
+                outline
+                color="purple darken-2"
+                :to="'/endgame'"
+              >
+                <saveIcon class="default-icon-color button-icon-margin" />
+                Save
+              </v-btn>
+            </v-flex>
+            <v-flex
+              v-if="!schoolFinished"
+              d-flex
+              xs5
+            >
+              <v-btn
+                color="orange"
+                flat
+                outline
+                ripple
+                @click="restartGame"
+              >
+                <restartIcon class="highlighted" />
+                restart
+              </v-btn>
+            </v-flex>
+          </v-layout>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-layout>
 </template>
 
@@ -110,6 +167,9 @@ import diceThrees from '../assets/icons/diceThrees.svg'
 import diceFours from '../assets/icons/diceFours.svg'
 import diceFives from '../assets/icons/diceFives.svg'
 import diceSixes from '../assets/icons/diceSixes.svg'
+import restartIcon from '../assets/icons/baseline-replay-24px.svg'
+import doneIcon from '../assets/icons/baseline-done-24px.svg'
+import saveIcon from '../assets/icons/baseline-save-24px.svg'
 
 export default {
   name: `Game`,
@@ -120,10 +180,14 @@ export default {
     diceThrees,
     diceFours,
     diceFives,
-    diceSixes
+    diceSixes,
+    restartIcon,
+    doneIcon,
+    saveIcon
   },
   data: () => ({
-    title: `Sharlushka`
+    title: `Sharlushka`,
+    userName: ``
   }),
   computed: {
     ...mapGetters([
@@ -131,12 +195,24 @@ export default {
       `isGameEnded`,
       `getSchoolArray`,
       `progressBarState`,
-      `getCombinationArray`
-    ])
+      `getCombinationArray`,
+      `getSchoolScore`,
+      `getTotalScore`,
+      `schoolFinished`
+    ]),
+    isGameOver: {
+      get () {
+        return this.$store.state.gameOver
+      },
+      set (newValue) {
+        return this.$store.dispatch(`resetGameOver`, newValue)
+      }
+    }
   },
   mounted() {
     this.$nextTick(() => {
       console.log(`Game view mounted.`)
+      this.userName = localStorage.getItem(`userName`)
     })
   },
   methods: {
@@ -145,6 +221,11 @@ export default {
       `saveResultInStore`,
       `clearResultBox`
     ]),
+    restartGame() { // remove this from dice box
+      console.log(`Restarting game.`)
+      this.$store.commit(`resetState`)
+      this.$router.push(`/game`)
+    },
     recordResult(id) {
       // if this is new turn then
       if (!this.isNewTurn) {
@@ -168,12 +249,19 @@ export default {
 @import "../assets/fonts/fonts.scss";
 @import "../assets/scss/vars/colors.scss";
 
+* {
+  font-family: $text-font;
+}
+
+p {
+  margin: 0;
+}
+
 .dice-icon {
   // class name directly from svg file
   height: 3.5em;
 }
 .game-layout {
-  font-family: $text-font;
   transition: background-color 1s ease-in;
   padding: .3em 0em .3em 0em;
   color: $color-primary-0;
@@ -181,7 +269,6 @@ export default {
 .school-results-layout {
   height: 1em;
   font-size: 1.6em;
-  // border: 1px solid green;
 }
 .game-combinations-layout {
   font-size: 1.9em;
@@ -223,6 +310,11 @@ export default {
   100% {
     opacity: 0;
   }
+}
+
+.school-not-finished-dialog {
+  font-size: 1.4em;
+  border: 2px solid $color-primary-0;
 }
 
 // Landscape mode

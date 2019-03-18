@@ -23,20 +23,6 @@
   animation-name: fadeOut;
 }
 
-@keyframes zoomIn {
-  from {
-    opacity: 0;
-    transform: scale3d(0.3, 0.3, 0.3);
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
-.zoomIn {
-  animation-name: zoomIn;
-}
-
 .blink {
   color: $color-primary-1;
   font-weight: 700;
@@ -88,7 +74,7 @@
 }
 
 .animated.fast {
-  animation-duration: 800ms;
+  animation-duration: 1000ms;
 }
 
 .animated {
