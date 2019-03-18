@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <!-- Navigation bar -->
     <navBar />
     <v-content>
       <!-- Router view -->
@@ -12,7 +13,7 @@
           name="custom-classes-transition"
           mode="out-in"
           enter-active-class="animated fadeIn"
-          leave-active-class="animated fadeOutDownBig"
+          leave-active-class="animated fadeOut"
         >
           <router-view />
         </transition>
@@ -42,81 +43,10 @@ export default {
 <style lang="scss">
 @import '../node_modules/chartist/dist/chartist.min.css';
 @import './assets/scss/index.scss';
+@import './assets/scss/animations.scss';
 
 #app {
   background: #ffffff;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-.fadeIn {
-  animation-name: fadeIn;
-}
-
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-  }
-}
-
-.fadeOut {
-  animation-name: fadeOut;
-}
-
-@keyframes fadeOutDownBig {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-    transform: translate3d(0, 2000px, 0);
-  }
-}
-
-.fadeOutDownBig {
-  animation-name: fadeOutDownBig;
-}
-
-@keyframes zoomIn {
-  from {
-    opacity: 0;
-    transform: scale3d(0.3, 0.3, 0.3);
-  }
-
-  50% {
-    opacity: 1;
-  }
-}
-
-.zoomIn {
-  animation-name: zoomIn;
-}
-
-.animated {
-  animation-duration: .7s;
-  animation-fill-mode: both;
-}
-.animated.delay-s {
-  animation-delay: .5s;
-}
-
-@media (prefers-reduced-motion) {
-  .animated {
-    animation: unset !important;
-    transition: none !important;
-  }
 }
 
 .ct-series-a .ct-point {
@@ -127,12 +57,12 @@ export default {
   stroke: #E1BEE7;
   stroke-width: .06em;
 }
-
 .ct-series-a .ct-bar {
   stroke: #AA00FF;
   stroke-width: .25em;
 }
 .ct-nodata {
+  // appearance: none;
   visibility: hidden;
   height: 0em;
 }
@@ -141,60 +71,5 @@ export default {
   .v-toolbar__content, .v-toolbar__extension {
     padding: 0 0px;
   }
-}
-
-.blink {
-  color: $color-primary-1;
-  font-weight: 700;
-  animation: blinker 3s ease-out infinite;
-}
-.blink:hover {
-  color: $color-chosen;
-  animation: none;
-}
-@keyframes blinker {
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes bounce {
-  from,
-  20%,
-  53%,
-  80%,
-  to {
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    transform: translate3d(0, 0, 0);
-  }
-
-  40%,
-  43% {
-    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
-    transform: translate3d(0, -25px, 0);
-  }
-
-  70% {
-    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
-    transform: translate3d(0, -12px, 0);
-  }
-
-  90% {
-    transform: translate3d(0, -4px, 0);
-  }
-}
-.bounce {
-  animation-name: bounce;
-  transform-origin: center bottom;
-}
-
-.animated.fast {
-  animation-duration: 800ms;
 }
 </style>

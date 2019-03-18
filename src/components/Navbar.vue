@@ -14,10 +14,7 @@
         <!-- Score display -->
         <v-flex
           xs3
-          d-flex
-          align-center
-          align-content-center
-          justify-center
+          pl-2
           class="score"
         >
           {{ getTotalScore }}
@@ -238,13 +235,13 @@ export default {
 }
 
 .score {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
   color: $color-white;
   font-size: 2em;
   font-family: $text-font;
-  text-align: center;
+  // text-align: center;
 }
 
 .nav-drawer-link-icon {

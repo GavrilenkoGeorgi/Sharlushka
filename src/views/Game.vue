@@ -236,7 +236,7 @@ export default {
     flex-direction: column;
   }
   .dice-icon {
-    height: 3.2em;
+    height: 3.1em;
   }
   .school-dice-layout {
     width: 15%;
@@ -249,7 +249,7 @@ export default {
   }
   .game-combinations-layout {
     // border: 1px solid yellowgreen;
-    font-size: 1.4em;
+    font-size: 1.1em;
     width: 60%;
   }
   .game-combination {

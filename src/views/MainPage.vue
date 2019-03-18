@@ -184,7 +184,7 @@ export default {
     font-size: 2.8em;
   }
   .logo {
-    height: 10em;
+    height: 7.5em;
   }
 }
 
