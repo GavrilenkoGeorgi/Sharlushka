@@ -165,12 +165,10 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(`Dice box mounted. Updating main button state.`)
+      console.log(`Dice box mounted.`)
       if (`vibrate` in navigator) {
-        this.navigatorSupported = true
         // vibration API supported
-        // console.log(`Vibrate in navigator is ${'vibrate' in navigator}`)
-        // navigator.vibrate([5, 200, 20])
+        this.navigatorSupported = true
       }
     })
   },
@@ -182,16 +180,12 @@ export default {
       this.$router.go(`/game`)
     },
     vibrate() {
-      // const pattern = [175, 150, 125, 75, 60]
-      const pattern = [175, 150, 125, 0]
-      navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate
-      navigator.vibrate(pattern)
-    },
-    vibrateOnce() {
-      console.log(`One z`)
-      const pattern = [10]
-      navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate
-      navigator.vibrate(pattern)
+      if (this.navigatorSupported) {
+        // const pattern = [175, 150, 125, 75, 60]
+        const pattern = [175, 150, 125, 0]
+        navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate
+        navigator.vibrate(pattern)
+      } else return false
     },
     animateDice() {
       const diceToAnimateOnRoll = document.querySelectorAll(`.game-dice:not(.chosen)`)
@@ -206,23 +200,16 @@ export default {
     },
     handleMainGameButtonClick() {
       if (this.$store.state.rollCount > 0) {
-        // console.log(`Rolling dice.`)
         store.commit(`rollDice`)
         this.animateDice()
       } else if (this.$store.state.rollCount === 0) {
-        // setting save red button
-        this.mainButtonState.save = true
         this.vibrate()
-        // console.log(`Setting red button and not rolling.`)
-      }
-      else {
-        console.log(`Something went wrong in the piping system.`)
       }
     },
     selectDice(id) {
       if (!this.isNewTurn) {
         this.$store.commit(`setDiceChosenState`, id)
-        this.$store.commit(`computeScore`)
+        this.$store.dispatch(`computeScore`, id)
         const dice = document.getElementById(id)
         const diceBox = dice.parentElement
         // get chosen dice quantity if any,
