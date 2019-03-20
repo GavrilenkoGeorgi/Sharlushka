@@ -145,6 +145,7 @@
                 flat
                 outline
                 ripple
+                class="restart-button"
                 @click="restartGame"
               >
                 <restartIcon class="highlighted" />

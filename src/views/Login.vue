@@ -2,21 +2,36 @@
   <v-container
     id="login"
     fluid
-    pa-0
+    py-2
+    px-4
     class="text-xs-center"
   >
-    <!-- Error message -->
     <v-layout column>
-      <v-flex d-flex>
-        <v-alert
-          :value="errorMessage"
-          dismissible
-          outline
-          relative
-          type="error"
+      <!-- Error message -->
+      <v-flex>
+        <v-layout
+          v-if="errorMessage"
+          class="error-message"
+          align-center
         >
-          {{ errorMessage }}
-        </v-alert>
+          <v-flex
+            xs10
+            d-flex
+            class="text-xs-left"
+          >
+            {{ errorMessageText }}
+          </v-flex>
+          <v-flex
+            xs2
+            d-flex
+            justify-center
+          >
+            <closeIcon
+              class="error-close-icon"
+              @click="errorMessage = false"
+            />
+          </v-flex>
+        </v-layout>
       </v-flex>
       <!-- Page title -->
       <v-flex
@@ -152,13 +167,18 @@ import { mapGetters } from 'vuex'
 import firebase from 'firebase/app'
 import db from '../firebase/firebaseInit'
 import 'firebase/auth'
+import closeIcon from '../assets/icons/baseline-close-24px.svg'
 
 export default {
   name: `Login`,
+  components: {
+    closeIcon
+  },
   data: () => ({
     loggingIn: false,
     signingOut: false,
-    errorMessage: undefined,
+    errorMessage: false,
+    errorMessageText: `Some error!`,
     newUserBtnText: `Register`,
     pageTitle: `Log In`,
     valid: true,
@@ -191,7 +211,8 @@ export default {
   methods: {
     login() {
       console.log(`Signing user in.`)
-      this.errorMessage = undefined // null
+      this.errorMessage = false
+      // this.errorMessage = undefined // null
       if (this.email && this.password) { // need some proper validation
         this.toggleButtonLoadingState(`login`)
         firebase.auth()
@@ -202,8 +223,9 @@ export default {
             this.toggleButtonLoadingState(`login`)
             this.$router.push(`/game`)
           }).catch(err => {
-            console.log(err.message)
-            this.errorMessage = err.message
+            // console.log(err.message)
+            this.errorMessage = true
+            this.errorMessageText = err.message
             this.toggleButtonLoadingState(`login`)
             return false
           })
@@ -211,6 +233,7 @@ export default {
       }
     },
     signOut() {
+      this.errorMessage = false
       console.log(`Signing user out.`)
       this.toggleButtonLoadingState(`signout`)
       firebase.auth().signOut().then(() => {
@@ -219,8 +242,9 @@ export default {
         localStorage.clear()
         this.$router.push(`/`)
         this.toggleButtonLoadingState(`signout`)
-      }).catch((error) => {
-        console.error(`Sign Out Error:`, error)
+      }).catch((err) => {
+        this.errorMessage = true
+        this.errorMessageText = err.message
         this.toggleButtonLoadingState(`signout`)
       })
     },
@@ -273,5 +297,16 @@ export default {
   color: $color-primary-0;
   font-size: 1.4em;
   font-weight: 700;
+}
+.error-message {
+  border: .066em solid $color-error-message-red;
+  color: $color-error-message-red-text;
+  padding: .5em;
+  border-radius: .2em;
+  font-size: 1.3em;
+}
+
+.error-close-icon {
+  fill: $color-error-message-red;
 }
 </style>

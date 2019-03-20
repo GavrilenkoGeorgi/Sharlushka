@@ -2,7 +2,7 @@
   <v-container
     id="register"
     fluid
-    pa-0
+    pt-4
   >
     <v-layout column>
       <v-alert

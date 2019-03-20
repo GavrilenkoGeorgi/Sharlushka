@@ -13,7 +13,8 @@ export default {
     let fraction = 3
     let numbah = state.rollCount - fraction
     let percent = fraction * numbah * 11.075
-    return Math.round(Math.abs(percent))
+    let result = Math.round(Math.abs(percent))
+    return result ? result : 0
   },
   mainButtonIsRolling(state) {
     if (!state.newTurn

@@ -115,7 +115,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import SharlushkaLogo from '../assets/images/sharlushkaLogo.svg'
+import SharlushkaLogo from '@/assets/images/sharlushkaLogo.svg'
 import doneIcon from '../assets/icons/baseline-done-24px.svg'
 import regIcon from '../assets/icons/baseline-how_to_reg-24px.svg'
 
@@ -136,7 +136,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      `getCurrentGameState`
+      `progressBarState`
     ]),
     isGameInProgress () {
       return (this.$store.state.currentGameTurn >= 1 && this.$store.state.rollCount < 3) ? true : false
