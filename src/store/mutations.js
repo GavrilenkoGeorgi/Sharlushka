@@ -447,5 +447,10 @@ and you can't save zero to school combination.`)
   },
   resetUserAbleToCompleteSchool(state, value) {
     state.wasNotAbleToCompleteSchool = value
+  },
+  setErrorMessage(state, error) {
+    if (error !== false) {
+      state.error = error
+    } else state.error = false
   }
 }

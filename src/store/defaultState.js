@@ -4,6 +4,7 @@ export default () => {
     user: {
       isAuthenticated: false
     },
+    error: false,
     currentGameTurn: 1, // game turns counter
     rollCount: 3, // roll counter for the current turn
     maxGameTurns: 33, // 6 turns for school, 27 for the game
@@ -18,7 +19,7 @@ export default () => {
     debug: false,
     combinationArray: [],
     scoreArray: [{
-      value: ``, // school combinations
+      value: ``, // school combinations store module?
       final: false,
       id: `ones`,
       icon: `diceOnes`

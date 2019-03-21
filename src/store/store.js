@@ -44,6 +44,12 @@ const actions = {
       resolve()
     })
   },
+  setErrorMessage ({ commit }, error ) {
+    return new Promise((resolve) => {
+      commit(`setErrorMessage`, error)
+      resolve()
+    })
+  },
   resetGameState: ({
     commit
   }) => commit(`resetState`),

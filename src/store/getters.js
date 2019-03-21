@@ -60,7 +60,8 @@ export default {
   },
   schoolFinished(state) {
     return state.schoolCompleted
-  }
+  },
+  error: state => state.error
   // cantFinishSchool: (state) => state.wasNotAbleToCompleteSchool ? true : false
 }
 

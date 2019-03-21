@@ -7,32 +7,8 @@
     class="text-xs-center"
   >
     <v-layout column>
-      <!-- Error message -->
-      <v-flex>
-        <v-layout
-          v-if="errorMessage"
-          class="error-message"
-          align-center
-        >
-          <v-flex
-            xs10
-            d-flex
-            class="text-xs-left"
-          >
-            {{ errorMessageText }}
-          </v-flex>
-          <v-flex
-            xs2
-            d-flex
-            justify-center
-          >
-            <closeIcon
-              class="error-close-icon"
-              @click="errorMessage = false"
-            />
-          </v-flex>
-        </v-layout>
-      </v-flex>
+      <!-- Error message if any -->
+      <errorMessageDialog />
       <!-- Page title -->
       <v-flex
         d-flex
@@ -90,6 +66,7 @@
           <v-btn
             :type="'submit'"
             :loading="loggingIn"
+            :disabled="getUserAuthState"
             outline
             ripple
             class="button white--text"
@@ -163,22 +140,20 @@
 </template>
 
 <script>
+import errorMessageDialog from '../components/ErrorMessage.vue'
 import { mapGetters } from 'vuex'
 import firebase from 'firebase/app'
 import db from '../firebase/firebaseInit'
 import 'firebase/auth'
-import closeIcon from '../assets/icons/baseline-close-24px.svg'
 
 export default {
   name: `Login`,
   components: {
-    closeIcon
+    errorMessageDialog
   },
   data: () => ({
     loggingIn: false,
     signingOut: false,
-    errorMessage: false,
-    errorMessageText: `Some error!`,
     newUserBtnText: `Register`,
     pageTitle: `Log In`,
     valid: true,
@@ -190,18 +165,14 @@ export default {
     password: ``,
     passwordRules: [
       (v) => !!v || `Password is required`,
-      (v) => v && v.length <= 12 || `Password must be less than 12 characters`
+      (v) => v && (v.length >= 6 && v.length <= 12) || `Password must be greater than 6 and less than 12.`
     ],
-    confirmPassword: ``,
     usersCollRef: `users`
   }),
   computed: {
     ...mapGetters([
       `getUserAuthState`
-    ]),
-    comparePasswords() {
-      return this.password !== this.confirmPassword ? `Passwords do not match` : true
-    }
+    ])
   },
   mounted() {
     this.$nextTick(() => {
@@ -211,8 +182,6 @@ export default {
   methods: {
     login() {
       console.log(`Signing user in.`)
-      this.errorMessage = false
-      // this.errorMessage = undefined // null
       if (this.email && this.password) { // need some proper validation
         this.toggleButtonLoadingState(`login`)
         firebase.auth()
@@ -221,11 +190,9 @@ export default {
             this.getUserDataFromDB(response.user.uid)
           }).then(() => {
             this.toggleButtonLoadingState(`login`)
-            this.$router.push(`/game`)
+            // this.$router.push(`/game`)
           }).catch(err => {
-            // console.log(err.message)
-            this.errorMessage = true
-            this.errorMessageText = err.message
+            this.$store.dispatch(`setErrorMessage`, err)
             this.toggleButtonLoadingState(`login`)
             return false
           })
@@ -233,18 +200,15 @@ export default {
       }
     },
     signOut() {
-      this.errorMessage = false
       console.log(`Signing user out.`)
       this.toggleButtonLoadingState(`signout`)
       firebase.auth().signOut().then(() => {
-        this.loggingOut = !this.loggingOut
         this.$store.commit(`setUserIsLoggedIn`, false)
         localStorage.clear()
-        this.$router.push(`/`)
         this.toggleButtonLoadingState(`signout`)
+        // this.$router.push(`/`)
       }).catch((err) => {
-        this.errorMessage = true
-        this.errorMessageText = err.message
+        this.$store.dispatch(`setErrorMessage`, err)
         this.toggleButtonLoadingState(`signout`)
       })
     },
@@ -263,12 +227,13 @@ export default {
             }
           })
         })
-        .catch(error => {
-          console.log(`Error getting documents: `, error)
+        .catch(err => {
+          this.$store.dispatch(`setErrorMessage`, err)
+          console.log(`Error getting documents: `, err)
         })
     },
     toggleButtonLoadingState(btn) {
-      console.log(`Button to toggle ${btn}`)
+      // console.log(`Button to toggle ${btn}`)
       if (btn === `login`) {
         this.loggingIn = !this.loggingIn
         return true
@@ -297,16 +262,5 @@ export default {
   color: $color-primary-0;
   font-size: 1.4em;
   font-weight: 700;
-}
-.error-message {
-  border: .066em solid $color-error-message-red;
-  color: $color-error-message-red-text;
-  padding: .5em;
-  border-radius: .2em;
-  font-size: 1.3em;
-}
-
-.error-close-icon {
-  fill: $color-error-message-red;
 }
 </style>
