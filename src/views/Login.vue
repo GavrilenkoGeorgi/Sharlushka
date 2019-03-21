@@ -44,11 +44,14 @@
             <v-text-field
               v-model="password"
               :rules="passwordRules"
-              :type="'password'"
+              :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="showPass ? 'text' : 'password'"
               label="Password"
               autocomplete="off"
               required
               color="purple accent-4"
+              hint="At least 6 characters"
+              @click:append="showPass = !showPass"
             />
           </v-form>
         </v-flex>
@@ -163,6 +166,7 @@ export default {
       (v) => /.+@.+/.test(v) || `E-mail must be valid`
     ],
     password: ``,
+    showPass: false,
     passwordRules: [
       (v) => !!v || `Password is required`,
       (v) => v && (v.length >= 6 && v.length <= 12) || `Password must be greater than 6 and less than 12.`
@@ -190,7 +194,7 @@ export default {
             this.getUserDataFromDB(response.user.uid)
           }).then(() => {
             this.toggleButtonLoadingState(`login`)
-            // this.$router.push(`/game`)
+            this.$router.push(`/game`)
           }).catch(err => {
             this.$store.dispatch(`setErrorMessage`, err)
             this.toggleButtonLoadingState(`login`)

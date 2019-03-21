@@ -296,7 +296,7 @@ export default {
     width: 6em;
   }
   .dice-box-icon { //dice-icon?
-    height: 3.25em;
+    height: 2.8em;
   }
   .end-game-buttons {
     flex-direction: column;

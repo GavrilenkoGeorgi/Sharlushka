@@ -5,9 +5,10 @@
   >
     <!-- Title -->
     <v-flex
-      xs2
+      xs1
       d-flex
       align-center
+      py-2
       class="text-xs-center"
     >
       <h1 class="leaderboard-title text-capitalize">
@@ -16,22 +17,19 @@
     </v-flex>
     <!-- Users leaderboard legend -->
     <v-flex
-      d-flex
       xs1
-      align-center
+      d-flex
       class="leaderboard-legend text-xs-center pl-1"
     >
       <v-layout
+        xs1
         align-center
-        justify-center
-        d-flex
       >
-        <v-flex
-          xs1
-          class="text-xs-center"
-        >
-          <listIcon class="default-icon-color" />
-        </v-flex>
+        <!--v-flex
+          d-flex
+        -->
+        <listIcon class="default-icon-color" />
+        <!--/v-flex-->
         <v-flex
           xs3
           class="text-xs-left"
@@ -55,8 +53,9 @@
     <!-- No leaderboard message -->
     <v-flex
       v-if="noLeaderboardMessage"
+      d-flex
+      align-center
       class="leader-board-message text-xs-center"
-      py-4
     >
       {{ noLeaderboardMessage }}
     </v-flex>
@@ -98,6 +97,16 @@
         </v-flex>
       </v-layout>
     </v-flex>
+    <!-- Loading indicator -->
+    <v-flex
+      d-flex
+    >
+      <v-progress-circular
+        v-if="leaderboardLoading"
+        indeterminate
+        color="purple darken-2"
+      />
+    </v-flex>
   </v-layout>
 </template>
 
@@ -117,7 +126,8 @@ export default {
     userName: null,
     leaderboard: [],
     userDataFromDB: [],
-    noLeaderboardMessage: null
+    noLeaderboardMessage: null,
+    leaderboardLoading: false
   }),
   computed: {
     ...mapGetters([
@@ -131,6 +141,7 @@ export default {
       console.log(`Leaderboard mounted`)
       if (this.getUserData.isAuthenticated) {
         console.log(`Getting leaderboard data from db...`)
+        this.leaderboardLoading = true
         this.getDataForLeaderboard()
         this.userName = localStorage.getItem(`userName`)
       } else {
@@ -176,6 +187,7 @@ export default {
             this.leaderboard.push(leaderBoardUserData)
           }
           this.leaderboard.reverse()
+          this.leaderboardLoading = false
         })
         .catch(function(error) {
           console.log(`Error getting documents: `, error)
@@ -217,7 +229,7 @@ export default {
   background-color: $color-pale-primary;
 }
 
-.curret-user {
-  color: red;
+.v-progress-circular {
+  margin: 1rem
 }
 </style>

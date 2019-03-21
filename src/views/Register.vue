@@ -5,14 +5,9 @@
     pt-4
   >
     <v-layout column>
-      <v-alert
-        :value="errorMessage"
-        dismissible
-        outline
-        type="error"
-      >
-        {{ errorMessage }}
-      </v-alert>
+      <!-- Error message if any -->
+      <errorMessageDialog />
+      <!-- Page title -->
       <v-flex class="register-title text-xs-center py-4">
         <h1>{{ pageTitle }}</h1>
       </v-flex>
@@ -31,8 +26,8 @@
               :rules="nameRules"
               :counter="10"
               label="Name"
-              autocomplete="username"
               color="purple accent-4"
+              autocomplete="off"
             />
             <v-text-field
               v-model="email"
@@ -44,21 +39,26 @@
             />
             <v-text-field
               v-model="password"
-              :type="'password'"
+              :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="showPass ? 'text' : 'password'"
               :rules="passwordRules"
               label="Password"
-              autocomplete="current-password"
+              autocomplete="new-password"
               color="purple accent-4"
               required
+              hint="At least 6 characters"
+              @click:append="showPass = !showPass"
             />
             <v-text-field
               v-model="confirmPassword"
+              :append-icon="showConfPass ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="showConfPass ? 'text' : 'password'"
               :rules="[comparePasswords]"
-              :type="'password'"
               label="Confirm password"
               autocomplete="off"
               color="purple accent-4"
               required
+              @click:append="showConfPass = !showConfPass"
             />
           </v-form>
         </v-flex>
@@ -102,12 +102,16 @@
 </template>
 
 <script>
+import errorMessageDialog from '../components/ErrorMessage.vue'
 import db from '../firebase/firebaseInit'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 
 export default {
   name: `Register`,
+  components: {
+    errorMessageDialog
+  },
   data: () => ({
     pageTitle: `Register`,
     registering: false,
@@ -121,19 +125,27 @@ export default {
     email: ``,
     emailRules: [
       (v) => !!v || `E-mail is required`,
-      (v) => /.+@.+/.test(v) || `E-mail must be valid`
+      (v) => /^([a-zA-Z0-9_\-\\.]+)@([a-zA-Z0-9_\-\\.]+)\.([a-zA-Z]{2,5})$/.test(v) || `E-mail must be valid`
     ],
     password: ``,
+    showPass: false,
     passwordRules: [
       (v) => !!v || `Password is required`,
       (v) => (v && v.length <= 12) || `Password must be less than 12 characters`
     ],
-    confirmPassword: ``
+    confirmPassword: ``,
+    showConfPass: false
   }),
   computed: {
     comparePasswords() {
       return this.password !== this.confirmPassword ? `Passwords do not match` : true
     }
+    // comparePasswords: () => this.password !== this.confirmPassword ? `Passwords do not match` : true
+    /*
+    comparePasswords() {
+      return this.password !== this.confirmPassword ? `Passwords do not match` : true
+    }
+    */
   },
   mounted() {
     this.$nextTick(() => {
@@ -191,6 +203,8 @@ export default {
     },
     clear() {
       this.$refs.form.reset()
+      this.showPass = false
+      this.showConfPass = false
     }
   }
 }

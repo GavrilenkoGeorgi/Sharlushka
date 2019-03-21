@@ -53,6 +53,10 @@ module.exports = (env, argv) => ({
       {
         test: /\.svg$/,
         loader: 'vue-svg-loader',
+      },
+      {
+        test: /\.(jpg|jpeg|png|woff|woff2|eot|ttf)$/,
+        loader: 'url-loader?limit=100000'
       }
     ],
   },

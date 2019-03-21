@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
+import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/dist/vuetify.min.css'
 import App from './App.vue'
 import router from './router'
@@ -49,7 +50,19 @@ if (`serviceWorker` in navigator) {
 
 Vue.config.productionTip = false
 
-Vue.use(Vuetify)
+Vue.use(Vuetify, {
+  iconfont: `mdi`
+  /*
+  icons: {
+    'mdi-settings': `mdi-settings`,
+    'play': `mdi-play`,
+    'stats': `mdi-pool`,
+    'eye': `mdi-eye`,
+    'mdi-eye-off': `mdi-eye-off`
+  }
+  */
+})
+
 Vue.use(VueOffline)
 
 Vue.use(require(`vue-chartist`))

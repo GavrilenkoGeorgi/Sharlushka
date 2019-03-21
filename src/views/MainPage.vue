@@ -54,9 +54,9 @@
             color="purple darken-2"
             aria-label="Start game"
             :class="{ orange:isGameInProgress }"
+            class="main-page-button-play"
           >
             <doneIcon
-              class="main-page-button"
               :class="{ highlighted:isGameInProgress }"
             />
             <span :class="{ highlighted:isGameInProgress }">
@@ -76,10 +76,9 @@
             ripple
             color="purple darken-1"
             aria-label="Register or change name"
+            class="main-page-button-login"
           >
-            <regIcon
-              class="main-page-button"
-            />
+            <regIcon />
             login
           </v-btn>
         </v-flex>
@@ -197,7 +196,7 @@ export default {
   }
 }
 
-.main-page-button {
+.main-page-button-play, .main-page-button-login {
   fill: $color-primary-0;
 }
 

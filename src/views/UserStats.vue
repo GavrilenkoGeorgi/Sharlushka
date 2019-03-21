@@ -66,7 +66,7 @@
       <v-flex
         d-flex
         class="hi-score-display"
-        py-2
+        pb-1
       >
         <v-layout
           row
