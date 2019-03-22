@@ -79,10 +79,10 @@ describe(`Game.vue`, () => {
       getters
     })
   })
-  test(`is a Vue instance and game-layout exists`, () => {
+  test(`game-layout exists`, () => {
     // const wrapper = mount(MainPage)
     const wrapper = shallowMount(Game, { localVue, store, getters })
-    expect(wrapper.isVueInstance()).toBeTruthy()
+    // expect(wrapper.isVueInstance()).toBeTruthy()
     expect(wrapper.find(`.game-layout`).exists()).toBeTruthy()
   })
 })

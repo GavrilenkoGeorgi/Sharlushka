@@ -17,18 +17,21 @@ localVue.use(Vuex)
 Vue.use(Vuetify)
 
 describe(`MainPage.vue`, () => {
-  let actions
+  // let actions
   let store
 
   beforeEach(() => {
+    /*
     actions = {
       progressBarState: jest.fn()
     }
     store = new Vuex.Store({
       actions
     })
+    */
+    store = new Vuex.Store()
   })
-  test(`is a Vue instance and renders gameName and userName when passed`, () => {
+  test(`Main page renders gameName and userName when passed`, () => {
     const gameNameString = `Sharlushka`
     const userNameString = `Anonymous`
     const wrapper = shallowMount(MainPage, {
@@ -38,8 +41,9 @@ describe(`MainPage.vue`, () => {
     })
     const gameNameH1 = wrapper.find(`.game-name`)
     const userNameH2 = wrapper.find(`.user-name-main-page`)
-    expect(wrapper.isVueInstance()).toBeTruthy()
+    // const copyrightSpanTag = wrapper.find(`.copyrights`)
     expect(typeof gameNameH1.text()).toBe(`string`)
     expect(typeof userNameH2.text()).toBe(`string`)
+    // expect(copyrightSpanTag.exists()).toBeTruthy()
   })
 })

@@ -19,3 +19,15 @@ test(`"mainButtonIsRolling" returns true of false`, () => {
     expect(getters.mainButtonIsRolling(state)).toBeFalsy()
   }
 })
+
+test(`"getDiceIds" returns array of dice with correct length`, () => {
+  const state = {
+    newTurn: false,
+    rollCount: 1
+  }
+  if (!state.newTurn && state.rollCount <=2 && state.rollCount != 0) {
+    expect(getters.mainButtonIsRolling(state)).toBeTruthy()
+  } else {
+    expect(getters.mainButtonIsRolling(state)).toBeFalsy()
+  }
+})
