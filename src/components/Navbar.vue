@@ -62,19 +62,14 @@
       right
       class="navigation-drawer"
     >
-      <v-list>
+      <v-list pa-0>
         <v-list-tile
           class="pb-3"
           @click="manipulateDrawer"
         >
           <v-list-tile-action>
             <v-layout justify-center>
-              <!--backIcon class="highlighted" /-->
-              <v-icon
-                class="highlighted"
-              >
-                mdi-keyboard-backspace
-              </v-icon>
+              <backIcon class="highlighted" />
             </v-layout>
           </v-list-tile-action>
           <v-list-tile-title class="drawer-menu-item">
@@ -103,19 +98,12 @@
         >
           <v-list-tile-action>
             <v-layout justify-center>
-              <v-icon
-                active-class="active-link"
-                :class="link.path === $route.path ? 'active-link' : ''"
-                class="nav-drawer-link-icon"
-              >
-                {{ link.icon }}
-              </v-icon>
-              <!--component
+              <component
                 :is="link.icon"
                 active-class="active-link"
                 :class="link.path === $route.path ? 'active-link' : ''"
                 class="nav-drawer-link-icon"
-              /-->
+              />
             </v-layout>
           </v-list-tile-action>
           <v-list-tile-title class="drawer-menu-item subheading">
@@ -132,49 +120,47 @@ import { mapGetters } from 'vuex'
 
 import NetworkCheck from '../components/NetworkCheck.vue'
 import settingsIcon from '../assets/icons/baseline-menu-24px.svg'
-/*
+
 import userStatsIcon from '../assets/icons/baseline-equalizer-24px.svg'
 import leaderBoardIcon from '../assets/icons/baseline-import_export-24px.svg'
 import logInOutIcon from '../assets/icons/baseline-exit_to_app-24px.svg'
 import backIcon from '../assets/icons/baseline-keyboard_backspace-24px.svg'
 import playIcon from '../assets/icons/baseline-play_arrow-24px.svg'
 import helpIcon from '../assets/icons/baseline-help_outline-24px.svg'
-*/
+
 export default {
   name: `Navbar`,
   components: {
     NetworkCheck,
-    settingsIcon
-    /*
+    settingsIcon,
     helpIcon,
     userStatsIcon,
     leaderBoardIcon,
     logInOutIcon,
     backIcon,
     playIcon
-    */
   },
   data: () => ({
     navDrawer: false,
     navDrawerLinks: [
       {
         path: `/game`,
-        icon: `mdi-play`,
+        icon: `playIcon`,
         text: `Play`
       },
       {
         path: `/userstats`,
-        icon: `mdi-poll`,
+        icon: `userStatsIcon`,
         text: `User stats`
       },
       {
         path: `/leaderboard`,
-        icon: `mdi-swap-vertical`,
+        icon: `leaderBoardIcon`,
         text: `Leaderboard`
       },
       {
         path: `/help`,
-        icon: `mdi-help`,
+        icon: `helpIcon`,
         text: `Help`
       },
       /*
@@ -186,7 +172,7 @@ export default {
       */
       {
         path: `/login`,
-        icon: `mdi-login-variant`,
+        icon: `logInOutIcon`,
         text: `Log in/out`
       }
     ]

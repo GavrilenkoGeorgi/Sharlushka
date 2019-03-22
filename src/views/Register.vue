@@ -15,7 +15,7 @@
         justify-center
         class="register-form py-4"
       >
-        <v-flex xs9>
+        <v-flex xs10>
           <v-form
             ref="form"
             v-model="valid"
@@ -37,29 +37,61 @@
               color="purple accent-4"
               required
             />
-            <v-text-field
-              v-model="password"
-              :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="showPass ? 'text' : 'password'"
-              :rules="passwordRules"
-              label="Password"
-              autocomplete="new-password"
-              color="purple accent-4"
-              required
-              hint="At least 6 characters"
-              @click:append="showPass = !showPass"
-            />
-            <v-text-field
-              v-model="confirmPassword"
-              :append-icon="showConfPass ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="showConfPass ? 'text' : 'password'"
-              :rules="[comparePasswords]"
-              label="Confirm password"
-              autocomplete="off"
-              color="purple accent-4"
-              required
-              @click:append="showConfPass = !showConfPass"
-            />
+            <v-layout>
+              <v-flex xs11>
+                <v-text-field
+                  v-model="password"
+                  :type="showPass ? 'text' : 'password'"
+                  :rules="passwordRules"
+                  label="Password"
+                  autocomplete="new-password"
+                  color="purple accent-4"
+                  required
+                  hint="At least 6 characters"
+                />
+              </v-flex>
+              <v-flex
+                d-flex
+                xs1
+                align-center
+                align-content-center
+                justify-center
+                class="text-xs-center"
+                @click="showPass = !showPass"
+              >
+                <showPassIcon
+                  class="input-icon"
+                  :class="{ showPass: showPass }"
+                />
+              </v-flex>
+            </v-layout>
+            <v-layout>
+              <v-flex>
+                <v-text-field
+                  v-model="confirmPassword"
+                  :type="showConfPass ? 'text' : 'password'"
+                  :rules="[comparePasswords]"
+                  label="Confirm password"
+                  autocomplete="off"
+                  color="purple accent-4"
+                  required
+                />
+              </v-flex>
+              <v-flex
+                d-flex
+                xs1
+                align-center
+                align-content-center
+                justify-center
+                class="text-xs-center"
+                @click="showConfPass = !showConfPass"
+              >
+                <showPassIcon
+                  class="input-icon"
+                  :class="{ showConfPass: showConfPass }"
+                />
+              </v-flex>
+            </v-layout>
           </v-form>
         </v-flex>
       </v-layout>
@@ -68,13 +100,13 @@
         class="buttons text-xs-center py-4"
       >
         <v-flex
-          xs5
+          xs6
           d-flex
         >
           <v-btn
             :disabled="!valid"
             :loading="registering"
-            class="white--text"
+            class="white--text button"
             outline
             color="orange"
             @click.prevent="signUp"
@@ -83,7 +115,7 @@
           </v-btn>
         </v-flex>
         <v-flex
-          xs5
+          xs6
           d-flex
         >
           <v-btn
@@ -103,6 +135,7 @@
 
 <script>
 import errorMessageDialog from '../components/ErrorMessage.vue'
+import showPassIcon from '../assets/icons/baseline-remove_red_eye-24px.svg'
 import db from '../firebase/firebaseInit'
 import firebase from 'firebase/app'
 import 'firebase/auth'
@@ -110,7 +143,8 @@ import 'firebase/auth'
 export default {
   name: `Register`,
   components: {
-    errorMessageDialog
+    errorMessageDialog,
+    showPassIcon
   },
   data: () => ({
     pageTitle: `Register`,
@@ -220,6 +254,13 @@ export default {
 
 .register-title, .register-form, .buttons {
   font-family: $text-font;
+}
+.button {
+  line-height: 2em;
+}
+
+.showPass, .showConfPass {
+  color: $color-primary-0;
 }
 
 </style>

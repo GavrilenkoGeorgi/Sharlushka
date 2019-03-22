@@ -32,7 +32,7 @@
         v-if="getCurrentGameState.schoolCompleted"
         class="message-game text-xs-center"
       >
-        <h2>{{ messageText }} {{ getTotalScore }}</h2>
+        <h2>{{ messageText }} <span class="highlighted">{{ getTotalScore }}</span></h2>
       </v-flex>
       <!-- Buttons -->
       <v-layout
@@ -42,7 +42,7 @@
       >
         <v-flex
           d-flex
-          xs5
+          xs6
           lg2
           class="text-xs-center"
         >
@@ -50,9 +50,10 @@
             ripple
             outline
             color="orange"
-            @click="restartGame"
+            class="button"
+            @click="restartGame()"
           >
-            <restartIcon class="highlighted" />
+            <restartIcon class="highlighted button-icon-margin" />
             restart
           </v-btn>
         </v-flex>
@@ -63,12 +64,12 @@
       v-model="networkProblemDialog"
       width="20em"
     >
-      <v-card class="text-xs-center">
-        <v-flex class="network-check-background">
+      <v-card class="text-xs-center offline-dialog">
+        <v-flex class="network-check-background pt-1">
           <NetworkCheck />
         </v-flex>
         <v-card-text
-          class="text-xs-left offline-save-message"
+          class="text-xs-left offline-dialog-message"
         >
           {{ offlineSaveUserMessage }}
         </v-card-text>
@@ -78,6 +79,7 @@
             color="orange"
             outline
             :loading="tryAgainBtnLoading"
+            class="button"
             @click="syncScoreWithFirestore"
           >
             <restartIcon class="highlighted" />
@@ -87,6 +89,7 @@
             outline
             ripple
             color="purple darken-2"
+            class="button"
             @click="networkProblemDialog = false"
           >
             <cancelIcon class="default-icon-color" />
@@ -172,7 +175,7 @@ export default {
           // just add it already
           this.addScoreToDatabase()
         }
-        this.$store.dispatch(`setLastSave`).then(() => {
+        this.$store.dispatch(`setLastSave`, true).then(() => {
           // don't show dice box after saving results
           // till reset
           console.log(`This was the last save until reset.`)
@@ -296,9 +299,6 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/scss/index.scss";
 
-.user-name-game-end, .message-school, .message-game, .offline-save-message {
-  font-family: $text-font;
-}
 .user-name-game-end {
   span {
     color: $color-chosen;
@@ -307,16 +307,19 @@ export default {
 .message-school {
   line-height: 1.5;
 }
-.offline-save-message {
-  font-size: 1.2em;
-  padding-top: 0;
-  text-indent: 1em;
-}
+
 .network-check-background {
   height: 3em;
 }
 
-.chosen {
-  color: red;
+.offline-dialog {
+  border-radius: .3em;
+  border: .1em solid $color-primary-0;
+}
+
+.offline-dialog-message {
+  padding-top: 0em;
+  font-size: 1.2em;
+  color: $color-primary-3;
 }
 </style>

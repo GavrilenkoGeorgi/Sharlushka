@@ -98,18 +98,20 @@
       height="4"
       class="progress-bar"
     />
+    <!-- Dialog itself -->
     <v-dialog
-      v-model="isGameOver"
+      v-model="gameOverDialog"
       width="20em"
     >
-      <v-card class="school-not-finished-dialog pb-3">
+      <!-- Card -->
+      <v-card class="school-not-finished-dialog">
         <v-card-text
-          class="game-over-text"
+          class="game-over-text text-xs-center pb-0"
         >
           <h3 class="chosen">
             {{ userName }}!
           </h3>
-          <p v-if="isGameOver && schoolFinished">
+          <p v-if="isGameEnded && schoolFinished">
             Your score is:
             <span class="chosen">{{ getTotalScore }}</span>.
           </p>
@@ -119,15 +121,20 @@
           </p>
         </v-card-text>
         <v-card-actions>
-          <v-layout justify-space-around>
+          <v-layout
+            justify-space-around
+            py-3
+          >
             <v-flex
-              v-if="isGameOver && schoolFinished"
+              v-if="isGameEnded && schoolFinished"
               d-flex
               xs5
             >
               <v-btn
                 flat
+                large
                 outline
+                class="button"
                 color="purple darken-2"
                 :to="'/endgame'"
               >
@@ -136,19 +143,20 @@
               </v-btn>
             </v-flex>
             <v-flex
-              v-if="!schoolFinished"
+              v-else
               d-flex
               xs5
             >
               <v-btn
                 color="orange"
                 flat
+                large
                 outline
                 ripple
-                class="restart-button"
-                @click="restartGame"
+                class="button"
+                @click="restartGame()"
               >
-                <restartIcon class="highlighted" />
+                <restartIcon class="highlighted button-icon-margin" />
                 restart
               </v-btn>
             </v-flex>
@@ -201,12 +209,9 @@ export default {
       `getTotalScore`,
       `schoolFinished`
     ]),
-    isGameOver: {
+    gameOverDialog: {
       get () {
         return this.$store.state.gameOver
-      },
-      set (newValue) {
-        return this.$store.dispatch(`resetGameOver`, newValue)
       }
     }
   },
@@ -247,12 +252,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/fonts/fonts.scss";
 @import "../assets/scss/vars/colors.scss";
-
-* {
-  font-family: $text-font;
-}
 
 p {
   margin: 0;
@@ -315,7 +315,8 @@ p {
 
 .school-not-finished-dialog {
   font-size: 1.4em;
-  border: 2px solid $color-primary-0;
+  border: .075em solid $color-primary-0;
+  border-radius: .3em;
 }
 
 // Landscape mode

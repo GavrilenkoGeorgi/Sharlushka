@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
-import '@mdi/font/css/materialdesignicons.css'
-import 'vuetify/dist/vuetify.min.css'
 import App from './App.vue'
 import router from './router'
 import store from './store/store'
@@ -11,6 +9,11 @@ import firebaseConfig from './firebase/firebaseConfig.js'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 
+Vue.config.productionTip = true
+
+Vue.use(Vuetify)
+Vue.use(VueOffline)
+
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig)
 }
@@ -19,10 +22,7 @@ firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     console.log(`User is logged in: ${user.email}.`)
     // Data is already in localstorage after logging in
-    let userData = {
-      isAuthenticated: true
-    }
-    store.commit(`setUserIsLoggedIn`, userData)
+    store.commit(`setUserIsLoggedIn`, true)
   } else {
     console.log(`User is not logged in. Hi, Anonymous.`)
     // set default local storage values
@@ -47,23 +47,6 @@ if (`serviceWorker` in navigator) {
     })
   })
 }
-
-Vue.config.productionTip = false
-
-Vue.use(Vuetify, {
-  iconfont: `mdi`
-  /*
-  icons: {
-    'mdi-settings': `mdi-settings`,
-    'play': `mdi-play`,
-    'stats': `mdi-pool`,
-    'eye': `mdi-eye`,
-    'mdi-eye-off': `mdi-eye-off`
-  }
-  */
-})
-
-Vue.use(VueOffline)
 
 Vue.use(require(`vue-chartist`))
 /* eslint-disable no-new */

@@ -1,13 +1,14 @@
 <template>
   <!-- Dice box -->
   <v-layout
-    v-if="!isLastSave"
+    v-if="!isGameEnded && !isLastResultSaved"
     class="dice-box-container"
     align-center
   >
     <v-flex
       xs9
     >
+      <!-- v-if="getCurrentGameState.currentRollCount <= 2" -->
       <v-layout
         v-if="getCurrentGameState.currentRollCount <= 2"
         row
@@ -48,6 +49,7 @@
         type="button"
         @click.prevent="handleMainGameButtonClick"
       >
+        <!-- v-if="getCurrentGameState.currentRollCount === 3 && !isGameEnded" -->
         <v-flex
           v-if="getCurrentGameState.currentRollCount === 3 && !isGameEnded"
           xs2
@@ -84,32 +86,31 @@
     justify-center
     class="end-game-buttons"
   >
-    <!-- End Game button -->
+    <!-- Save button if user is not decided yet to save -->
     <v-flex
-      v-if="isLastSave"
       d-flex
       xs6
     >
       <v-btn
+        v-if="!isLastResultSaved"
         flat
         outline
+        ripple
         color="purple darken-2"
         :to="'/endgame'"
+        class="button"
       >
         <saveIcon class="default-icon-color button-icon-margin" />
         Save
       </v-btn>
-    </v-flex>
-    <!-- Restart button -->
-    <v-flex
-      d-flex
-      xs6
-    >
       <v-btn
+        v-else
         flat
         outline
+        ripple
         color="orange"
-        @click="restartGame"
+        class="button"
+        @click="restartGame()"
       >
         <restartIcon class="chosen button-icon-margin" />
         Restart
@@ -154,7 +155,7 @@ export default {
       `isGameEnded`,
       `isNewTurn`,
       `mainButtonIsRolling`,
-      `isLastSave`
+      `isLastResultSaved`
     ]),
     mainButtonStateCheck:() => store.state.rollCount === 0 ? true : false
   },

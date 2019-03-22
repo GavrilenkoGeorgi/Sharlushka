@@ -14,15 +14,21 @@ const actions = {
   setCurrentIcon: ({
     commit
   }) => commit(`setCurrentIcon`),
-  setLastSave ({ commit }) {
+  setLastSave ({ commit }, value) {
     return new Promise((resolve) => {
-      commit(`setLastSave`)
+      commit(`setLastSave`, value)
       resolve()
     })
   },
   resetGameOver ({ commit }, value) {
     return new Promise((resolve) => {
       commit(`resetGameOver`, value)
+      resolve()
+    })
+  },
+  setGameOverDialog ({ commit }, value) {
+    return new Promise((resolve) => {
+      commit(`setGameOverDialog`, value)
       resolve()
     })
   },

@@ -170,7 +170,7 @@ export default {
       this.schoolScores = localStorage.getItem(`schoolScores`)
       if (this.schoolScores) {
         const arrayToDisplay = this.schoolScores.split(`,`)
-        const slicedArray = arrayToDisplay.slice(-12)
+        const slicedArray = arrayToDisplay.slice(-24)
         this.chartData.series = [slicedArray]
       }
     })

@@ -1,5 +1,5 @@
 export default {
-  computeScore(state) { // biggest chunk of javaScript for now i hope
+  computeScore(state) { // some code on prod
     if (!state.newTurn) {
       // empty array for calculating score looks like this:
       const arrayToAnalyse = [[], [], [], [], [], []]
@@ -287,7 +287,7 @@ and you can't save zero to school combination.`)
       if (state.currentGameTurn === state.maxGameTurns && state.newTurn) {
         console.log(`Last save!`)
         state.gameOver = true
-        state.lastSave = true
+        // state.lastSave = true
       }
       if (state.scoreArray[combinationIndexToSave].displayValues.length === 3) {
         console.log(`Setting combination final.`)
@@ -378,22 +378,29 @@ and you can't save zero to school combination.`)
     }
     state.combinationArray = []
   },
-  resetState(state) { // reset state
-    /*
+  resetState(state) {
     // hard reset
     // Object.assign(state, getDefaultState())
-    */
-    // or just reset the game variables
-    state.rollCount = 3, // roll counter for the current turn
-    state.currentGameTurn = 1, // game turns counter
-    state.newTurn = true, // 1st turn in game is new turn
-    state.schoolCompleted = false, // check if school is completed
-    state.gameOver = false,
-    state.lastSave = false,
-    state.zeroCheck = false, // to check if zero was saving during turn
-    state.schoolScoreTotal = 0, // total school score
-    state.gameTotal = 0, // total game score
-    state.combinationArray = []
+    let valuesToReset = {
+      currentGameTurn: 1, // game turns counter
+      rollCount: 3, // roll counter for the current turn
+      maxGameTurns: 33, // 6 turns for school, 27 for the game
+      maxPossibleScore: 879, // from all combinations with highest values set to final
+      newTurn: true, // 1st turn in game is new turn
+      schoolCompleted: false, // check if school is completed
+      gameOver: false,
+      zeroCheck: false, // to check if zero was saving during turn
+      schoolScoreTotal: 0, // total school score
+      gameTotal: 0, // total game score
+      combinationArray: []
+    }
+    Object.assign(state, valuesToReset)
+
+    let userToUpdate = state.user
+    let userValuesToUpdate = {
+      lastResultSaved: false
+    }
+    Object.assign(userToUpdate, userValuesToUpdate)
     // and clear results
     for (const result of state.scoreArray) {
       result.value = ``
@@ -408,25 +415,19 @@ and you can't save zero to school combination.`)
       dice.chosen = false
     }
   },
-  setUser(state, payload) {
-    state.user = payload
-  },
-  setUserIsLoggedIn(state, payload) {
-    // console.log(`Changing user auth state. ${payload}`)
-    state.user = payload
-  },
-  setUserName(state, name) {
-    state.user.name = name
-  },
-  setAuthState(state, authState) {
-    if (!authState) {
-      state.user.isAuthenticated = false
-      state.user.uid = ``
-      state.user.name = ``
+  setUserIsLoggedIn(state, value) {
+    let userStateUpdate = {
+      isAuthenticated: value
     }
+    let userToUpdate = state.user
+    Object.assign(userToUpdate, userStateUpdate)
   },
-  setLastSave (state) {
-    state.lastSave = true
+  setLastSave (state, value) {
+    let userStateUpdate = {
+      lastResultSaved: value
+    }
+    let userToUpdate = state.user
+    Object.assign(userToUpdate, userStateUpdate)
   },
   resetGameOver (state, value) {
     state.gameOver = value

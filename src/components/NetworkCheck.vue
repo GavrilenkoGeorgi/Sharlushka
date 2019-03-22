@@ -12,7 +12,7 @@
     >
       <cloudOffIcon class="cloud-icon blink" />
     </v-btn>
-    <v-card class="offline-message">
+    <v-card class="offline-dialog">
       <v-card-text class="offline-message-text">
         Check your connection to save results.
       </v-card-text>
@@ -52,21 +52,22 @@ export default {
   }
 }
 </script>
+
 <style lang="scss" scoped>
-@import '../assets/fonts/fonts.scss';
-@import '../assets/scss/vars/colors.scss';
+@import "../assets/scss/vars/colors.scss";
 
 .cloud-icon {
-  fill: $color-orange;
+  color: $color-orange;
 }
 
-.offline-message {
-  border: 1px solid $color-primary-0;
+.offline-dialog {
+  border-radius: .3em;
+  border: .1em solid $color-primary-0;
 }
 
 .offline-message-text {
   font-size: 1.2em;
-  font-family: $text-font;
   color: $color-primary-3;
 }
 </style>
+

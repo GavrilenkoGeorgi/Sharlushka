@@ -2,21 +2,52 @@ export default () => {
   return {
     defaultUserName: `Anonymous`,
     user: {
-      isAuthenticated: false
+      isAuthenticated: false,
+      lastResultSaved: false // current result saved
     },
+    error: false,
     currentGameTurn: 1, // game turns counter
     rollCount: 3, // roll counter for the current turn
     maxGameTurns: 33, // 6 turns for school, 27 for the game
-    maxPossibleScore: 879,
+    maxPossibleScore: 879, // from all combinations with highest values set to final
     newTurn: true, // 1st turn in game is new turn
     schoolCompleted: false, // check if school is completed
     gameOver: false,
-    lastSave: false, // current result saved
     zeroCheck: false, // to check if zero was saving during turn
     schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score
-    debug: false,
+    debug: false, // Vue Devtools will do
     combinationArray: [],
+    diceArray: [{ // dice Array
+      value: `#`,
+      chosen: false,
+      id: `first`,
+      currentIcon: `diceOnes`
+    },
+    {
+      value: `#`,
+      chosen: false,
+      id: `second`,
+      currentIcon: `diceTwos`
+    },
+    {
+      value: `#`,
+      chosen: false,
+      id: `third`,
+      currentIcon: `diceThrees`
+    },
+    {
+      value: `#`,
+      chosen: false,
+      id: `fourth`,
+      currentIcon: `diceFours`
+    },
+    {
+      value: `#`,
+      chosen: false,
+      id: `fifth`,
+      currentIcon: `diceFives`
+    }],
     scoreArray: [{
       value: `1`, // school combinations
       final: true,
@@ -115,36 +146,6 @@ export default () => {
       final: false,
       id: `chance`,
       fullName: `Chance` // 14
-    }],
-    diceArray: [{ // dice Array
-      value: `#`,
-      chosen: false,
-      id: `first`,
-      currentIcon: `diceOnes`
-    },
-    {
-      value: `#`,
-      chosen: false,
-      id: `second`,
-      currentIcon: `diceTwos`
-    },
-    {
-      value: `#`,
-      chosen: false,
-      id: `third`,
-      currentIcon: `diceThrees`
-    },
-    {
-      value: `#`,
-      chosen: false,
-      id: `fourth`,
-      currentIcon: `diceFours`
-    },
-    {
-      value: `#`,
-      chosen: false,
-      id: `fifth`,
-      currentIcon: `diceFives`
     }]
   }
 }

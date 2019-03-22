@@ -38,8 +38,8 @@ export default {
 }
 </script>
 
-<!--style src='vuetify/dist/vuetify.min.css'>
-</style-->
+<style src='vuetify/dist/vuetify.min.css'>
+</style>
 <style lang="scss">
 @import '../node_modules/chartist/dist/chartist.min.css';
 @import './assets/scss/index.scss';

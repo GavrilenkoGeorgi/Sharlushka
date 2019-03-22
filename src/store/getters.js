@@ -40,7 +40,7 @@ export default {
   },
   isGameEnded: (state) => state.gameOver,
   isNewTurn: (state) => state.newTurn,
-  isLastSave: (state) => state.lastSave,
+  isLastResultSaved: (state) => state.user.lastResultSaved,
   getCombinationArray(state) {
     // another one for export
     const combinationArray = state.scoreArray.slice(state.diceArray.length + 1, state.scoreArray.length)
@@ -62,6 +62,4 @@ export default {
     return state.schoolCompleted
   },
   error: state => state.error
-  // cantFinishSchool: (state) => state.wasNotAbleToCompleteSchool ? true : false
 }
-

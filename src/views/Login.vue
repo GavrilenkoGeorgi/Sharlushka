@@ -2,8 +2,6 @@
   <v-container
     id="login"
     fluid
-    py-2
-    px-4
     class="text-xs-center"
   >
     <v-layout column>
@@ -22,7 +20,7 @@
         class="login-form py-4"
       >
         <v-flex
-          xs9
+          xs10
           d-flex
           align-center
           py-4
@@ -41,18 +39,33 @@
               required
               color="purple accent-4"
             />
-            <v-text-field
-              v-model="password"
-              :rules="passwordRules"
-              :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="showPass ? 'text' : 'password'"
-              label="Password"
-              autocomplete="off"
-              required
-              color="purple accent-4"
-              hint="At least 6 characters"
-              @click:append="showPass = !showPass"
-            />
+            <v-layout>
+              <v-flex xs11>
+                <v-text-field
+                  v-model="password"
+                  :rules="passwordRules"
+                  :type="showPass ? 'text' : 'password'"
+                  label="Password"
+                  autocomplete="off"
+                  required
+                  color="purple accent-4"
+                />
+              </v-flex>
+              <v-flex
+                d-flex
+                xs1
+                align-center
+                align-content-center
+                justify-center
+                class="text-xs-center"
+                @click="showPass = !showPass"
+              >
+                <showPassIcon
+                  class="input-icon"
+                  :class="{ showPass: showPass }"
+                />
+              </v-flex>
+            </v-layout>
           </v-form>
         </v-flex>
       </v-layout>
@@ -64,7 +77,7 @@
       >
         <v-flex
           d-flex
-          xs5
+          xs6
         >
           <v-btn
             :type="'submit'"
@@ -72,23 +85,25 @@
             :disabled="getUserAuthState"
             outline
             ripple
-            class="button white--text"
+            class="white--text button"
             color="orange"
             @click.prevent="login"
           >
-            login
+            <span>
+              login
+            </span>
           </v-btn>
         </v-flex>
 
         <v-flex
           d-flex
-          xs5
+          xs6
         >
           <v-btn
             :disabled="valid"
             outline
             ripple
-            class="button white--text"
+            class="white--text button"
             color="purple darken-1"
             @click="clearForm"
           >
@@ -100,21 +115,20 @@
           xs12
           py-4
           align-center
-          class="info-text"
         >
           <v-divider />
         </v-flex>
 
         <v-flex
           d-flex
-          xs5
+          xs6
         >
           <v-btn
             :loading="signingOut"
             :disabled="!getUserAuthState"
             outline
             ripple
-            class="button white--text"
+            class="white--text button"
             color="purple darken-1"
             @click="signOut"
           >
@@ -124,13 +138,13 @@
 
         <v-flex
           d-flex
-          xs5
+          xs6
         >
           <v-btn
             to="/register"
             outline
             ripple
-            class="button white--text"
+            class="white--text button"
             color="purple darken-1"
           >
             {{ newUserBtnText }}
@@ -144,6 +158,7 @@
 
 <script>
 import errorMessageDialog from '../components/ErrorMessage.vue'
+import showPassIcon from '../assets/icons/baseline-remove_red_eye-24px.svg'
 import { mapGetters } from 'vuex'
 import firebase from 'firebase/app'
 import db from '../firebase/firebaseInit'
@@ -152,7 +167,8 @@ import 'firebase/auth'
 export default {
   name: `Login`,
   components: {
-    errorMessageDialog
+    errorMessageDialog,
+    showPassIcon
   },
   data: () => ({
     loggingIn: false,
@@ -168,8 +184,8 @@ export default {
     password: ``,
     showPass: false,
     passwordRules: [
-      (v) => !!v || `Password is required`,
-      (v) => v && (v.length >= 6 && v.length <= 12) || `Password must be greater than 6 and less than 12.`
+      (v) => !!v || `Password is required`
+      // (v) => v && (v.length >= 6 && v.length <= 12) || `Password must be greater than 6 and less than 12.`
     ],
     usersCollRef: `users`
   }),
@@ -193,6 +209,7 @@ export default {
           .then(response => {
             this.getUserDataFromDB(response.user.uid)
           }).then(() => {
+            this.$store.commit(`setUserIsLoggedIn`, true)
             this.toggleButtonLoadingState(`login`)
             this.$router.push(`/game`)
           }).catch(err => {
@@ -256,15 +273,15 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import '../assets/scss/index.scss';
+<style lang="scss" scoped>
+@import "../assets/scss/vars/colors.scss";
 
-.login-form, .page-title, .info-text, .button {
-  font-family: $text-font;
-}
-.info-text {
+.showPass {
   color: $color-primary-0;
-  font-size: 1.4em;
-  font-weight: 700;
+}
+
+.button {
+  line-height: 2em;
 }
 </style>
+

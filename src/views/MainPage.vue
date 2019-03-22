@@ -43,7 +43,7 @@
       >
         <v-flex
           d-flex
-          xs5
+          xs6
           lg2
           class="text-xs-center"
         >
@@ -54,9 +54,10 @@
             color="purple darken-2"
             aria-label="Start game"
             :class="{ orange:isGameInProgress }"
-            class="main-page-button-play"
+            class="main-page-button-play button-border-radius"
           >
             <doneIcon
+              class="button-icon-margin"
               :class="{ highlighted:isGameInProgress }"
             />
             <span :class="{ highlighted:isGameInProgress }">
@@ -66,7 +67,7 @@
         </v-flex>
         <v-flex
           d-flex
-          xs5
+          xs6
           lg2
           class="text-xs-center"
         >
@@ -76,9 +77,9 @@
             ripple
             color="purple darken-1"
             aria-label="Register or change name"
-            class="main-page-button-login"
+            class="main-page-button-login button-border-radius"
           >
-            <regIcon />
+            <regIcon class="button-icon-margin" />
             login
           </v-btn>
         </v-flex>
@@ -113,7 +114,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+// import { mapGetters } from 'vuex'
 import SharlushkaLogo from '@/assets/images/sharlushkaLogo.svg'
 import doneIcon from '../assets/icons/baseline-done-24px.svg'
 import regIcon from '../assets/icons/baseline-how_to_reg-24px.svg'
@@ -134,9 +135,11 @@ export default {
     }
   },
   computed: {
+    /*
     ...mapGetters([
       `progressBarState`
     ]),
+    */
     isGameInProgress () {
       return (this.$store.state.currentGameTurn >= 1 && this.$store.state.rollCount < 3) ? true : false
     }
@@ -153,12 +156,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/fonts/fonts.scss";
 @import "../assets/scss/vars/colors.scss";
 
-.game-name, .user-name, .user-name-main-page, .copyrights {
-  font-family: $text-font;
-}
 .game-name {
   font-size: 3em;
   color: $color-primary-0;
@@ -194,14 +193,5 @@ export default {
   .user-name {
     font-size: 4em;
   }
-}
-
-.main-page-button-play, .main-page-button-login {
-  fill: $color-primary-0;
-}
-
-.highlighted {
-  fill: $color-orange;
-  color: $color-orange;
 }
 </style>

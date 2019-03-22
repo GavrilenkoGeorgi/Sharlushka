@@ -1,11 +1,8 @@
 <template>
-  <!--v-container
-    id="userStats"
-    pa-0
-  -->
   <v-layout
-    align-space-around
     column
+    py-2
+    pb-4
   >
     <!-- Title and user name -->
     <v-flex class="text-xs-center">
@@ -26,7 +23,13 @@
           v-if="highestScore"
           class="hi-score"
         >
-          {{ hiscoreGreeting }} {{ highestScore }}{{ exclamation }}
+          {{ hiscoreGreeting }}
+          <span
+            class=" highlighted"
+          >
+            {{ highestScore }}
+          </span>
+          {{ exclamation }}
         </h3>
       </v-layout>
     </v-flex>
@@ -36,6 +39,7 @@
       d-flex
       align-center
       py-1
+      pr-3
     >
       <chartist
         ratio="ct-major-twelfth"
@@ -48,7 +52,7 @@
     <v-flex
       v-if="highestScore"
       d-flex
-      align-end
+      align-center
       class="last-scores-heading text-xs-center"
     >
       <h3
@@ -57,7 +61,6 @@
         {{ lastScoresHeading }}
       </h3>
     </v-flex>
-    <!--v-flex-->
     <v-layout
       v-if="highestScore"
       align-space-around
@@ -66,7 +69,7 @@
       <v-flex
         d-flex
         class="hi-score-display"
-        pb-1
+        pb-4
       >
         <v-layout
           row
@@ -84,7 +87,6 @@
           </v-flex>
         </v-layout>
       </v-flex>
-      <!-- Stats display v-if="item.value" -->
       <v-flex
         v-for="item in newStats"
         :key="item.msg"
@@ -93,41 +95,14 @@
         {{ item.msg }}&nbsp;{{ item.value }}
       </v-flex>
     </v-layout>
-    <!--/v-flex-->
-    <!-- Buttons -->
-    <v-layout
-      pt-2
-      row
-      align-center
-      justify-space-around
-    >
-      <v-flex
-        class="text-xs-center"
-      >
-        <v-btn
-          ripple
-          outline
-          color="orange"
-          @click="restartGame"
-        >
-          <restartIcon class="highlighted" />
-          Play again
-        </v-btn>
-      </v-flex>
-    </v-layout>
   </v-layout>
-  <!--/v-container-->
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import restartIcon from '../assets/icons/baseline-replay-24px.svg'
 
 export default {
   name: `UserStats`,
-  components: {
-    restartIcon
-  },
   data() {
     return {
       userName: ``,
@@ -270,21 +245,12 @@ export default {
 
 @import '../assets/scss/index.scss';
 
-.help-title,
-.user-name,
-.hi-score,
-.last-scores-heading,
-.hi-score-display,
-.stats-display {
-  font-family: $text-font;
-}
-
 .help-title {
-  font-size: 2em;
+  font-size: 2.3em;
 }
 .user-name {
   color: $color-orange;
-  font-size: 1.4em;
+  font-size: 1.7em;
 }
 .hi-score {
   line-height: 1;
