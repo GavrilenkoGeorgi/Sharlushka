@@ -4,13 +4,20 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const webpack = require('webpack');
 const PUBLIC_PATH = '/';
 
 module.exports = (env, argv) => ({
   mode: argv && argv.mode || 'development',
   devtool: (argv && argv.mode || 'development') === 'production' ? 'source-map' : 'eval',
 
-  entry: './src/index.js',
+  // entry: './src/index.js',
+  entry: {
+    main: path.resolve(__dirname, 'src/index.js')
+    // mutations: path.resolve(__dirname, 'src/store/mutations.js'),
+    // store: path.resolve(__dirname, 'src/store/store.js'),
+    // getters: path.resolve(__dirname, 'src/store/getters.js')
+  },
 
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -35,7 +42,7 @@ module.exports = (env, argv) => ({
         test: /\.js$/,
         exclude: /node_modules/,
         use: [{
-          loader: 'babel-loader',
+          loader: 'babel-loader'
         }],
         include: [path.join(__dirname, 'src')],
       },
@@ -76,12 +83,13 @@ module.exports = (env, argv) => ({
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new VueLoaderPlugin(),
+    new webpack.HashedModuleIdsPlugin(), // so that file hashes don't change unexpectedly
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'static', 'index.html'),
       inject: true,
     }),
     new SWPrecacheWebpackPlugin({
-      cacheId: 'sharlushkaMk6',
+      cacheId: 'sharlushkaMk7',
         dontCacheBustUrlsMatching: /\.\w{8}\./,
         filename: 'service-worker.js',
         minify: true,
@@ -97,12 +105,21 @@ module.exports = (env, argv) => ({
   optimization: {
     splitChunks: {
       chunks: 'all',
-      minSize: 30000,
-      maxSize: 0,
+      maxInitialRequests: Infinity,
+      minSize: 0,
+      // maxSize: 0,
       cacheGroups: {
-        vendors: {
+        vendor: {
           test: /[\\/]node_modules[\\/]/,
-          priority: -10
+          // priority: -10,
+          name(module) {
+            // get the name. E.g. node_modules/packageName/not/this/part.js
+            // or node_modules/packageName
+            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+
+            // npm package names are URL-safe, but some servers don't like @ symbols
+            return `npm.${packageName.replace('@', '')}`;
+          },
         },
         default: {
           minChunks: 2,
