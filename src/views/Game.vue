@@ -1,6 +1,4 @@
 <template>
-  <!-- Navigation bar -->
-  <!--navBar /-->
   <v-layout
     column
     class="game-layout"
@@ -91,85 +89,24 @@
         </v-layout>
       </v-flex>
     </v-layout>
+    <!-- Dice box with button -->
     <DiceBox />
+    <!-- Progress bar -->
     <v-progress-linear
       :value="progressBarState"
       color="purple darken-2"
       height="4"
       class="progress-bar"
     />
-    <!-- Dialog itself -->
-    <v-dialog
-      v-model="gameOverDialog"
-      width="20em"
-    >
-      <!-- Card -->
-      <v-card class="school-not-finished-dialog">
-        <v-card-text
-          class="game-over-text text-xs-center pb-0"
-        >
-          <h3 class="chosen">
-            {{ userName }}!
-          </h3>
-          <p v-if="isGameEnded && schoolFinished">
-            Your score is:
-            <span class="chosen">{{ getTotalScore }}</span>.
-          </p>
-          <p v-else>
-            You can't even finish the school, your score is
-            <span class="chosen">{{ getSchoolScore }}</span>.
-          </p>
-        </v-card-text>
-        <v-card-actions>
-          <v-layout
-            justify-space-around
-            py-3
-          >
-            <v-flex
-              v-if="isGameEnded && schoolFinished"
-              d-flex
-              xs5
-            >
-              <v-btn
-                flat
-                large
-                outline
-                class="button"
-                color="purple darken-2"
-                :to="'/endgame'"
-              >
-                <saveIcon class="default-icon-color button-icon-margin" />
-                Save
-              </v-btn>
-            </v-flex>
-            <v-flex
-              v-else
-              d-flex
-              xs5
-            >
-              <v-btn
-                color="orange"
-                flat
-                large
-                outline
-                ripple
-                class="button"
-                @click="restartGame()"
-              >
-                <restartIcon class="highlighted button-icon-margin" />
-                restart
-              </v-btn>
-            </v-flex>
-          </v-layout>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <!-- Game over dialog -->
+    <GameOverDialog />
   </v-layout>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import DiceBox from '../components/DiceBox.vue'
+import GameOverDialog from '../components/GameOverDialog.vue'
 import diceOnes from '../assets/icons/diceOnes.svg'
 import diceTwos from '../assets/icons/diceTwos.svg'
 import diceThrees from '../assets/icons/diceThrees.svg'
@@ -184,6 +121,7 @@ export default {
   name: `Game`,
   components: {
     DiceBox,
+    GameOverDialog,
     diceOnes,
     diceTwos,
     diceThrees,
@@ -196,7 +134,8 @@ export default {
   },
   data: () => ({
     title: `Sharlushka`,
-    userName: ``
+    userName: ``,
+    dialog: false
   }),
   computed: {
     ...mapGetters([
@@ -208,12 +147,17 @@ export default {
       `getSchoolScore`,
       `getTotalScore`,
       `schoolFinished`
-    ]),
+    ])
+    /*
     gameOverDialog: {
       get () {
         return this.$store.state.gameOver
+      },
+      set () {
+        this.dialog = !this.dialog
       }
     }
+    */
   },
   mounted() {
     this.$nextTick(() => {
@@ -278,7 +222,7 @@ p {
   padding: .15em 0em .15em 0em;
 }
 .accented {
-  background-color: $color-combination-hightlight;
+  background-color: $color-combination-highlight;
 }
 .background-transition {
   transition: background-color .6s ease-in;
