@@ -205,7 +205,9 @@ export default {
               email: response.user.email,
               hiScore: localStorage.getItem(`highestScore`),
               resultsArray: localStorage.getItem(`lastScoresArray`),
-              schoolResultsArray: localStorage.getItem(`schoolScores`)
+              schoolResultsArray: localStorage.getItem(`schoolScores`),
+              diceValuesFavs: localStorage.getItem(`diceValuesFavs`),
+              combinationsFavs: localStorage.getItem(`combinationsFavs`)
             }
             this.addNewUser(newUserData)
             console.log(`User added ${response.user.email}`)

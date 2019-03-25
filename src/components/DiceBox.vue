@@ -173,7 +173,7 @@ export default {
       console.log(`Restarting game.`)
       store.commit(`resetState`)
       // cause of the same route
-      this.$router.go(`/game`)
+      // this.$router.go(`/game`)
     },
     vibrate() {
       if (this.navigatorSupported) {
@@ -203,9 +203,12 @@ export default {
       }
     },
     selectDice(id) {
+      // id of a dice e.g. `ones` or `sixes`
       if (!this.isNewTurn) {
         this.$store.commit(`setDiceChosenState`, id)
         this.$store.dispatch(`computeScore`, id)
+        // then save chosen dice value to favs
+        this.$store.dispatch(`saveFavDiceValue`, id)
         const dice = document.getElementById(id)
         const diceBox = dice.parentElement
         // get chosen dice quantity if any,

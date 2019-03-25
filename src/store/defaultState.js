@@ -3,18 +3,19 @@ export default () => {
     defaultUserName: `Anonymous`,
     user: {
       isAuthenticated: false,
-      lastResultSaved: false // current result saved
+      lastResultSaved: false, // current result saved
+      diceValuesFavs: [0, 0, 0, 0, 0, 0] // favorite dice values stats
     },
     error: false,
-    currentGameTurn: 1, // game turns counter
+    currentGameTurn: 32, // game turns counter
     rollCount: 3, // roll counter for the current turn
     maxGameTurns: 33, // 6 turns for school, 27 for the game
     maxPossibleScore: 879, // from all combinations with highest values set to final
     newTurn: true, // 1st turn in game is new turn
-    schoolCompleted: false, // check if school is completed
+    schoolCompleted: true, // check if school is completed
     gameOver: false,
     zeroCheck: false, // to check if zero was saving during turn
-    schoolScoreTotal: 0, // total school score
+    schoolScoreTotal: -4, // total school score
     gameTotal: 0, // total game score
     debug: false, // Vue Devtools will do
     combinationArray: [],

@@ -10,23 +10,27 @@
       icon
       aria-label="network check"
     >
-      <cloudOffIcon class="cloud-icon blink" />
+      <cloudOffIcon class="highlighted blink" />
     </v-btn>
-    <v-card class="offline-dialog">
-      <v-card-text class="offline-message-text">
-        Check your connection to save results.
+    <v-card class="dialog">
+      <v-card-text class="default-text-color">
+        Check your connection before saving results.
       </v-card-text>
       <v-card-actions>
-        <v-spacer />
-        <v-btn
-          color="orange"
-          flat
-          outline
-          ripple
-          @click="offlineMessage = false"
+        <v-layout
+          justify-center
         >
-          <doneIcon class="highlighted" />
-        </v-btn>
+          <v-btn
+            color="purple darken-2"
+            flat
+            outline
+            ripple
+            class="button"
+            @click="offlineMessage = false"
+          >
+            <doneIcon />
+          </v-btn>
+        </v-layout>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -52,22 +56,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-@import "../assets/scss/vars/colors.scss";
-
-.cloud-icon {
-  color: $color-orange;
-}
-
-.offline-dialog {
-  border-radius: .3em;
-  border: .1em solid $color-primary-0;
-}
-
-.offline-message-text {
-  font-size: 1.2em;
-  color: $color-primary-3;
-}
-</style>
-

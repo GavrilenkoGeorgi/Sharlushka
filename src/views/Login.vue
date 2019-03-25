@@ -228,6 +228,9 @@ export default {
         localStorage.clear()
         this.toggleButtonLoadingState(`signout`)
         // this.$router.push(`/`)
+        // for now
+        // let userStatsToSet = [0, 0, 0, 0, 0, 0]
+        // this.$store.state.dispatch(`setUserFavStats`, userStatsToSet)
       }).catch((err) => {
         this.$store.dispatch(`setErrorMessage`, err)
         this.toggleButtonLoadingState(`signout`)
@@ -245,6 +248,20 @@ export default {
               localStorage.setItem(`highestScore`, doc.data().hiScore)
               localStorage.setItem(`lastScoresArray`, doc.data().resultsArray)
               localStorage.setItem(`schoolScores`, doc.data().schoolResultsArray)
+              if (doc.data().diceValuesFavs === undefined) {
+                localStorage.setItem(`diceValuesFavs`, ``)
+              } else {
+                localStorage.setItem(`diceValuesFavs`, doc.data().diceValuesFavs)
+                // let userStatsToSet = doc.data().diceValuesFavs
+                // this.$store.dispatch(`setUserFavStats`, userStatsToSet)
+              }
+              if (!doc.data().combinationsFavs) {
+                localStorage.setItem(`combinationsFavs`, ``)
+              } else {
+                localStorage.setItem(`combinationsFavs`, doc.data().combinationsFavs)
+              }
+              // let userStatsToSet = doc.data().diceValuesFavs
+              // this.$store.dispatch(`setUserFavStats`, userStatsToSet)
             }
           })
         })

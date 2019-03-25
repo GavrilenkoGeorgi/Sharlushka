@@ -39,6 +39,11 @@ describe(`MainPage.vue`, () => {
       store,
       gameName: { gameNameString, userNameString }
     })
+
+    // reference to the component instance
+    // wrapper.vm
+    // reference to the root dom node
+    // wrapper.element
     const gameNameH1 = wrapper.find(`.game-name`)
     const userNameH2 = wrapper.find(`.user-name-main-page`)
     // const copyrightSpanTag = wrapper.find(`.copyrights`)

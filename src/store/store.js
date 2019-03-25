@@ -56,6 +56,18 @@ const actions = {
       resolve()
     })
   },
+  saveFavDiceValue ({ commit }, error ) {
+    return new Promise((resolve) => {
+      commit(`saveFavDiceValue`, error)
+      resolve()
+    })
+  },
+  setUserFavStats ({ commit }, values ) {
+    return new Promise((resolve) => {
+      commit(`setUserFavStats`, values)
+      resolve()
+    })
+  },
   resetGameState: ({
     commit
   }) => commit(`resetState`),

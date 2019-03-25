@@ -23,6 +23,11 @@ firebase.auth().onAuthStateChanged((user) => {
     console.log(`User is logged in: ${user.email}.`)
     // Data is already in localstorage after logging in
     store.commit(`setUserIsLoggedIn`, true)
+    // set dice favs from local storage to state
+    if (localStorage.getItem(`diceValuesFavs`) !== ``) {
+      let userStatsToSet = localStorage.getItem(`diceValuesFavs`).split(`,`).map(Number)
+      store.dispatch(`setUserFavStats`, userStatsToSet)
+    }
   } else {
     console.log(`User is not logged in. Hi, Anonymous.`)
     // set default local storage values
@@ -34,6 +39,8 @@ firebase.auth().onAuthStateChanged((user) => {
       localStorage.setItem(`highestScore`, ``)
       localStorage.setItem(`lastScoresArray`, ``)
       localStorage.setItem(`schoolScores`, ``)
+      localStorage.setItem(`diceValuesFavs`, ``)
+      localStorage.setItem(`combinationsFavs`, ``)
     }
   }
 })

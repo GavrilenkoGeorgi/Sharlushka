@@ -23,6 +23,21 @@
   animation-name: fadeOut;
 }
 
+@keyframes fadeOutDown {
+  from {
+    opacity: .9;
+  }
+
+  to {
+    opacity: .2;
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+.fadeOutDown {
+  animation-name: fadeOutDown;
+}
+
 .blink {
   color: $color-primary-1;
   font-weight: 700;
@@ -74,7 +89,7 @@
 }
 
 .animated.fast {
-  animation-duration: 1000ms;
+  animation-duration: 1100ms;
 }
 
 .animated {

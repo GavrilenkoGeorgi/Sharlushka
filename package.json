@@ -1,18 +1,17 @@
 {
   "name": "sharlushka",
-  "version": "1.4.5",
+  "version": "1.4.6",
   "main": "index.js",
   "private": true,
   "description": "Sharlushka App",
   "author": "Gavrilenko <gavrilenko.georgi@gmail.com>",
   "scripts": {
+    "dev": "webpack-dev-server --progress",
     "build": "webpack -p --mode production",
     "build:dev": "webpack -d --mode development",
-    "dev": "webpack-dev-server --progress",
-    "test": "npm run unit && npm run e2e",
-    "e2e": "node test/e2e/runner.js",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
-    "unit": "jest --config test/unit/jest.conf.js --coverage"
+    "test:e2e": "node test/e2e/runner.js",
+    "test:unit": "jest --config test/unit/jest.conf.js --coverage"
   },
   "dependencies": {
     "@vue/cli": "^3.5.1",

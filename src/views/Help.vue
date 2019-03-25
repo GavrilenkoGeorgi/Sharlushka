@@ -3,18 +3,21 @@
     row
     wrap
   >
-    <v-flex xs12>
+    <v-flex
+      xs12
+      pt-2
+    >
       <h1 class="text-xs-center rules-heading">
         {{ rulesHeading }}
       </h1>
-      <h4
+      <!--h4
         v-if="schoolScores !== ``"
         class="text-xs-center rules-heading"
       >
         Your recent school results
-      </h4>
+      </h4-->
       <!-- Chart-->
-      <v-flex
+      <!--v-flex
         d-flex
         align-center
         my-2
@@ -26,7 +29,7 @@
           :data="chartData"
           :options="chartOptions"
         />
-      </v-flex>
+      </v-flex-->
       <p class="rules-text">
         {{ overall }}
       </p>
@@ -96,6 +99,7 @@ export default {
   },
   data() {
     return {
+      /*
       schoolScores: ``,
       chartData: {
         labels: [],
@@ -114,7 +118,7 @@ export default {
           // and also don't show the label
           showLabel: true
         }
-      },
+      }, */
       overall: `Три броска, для того чтобы собрать комбинацию. Первый раз бросаются все пять кубиков.
         Дополнительно два раза можно перебрасывать часть кубиков, оставляя нужные,
         или перебросить всё заново. Можно остановиться на первом или втором результате и
@@ -166,24 +170,8 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(`Rules page mounted.`)
-      this.schoolScores = localStorage.getItem(`schoolScores`)
-      if (this.schoolScores) {
-        const arrayToDisplay = this.schoolScores.split(`,`)
-        const slicedArray = arrayToDisplay.slice(-24)
-        this.chartData.series = [slicedArray]
-      }
+      console.log(`Help page mounted.`)
     })
-  },
-  methods: {
-    prepareLabelsForChart(numOfLabels) {
-      const labelsArray = []
-      while (numOfLabels !== 1) {
-        labelsArray.push(numOfLabels)
-        numOfLabels--
-      }
-      return labelsArray.reverse()
-    }
   }
 }
 </script>
@@ -191,9 +179,6 @@ export default {
 
 @import "../assets/scss/index.scss";
 
-.rules-heading {
-  font-family: $text-font;
-}
 .rules-text {
   padding: 0em 1em 0em 1em;
   line-height: 1.4em;
@@ -204,7 +189,7 @@ export default {
 .rules-text-eng {
   padding: 0em 1em 0em 1em;
   text-indent: 1em;
-  font-family: $text-font;
+  // font-family: $text-font;
   font-size: 1.4em;
 }
 
@@ -216,7 +201,7 @@ export default {
 .combination-descr {
   font-size: 1.2em;
   font-weight: 500;
-  font-family: $text-font;
+  // font-family: $text-font;
   transition: background-color 500ms ease-in-out;
 }
 .combination-descr:hover {

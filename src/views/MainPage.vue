@@ -39,11 +39,12 @@
       <v-layout
         row
         align-center
-        justify-space-around
+        justify-center
       >
         <v-flex
           d-flex
           xs6
+          sm4
           lg2
           class="text-xs-center"
         >
@@ -68,6 +69,7 @@
         <v-flex
           d-flex
           xs6
+          sm4
           lg2
           class="text-xs-center"
         >

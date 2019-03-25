@@ -229,10 +229,9 @@ export default {
             state.scoreArray[key].value = ``
           }
         }
-      } else {
-        alert(`Error!`) // meh...
       }
-    }
+      return true
+    } else return false
   },
   saveResultInStore (state, id) {
     console.log(`Saving to store...`)
@@ -296,8 +295,10 @@ and you can't save zero to school combination.`)
         // and clear current value so it won't stay onscreen (
         state.scoreArray[combinationIndexToSave].value = ``
       }
+      return true
     } else {
       console.log(`No new turn.`)
+      return false
     }
   },
   setDiceChosenState(state, diceId) {
@@ -385,7 +386,6 @@ and you can't save zero to school combination.`)
       currentGameTurn: 1, // game turns counter
       rollCount: 3, // roll counter for the current turn
       maxGameTurns: 33, // 6 turns for school, 27 for the game
-      maxPossibleScore: 879, // from all combinations with highest values set to final
       newTurn: true, // 1st turn in game is new turn
       schoolCompleted: false, // check if school is completed
       gameOver: false,
@@ -414,6 +414,14 @@ and you can't save zero to school combination.`)
       dice.value = `#`
       dice.chosen = false
     }
+  },
+  setUserFavStats (state, values) {
+    console.log(`Setting user favs.`)
+    let valuesToSet = {
+      diceValuesFavs: values
+    }
+    let userToUpdate = state.user
+    Object.assign(userToUpdate, valuesToSet)
   },
   setUserIsLoggedIn(state, value) {
     let userStateUpdate = {
@@ -446,12 +454,20 @@ and you can't save zero to school combination.`)
       }
     }
   },
-  resetUserAbleToCompleteSchool(state, value) {
-    state.wasNotAbleToCompleteSchool = value
-  },
   setErrorMessage(state, error) {
     if (error !== false) {
       state.error = error
     } else state.error = false
+  },
+  saveFavDiceValue(state, id) {
+    let dice = state.diceArray.find(dice => {
+      return dice.id === id
+    })
+    let currentState = state.user.diceValuesFavs
+    if (dice.chosen) {
+      currentState[dice.value - 1]++
+    } else {
+      currentState[dice.value - 1]--
+    }
   }
 }

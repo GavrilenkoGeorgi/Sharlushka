@@ -61,5 +61,27 @@ export default {
   schoolFinished(state) {
     return state.schoolCompleted
   },
-  error: state => state.error
+  error: state => state.error,
+  // getDiceValuesFavs: state => state.user.diceValuesFavs
+  getDiceValuesFavs(state) {
+    return state.user.diceValuesFavs
+  },
+  getCurrentNonZeroCombinations(state) {
+    // console.log(`Getting current non zero combinations.`)
+    let arrayWithResults = state.scoreArray.slice(state.diceArray.length + 1, state.scoreArray.length)
+    // console.log(`From this -->`)
+    // console.log(arrayWithResults)
+    let combinationsFavsArray = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for (let index in arrayWithResults) {
+      let currentSavedValues = arrayWithResults[index].displayValues
+      for (let value of currentSavedValues) {
+        if (value != 0) {
+          combinationsFavsArray[index]++
+        }
+      }
+    }
+    // console.log(`Returning this -->`)
+    // console.log(combinationsFavsArray)
+    return combinationsFavsArray
+  }
 }

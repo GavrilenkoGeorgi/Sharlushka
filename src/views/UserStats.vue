@@ -1,99 +1,175 @@
 <template>
   <v-layout
     column
-    py-2
-    pb-4
+    pt-2
   >
-    <!-- Title and user name -->
-    <v-flex class="text-xs-center">
-      <v-layout column>
-        <h1 class="help-title py-1">
-          {{ helpTitle }}
-        </h1>
-        <h2 class="user-name">
-          {{ userName }}!
-        </h2>
-        <h3
-          v-if="anonymousUserNoGames"
-          class="message-to-anonymous"
-        >
-          {{ messageToAnonymous }}
-        </h3>
-        <h3
-          v-if="highestScore"
-          class="hi-score"
-        >
-          {{ hiscoreGreeting }}
-          <span
-            class=" highlighted"
-          >
-            {{ highestScore }}
-          </span>
-          {{ exclamation }}
-        </h3>
-      </v-layout>
-    </v-flex>
-    <!-- Chart -->
-    <v-flex
-      v-if="highestScore"
-      d-flex
-      align-center
-      py-1
-      pr-3
-    >
-      <chartist
-        ratio="ct-major-twelfth"
-        type="Bar"
-        :data="chartData"
-        :options="chartOptions"
-      />
-    </v-flex>
-    <!-- Last scores heading and table-->
-    <v-flex
-      v-if="highestScore"
-      d-flex
-      align-center
-      class="last-scores-heading text-xs-center"
-    >
-      <h3
-        v-if="highestScore"
-      >
-        {{ lastScoresHeading }}
-      </h3>
-    </v-flex>
+    <!-- Title and user name style="border: 1px solid green" -->
     <v-layout
-      v-if="highestScore"
-      align-space-around
+      column
+      align-center
+      class="text-xs-center"
+    >
+      <h2 class="user-name">
+        {{ userName }}!
+      </h2>
+      <h3
+        v-if="anonymousUserNoGames"
+        class="message-to-anonymous"
+      >
+        {{ messageToAnonymous }}
+      </h3>
+      <h3
+        v-else
+        class="hi-score pb-2"
+      >
+        {{ hiscoreGreeting }}
+        <span
+          class="highlighted"
+        >
+          {{ highestScore }}
+        </span>
+      </h3>
+    </v-layout>
+    <v-layout
+      v-if="!anonymousUserNoGames"
       column
     >
-      <v-flex
-        d-flex
-        class="hi-score-display"
-        pb-4
+      <!-- School chart-->
+      <v-layout
+        row
+        wrap
+        class="text-xs-center"
       >
-        <v-layout
-          row
-          wrap
-          justify-space-around
+        <v-flex
+          xs12
         >
-          <v-flex
-            v-for="(value, index) in lastScoresToDisplay"
-            :key="index"
-            xs4
-            sm1
-            ma-0
-          >
-            {{ value }}
-          </v-flex>
-        </v-layout>
-      </v-flex>
+          <h2>
+            School results
+          </h2>
+        </v-flex>
+        <v-flex
+          xs12
+          d-flex
+          align-center
+          pr-3
+        >
+          <chartist
+            ratio="ct-major-twelfth"
+            type="Line"
+            :data="schoolChartData"
+            :options="schoolChartOptions"
+          />
+        </v-flex>
+      </v-layout>
       <v-flex
         v-for="item in newStats"
         :key="item.msg"
-        class="stats-display text-xs-center"
+        class="stats-display text-xs-center pb-1"
       >
         {{ item.msg }}&nbsp;{{ item.value }}
       </v-flex>
+      <!-- Game results chart style="border: 1px solid pink" -->
+      <v-layout
+        wrap
+        py-2
+      >
+        <v-flex
+          d-flex
+          align-center
+          pr-3
+        >
+          <chartist
+            ratio="ct-major-twelfth"
+            type="Bar"
+            :data="chartData"
+            :options="chartOptions"
+          />
+        </v-flex>
+      </v-layout>
+      <!-- Most recent scores layout -->
+      <v-layout
+        align-space-around
+        column
+        class="text-xs-center"
+      >
+        <h2
+          v-if="highestScore"
+        >
+          {{ lastScoresHeading }}
+        </h2>
+        <v-flex
+          d-flex
+          class="hi-score-display pt-1"
+        >
+          <v-layout
+            row
+            wrap
+            justify-space-around
+          >
+            <v-flex
+              v-for="(value, index) in lastScoresToDisplay"
+              :key="index"
+              xs4
+              sm1
+              ma-0
+            >
+              {{ value }}
+            </v-flex>
+          </v-layout>
+        </v-flex>
+      </v-layout>
+      <!-- Dice values favorites layout -->
+      <v-layout
+        wrap
+        pt-4
+      >
+        <v-flex
+          xs12
+          class="text-xs-center"
+        >
+          <h2>
+            Your favorite values
+          </h2>
+        </v-flex>
+        <v-flex
+          xs12
+          align-center
+          pr-3
+        >
+          <chartist
+            ratio="ct-major-twelfth"
+            type="Bar"
+            :data="diceValuesFavsChartData"
+            :options="diceValuesFavsChartOptions"
+          />
+        </v-flex>
+      </v-layout>
+      <!-- Dice values favorites layout -->
+      <v-layout
+        wrap
+        pt-4
+      >
+        <v-flex
+          xs12
+          class="text-xs-center"
+        >
+          <h2>
+            Your favorite combinations
+          </h2>
+        </v-flex>
+        <v-flex
+          xs12
+          align-center
+          pr-3
+        >
+          <chartist
+            ratio="ct-square"
+            type="Bar"
+            :data="combinationsFavsChartData"
+            :options="combinationsFavsChartOptions"
+          />
+        </v-flex>
+      </v-layout>
     </v-layout>
   </v-layout>
 </template>
@@ -108,7 +184,7 @@ export default {
       userName: ``,
       anonymousUserNoGames: false, // really need this?
       messageToAnonymous: null,
-      helpTitle: `About`,
+      statsTitle: `Stats`,
       // if user played at least one game, we have a 'high score'
       highestScore: ``,
       hiscoreGreeting: `Your highest score is`,
@@ -120,11 +196,24 @@ export default {
       chartData: {
         labels: [],
         series: []
-        // labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-        // series: [[333, 125, 256, 368, 129, 234, 623, 546, 345, 324, 34, 342]]
       },
       chartOptions: {
         fullWidth: true,
+        lineSmooth: false,
+        axisX: {
+          // We can disable the grid for this axis
+          showGrid: true,
+          // and also don't show the label
+          showLabel: true
+        }
+      },
+      diceValuesFavsChartData: {
+        labels: [`one`, `two`, `three`, `four`, `five`, `six`],
+        series: []
+      },
+      diceValuesFavsChartOptions: {
+        fullWidth: true,
+        // distributeSeries: true,
         lineSmooth: false,
         axisX: {
           // We can disable the grid for this axis
@@ -142,21 +231,66 @@ export default {
           msg: `Max possible score is`,
           value: ``
         },
+        averageScore: {
+          msg: `Your average score is`,
+          value: ``
+        },
         percentFromMax: {
           msg: `Percent from max score ~`,
           value: ``
-        },
-        averageScore: {
-          msg: `Your average score equals`,
-          value: ``
         }
+      },
+      schoolScores: ``,
+      schoolChartData: {
+        labels: [],
+        series: []
+      },
+      schoolChartOptions: {
+        fullWidth: true,
+        // distributeSeries: true,
+        // lineSmooth: false,
+        // lineSmooth: Chartist.Interpolation.simple(),
+        showArea: true,
+        axisX: {
+          // We can disable the grid for this axis
+          showGrid: true,
+          // and also don't show the label
+          showLabel: true
+        }
+      },
+      // Combination favs chart data
+      combinationsFavsChartData: {
+        labels: [`Pair`, `Two pairs`, `Three O.A.K`, `Full`, `Quads`, `Poker`, `Small`, `Large`, `Chance`],
+        series: [[18, 14, 6, 4, 5, 1, 10, 5, 19]]
+      },
+      combinationsFavsChartOptions: {
+        seriesBarDistance: 30,
+        reverseData: true,
+        horizontalBars: true,
+        axisY: {
+          offset: 70
+        }
+        // fullWidth: true,
+        // distributeSeries: true,
+        // lineSmooth: false,
+        // lineSmooth: Chartist.Interpolation.simple(),
+        // showArea: true,
+        /*
+        axisX: {
+          // We can disable the grid for this axis
+          showGrid: true,
+          // and also don't show the label
+          showLabel: true
+        }
+        */
       }
     }
   },
   computed: {
     ...mapGetters([
       `getMaxPossibleScore`,
-      `getUserAuthState`
+      `getUserAuthState`,
+      `getDiceValuesFavs`
     ])
   },
   mounted() {
@@ -167,6 +301,10 @@ export default {
         this.userName = localStorage.getItem(`userName`)
         this.highestScore = localStorage.getItem(`highestScore`)
         this.userScoresArray = this.assembleLastScoresArray()
+        // school results array for chart display
+        this.assembleSchoolScoresArray()
+        this.setDiceFavsValuesChartSeries()
+        this.setCombinationsFavsChartSeries()
         this.lastScoresToDisplay = this.userScoresArray.slice(0).slice(-12)
         this.newStats.gamesPlayed.value = this.userScoresArray.length
         this.newStats.maxPossibleScore.value = this.getMaxPossibleScore
@@ -181,7 +319,12 @@ export default {
           this.userName = `Anonymous`
           this.anonymousUserNoGames = true
           this.messageToAnonymous = `You have to finish at least one game to
-          calculate stats, school results are in rules section.`
+          calculate stats.`
+        } else if (localStorage.getItem(`lastScoresArray`) == ``) {
+          // still no games played
+          this.anonymousUserNoGames = true
+          this.messageToAnonymous = `You have to finish at least one game to
+          calculate stats.`
         }
       }
     })
@@ -195,6 +338,23 @@ export default {
     assembleLastScoresArray() {
       let lastScoresString = localStorage.getItem(`lastScoresArray`)
       return lastScoresString.split(`,`)
+    },
+    assembleSchoolScoresArray() {
+      this.schoolScores = localStorage.getItem(`schoolScores`)
+      if (this.schoolScores) {
+        const arrayToDisplay = this.schoolScores.split(`,`)
+        // how many results to show -24 is twenty four
+        const slicedArray = arrayToDisplay.slice(-24)
+        this.schoolChartData.series = [slicedArray]
+      }
+    },
+    setDiceFavsValuesChartSeries() {
+      let values = localStorage.getItem(`diceValuesFavs`).split(`,`)
+      this.diceValuesFavsChartData.series = [values]
+    },
+    setCombinationsFavsChartSeries() {
+      let values = localStorage.getItem(`combinationsFavs`).split(`,`)
+      this.combinationsFavsChartData.series = [values]
     },
     prepareLabelsForChart(numOfLabels) {
       const resultsToDisplay = 12 // Twelve results for now
@@ -257,7 +417,7 @@ export default {
 }
 .hi-score-display {
   color: $color-primary-1;
-  font-size: 1.9em;
+  font-size: 1.7em;
   text-align: center;
 }
 .stats-display {
@@ -298,7 +458,4 @@ export default {
   padding: 2em 0em 2em 0em;
 }
 
-.highlighted {
-  fill: $color-orange;
-}
 </style>

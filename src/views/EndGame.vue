@@ -135,6 +135,7 @@ export default {
       exclamation: `!`, // some over-engeneering
       lastScores: ``,
       schoolScores: ``,
+      combinationsFavs: ``,
       dbUsersCollRef: `users`
     }
   },
@@ -145,7 +146,9 @@ export default {
       `getCurrentGameState`,
       `getDefaultUserName`,
       `getUserData`,
-      `isGameEnded`
+      `isGameEnded`,
+      `getDiceValueFavs`,
+      `getCurrentNonZeroCombinations`
     ])
   },
   mounted() {
@@ -172,6 +175,7 @@ export default {
           this.lastScores = localStorage.getItem(`lastScoresArray`)
           this.schoolScores = localStorage.getItem(`schoolScores`)
           this.highestScore = localStorage.getItem(`highestScore`)
+          this.combinationsFavs = localStorage.getItem(`combinationsFavs`)
           // just add it already
           this.addScoreToDatabase()
         }
@@ -214,6 +218,11 @@ export default {
       } else {
         this.schoolScores = this.schoolScores.split(`,`)
       }
+      if (this.combinationsFavs === ``) {
+        this.combinationsFavs = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+      } else {
+        this.combinationsFavs = this.combinationsFavs.split(`,`).map(Number)
+      }
       // check for new highest score
       if (this.getTotalScore > this.highestScore) {
         this.highestScore = this.getTotalScore
@@ -228,12 +237,23 @@ export default {
         // and school result for stats
         this.schoolScores.push(this.getSchoolScore)
         localStorage.setItem(`schoolScores`, this.schoolScores)
+        // and update game combinations favs
+        // get current non zero combinations
+        // console.log(`Current non zero combinations is endgame -->`)
+        const currentGameCombinationsFavs = this.getCurrentNonZeroCombinations
+        // console.log(currentGameCombinationsFavs)
+        for (let index in this.combinationsFavs) {
+          this.combinationsFavs[index] += currentGameCombinationsFavs[index]
+        }
+        localStorage.setItem(`combinationsFavs`, this.combinationsFavs)
       } else {
         // game ended in school,
         // so we have only school result to save
         this.schoolScores.push(this.getSchoolScore)
         localStorage.setItem(`schoolScores`, this.schoolScores)
       }
+      // save updated dice stats to local storage
+      localStorage.setItem(`diceValuesFavs`, this.$store.state.user.diceValuesFavs)
       //
       // finally check if user is registered
       //
@@ -273,10 +293,14 @@ export default {
           const resultsArrayToUpdate = localStorage.getItem(`lastScoresArray`)
           const highestScoreToUpdate = localStorage.getItem(`highestScore`)
           const schoolScoresToUpdate = localStorage.getItem(`schoolScores`)
+          const diceValuesFavs = this.$store.state.user.diceValuesFavs
+          const combinationsFavs = localStorage.getItem(`combinationsFavs`)
           docRef.update({
             resultsArray: resultsArrayToUpdate,
             schoolResultsArray: schoolScoresToUpdate,
-            hiScore: highestScoreToUpdate
+            hiScore: highestScoreToUpdate,
+            diceValuesFavs: diceValuesFavs,
+            combinationsFavs: combinationsFavs
           })
           console.log(`...updating user stats`)
           this.tryAgainBtnLoading = !this.tryAgainBtnLoading
