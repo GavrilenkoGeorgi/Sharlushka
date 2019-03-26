@@ -40,31 +40,14 @@ export default {
 
 <style src='vuetify/dist/vuetify.min.css'>
 </style>
+<style src='../node_modules/chartist/dist/chartist.min.css'>
+</style>
 <style lang="scss">
-@import '../node_modules/chartist/dist/chartist.min.css';
 @import './assets/scss/index.scss';
 @import './assets/scss/animations.scss';
 
 #app {
   background: #ffffff;
-}
-
-.ct-series-a .ct-point {
-  stroke: #AA00FF;
-  stroke-width: .2em;
-}
-.ct-series-a .ct-line {
-  stroke: #E1BEE7;
-  stroke-width: .06em;
-}
-.ct-series-a .ct-bar {
-  stroke: #AA00FF;
-  stroke-width: .25em;
-}
-.ct-nodata {
-  // appearance: none;
-  visibility: hidden;
-  height: 0em;
 }
 
 @media only screen and (max-width: 959px) {

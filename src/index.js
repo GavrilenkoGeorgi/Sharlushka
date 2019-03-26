@@ -13,6 +13,7 @@ Vue.config.productionTip = true
 
 Vue.use(Vuetify)
 Vue.use(VueOffline)
+Vue.use(require(`vue-chartist`))
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig)
@@ -33,7 +34,7 @@ firebase.auth().onAuthStateChanged((user) => {
     // set default local storage values
     // and gather data until user regs or logs in
     if (!localStorage.hasOwnProperty(`userName`)) {
-      // seems like it the first run
+      // seems like it is the first run
       localStorage.setItem(`userName`, `Anonymous`)
       localStorage.setItem(`userUid`, ``)
       localStorage.setItem(`highestScore`, ``)
@@ -55,7 +56,6 @@ if (`serviceWorker` in navigator) {
   })
 }
 
-Vue.use(require(`vue-chartist`))
 /* eslint-disable no-new */
 new Vue({
   el: `#app`,
@@ -64,7 +64,5 @@ new Vue({
   components: {
     AsyncComponent: () => import(`./App.vue`)
   },
-  // components: { App },
-  // template: `<App/>`,
   render: (h) => h(App)
 })

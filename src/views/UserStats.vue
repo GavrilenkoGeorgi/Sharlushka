@@ -81,6 +81,7 @@
           <chartist
             ratio="ct-major-twelfth"
             type="Bar"
+            class="game-results-chart"
             :data="chartData"
             :options="chartOptions"
           />
@@ -139,12 +140,13 @@
           <chartist
             ratio="ct-major-twelfth"
             type="Bar"
+            class="dice-favs-chart"
             :data="diceValuesFavsChartData"
             :options="diceValuesFavsChartOptions"
           />
         </v-flex>
       </v-layout>
-      <!-- Dice values favorites layout -->
+      <!-- Combinations favorites layout -->
       <v-layout
         wrap
         pt-4
@@ -165,6 +167,7 @@
           <chartist
             ratio="ct-square"
             type="Bar"
+            class="combinations-favs-chart"
             :data="combinationsFavsChartData"
             :options="combinationsFavsChartOptions"
           />
@@ -401,7 +404,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 @import '../assets/scss/index.scss';
 
@@ -425,6 +428,54 @@ export default {
   font-size: 1.1em;
   font-weight: 700;
   line-height: 1.3;
+}
+
+.ct-series-a .ct-point {
+  stroke: $color-primary-1;
+  stroke-width: .1em;
+}
+.ct-series-a .ct-line {
+  stroke: #E1BEE7;
+  stroke-width: .06em;
+}
+.ct-series-a .ct-bar {
+  stroke: $color-primary-1;
+  stroke-width: .25em;
+}
+.ct-nodata {
+  visibility: hidden;
+  height: 0em;
+}
+
+.game-results-chart {
+  .ct-series-a .ct-bar {
+  stroke: $color-primary-1;
+  stroke-width: .25em;
+  }
+}
+
+.dice-favs-chart {
+  .ct-series-a .ct-bar {
+    // stroke: #AA00FF;
+    // stroke: red;
+    stroke-width: .5em;
+  }
+  .ct-end {
+    font-size: 1em;
+    color: $color-primary-1;
+  }
+}
+
+.combinations-favs-chart {
+  .ct-start {
+    font-size: .9em;
+    color: $color-primary-1;
+  }
+  .ct-series-a .ct-bar {
+    // stroke: #AA00FF;
+    // stroke: red;
+    stroke-width: .5em;
+  }
 }
 
 @media screen and (orientation: landscape) {
