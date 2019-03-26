@@ -84,7 +84,7 @@
             </v-flex>
           </v-list-tile-action>
           <v-list-tile-content class="drawer-menu-item pa-0 user-name">
-            Hi,&nbsp;{{ currentUserName }}.
+            Hi,&nbsp;{{ getUserName }}.
           </v-list-tile-content>
         </v-list-tile>
         <!-- Nav drawer links -->
@@ -180,17 +180,12 @@ export default {
   computed: {
     ...mapGetters([
       `getDefaultUserName`,
-      `getTotalScore`
+      `getTotalScore`,
+      `getUserAuthState`,
+      `getUserName`
     ]),
     gameName() {
       return `Sharlushka`
-    },
-    currentUserName() {
-      if (localStorage.hasOwnProperty(`userName`)) {
-        return localStorage.getItem(`userName`)
-      } else {
-        return this.getDefaultUserName
-      }
     }
   },
   methods: {

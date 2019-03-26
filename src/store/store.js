@@ -20,6 +20,12 @@ const actions = {
       resolve()
     })
   },
+  setUserName ({ commit }, value) {
+    return new Promise((resolve) => {
+      commit(`setUserName`, value)
+      resolve()
+    })
+  },
   resetGameOver ({ commit }, value) {
     return new Promise((resolve) => {
       commit(`resetGameOver`, value)

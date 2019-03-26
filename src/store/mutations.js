@@ -415,6 +415,14 @@ and you can't save zero to school combination.`)
       dice.chosen = false
     }
   },
+  setUserName (state, values) {
+    console.log(`Setting user favs.`)
+    let valuesToSet = {
+      name: values
+    }
+    let userToUpdate = state.user
+    Object.assign(userToUpdate, valuesToSet)
+  },
   setUserFavStats (state, values) {
     console.log(`Setting user favs.`)
     let valuesToSet = {

@@ -217,7 +217,11 @@ export default {
             this.toggleButtonLoadingState(`login`)
             return false
           })
-        return true
+        // set user name in store
+        // let userNameToSet = localStorage.getItem(`userName`)
+        // this.$store.dispatch(`setUserName`, userNameToSet)
+        // this.$router.push(`/game`)
+        // return true
       }
     },
     signOut() {

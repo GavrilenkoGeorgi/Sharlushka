@@ -3,10 +3,9 @@ export default () => {
     defaultUserName: `Anonymous`,
     user: {
       isAuthenticated: false,
+      name: `undefined user`,
       lastResultSaved: false, // current result saved
-      // combinationsFavs: [], // non zero combinations stats
       diceValuesFavs: [0, 0, 0, 0, 0, 0] // favorite dice values stats
-      // diceValuesRolled: [] // all dice values user rolled during the game
     },
     error: false,
     currentGameTurn: 6, // game turns counter

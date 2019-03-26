@@ -146,7 +146,8 @@ export default {
       `getCombinationArray`,
       `getSchoolScore`,
       `getTotalScore`,
-      `schoolFinished`
+      `schoolFinished`,
+      `getUserAuthState`
     ])
     /*
     gameOverDialog: {
@@ -162,7 +163,10 @@ export default {
   mounted() {
     this.$nextTick(() => {
       console.log(`Game view mounted.`)
-      this.userName = localStorage.getItem(`userName`)
+      if (this.getUserAuthState) {
+        let userNameToSet = localStorage.getItem(`userName`)
+        this.$store.dispatch(`setUserName`, userNameToSet)
+      }
     })
   },
   methods: {

@@ -9,6 +9,7 @@ export default {
     }
     return currentGameState
   },
+  getUserName: state => state.user.name,
   progressBarState(state) {
     let fraction = 3
     let numbah = state.rollCount - fraction

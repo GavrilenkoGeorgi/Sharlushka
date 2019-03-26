@@ -2,33 +2,45 @@
   <v-layout
     column
     pt-2
+    class="text-xs-center"
   >
-    <!-- Title and user name style="border: 1px solid green" -->
+    <!-- Title and user name -->
     <v-layout
       column
       align-center
-      class="text-xs-center"
+      pt-2
     >
       <h2 class="user-name">
         {{ userName }}!
       </h2>
-      <h3
+      <v-flex
         v-if="anonymousUserNoGames"
-        class="message-to-anonymous"
       >
-        {{ messageToAnonymous }}
-      </h3>
-      <h3
-        v-else
-        class="hi-score pb-2"
-      >
-        {{ hiscoreGreeting }}
-        <span
-          class="highlighted"
+        <h3
+          class="message-to-anonymous"
         >
-          {{ highestScore }}
-        </span>
-      </h3>
+          {{ messageToAnonymous }}
+        </h3>
+      </v-flex>
+      <v-flex
+        v-else
+      >
+        <h3
+          class="hi-score pb-2"
+        >
+          Your highest score
+          <span
+            class="highlighted"
+          >
+            {{ highestScore }}
+          </span>
+        </h3>
+        <h3
+          class="hi-score pb-2"
+        >
+          Max possible score {{ getMaxPossibleScore }}
+        </h3>
+      </v-flex>
     </v-layout>
     <v-layout
       v-if="!anonymousUserNoGames"
@@ -38,7 +50,7 @@
       <v-layout
         row
         wrap
-        class="text-xs-center"
+        pt-4
       >
         <v-flex
           xs12
@@ -61,13 +73,25 @@
           />
         </v-flex>
       </v-layout>
-      <v-flex
-        v-for="item in newStats"
-        :key="item.msg"
-        class="stats-display text-xs-center pb-1"
-      >
-        {{ item.msg }}&nbsp;{{ item.value }}
-      </v-flex>
+      <!-- Game results -->
+      <v-layout wrap>
+        <v-flex
+          xs12
+          pb-2
+        >
+          <h2>
+            Game results
+          </h2>
+        </v-flex>
+        <v-flex
+          v-for="item in newStats"
+          :key="item.msg"
+          xs12
+          class="stats-display pb-1"
+        >
+          {{ item.msg }}&nbsp;{{ item.value }}
+        </v-flex>
+      </v-layout>
       <!-- Game results chart style="border: 1px solid pink" -->
       <v-layout
         wrap
@@ -80,7 +104,7 @@
         >
           <chartist
             ratio="ct-major-twelfth"
-            type="Bar"
+            type="Line"
             class="game-results-chart"
             :data="chartData"
             :options="chartOptions"
@@ -91,12 +115,11 @@
       <v-layout
         align-space-around
         column
-        class="text-xs-center"
       >
         <h2
           v-if="highestScore"
         >
-          {{ lastScoresHeading }}
+          Most recent scores are
         </h2>
         <v-flex
           d-flex
@@ -126,7 +149,6 @@
       >
         <v-flex
           xs12
-          class="text-xs-center"
         >
           <h2>
             Your favorite values
@@ -153,7 +175,6 @@
       >
         <v-flex
           xs12
-          class="text-xs-center"
         >
           <h2>
             Your favorite combinations
@@ -190,8 +211,7 @@ export default {
       statsTitle: `Stats`,
       // if user played at least one game, we have a 'high score'
       highestScore: ``,
-      hiscoreGreeting: `Your highest score is`,
-      exclamation: `.`, // some over-engineering
+      hiscoreGreeting: `Your highest score`,
       lastScoresHeading: `Most recent scores are`,
       userScoresArray: ``,
       lastScoresToDisplay: ``,
@@ -202,12 +222,16 @@ export default {
       },
       chartOptions: {
         fullWidth: true,
-        lineSmooth: false,
+        lineSmooth: true,
+        showArea: true,
         axisX: {
           // We can disable the grid for this axis
           showGrid: true,
           // and also don't show the label
           showLabel: true
+        },
+        axisY: {
+          high: 879
         }
       },
       diceValuesFavsChartData: {
@@ -228,10 +252,6 @@ export default {
       newStats: {
         gamesPlayed: {
           msg: `Games played`,
-          value: ``
-        },
-        maxPossibleScore: {
-          msg: `Max possible score is`,
           value: ``
         },
         averageScore: {
@@ -257,8 +277,14 @@ export default {
         axisX: {
           // We can disable the grid for this axis
           showGrid: true,
+          // position: `start`,
           // and also don't show the label
           showLabel: true
+        },
+        axisY: {
+          scaleMinSpace: 15,
+          low: -42,
+          high: 42
         }
       },
       // Combination favs chart data
@@ -310,7 +336,7 @@ export default {
         this.setCombinationsFavsChartSeries()
         this.lastScoresToDisplay = this.userScoresArray.slice(0).slice(-12)
         this.newStats.gamesPlayed.value = this.userScoresArray.length
-        this.newStats.maxPossibleScore.value = this.getMaxPossibleScore
+        // this.newStats.maxPossibleScore.value = this.getMaxPossibleScore
         this.newStats.averageScore.value = this.computeAverageScore()
         this.newStats.percentFromMax.value = this.computePercentFromMax()
         if (this.userScoresArray.length) {
@@ -346,18 +372,35 @@ export default {
       this.schoolScores = localStorage.getItem(`schoolScores`)
       if (this.schoolScores) {
         const arrayToDisplay = this.schoolScores.split(`,`)
-        // how many results to show -24 is twenty four
-        const slicedArray = arrayToDisplay.slice(-24)
+        // how many results to show -18 is eighteen
+        const slicedArray = arrayToDisplay.slice(-18)
         this.schoolChartData.series = [slicedArray]
       }
     },
+    //
+    // values array
+    //
+    convertValuesToPercent(values) {
+      let percentages = []
+      let highestValue = Math.max(...values)
+      for (let value of values) {
+        if (value === highestValue) {
+          return
+        } else {
+          percentages.push(Math.floor((value / highestValue) * 100))
+        }
+      }
+      return percentages
+    },
     setDiceFavsValuesChartSeries() {
       let values = localStorage.getItem(`diceValuesFavs`).split(`,`)
-      this.diceValuesFavsChartData.series = [values]
+      let percentages = this.convertValuesToPercent(values)
+      this.diceValuesFavsChartData.series = [percentages]
     },
     setCombinationsFavsChartSeries() {
       let values = localStorage.getItem(`combinationsFavs`).split(`,`)
-      this.combinationsFavsChartData.series = [values]
+      let percentages = this.convertValuesToPercent(values)
+      this.combinationsFavsChartData.series = [percentages]
     },
     prepareLabelsForChart(numOfLabels) {
       const resultsToDisplay = 12 // Twelve results for now
@@ -472,9 +515,8 @@ export default {
     color: $color-primary-1;
   }
   .ct-series-a .ct-bar {
-    // stroke: #AA00FF;
-    // stroke: red;
-    stroke-width: .5em;
+    // stroke: pink;
+    stroke-width: .7em;
   }
 }
 
