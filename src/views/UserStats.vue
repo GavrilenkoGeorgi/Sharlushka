@@ -13,6 +13,7 @@
       <h2 class="user-name">
         {{ userName }}!
       </h2>
+      <!-- Unregistered anonymous user info -->
       <v-flex
         v-if="anonymousUserNoGames"
       >
@@ -22,6 +23,7 @@
           {{ messageToAnonymous }}
         </h3>
       </v-flex>
+      <!-- Registered user info -->
       <v-flex
         v-else
       >
@@ -42,6 +44,7 @@
         </h3>
       </v-flex>
     </v-layout>
+    <!-- Charts -->
     <v-layout
       v-if="!anonymousUserNoGames"
       column
@@ -50,6 +53,7 @@
       <v-layout
         row
         wrap
+        justify-center
         pt-4
       >
         <v-flex
@@ -61,6 +65,7 @@
         </v-flex>
         <v-flex
           xs12
+          sm10
           d-flex
           align-center
           pr-3
@@ -74,7 +79,10 @@
         </v-flex>
       </v-layout>
       <!-- Game results -->
-      <v-layout wrap>
+      <v-layout
+        wrap
+        justify-center
+      >
         <v-flex
           xs12
           pb-2
@@ -95,10 +103,13 @@
       <!-- Game results chart style="border: 1px solid pink" -->
       <v-layout
         wrap
+        justify-center
         py-2
       >
         <v-flex
           d-flex
+          xs12
+          sm10
           align-center
           pr-3
         >
@@ -113,38 +124,32 @@
       </v-layout>
       <!-- Most recent scores layout -->
       <v-layout
-        align-space-around
-        column
+        row
+        wrap
+        justify-center
+        px-2
       >
-        <h2
-          v-if="highestScore"
-        >
-          Most recent scores are
-        </h2>
         <v-flex
-          d-flex
-          class="hi-score-display pt-1"
+          v-if="highestScore"
+          xs12
         >
-          <v-layout
-            row
-            wrap
-            justify-space-around
-          >
-            <v-flex
-              v-for="(value, index) in lastScoresToDisplay"
-              :key="index"
-              xs4
-              sm1
-              ma-0
-            >
-              {{ value }}
-            </v-flex>
-          </v-layout>
+          <h2>
+            Most recent scores are
+          </h2>
+        </v-flex>
+        <v-flex
+          v-for="(value, index) in lastScoresToDisplay"
+          :key="index"
+          xs3
+          class="hi-score-display py-1"
+        >
+          {{ value }}
         </v-flex>
       </v-layout>
       <!-- Dice values favorites layout -->
       <v-layout
         wrap
+        justify-center
         pt-4
       >
         <v-flex
@@ -156,6 +161,7 @@
         </v-flex>
         <v-flex
           xs12
+          sm10
           align-center
           pr-3
         >
@@ -171,7 +177,8 @@
       <!-- Combinations favorites layout -->
       <v-layout
         wrap
-        pt-4
+        justify-center
+        py-4
       >
         <v-flex
           xs12
@@ -182,6 +189,7 @@
         </v-flex>
         <v-flex
           xs12
+          sm10
           align-center
           pr-3
         >
@@ -208,14 +216,12 @@ export default {
       userName: ``,
       anonymousUserNoGames: false, // really need this?
       messageToAnonymous: null,
-      statsTitle: `Stats`,
       // if user played at least one game, we have a 'high score'
       highestScore: ``,
-      hiscoreGreeting: `Your highest score`,
-      lastScoresHeading: `Most recent scores are`,
       userScoresArray: ``,
       lastScoresToDisplay: ``,
       userGamesPlayed: ``,
+      chartResultsToShow: -16, // minus sign cause of array slicing
       chartData: {
         labels: [],
         series: []
@@ -231,7 +237,7 @@ export default {
           showLabel: true
         },
         axisY: {
-          high: 879
+          // high: 879
         }
       },
       diceValuesFavsChartData: {
@@ -239,9 +245,6 @@ export default {
         series: []
       },
       diceValuesFavsChartOptions: {
-        fullWidth: true,
-        // distributeSeries: true,
-        lineSmooth: false,
         axisX: {
           // We can disable the grid for this axis
           showGrid: true,
@@ -282,9 +285,7 @@ export default {
           showLabel: true
         },
         axisY: {
-          scaleMinSpace: 15,
-          low: -42,
-          high: 42
+          scaleMinSpace: 10
         }
       },
       // Combination favs chart data
@@ -293,11 +294,10 @@ export default {
         series: [[18, 14, 6, 4, 5, 1, 10, 5, 19]]
       },
       combinationsFavsChartOptions: {
-        seriesBarDistance: 30,
         reverseData: true,
         horizontalBars: true,
         axisY: {
-          offset: 70
+          offset: 85
         }
         // fullWidth: true,
         // distributeSeries: true,
@@ -334,7 +334,8 @@ export default {
         this.assembleSchoolScoresArray()
         this.setDiceFavsValuesChartSeries()
         this.setCombinationsFavsChartSeries()
-        this.lastScoresToDisplay = this.userScoresArray.slice(0).slice(-12)
+        // +1 cause of something with the chart, last result not showing
+        this.lastScoresToDisplay = this.userScoresArray.slice(0).slice(this.chartResultsToShow + 1)
         this.newStats.gamesPlayed.value = this.userScoresArray.length
         // this.newStats.maxPossibleScore.value = this.getMaxPossibleScore
         this.newStats.averageScore.value = this.computeAverageScore()
@@ -372,8 +373,7 @@ export default {
       this.schoolScores = localStorage.getItem(`schoolScores`)
       if (this.schoolScores) {
         const arrayToDisplay = this.schoolScores.split(`,`)
-        // how many results to show -18 is eighteen
-        const slicedArray = arrayToDisplay.slice(-18)
+        const slicedArray = arrayToDisplay.slice(this.chartResultsToShow)
         this.schoolChartData.series = [slicedArray]
       }
     },
@@ -385,7 +385,7 @@ export default {
       let highestValue = Math.max(...values)
       for (let value of values) {
         if (value === highestValue) {
-          return
+          continue
         } else {
           percentages.push(Math.floor((value / highestValue) * 100))
         }
@@ -403,7 +403,7 @@ export default {
       this.combinationsFavsChartData.series = [percentages]
     },
     prepareLabelsForChart(numOfLabels) {
-      const resultsToDisplay = 12 // Twelve results for now
+      const resultsToDisplay = 15 // Fifteen results for now
       const lastLabelToDisplay = numOfLabels - resultsToDisplay
       const labelsArray = []
       if (numOfLabels >= resultsToDisplay) {
@@ -501,7 +501,7 @@ export default {
   .ct-series-a .ct-bar {
     // stroke: #AA00FF;
     // stroke: red;
-    stroke-width: .5em;
+    stroke-width: .3em;
   }
   .ct-end {
     font-size: 1em;
@@ -516,7 +516,7 @@ export default {
   }
   .ct-series-a .ct-bar {
     // stroke: pink;
-    stroke-width: .7em;
+    stroke-width: .3em;
   }
 }
 

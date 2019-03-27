@@ -229,6 +229,7 @@ export default {
       this.toggleButtonLoadingState(`signout`)
       firebase.auth().signOut().then(() => {
         this.$store.commit(`setUserIsLoggedIn`, false)
+        this.$store.commit(`setUserName`, undefined)
         localStorage.clear()
         this.toggleButtonLoadingState(`signout`)
         // this.$router.push(`/`)

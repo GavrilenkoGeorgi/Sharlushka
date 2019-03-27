@@ -9,7 +9,11 @@ export default {
     }
     return currentGameState
   },
-  getUserName: state => state.user.name,
+  getUserName(state) {
+    if (state.user.name === undefined) {
+      return `Anonymous`
+    } else return state.user.name
+  },
   progressBarState(state) {
     let fraction = 3
     let numbah = state.rollCount - fraction

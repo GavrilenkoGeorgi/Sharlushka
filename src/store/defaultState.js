@@ -3,7 +3,7 @@ export default () => {
     defaultUserName: `Anonymous`,
     user: {
       isAuthenticated: false,
-      name: ``,
+      name: undefined,
       lastResultSaved: false, // current result saved
       diceValuesFavs: [0, 0, 0, 0, 0, 0] // favorite dice values stats
     },
