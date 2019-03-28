@@ -82,7 +82,7 @@
           <v-flex
             v-if="combination.value"
             xs2
-            class="blink text-xs-center"
+            class="text-xs-center blink"
           >
             {{ combination.value }}
           </v-flex>
@@ -144,21 +144,8 @@ export default {
       `getSchoolArray`,
       `progressBarState`,
       `getCombinationArray`,
-      `getSchoolScore`,
-      `getTotalScore`,
-      `schoolFinished`,
       `getUserAuthState`
     ])
-    /*
-    gameOverDialog: {
-      get () {
-        return this.$store.state.gameOver
-      },
-      set () {
-        this.dialog = !this.dialog
-      }
-    }
-    */
   },
   mounted() {
     this.$nextTick(() => {
@@ -175,11 +162,13 @@ export default {
       `saveResultInStore`,
       `clearResultBox`
     ]),
+    /*
     restartGame() { // remove this from dice box
       console.log(`Restarting game.`)
       this.$store.commit(`resetState`)
       this.$router.push(`/game`)
     },
+    */
     recordResult(id) {
       // if this is new turn then
       if (!this.isNewTurn) {
@@ -207,9 +196,10 @@ p {
 }
 
 .dice-icon {
-  // class name directly from svg file
-  height: 3.5em;
+  // class name directly from svg file ?
+  height: 3.6em;
 }
+
 .game-layout {
   transition: background-color 1s ease-in;
   padding: .3em 0em .3em 0em;
@@ -217,13 +207,14 @@ p {
 }
 .school-results-layout {
   height: 1em;
-  font-size: 1.6em;
+  font-size: 1.5em;
 }
 .game-combinations-layout {
-  font-size: 1.9em;
+  // font-size: 1.9em;
+  font-size: 1.8em;
 }
 .game-combination {
-  padding: .15em 0em .15em 0em;
+  padding: .075em 0em .075em 0em;
 }
 .accented {
   background-color: $color-combination-highlight;
@@ -240,15 +231,6 @@ p {
   bottom: 0;
 }
 
-.blink {
-  color: $color-primary-1;
-  font-weight: 700;
-  animation: blinker 3s ease-out infinite;
-}
-.blink:hover {
-  color: $color-chosen;
-  animation: none;
-}
 @keyframes blinker {
   0% {
     opacity: 0;
@@ -261,20 +243,26 @@ p {
   }
 }
 
-.school-not-finished-dialog {
-  font-size: 1.4em;
-  border: .075em solid $color-primary-0;
-  border-radius: .3em;
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 360px) { // Nokia5
+  .dice-icon {
+    height: 3.8em;
+    // border: 1px solid pink;
+  }
+  .school-result {
+    font-size: 1.1em;
+  }
+  .game-combination {
+    font-size: 1.05em;
+    // color: pink;
+  }
 }
 
 // Landscape mode
 @media screen and (orientation: landscape) {
   .game-layout {
-    // border: 1px solid blue;
     flex-direction: row;
   }
   .school-dice-layout {
-    // border: 1px solid pink;
     flex-direction: column;
   }
   .dice-icon {
@@ -290,37 +278,15 @@ p {
     height: auto;
   }
   .game-combinations-layout {
-    // border: 1px solid yellowgreen;
     font-size: 1.1em;
     width: 60%;
   }
   .game-combination {
-    // border: 1px solid purple;
     padding: 0em;
   }
 }
+
 /*
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) { // iphone5
-  .school-dice-icon {
-    // margin: .2em 0em .2em 0em;
-    height: 3em;
-  }
-  .school-result, .game-combination {
-    // font-size: 1.8em;
-    font-size: 1.5em;
-    // color: red;
-  }
-}
-
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 360px) { // nokia5
-  .school-dice-icon {
-    height: 3.7em;
-  }
-  .school-result, .game-combination {
-    font-size: 1.85em;
-  }
-}
-
 @media screen and (-webkit-min-device-pixel-ratio: 3) and (min-width: 375px) { // iphoneX
 .school-dice-icon {
     // margin: .2em 0em .2em 0em;

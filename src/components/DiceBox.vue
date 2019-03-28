@@ -23,7 +23,7 @@
           :key="dice.id"
           d-flex
           shrink
-          class="game-dice animated fast fadeIn"
+          class="game-dice animated slow fadeIn"
           :class="{ chosen: dice.chosen }"
           @click="selectDice(dice.id)"
         >
@@ -43,7 +43,7 @@
         justify-center
         row
         fill-height
-        class="main-button animated fast fadeIn"
+        class="main-button animated slow fadeIn"
         :class="{ save: mainButtonStateCheck }"
         aria-label="Main game button"
         type="button"
@@ -53,7 +53,7 @@
         <v-flex
           v-if="getCurrentGameState.currentRollCount === 3 && !isGameEnded"
           xs2
-          class="play-arrow animated fast fadeIn"
+          class="play-arrow animated slow fadeIn"
         />
         <!-- Button roll state -->
         <v-flex
@@ -67,7 +67,7 @@
             <div
               v-for="(value, index) in getCurrentGameState.rollsCountForButton"
               :key="index"
-              class="roll-circle animated fast fadeIn"
+              class="roll-circle animated slow fadeIn"
             />
           </v-layout>
         </v-flex>
@@ -75,7 +75,7 @@
         <v-flex
           v-if="getCurrentGameState.currentRollCount === 0"
           xs4
-          class="stop-brick animated fast fadeIn"
+          class="stop-brick animated slow fadeIn"
         />
       </v-layout>
     </v-flex>
@@ -231,8 +231,11 @@ export default {
 }
 .dice-box-icon, .main-button-container {
   // border: 1px solid pink;
-  height: 3.45em; // starting from nokia 5 screen size
+  height: 3.1em; // starting from iphone 5 screen size
   color: $color-primary-0;
+  svg {
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+  }
 }
 .default-icon-color {
   fill: $color-primary-0;
@@ -281,6 +284,12 @@ export default {
   margin: .2em;
   background: $main-button-brick-color;
   box-shadow: 0em 0em .4em .05em $main-button-brick-color;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 360px) { // Nokia5
+  .dice-box-icon, .main-button-container {
+    height: 3.4em;
+  }
 }
 
 // landscape

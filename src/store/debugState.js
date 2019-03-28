@@ -3,7 +3,7 @@ export default () => {
     defaultUserName: `Anonymous`,
     user: {
       isAuthenticated: false,
-      name: `undefined user`,
+      name: undefined,
       lastResultSaved: false, // current result saved
       diceValuesFavs: [0, 0, 0, 0, 0, 0] // favorite dice values stats
     },
@@ -16,42 +16,12 @@ export default () => {
     schoolCompleted: false, // check if school is completed
     gameOver: false,
     zeroCheck: false, // to check if zero was saving during turn
-    schoolScoreTotal: -5, // total school score
+    schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score
     debug: false, // Vue Devtools will do
     combinationArray: [],
-    diceArray: [{ // dice Array
-      value: `#`,
-      chosen: false,
-      id: `first`,
-      currentIcon: `diceOnes`
-    },
-    {
-      value: `#`,
-      chosen: false,
-      id: `second`,
-      currentIcon: `diceTwos`
-    },
-    {
-      value: `#`,
-      chosen: false,
-      id: `third`,
-      currentIcon: `diceThrees`
-    },
-    {
-      value: `#`,
-      chosen: false,
-      id: `fourth`,
-      currentIcon: `diceFours`
-    },
-    {
-      value: `#`,
-      chosen: false,
-      id: `fifth`,
-      currentIcon: `diceFives`
-    }],
     scoreArray: [{
-      value: `1`, // school combinations
+      value: `1`, // school combinations store module?
       final: true,
       id: `ones`,
       icon: `diceOnes`
@@ -148,6 +118,36 @@ export default () => {
       final: false,
       id: `chance`,
       fullName: `Chance` // 14
+    }],
+    diceArray: [{ // dice Array
+      value: `#`,
+      chosen: false,
+      id: `first`,
+      currentIcon: `diceOnes`
+    },
+    {
+      value: `#`,
+      chosen: false,
+      id: `second`,
+      currentIcon: `diceTwos`
+    },
+    {
+      value: `#`,
+      chosen: false,
+      id: `third`,
+      currentIcon: `diceThrees`
+    },
+    {
+      value: `#`,
+      chosen: false,
+      id: `fourth`,
+      currentIcon: `diceFours`
+    },
+    {
+      value: `#`,
+      chosen: false,
+      id: `fifth`,
+      currentIcon: `diceFives`
     }]
   }
 }

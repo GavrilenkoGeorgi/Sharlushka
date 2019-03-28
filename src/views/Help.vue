@@ -2,34 +2,17 @@
   <v-layout
     row
     wrap
+    justify-center
+    pb-2
   >
     <v-flex
       xs12
+      sm10
       pt-2
     >
       <h1 class="text-xs-center rules-heading">
         {{ rulesHeading }}
       </h1>
-      <!--h4
-        v-if="schoolScores !== ``"
-        class="text-xs-center rules-heading"
-      >
-        Your recent school results
-      </h4-->
-      <!-- Chart-->
-      <!--v-flex
-        d-flex
-        align-center
-        my-2
-        pr-3
-      >
-        <chartist
-          ratio="ct-major-twelfth"
-          type="Line"
-          :data="chartData"
-          :options="chartOptions"
-        />
-      </v-flex-->
       <p class="rules-text">
         {{ overall }}
       </p>
@@ -38,43 +21,54 @@
       </p>
     </v-flex>
     <!-- Combination descriptions -->
-    <v-flex xs12>
+    <v-layout
+      wrap
+      justify-center
+    >
       <v-flex
-        v-for="(combination, index) in combinationsDescrMk3"
-        :key="index"
-        class="combination-descr"
-        px-3
+        xs12
+        sm10
       >
-        <v-layout align-center>
-          <v-flex class="text-xs-left">
-            {{ combination.title }}
-          </v-flex>
-          <!-- Layout for icons in each combination -->
-          <v-layout justify-end>
+        <v-flex
+          v-for="(combination, index) in combinationsDescrMk3"
+          :key="index"
+          class="combination-descr"
+          px-3
+        >
+          <v-layout
+            align-center
+            py-1
+          >
+            <v-flex class="text-xs-left">
+              {{ combination.title }}
+            </v-flex>
+            <!-- Layout for icons in each combination -->
+            <v-layout justify-end>
+              <v-flex
+                v-for="(icon, value) of combination.quantity"
+                :key="value"
+                pa-1
+                d-flex
+                shrink
+              >
+                <!-- The tricky part with dice ids,
+                  there are six ids and five dices -->
+                <component
+                  :is="getDiceIds[icon - 1]"
+                  class="help-section-dice-icon"
+                />
+              </v-flex>
+            </v-layout>
             <v-flex
-              v-for="(icon, value) of combination.quantity"
-              :key="value"
-              pa-1
-              d-flex
-              shrink
+              xs1
+              class="score-value text-xs-right"
             >
-              <!-- The tricky part with dice ids,
-                there are six ids and five dices -->
-              <component
-                :is="getDiceIds[icon - 1]"
-                class="help-section-dice-icon"
-              />
+              {{ combination.scoreValue }}
             </v-flex>
           </v-layout>
-          <v-flex
-            xs1
-            class="score-value text-xs-right"
-          >
-            {{ combination.scoreValue }}
-          </v-flex>
-        </v-layout>
+        </v-flex>
       </v-flex>
-    </v-flex>
+    </v-layout>
   </v-layout>
 </template>
 
@@ -99,26 +93,6 @@ export default {
   },
   data() {
     return {
-      /*
-      schoolScores: ``,
-      chartData: {
-        labels: [],
-        series: []
-        // labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-        // series: [[12, 14, 36, 34, 23, 12, -24, 14, 36, 44, 23, -12, 12, 14, 36, -24, 23]]
-      },
-      chartOptions: {
-        fullWidth: true,
-        // lineSmooth: false,
-        // lineSmooth: Chartist.Interpolation.simple(),
-        showArea: true,
-        axisX: {
-          // We can disable the grid for this axis
-          showGrid: true,
-          // and also don't show the label
-          showLabel: true
-        }
-      }, */
       overall: `Три броска, для того чтобы собрать комбинацию. Первый раз бросаются все пять кубиков.
         Дополнительно два раза можно перебрасывать часть кубиков, оставляя нужные,
         или перебросить всё заново. Можно остановиться на первом или втором результате и
@@ -158,8 +132,9 @@ export default {
         {title: `Poker`, quantity: [4, 4, 4, 4, 4], scoreValue: `100`},
         {title: `Small`, quantity: [1, 2, 3, 4, 5], scoreValue: `15`},
         {title: `Large`, quantity: [2, 3, 4, 5, 6], scoreValue: `20`},
-        {title: `Chance`, quantity: [2, 6, 1, 3, 4], scoreValue: `16`},
-        {title: `Another chance`, quantity: [4, 1, 2, 1, 5], scoreValue: `13`}
+        {title: `Chance`, quantity: [2, 3, 1, 6, 4], scoreValue: `16`},
+        {title: `Another chance`, quantity: [4, 1, 6, 1, 5], scoreValue: `17`},
+        {title: `Yet another chance`, quantity: [1, 6, 2, 1, 3], scoreValue: `13`}
       ]
     }
   },
@@ -189,7 +164,6 @@ export default {
 .rules-text-eng {
   padding: 0em 1em 0em 1em;
   text-indent: 1em;
-  // font-family: $text-font;
   font-size: 1.4em;
 }
 
@@ -199,21 +173,14 @@ export default {
 }
 
 .combination-descr {
-  font-size: 1.2em;
+  font-size: 1.1em;
   font-weight: 500;
-  // font-family: $text-font;
   transition: background-color 500ms ease-in-out;
 }
 .combination-descr:hover {
   background-color: $color-pale-primary;
   .dice-icon {
     color: $color-chosen;
-  }
-}
-
-@media screen and (orientation: landscape) {
-  .combination-descr {
-  font-size: 2em;
   }
 }
 
@@ -224,5 +191,11 @@ export default {
 .dice-icon {
   color: $color-primary-0;
   transition: color 500ms ease-in-out;
+}
+
+@media screen and (orientation: landscape) {
+  .combination-descr {
+    font-size: 1.7em;
+  }
 }
 </style>

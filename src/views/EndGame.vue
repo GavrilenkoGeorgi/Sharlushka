@@ -131,7 +131,7 @@ export default {
         If you choose to cancel, results are saved
         in local storage and will be saved to DB
         next time you finish the game.`,
-      hiscoreGreeting: `Your highest score is`,
+      // hiscoreGreeting: `Your highest score is`,
       exclamation: `!`, // some over-engeneering
       lastScores: ``,
       schoolScores: ``,
@@ -147,7 +147,6 @@ export default {
       `getDefaultUserName`,
       `getUserData`,
       `isGameEnded`,
-      `getDiceValueFavs`,
       `getCurrentNonZeroCombinations`
     ])
   },

@@ -7,11 +7,12 @@
     <v-layout
       align-space-around
       column
+      class="text-xs-center"
+      pb-1
     >
       <v-flex
         d-flex
         align-end
-        class="text-xs-center"
       >
         <h1 class="game-name">
           {{ gameName }}
@@ -21,16 +22,16 @@
         justify-center
         align-center
       >
-        <!--v-flex-->
-        <SharlushkaLogo
-          class="logo"
-        />
-        <!--/v-flex-->
+        <v-flex
+          xs8
+          sm2
+        >
+          <SharlushkaLogo />
+        </v-flex>
       </v-layout>
       <v-flex
         d-flex
         align-center
-        class="text-xs-center"
       >
         <h2 class="user-name-main-page">
           {{ greeting }} {{ userName }}{{ exclamation }}
@@ -46,7 +47,6 @@
           xs6
           sm4
           lg2
-          class="text-xs-center"
         >
           <v-btn
             to="/game"
@@ -54,14 +54,13 @@
             outline
             color="purple darken-2"
             aria-label="Start game"
-            :class="{ orange:isGameInProgress }"
-            class="main-page-button-play button-border-radius"
+            class="button"
+            :class="{ playing:isGameInProgress }"
           >
             <doneIcon
               class="button-icon-margin"
-              :class="{ highlighted:isGameInProgress }"
             />
-            <span :class="{ highlighted:isGameInProgress }">
+            <span>
               play
             </span>
           </v-btn>
@@ -71,7 +70,6 @@
           xs6
           sm4
           lg2
-          class="text-xs-center"
         >
           <v-btn
             to="/login"
@@ -79,7 +77,7 @@
             ripple
             color="purple darken-1"
             aria-label="Register or change name"
-            class="main-page-button-login button-border-radius"
+            class="button"
           >
             <regIcon class="button-icon-margin" />
             login
@@ -116,8 +114,8 @@
 </template>
 
 <script>
-// import { mapGetters } from 'vuex'
-import SharlushkaLogo from '@/assets/images/sharlushkaLogo.svg'
+import { mapGetters } from 'vuex'
+import SharlushkaLogo from '../assets/images/sharlushkaLogo.svg'
 import doneIcon from '../assets/icons/baseline-done-24px.svg'
 import regIcon from '../assets/icons/baseline-how_to_reg-24px.svg'
 
@@ -137,14 +135,9 @@ export default {
     }
   },
   computed: {
-    /*
     ...mapGetters([
-      `progressBarState`
-    ]),
-    */
-    isGameInProgress () {
-      return (this.$store.state.currentGameTurn >= 1 && this.$store.state.rollCount < 3) ? true : false
-    }
+      `isGameInProgress`
+    ])
   },
   mounted() {
     this.$nextTick(() => {
@@ -164,36 +157,19 @@ export default {
   font-size: 3em;
   color: $color-primary-0;
 }
-.logo {
-  height: 12em;
-}
-.user-name {
-  font-size: 2em;
-}
+
 .user-name-main-page {
   font-size: 2.3em;
   color: $color-primary-3;
 }
+
+.playing {
+  color: $color-chosen !important;
+}
+
 .copyrights {
   font-size: .9em;
-  color: rgb(83, 83, 83); //?
+  color: $color-copyrights;
 }
 
-@media screen and (orientation: landscape) {
-  .game-name {
-    font-size: 2.8em;
-  }
-  .logo {
-    height: 7.5em;
-  }
-}
-
-@media screen and (max-resolution: 96dpi) and (min-width: 500px) { // desktop
-  .game-name {
-    font-size: 5em;
-  }
-  .user-name {
-    font-size: 4em;
-  }
-}
 </style>

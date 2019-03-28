@@ -3,6 +3,7 @@
   <nav v-if="!['MainPage'].includes($route.name)">
     <v-toolbar
       app
+      clipped-right
       height="40"
       color="purple darken-2"
     >
@@ -60,6 +61,8 @@
       v-model="navDrawer"
       app
       right
+      floating
+      temporary
       class="navigation-drawer"
     >
       <v-list pa-0>
@@ -223,7 +226,7 @@ export default {
 
 .navigation-drawer {
   font-family: $text-font;
-  border-left: 2px solid $color-primary-0;
+  border-left: .066em solid $color-primary-0;
 }
 
 .drawer-menu-item {

@@ -46,6 +46,11 @@ export default {
   isGameEnded: (state) => state.gameOver,
   isNewTurn: (state) => state.newTurn,
   isLastResultSaved: (state) => state.user.lastResultSaved,
+  isGameInProgress (state) {
+    if (state.currentGameTurn === 1 && state.rollCount === 3) {
+      return false
+    } else return true
+  },
   getCombinationArray(state) {
     // another one for export
     const combinationArray = state.scoreArray.slice(state.diceArray.length + 1, state.scoreArray.length)

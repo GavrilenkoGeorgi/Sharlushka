@@ -1,7 +1,14 @@
 <template>
   <v-app>
     <!-- Navigation bar -->
-    <navBar />
+    <transition
+      name="custom-classes-transition"
+      mode="out-in"
+      enter-active-class="animated fadeIn slow"
+      leave-active-class="animated fadeOut slow"
+    >
+      <navBar />
+    </transition>
     <v-content>
       <!-- Router view -->
       <v-container
@@ -12,8 +19,8 @@
         <transition
           name="custom-classes-transition"
           mode="out-in"
-          enter-active-class="animated fadeIn"
-          leave-active-class="animated fadeOutDown fast"
+          enter-active-class="animated fadeIn slow"
+          leave-active-class="animated fadeOutDown slow"
         >
           <router-view />
         </transition>
@@ -49,7 +56,6 @@ export default {
 #app {
   background: #ffffff;
 }
-
 @media only screen and (max-width: 959px) {
   .v-toolbar__content, .v-toolbar__extension {
     padding: 0 0px;

@@ -334,8 +334,7 @@ export default {
         this.assembleSchoolScoresArray()
         this.setDiceFavsValuesChartSeries()
         this.setCombinationsFavsChartSeries()
-        // +1 cause of something with the chart, last result not showing
-        this.lastScoresToDisplay = this.userScoresArray.slice(0).slice(this.chartResultsToShow + 1)
+        this.lastScoresToDisplay = this.userScoresArray.slice(0).slice(this.chartResultsToShow)
         this.newStats.gamesPlayed.value = this.userScoresArray.length
         // this.newStats.maxPossibleScore.value = this.getMaxPossibleScore
         this.newStats.averageScore.value = this.computeAverageScore()
@@ -403,7 +402,7 @@ export default {
       this.combinationsFavsChartData.series = [percentages]
     },
     prepareLabelsForChart(numOfLabels) {
-      const resultsToDisplay = 15 // Fifteen results for now
+      const resultsToDisplay = Math.abs(this.chartResultsToShow)
       const lastLabelToDisplay = numOfLabels - resultsToDisplay
       const labelsArray = []
       if (numOfLabels >= resultsToDisplay) {
@@ -520,13 +519,6 @@ export default {
   }
 }
 
-@media screen and (orientation: landscape) {
-  .hi-score-display {
-    font-size: 1.3em;
-    font-weight: 700;
-  }
-}
-
 @media screen and (max-resolution: 96dpi) and (min-width: 500px) { // desktop
   .help-title {
     font-size: 4em;
@@ -549,6 +541,13 @@ export default {
 .message-to-anonymous {
   font-family: $text-font;
   padding: 2em 0em 2em 0em;
+}
+
+@media screen and (orientation: landscape) {
+  .hi-score-display {
+    // border: 1px solid pink;
+    font-size: 1.8em;
+  }
 }
 
 </style>
