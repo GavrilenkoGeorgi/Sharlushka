@@ -24,7 +24,7 @@
     "vue-chartist": "^2.2.0",
     "vue-offline": "^2.0.6",
     "vue-router": "^3.0.1",
-    "vuetify": "^1.5.5",
+    "vuetify": "^1.5.7",
     "vuex": "^3.1.0"
   },
   "devDependencies": {
@@ -79,6 +79,7 @@
     "shelljs": "^0.7.6",
     "sinon": "^7.3.0",
     "sw-precache-webpack-plugin": "^0.11.5",
+    "terser-webpack-plugin": "^1.2.3",
     "typescript": "^3.3.4000",
     "url-loader": "^1.1.2",
     "vue-cli-plugin-vuetify": "^0.2.1",

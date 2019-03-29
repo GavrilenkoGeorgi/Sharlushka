@@ -6,17 +6,14 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
 const PUBLIC_PATH = '/';
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = (env, argv) => ({
   mode: argv && argv.mode || 'development',
   devtool: (argv && argv.mode || 'development') === 'production' ? 'source-map' : 'eval',
 
-  // entry: './src/index.js',
   entry: {
     main: path.resolve(__dirname, 'src/index.js')
-    // mutations: path.resolve(__dirname, 'src/store/mutations.js'),
-    // store: path.resolve(__dirname, 'src/store/store.js'),
-    // getters: path.resolve(__dirname, 'src/store/getters.js')
   },
 
   output: {
@@ -103,6 +100,28 @@ module.exports = (env, argv) => ({
     }])
   ],
   optimization: {
+    minimizer: [
+      new TerserPlugin({
+        test: /\.js(\?.*)?$/i,
+        sourceMap: true,
+        extractComments: true,
+        terserOptions: {
+          ecma: undefined,
+          warnings: false,
+          parse: {},
+          compress: {},
+          mangle: true, // Note `mangle.properties` is `false` by default.
+          module: false,
+          output: null,
+          toplevel: false,
+          nameCache: null,
+          ie8: false,
+          keep_classnames: undefined,
+          keep_fnames: false,
+          safari10: false,
+        },
+      }),
+    ],
     splitChunks: {
       chunks: 'all',
       maxInitialRequests: Infinity,
