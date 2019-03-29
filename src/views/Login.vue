@@ -22,6 +22,7 @@
         <v-flex
           xs10
           sm6
+          md4
           d-flex
           align-center
           py-4
@@ -78,8 +79,9 @@
       >
         <v-flex
           d-flex
-          xs6
+          xs5
           sm4
+          md2
         >
           <v-btn
             :type="'submit'"
@@ -99,8 +101,9 @@
 
         <v-flex
           d-flex
-          xs6
+          xs5
           sm4
+          md2
         >
           <v-btn
             :disabled="valid"
@@ -116,7 +119,6 @@
 
         <v-flex
           xs12
-          sm10
           py-4
           align-center
         >
@@ -125,8 +127,9 @@
 
         <v-flex
           d-flex
-          xs6
+          xs5
           sm4
+          md2
         >
           <v-btn
             :loading="signingOut"
@@ -143,8 +146,9 @@
 
         <v-flex
           d-flex
-          xs6
+          xs5
           sm4
+          md2
         >
           <v-btn
             to="/register"

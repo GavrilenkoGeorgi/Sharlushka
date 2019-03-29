@@ -7,7 +7,8 @@
   >
     <v-flex
       xs12
-      sm10
+      sm9
+      md7
       pt-2
     >
       <h1 class="text-xs-center rules-heading">
@@ -21,54 +22,59 @@
       </p>
     </v-flex>
     <!-- Combination descriptions -->
-    <v-layout
-      wrap
-      justify-center
+    <v-flex
+      xs12
+      sm9
+      md7
     >
-      <v-flex
-        xs12
-        sm10
+      <v-layout
+        wrap
+        justify-center
       >
         <v-flex
-          v-for="(combination, index) in combinationsDescrMk3"
-          :key="index"
-          class="combination-descr"
-          px-3
+          xs12
         >
-          <v-layout
-            align-center
-            py-1
+          <v-flex
+            v-for="(combination, index) in combinationsDescrMk3"
+            :key="index"
+            class="combination-descr"
+            px-3
           >
-            <v-flex class="text-xs-left">
-              {{ combination.title }}
-            </v-flex>
-            <!-- Layout for icons in each combination -->
-            <v-layout justify-end>
+            <v-layout
+              align-center
+              py-1
+            >
+              <v-flex class="text-xs-left">
+                {{ combination.title }}
+              </v-flex>
+              <!-- Layout for icons in each combination -->
+              <v-layout justify-end>
+                <v-flex
+                  v-for="(icon, value) of combination.quantity"
+                  :key="value"
+                  pa-1
+                  d-flex
+                  shrink
+                >
+                  <!-- The tricky part with dice ids,
+                    there are six ids and five dices -->
+                  <component
+                    :is="getDiceIds[icon - 1]"
+                    class="help-section-dice-icon"
+                  />
+                </v-flex>
+              </v-layout>
               <v-flex
-                v-for="(icon, value) of combination.quantity"
-                :key="value"
-                pa-1
-                d-flex
-                shrink
+                xs1
+                class="score-value text-xs-right"
               >
-                <!-- The tricky part with dice ids,
-                  there are six ids and five dices -->
-                <component
-                  :is="getDiceIds[icon - 1]"
-                  class="help-section-dice-icon"
-                />
+                {{ combination.scoreValue }}
               </v-flex>
             </v-layout>
-            <v-flex
-              xs1
-              class="score-value text-xs-right"
-            >
-              {{ combination.scoreValue }}
-            </v-flex>
-          </v-layout>
+          </v-flex>
         </v-flex>
-      </v-flex>
-    </v-layout>
+      </v-layout>
+    </v-flex>
   </v-layout>
 </template>
 

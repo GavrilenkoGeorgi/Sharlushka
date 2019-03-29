@@ -24,7 +24,7 @@
       >
         <v-flex
           xs8
-          sm2
+          sm3
         >
           <SharlushkaLogo />
         </v-flex>
@@ -46,7 +46,7 @@
           d-flex
           xs6
           sm4
-          lg2
+          lg3
         >
           <v-btn
             to="/game"
@@ -69,7 +69,7 @@
           d-flex
           xs6
           sm4
-          lg2
+          lg3
         >
           <v-btn
             to="/login"
@@ -84,7 +84,7 @@
           </v-btn>
         </v-flex>
       </v-layout>
-      <span class="copyrights text-xs-center">
+      <span class="copyrights">
         Icons made by
         <a
           href="https://www.flaticon.com/authors/smashicons"
@@ -172,4 +172,13 @@ export default {
   color: $color-copyrights;
 }
 
+// desktop
+@media screen and (max-resolution: 96dpi) and (min-width: 500px) {
+  .game-name {
+    font-size: 5em;
+  }
+  .user-name-main-page {
+    font-size: 4.3em;
+  }
+}
 </style>

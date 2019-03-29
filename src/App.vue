@@ -15,6 +15,7 @@
         ma-0
         pa-0
         fill-height
+        fluid
       >
         <transition
           name="custom-classes-transition"

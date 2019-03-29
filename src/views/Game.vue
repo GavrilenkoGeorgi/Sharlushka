@@ -151,6 +151,7 @@ export default {
     this.$nextTick(() => {
       console.log(`Game view mounted.`)
       if (this.getUserAuthState) {
+        // shouldn't be here i guess
         let userNameToSet = localStorage.getItem(`userName`)
         this.$store.dispatch(`setUserName`, userNameToSet)
       }
@@ -162,13 +163,6 @@ export default {
       `saveResultInStore`,
       `clearResultBox`
     ]),
-    /*
-    restartGame() { // remove this from dice box
-      console.log(`Restarting game.`)
-      this.$store.commit(`resetState`)
-      this.$router.push(`/game`)
-    },
-    */
     recordResult(id) {
       // if this is new turn then
       if (!this.isNewTurn) {
@@ -196,7 +190,7 @@ p {
 }
 
 .dice-icon {
-  // class name directly from svg file ?
+  // class name directly from svg file?
   height: 3.6em;
 }
 
@@ -210,7 +204,6 @@ p {
   font-size: 1.5em;
 }
 .game-combinations-layout {
-  // font-size: 1.9em;
   font-size: 1.8em;
 }
 .game-combination {
@@ -243,17 +236,16 @@ p {
   }
 }
 
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 360px) { // Nokia5
+// Nokia5
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 360px) {
   .dice-icon {
     height: 3.8em;
-    // border: 1px solid pink;
   }
   .school-result {
     font-size: 1.1em;
   }
   .game-combination {
     font-size: 1.05em;
-    // color: pink;
   }
 }
 
@@ -286,93 +278,56 @@ p {
   }
 }
 
-/*
-@media screen and (-webkit-min-device-pixel-ratio: 3) and (min-width: 375px) { // iphoneX
-.school-dice-icon {
-    // margin: .2em 0em .2em 0em;
-    height: 4em;
+// desktop
+@media screen and (max-resolution: 96dpi) and (min-width: 500px) {
+  .dice-icon {
+    height: 7em;
   }
-  .school-result, .game-combination {
-    // border: 1px solid pink;
-    font-size: 2.2em;
+  .school-result {
+    font-size: 2.5em;
+  }
+  .game-combination {
+    font-size: 2.5em;
   }
 }
 
-@media screen and (-webkit-min-device-pixel-ratio: 3) and (min-width: 414px) { // iphone678plus
+// iphoneX
+@media screen and (-webkit-min-device-pixel-ratio: 3) and (min-width: 375px) {
+  .game-combination {
+    font-size: 1.3em;
+  }
+}
+
+// iphone678plus
+@media screen and (-webkit-min-device-pixel-ratio: 3) and (min-width: 414px) {
+  .game-combination {
+    font-size: 1.35em;
+  }
+}
+
+// ipad
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) {
+  .dice-icon {
+    height: 7em;
+  }
+  .school-result {
+    font-size: 2.2em;
+  }
+  .game-combination {
+    font-size: 1.7em;
+  }
+}
+
+// ipadPro
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) {
+  .dice-icon {
+    height: 8em;
+  }
+  .school-result {
+    font-size: 2.5em;
+  }
   .game-combination {
     font-size: 2.3em;
   }
 }
-
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) { // ipad
-  .school-dice-icon {
-    height: 5.8em;
-  }
-  .school-result {
-    // border: 1px solid pink;
-    font-size: 3em;
-  }
-  .game-combination {
-    font-size: 2.8em;
-  }
-}
-
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) { // ipadPro
-
-.school-dice-icon {
-   height: 8em;
-  }
-  .school-result {
-    // border: 1px solid pink;
-    font-size: 4.5em;
-  }
-  .game-combination {
-    font-size: 4em;
-  }
-  .progress-bar {
-    height: .4em;
-  }
-}
-
-@media screen and (max-resolution: 96dpi) and (max-width: 480px) { // fly iq4415
-  .school-dice-icon {
-    // background-color: yellow;
-    height: 4.6em;
-  }
-  .game-combinations-layout {
-    padding-bottom: .3em;
-  }
-  .school-result, .game-combination {
-    // border: 1px solid pink;
-    font-size: 2.7em;
-    // font-weight: 700;
-    // color: green;
-  }
-}
-@media screen and (max-resolution: 96dpi) and (min-width: 481px) { // fly iq4415
-  .school-dice-icon {
-    height: 6em;
-  }
-  .game-combinations-layout {
-    padding-bottom: .3em;
-  }
-  .school-result, .game-combination {
-    // border: 1px solid pink;
-    font-size: 2.4em;
-    // font-weight: 700;
-    // color: green;
-  }
-}
-
-@media screen and (max-resolution: 96dpi) and (orientation: landscape) { // desktop default window proportions
-  .game-layout {
-    // padding-top: 6em;
-    // padding-bottom: .6em;
-  }
-  .school-result, .game-combination {
-    // color: red;
-    font-size: 4em;
-  }
-}
-*/
 </style>

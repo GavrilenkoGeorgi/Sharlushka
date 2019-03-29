@@ -66,6 +66,7 @@
         <v-flex
           xs12
           sm10
+          md8
           d-flex
           align-center
           pr-3
@@ -110,6 +111,7 @@
           d-flex
           xs12
           sm10
+          md8
           align-center
           pr-3
         >
@@ -138,12 +140,21 @@
           </h2>
         </v-flex>
         <v-flex
-          v-for="(value, index) in lastScoresToDisplay"
-          :key="index"
-          xs3
-          class="hi-score-display py-1"
+          xs12
+          sm10
+          md8
         >
-          {{ value }}
+          <!-- Recent results layout -->
+          <v-layout wrap>
+            <v-flex
+              v-for="(value, index) in lastScoresToDisplay"
+              :key="index"
+              xs3
+              class="hi-score-display py-1"
+            >
+              {{ value }}
+            </v-flex>
+          </v-layout>
         </v-flex>
       </v-layout>
       <!-- Dice values favorites layout -->
@@ -162,6 +173,7 @@
         <v-flex
           xs12
           sm10
+          md8
           align-center
           pr-3
         >
@@ -190,6 +202,7 @@
         <v-flex
           xs12
           sm10
+          md8
           align-center
           pr-3
         >
@@ -235,9 +248,6 @@ export default {
           showGrid: true,
           // and also don't show the label
           showLabel: true
-        },
-        axisY: {
-          // high: 879
         }
       },
       diceValuesFavsChartData: {
@@ -273,9 +283,6 @@ export default {
       },
       schoolChartOptions: {
         fullWidth: true,
-        // distributeSeries: true,
-        // lineSmooth: false,
-        // lineSmooth: Chartist.Interpolation.simple(),
         showArea: true,
         axisX: {
           // We can disable the grid for this axis
@@ -299,19 +306,6 @@ export default {
         axisY: {
           offset: 85
         }
-        // fullWidth: true,
-        // distributeSeries: true,
-        // lineSmooth: false,
-        // lineSmooth: Chartist.Interpolation.simple(),
-        // showArea: true,
-        /*
-        axisX: {
-          // We can disable the grid for this axis
-          showGrid: true,
-          // and also don't show the label
-          showLabel: true
-        }
-        */
       }
     }
   },
@@ -336,7 +330,6 @@ export default {
         this.setCombinationsFavsChartSeries()
         this.lastScoresToDisplay = this.userScoresArray.slice(0).slice(this.chartResultsToShow)
         this.newStats.gamesPlayed.value = this.userScoresArray.length
-        // this.newStats.maxPossibleScore.value = this.getMaxPossibleScore
         this.newStats.averageScore.value = this.computeAverageScore()
         this.newStats.percentFromMax.value = this.computePercentFromMax()
         if (this.userScoresArray.length) {
@@ -450,9 +443,6 @@ export default {
 
 @import '../assets/scss/index.scss';
 
-.help-title {
-  font-size: 2.3em;
-}
 .user-name {
   color: $color-orange;
   font-size: 1.7em;
@@ -498,8 +488,6 @@ export default {
 
 .dice-favs-chart {
   .ct-series-a .ct-bar {
-    // stroke: #AA00FF;
-    // stroke: red;
     stroke-width: .3em;
   }
   .ct-end {
@@ -514,15 +502,12 @@ export default {
     color: $color-primary-1;
   }
   .ct-series-a .ct-bar {
-    // stroke: pink;
     stroke-width: .3em;
   }
 }
 
-@media screen and (max-resolution: 96dpi) and (min-width: 500px) { // desktop
-  .help-title {
-    font-size: 4em;
-  }
+// desktop
+@media screen and (max-resolution: 96dpi) and (min-width: 500px) {
   .user-name {
     font-size: 3em;
   }
@@ -545,8 +530,54 @@ export default {
 
 @media screen and (orientation: landscape) {
   .hi-score-display {
-    // border: 1px solid pink;
     font-size: 1.8em;
+  }
+}
+
+// ipadPro
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) {
+  .user-name {
+    font-size: 2.7em;
+  }
+  .hi-score-display {
+    font-size: 2.7em;
+  }
+  .stats-display {
+    font-size: 2.2em;
+  }
+
+  .ct-series-a .ct-point {
+    stroke-width: .2em;
+  }
+  .ct-series-a .ct-line {
+    stroke: #E1BEE7;
+    stroke-width: .12em;
+  }
+  .ct-series-a .ct-bar {
+    stroke-width: .5em;
+  }
+  .game-results-chart {
+    .ct-series-a .ct-bar {
+    stroke-width: .5em;
+    }
+  }
+
+  .dice-favs-chart {
+    .ct-series-a .ct-bar {
+      stroke-width: 1em;
+    }
+    .ct-end {
+      font-size: 1.8em;
+    }
+  }
+
+  .combinations-favs-chart {
+    .ct-start {
+      font-size: 1.8em;
+    }
+    .ct-series-a .ct-bar {
+      stroke-width: 1em;
+    }
   }
 }
 

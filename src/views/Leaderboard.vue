@@ -1,117 +1,120 @@
 <template>
-  <v-layout
-    id="leaderboard"
-    column
-  >
-    <!-- Title -->
-    <v-flex
-      xs1
-      d-flex
-      align-center
-      py-2
+  <v-container fill-height>
+    <v-layout
+      id="leaderboard"
+      align-space-around
+      justify-start
+      column
+      fill-height
       class="text-xs-center"
     >
-      <h1 class="leaderboard-title text-capitalize">
-        {{ title }}
-      </h1>
-    </v-flex>
-    <!-- Users leaderboard legend -->
-    <v-flex
-      xs1
-      d-flex
-      class="leaderboard-legend text-xs-center pl-1"
-    >
-      <v-layout
-        xs1
-        align-center
+      <!-- Title -->
+      <v-flex py-3>
+        <h1 class="leaderboard-title text-capitalize">
+          {{ title }}
+        </h1>
+      </v-flex>
+      <!-- Users leaderboard legend -->
+      <v-flex
+        d-flex
+        class="leaderboard-legend text-xs-center pl-1"
       >
-        <!--v-flex
-          d-flex
-        -->
-        <listIcon class="default-icon-color" />
-        <!--/v-flex-->
-        <v-flex
-          xs3
-          class="text-xs-left"
+        <v-layout
+          align-center
         >
-          Name
-        </v-flex>
-        <v-flex xs2>
-          HiScore
-        </v-flex>
-        <v-flex xs2>
-          Average
-        </v-flex>
-        <v-flex xs2>
-          % Max
-        </v-flex>
-        <v-flex xs2>
-          Games
-        </v-flex>
-      </v-layout>
-    </v-flex>
-    <!-- No leaderboard message -->
-    <v-flex
-      v-if="noLeaderboardMessage"
-      d-flex
-      align-center
-      class="leader-board-message text-xs-center"
-    >
-      {{ noLeaderboardMessage }}
-    </v-flex>
-    <!-- Users leaderboard layout -->
-    <v-flex
-      v-if="noLeaderboardMessage === null"
-      class="leaderboard text-xs-center"
-    >
-      <v-layout
-        v-for="(user, index) in leaderboard"
-        :key="index"
-        class="leaderboard-item"
-        :class="{ 'orange--text': user.userName === userName }"
-        py-2
-      >
-        <v-flex
-          xs1
-          class="text-xs-center"
-        >
-          {{ index + 1 }}
-        </v-flex>
-        <v-flex
-          xs3
-          class="text-xs-left"
-        >
-          {{ user.userName }}
-        </v-flex>
-        <v-flex xs2>
-          {{ user.hiScore }}
-        </v-flex>
-        <v-flex xs2>
-          {{ user.averageScore }}
-        </v-flex>
-        <v-flex xs2>
-          {{ user.percentFromMax }}
-        </v-flex>
-        <v-flex xs2>
-          {{ user.gamesPlayed }}
-        </v-flex>
-      </v-layout>
-    </v-flex>
-    <!-- Loading indicator -->
-    <v-flex
-      d-flex
-    >
-      <v-progress-circular
+          <v-flex
+            xs1
+          >
+            <v-layout justify-center>
+              <listIcon class="default-icon-color" />
+            </v-layout>
+          </v-flex>
+          <v-flex
+            xs3
+          >
+            Name
+          </v-flex>
+          <v-flex xs2>
+            HiScore
+          </v-flex>
+          <v-flex xs2>
+            Average
+          </v-flex>
+          <v-flex xs2>
+            % Max
+          </v-flex>
+          <v-flex xs2>
+            Games
+          </v-flex>
+        </v-layout>
+      </v-flex>
+      <!-- Loading indicator -->
+      <v-flex
         v-if="leaderboardLoading"
-        indeterminate
-        color="purple darken-2"
-      />
-    </v-flex>
-  </v-layout>
+        xs12
+      >
+        <v-progress-circular
+          indeterminate
+          color="purple darken-2"
+        />
+      </v-flex>
+      <!-- No leaderboard message -->
+      <v-flex
+        v-else-if="noLeaderboardMessage"
+        xs12
+        pt-2
+      >
+        <p class="error-message">
+          You got: {{ errorMessage }}
+        </p>
+        <p class="no-leaderboard-message">
+          {{ noLeaderboardMessage }}
+        </p>
+      </v-flex>
+      <!-- Users leaderboard layout -->
+      <v-flex
+        v-else
+        xs12
+        class="leaderboard"
+      >
+        <v-layout
+          v-for="(user, index) in leaderboard"
+          :key="index"
+          class="leaderboard-item"
+          :class="{ 'orange--text': user.userName === userName }"
+          py-2
+        >
+          <v-flex
+            xs1
+            class="text-xs-center"
+          >
+            {{ index + 1 }}
+          </v-flex>
+          <v-flex
+            xs3
+            class="text-xs-left"
+          >
+            {{ user.userName }}
+          </v-flex>
+          <v-flex xs2>
+            {{ user.hiScore }}
+          </v-flex>
+          <v-flex xs2>
+            {{ user.averageScore }}
+          </v-flex>
+          <v-flex xs2>
+            {{ user.percentFromMax }}
+          </v-flex>
+          <v-flex xs2>
+            {{ user.gamesPlayed }}
+          </v-flex>
+        </v-layout>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
-// import closeBtn from '../components/CloseBtn.vue'
 import listIcon from '../assets/icons/baseline-import_export-24px.svg'
 import {mapGetters} from 'vuex'
 import db from '../firebase/firebaseInit'
@@ -127,6 +130,7 @@ export default {
     leaderboard: [],
     userDataFromDB: [],
     noLeaderboardMessage: null,
+    errorMessage: null,
     leaderboardLoading: false
   }),
   computed: {
@@ -138,17 +142,11 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(`Leaderboard mounted`)
-      if (this.getUserData.isAuthenticated) {
-        console.log(`Getting leaderboard data from db...`)
-        this.leaderboardLoading = true
-        this.getDataForLeaderboard()
-        this.userName = localStorage.getItem(`userName`)
-      } else {
-        this.userName = this.getDefaultUserName
-        this.noLeaderboardMessage = `Hi, ${this.userName},
-        log in to view the leaderboard.`
-      }
+      console.log(`Leaderboard mounted.`)
+      // console.log(`Getting leaderboard data from db...`)
+      this.leaderboardLoading = true
+      this.getDataForLeaderboard()
+      this.userName = localStorage.getItem(`userName`)
     })
   },
   methods: {
@@ -189,7 +187,11 @@ export default {
           this.leaderboard.reverse()
           this.leaderboardLoading = false
         })
-        .catch(function(error) {
+        .catch(error => {
+          this.noLeaderboardMessage = `${this.userName}!
+          Please register to view more sensitive anonymous data.`
+          this.errorMessage = error.message
+          this.leaderboardLoading = false
           console.log(`Error getting documents: `, error)
         })
     }
@@ -214,9 +216,15 @@ export default {
   background-color: $color-pale-primary;
 }
 
-.leader-board-message {
-  color: $color-primary-3;
-  font-size: 1.4em;
+.no-leaderboard-message {
+  margin: 1em 0em 1em 0em;
+  color: $color-primary-2;
+  font-size: 1.6em;
+}
+
+.error-message {
+  font-size: 1.3em;
+  color: $color-error-message-red-text;
 }
 
 .leaderboard {
@@ -232,4 +240,5 @@ export default {
 .v-progress-circular {
   margin: 1rem
 }
+
 </style>

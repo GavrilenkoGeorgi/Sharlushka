@@ -8,7 +8,6 @@
     <v-flex
       xs9
     >
-      <!-- v-if="getCurrentGameState.currentRollCount <= 2" -->
       <v-layout
         v-if="getCurrentGameState.currentRollCount <= 2"
         row
@@ -49,7 +48,6 @@
         type="button"
         @click.prevent="handleMainGameButtonClick"
       >
-        <!-- v-if="getCurrentGameState.currentRollCount === 3 && !isGameEnded" -->
         <v-flex
           v-if="getCurrentGameState.currentRollCount === 3 && !isGameEnded"
           xs2
@@ -178,7 +176,7 @@ export default {
     vibrate() {
       if (this.navigatorSupported) {
         // const pattern = [175, 150, 125, 75, 60]
-        const pattern = [175, 150, 125, 0]
+        const pattern = [155, 150, 105, 0]
         navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate
         navigator.vibrate(pattern)
       } else return false
@@ -231,6 +229,7 @@ export default {
 }
 .dice-box-icon, .main-button-container {
   // border: 1px solid pink;
+  // this really should be responsive
   height: 3.1em; // starting from iphone 5 screen size
   color: $color-primary-0;
   svg {
@@ -295,7 +294,6 @@ export default {
 // landscape
 @media screen and (orientation: landscape) {
   .dice-box-container {
-    // border: 1px solid red;
     width: 20%;
     height: 100%;
     flex-direction: column;
@@ -308,7 +306,7 @@ export default {
     flex-direction: column;
     width: 6em;
   }
-  .dice-box-icon { //dice-icon?
+  .dice-box-icon {
     height: 2.8em;
   }
   .end-game-buttons {
@@ -319,154 +317,58 @@ export default {
   }
 }
 
-/*
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) { // ipad
-  .dice-icon {
-    // height: 5.8em;
-    // border: 1px solid green;
+// desktop
+@media screen and (max-resolution: 96dpi) and (min-width: 500px) {
+  .dice-box-icon {
+    height: 8em;
   }
+  .main-button-container {
+    width: 8em;
+  }
+}
+
+// ipad
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) {
+  .dice-box-icon, .main-button-container {
+    height: 7em;
+  }
+  /* main button */
   .main-button {
     border-radius: .5em;
-    // height: 5.8em;
+    background-color: $color-primary-0;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  }
+  .save {
+    animation-name: bounce;
+    background-color: $color-very-red;
+    box-shadow: 0em 0em .6em $color-very-red;
   }
   .play-arrow {
+    margin-left: .75em;
     border-top: 1.5em solid transparent;
-    border-bottom: 1.5em solid transparent;
-    border-left: 2.25em solid $color-primary-1;
-  }
-  .roll-circle {
-    width: 1.2em;
-    height: 1.2em;
-  }
-}
-
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) { // ipadPro
-  .dice-icon {
-    // height: 8em;
-    // border: 1px solid green;
-  }
-  .main-button {
-    // height: 8em;
-    border-radius: 1em;
-  }
-  .play-arrow {
-    border-top: 2em solid transparent;
-    border-bottom: 2em solid transparent;
-    border-left: 3em solid $color-primary-1;
-  }
-  .roll-circle {
-    width: 2em;
-    height: 2em;
-  }
-  .stop-brick {
-    height: 2.5em;
-  }
-}
-
-@media screen and (max-resolution: 96dpi) and (max-width: 480px) { // fly iq4415
-  .dice-icon {
-    // border: 1px solid pink;
-    // height: 4.6em;
-  }
-  .main-button {
-    // height: 4.6em;
-    // border-radius: .4em;
-  }
-  .play-arrow {
-    border-top: 1em solid transparent;
-    border-bottom: 1em solid transparent;
-    border-left: 2em solid $color-primary-1;
-  }
-  .roll-circle {
-    width: 1em;
-    height: 1em;
-  }
-  .stop-brick {
-    height: 1.4em;
-  }
-}
-
-@media screen and (max-resolution: 96dpi) and (min-width: 481px) { // fly iq4415
-  .dice-icon {
-    // border: 1px solid red;
-    // height: 6em;
-  }
-  .main-button {
-    // height: 5.4em; // really need this?
-    border-radius: .4em;
-  }
-  .play-arrow {
-    border-top: 1.33em solid transparent;
-    border-bottom: 1.33em solid transparent;
-    border-left: 2.33em solid $color-primary-1;
-  }
-  .roll-circle {
-    width: 1.33em;
-    height: 1.33em;
-  }
-  .stop-brick {
-    height: 2em;
-  }
-}
-
-@media screen and (max-resolution: 96dpi) and (min-width: 768px) { // desktop
-  .dice-icon {
-    // border: 1px solid orange;
-    // height: 6em;
-  }
-  .main-button {
-    // height: 6em;
-    border-radius: .6em;
-  }
-  .play-arrow {
-    border-top: 1.33em solid transparent;
-    border-bottom: 1.33em solid transparent;
-    border-left: 2.33em solid $color-primary-1;
-  }
-  .roll-circle {
-    width: 1.33em;
-    height: 1.33em;
-  }
-  .stop-brick {
-    height: 2em;
-  }
-} */
-/*
-@media screen and (max-resolution: 96dpi) and (min-width: 500px) { // desktop
-  .dice-box-layout {
-    width: 12em;
-  }
-  .main-button {
-    width: 8.5em;
-    border-radius: .6em;
-  }
-  .play-arrow {
-    border-top: 1.7em solid transparent;
-    border-bottom: 1.7em solid transparent;
-    border-left: 2.9em solid $color-primary-1;
+    border-bottom: 1.55em solid transparent;
+    border-left: 2.6em solid $color-pale-primary-lightest;
   }
   .roll-circle {
     width: 1.5em;
     height: 1.5em;
+    margin: .4em;
+    background: $color-pale-primary-lightest;
+    border-radius: 50%
   }
   .stop-brick {
-    height: 2.5em;
-  }
-}
-*/
-
-@keyframes zoomIn {
-  from {
-    opacity: 0;
-    transform: scale3d(0.3, 0.3, 0.3);
-  }
-
-  50% {
-    opacity: 1;
+    width: 2em;
+    height: 2em;
+    margin: .4em;
+    background: $main-button-brick-color;
+    box-shadow: 0em 0em .8em .1em $main-button-brick-color;
   }
 }
 
-.zoomIn {
-  animation-name: zoomIn;
+// ipadPro
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) {
+  .dice-box-icon, .main-button-container {
+    height: 9em;
+  }
 }
 </style>
