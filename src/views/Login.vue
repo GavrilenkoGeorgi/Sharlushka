@@ -51,6 +51,7 @@
                   autocomplete="off"
                   required
                   color="purple accent-4"
+                  @keyup.enter="login"
                 />
               </v-flex>
               <v-flex
@@ -59,7 +60,6 @@
                 align-center
                 align-content-center
                 justify-center
-                @keyup.enter.native="login"
                 @click="showPass = !showPass"
               >
                 <showPassIcon
@@ -210,6 +210,9 @@ export default {
     })
   },
   methods: {
+    testEnterKey() {
+      console.log(`Enter was pressed.`)
+    },
     login() {
       console.log(`Signing user in.`)
       if (this.email && this.password) { // need some proper validation

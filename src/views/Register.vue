@@ -58,6 +58,7 @@
                 color="purple accent-4"
                 required
                 hint="At least 6 characters"
+                @keyup.enter="signUp"
               />
             </v-flex>
             <v-flex
@@ -85,6 +86,7 @@
                 autocomplete="off"
                 color="purple accent-4"
                 required
+                @keyup.enter="signUp"
               />
             </v-flex>
             <v-flex
