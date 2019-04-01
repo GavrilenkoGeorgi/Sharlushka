@@ -15,11 +15,10 @@
         d-flex
         justify-center
         align-center
-        class="dice-wrapper"
+        class="school-dice-icon"
       >
         <component
           :is="dice.icon"
-          :id="dice.id"
           :class="{ chosen:dice.final }"
           @click="recordResult(dice.id)"
         />
@@ -189,9 +188,15 @@ p {
   margin: 0;
 }
 
+/*
 .dice-icon {
   // class name directly from svg file?
-  height: 3.6em;
+  // height: 3.6em;
+}
+*/
+
+.school-dice-layout, .school-dice-icon {
+  padding: 0em .15em 0em .15em;
 }
 
 .game-layout {
@@ -256,13 +261,22 @@ p {
   }
   .school-dice-layout {
     flex-direction: column;
+    padding-left: 1em;
+    // border: 1px solid red;
+    // width: 3em;
   }
+  .school-dice-icon {
+    // border: 1px solid orange;
+    width: 3.8em;
+  }
+  /*
   .dice-icon {
     height: 3.1em;
   }
   .school-dice-layout {
     width: 15%;
   }
+  */
   .school-results-layout {
     flex-direction: column;
     width: 15%;
@@ -280,8 +294,8 @@ p {
 
 // desktop
 @media screen and (max-resolution: 96dpi) and (min-width: 500px) {
-  .dice-icon {
-    height: 7em;
+  .school-dice-icon {
+    width: 7em;
   }
   .school-result {
     font-size: 2.5em;

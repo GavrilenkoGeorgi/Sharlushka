@@ -15,7 +15,7 @@
         {{ rulesHeading }}
       </h1>
       <p class="rules-text">
-        {{ overall }}
+        “{{ overall }}”
       </p>
       <p class="rules-text-eng">
         {{ overallEng }}
@@ -35,7 +35,7 @@
           xs12
         >
           <v-flex
-            v-for="(combination, index) in combinationsDescrMk3"
+            v-for="(combination, index) in combinationsDescr"
             :key="index"
             class="combination-descr"
             px-3
@@ -121,7 +121,7 @@ export default {
       // quantity: [2, 6, 1, 3, 4] is five dices -->
       // `diceTwos, diceSixes, diceOnes, diceThrees, diceFours`
       // ids are in the store
-      combinationsDescrMk3: [
+      combinationsDescr: [
         {title: `Single dice with ace`, quantity: [1], scoreValue: `-2`},
         {title: `Two aces`, quantity: [1, 1], scoreValue: `-1`},
         {title: `Three`, quantity: [1, 1, 1], scoreValue: `0`},
