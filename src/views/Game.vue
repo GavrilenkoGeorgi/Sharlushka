@@ -163,7 +163,7 @@ export default {
       `clearResultBox`
     ]),
     recordResult(id) {
-      // if this is new turn then
+      // if this is not a new turn then
       if (!this.isNewTurn) {
         this.$store.dispatch(`saveResultInStore`, id).then(() => {
           if (this.isNewTurn) {
