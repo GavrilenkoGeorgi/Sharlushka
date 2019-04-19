@@ -3,7 +3,7 @@
   <nav v-if="!['MainPage'].includes($route.name)">
     <v-toolbar
       app
-      clipped-right
+      clipped-left
       height="40"
       color="purple darken-2"
     >
@@ -12,34 +12,12 @@
         class="toolbar"
         justify-space-around
       >
-        <!-- Score display -->
-        <v-flex
-          xs3
-          pl-2
-          class="score"
-        >
-          {{ getTotalScore }}
-        </v-flex>
-        <!-- Game name display -->
-        <v-flex xs6>
-          <v-toolbar-title
-            class="game-name"
-          >
-            <router-link :to="{ path: '/' }">
-              {{ gameName }}
-            </router-link>
-          </v-toolbar-title>
-        </v-flex>
-        <v-flex
-          xs3
-        >
+        <v-flex xs3>
           <v-toolbar-items
             class="toolbar-tems"
           >
-            <v-layout justify-end>
-              <!-- Network check -->
-              <NetworkCheck />
-              <!-- Setting button -->
+            <v-layout justify-start>
+              <!-- Settings button -->
               <v-btn
                 icon
                 small
@@ -51,8 +29,28 @@
                   class="settings-icon"
                 />
               </v-btn>
+              <!-- Network check -->
+              <NetworkCheck />
             </v-layout>
           </v-toolbar-items>
+        </v-flex>
+        <!-- Game name display -->
+        <v-flex xs6>
+          <v-toolbar-title
+            class="game-name"
+          >
+            <router-link :to="{ path: '/' }">
+              {{ gameName }}
+            </router-link>
+          </v-toolbar-title>
+        </v-flex>
+        <!-- Score display -->
+        <v-flex
+          xs3
+          pr-2
+          class="score text-xs-right"
+        >
+          {{ getTotalScore }}
         </v-flex>
       </v-layout>
     </v-toolbar>
@@ -60,7 +58,8 @@
     <v-navigation-drawer
       v-model="navDrawer"
       app
-      right
+      left
+      width="275"
       floating
       temporary
       class="navigation-drawer"
@@ -76,7 +75,7 @@
             </v-layout>
           </v-list-tile-action>
           <v-list-tile-title class="drawer-menu-item">
-            Back
+            Close
           </v-list-tile-title>
         </v-list-tile>
         <!-- Greeting -->
@@ -127,7 +126,7 @@ import settingsIcon from '../assets/icons/baseline-menu-24px.svg'
 import userStatsIcon from '../assets/icons/baseline-equalizer-24px.svg'
 import leaderBoardIcon from '../assets/icons/baseline-import_export-24px.svg'
 import logInOutIcon from '../assets/icons/baseline-exit_to_app-24px.svg'
-import backIcon from '../assets/icons/baseline-keyboard_backspace-24px.svg'
+import backIcon from '../assets/icons/baseline-close-24px.svg'
 import playIcon from '../assets/icons/baseline-play_arrow-24px.svg'
 import helpIcon from '../assets/icons/baseline-help_outline-24px.svg'
 
@@ -226,7 +225,7 @@ export default {
 
 .navigation-drawer {
   font-family: $text-font;
-  border-left: .066em solid $color-primary-0;
+  border-right: .066em solid $color-primary-0;
 }
 
 .drawer-menu-item {

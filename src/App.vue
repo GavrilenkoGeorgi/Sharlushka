@@ -57,6 +57,12 @@ export default {
 #app {
   background: #ffffff;
 }
+
+// nav bar links padding
+.v-list__tile {
+  padding: 0em;
+}
+
 @media only screen and (max-width: 959px) {
   .v-toolbar__content, .v-toolbar__extension {
     padding: 0 0px;
