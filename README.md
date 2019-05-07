@@ -34,3 +34,4 @@ So basically, in Sharluska you have thirty three turns, each turn consists of th
 ### :pencil: Known issues
 - User name doesn't update immetiately after login in navigation drawer.
 - If you play as a registered user, then logout and play, gathering new set of stats as Anonymous, on the next login, user "Dice values favorites" will be overwritten with the ones that you have gathered playing as Anonymous.
+- If you played as Anonymous and then logged in into existing account, user dice favs are overwritten on login with current localStorage values.
