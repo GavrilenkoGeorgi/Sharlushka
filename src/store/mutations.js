@@ -234,13 +234,12 @@ export default {
     } else return false
   },
   saveResultInStore (state, id) {
-    console.log(`Saving to store...`)
     const combinationIndexToSave = state.scoreArray.map((dice) => dice.id).indexOf(id)
     // check if it is school result
     if (!state.schoolCompleted && !state.newTurn) {
       if (!state.scoreArray[combinationIndexToSave].final
         && state.scoreArray[combinationIndexToSave].value !== ``) {
-        console.log(`Saved school result.`)
+        // console.log(`Saved school result.`)
         state.scoreArray[combinationIndexToSave].final = true
         state.schoolScoreTotal += state.scoreArray[combinationIndexToSave].value
         if (state.currentGameTurn === 6) {
@@ -257,7 +256,7 @@ and you can't save zero to school combination.`)
       if (state.scoreArray[combinationIndexToSave].value !== `` &&
         !state.scoreArray[combinationIndexToSave].final &&
         state.scoreArray[combinationIndexToSave].displayValues.length < 3) {
-        console.log(`Saved game result.`)
+        // console.log(`Saved game result.`)
         state.scoreArray[combinationIndexToSave].displayValues.push(state.scoreArray[combinationIndexToSave].value)
         state.gameTotal += state.scoreArray[combinationIndexToSave].value
         // new turn after game
@@ -289,7 +288,6 @@ and you can't save zero to school combination.`)
         // state.lastSave = true
       }
       if (state.scoreArray[combinationIndexToSave].displayValues.length === 3) {
-        console.log(`Setting combination final.`)
         // set it to final
         state.scoreArray[combinationIndexToSave].final = true
         // and clear current value so it won't stay onscreen (
@@ -322,15 +320,35 @@ and you can't save zero to school combination.`)
     function getRandomInt(max) {
       return Math.floor(Math.random() * Math.floor(max))
     }
+    // let counter = 0
+    // let numbah = undefined
     for (const dice of state.diceArray) {
+      // ----------- Every possible combination -----------
+      /*
+      if (counter < 2) {
+        numbah = 6
+      } else if (counter <= 3){
+        numbah = 6
+      } else {
+        numbah = 6
+      }
       if (!dice.chosen) {
-        // let numbah = Math.floor((Math.random() * 6) + 1)
+        // set dice value
+        dice.value = numbah
+        // set dice icon svg image
+        dice.currentIcon = state.scoreArray[numbah - 1].icon
+      }
+      counter++ */
+
+      // ----------- Pseudo random numbers -----------
+      if (!dice.chosen) {
         const numbah = getRandomInt(6) + 1 // shifting stuff
         // set dice value
         dice.value = numbah
         // set dice icon svg image
         dice.currentIcon = state.scoreArray[numbah - 1].icon
       }
+      // ----------------------------------------------
     }
     // check if user was able to complete school
     // on last roll in school on the sixth turn we check if we can continue
@@ -424,7 +442,7 @@ and you can't save zero to school combination.`)
     Object.assign(userToUpdate, valuesToSet)
   },
   setUserFavStats (state, values) {
-    // console.log(`Setting user favs.`)
+    console.log(`Setting user favs.`)
     let valuesToSet = {
       diceValuesFavs: values
     }
@@ -448,19 +466,160 @@ and you can't save zero to school combination.`)
   resetGameOver (state, value) {
     state.gameOver = value
   },
-  clearResultBox(state) {
+  clearResultBox(state, id) {
+    let getMaxValueQuantity = (array, max) => {
+      const quantity = new Map([...new Set(array)]
+        .map(x => [x, array.filter(y => y === x).length]))
+      return quantity.get(max)
+    }
+
+    if (id) { // adding saved combination to stats
+      // for school results
+      let combinationIndex = state.scoreArray.findIndex(combination => combination.id === id)
+      let schoolArray = state.scoreArray.slice(0, 6)
+
+      // for game results
+      let combination = state.scoreArray.find(combination => combination.id === id)
+      let currentCombinationArray = state.combinationArray
+
+      // for `two pairs` and `full` combinations
+      let maxValue = Math.max(...currentCombinationArray)
+      let secondValue = undefined
+      let maxValueQuantity = getMaxValueQuantity(state.combinationArray, maxValue)
+
+      // calculate two pairs combination values
+      if (id == `twoPairs`) {
+        // get current values
+        maxValue = Math.max(...currentCombinationArray)
+        console.dir(`Max value quantity ${maxValueQuantity}`)
+        console.log(maxValueQuantity)
+        // make some changes
+        if (maxValueQuantity == 1) {
+          console.log(`Two pairs. ${currentCombinationArray}`)
+          let itemToRemove = currentCombinationArray.indexOf(maxValue)
+          // remove current max value
+          if (itemToRemove > -1) {
+            currentCombinationArray.splice(itemToRemove, 1)
+          }
+          // so that we have new trimmed array of values
+          // and new maxValue from it for two pairs combination
+          maxValue = Math.max(...currentCombinationArray)
+          console.log(`new max value ${maxValue}`)
+          secondValue = state.combinationArray.find(value => value !== maxValue)
+        } else if (currentCombinationArray.length == 5) {
+          // not `full`, but two pairs with one additional die
+          // get other dice by clearing current max values
+          // from array
+          let twoPairsArray = []
+          for (let value of currentCombinationArray) {
+            if (value != maxValue) {
+              twoPairsArray.push(value)
+            }
+          }
+          console.log(`Trimmed array --> ${twoPairsArray}`)
+          if (twoPairsArray.length <= 3) {
+            // first element of array
+            secondValue = twoPairsArray[0]
+          } else {
+            let secondToMaxValue = Math.max(...twoPairsArray)
+            secondValue = twoPairsArray.find(value => value !== secondToMaxValue)
+          }
+        } else {
+          console.log(`Genuine two pairs!`)
+          // max value is above so
+          // just find second value
+          secondValue = state.combinationArray.find(value => value !== maxValue)
+        }
+      }
+      // for calculating combinations
+      // consisting from equal dice
+      let gameCombinationValue = undefined
+      if (combination.displayValues) {
+        gameCombinationValue = combination.displayValues[combination.displayValues.length - 1]
+      } else {
+        gameCombinationValue = combination.value
+      }
+
+      switch (id) {
+      // school results
+      case `ones`:
+      case `twos`:
+      case `threes`:
+      case `fours`:
+      case `fives`:
+      case `sixes`:
+        for (let dice of currentCombinationArray) {
+          for (let index in schoolArray) {
+            if ((dice - 1) == index && index == combinationIndex) {
+              // increment
+              state.user.diceValuesFavs[index] += 1
+            }
+          }
+        }
+        break
+      // game results
+      case `pair`:
+        state.user.diceValuesFavs[gameCombinationValue/2 - 1] += 2
+        break
+      case `threeOfAKind`:
+        state.user.diceValuesFavs[gameCombinationValue/3 - 1] += 3
+        break
+      case `quads`:
+        state.user.diceValuesFavs[gameCombinationValue/4 - 1] += 4
+        break
+        // 6 in poker is 30 + 80
+      case `poker`:
+        state.user.diceValuesFavs[(gameCombinationValue - 80) / 5 - 1] += 5
+        break
+      case `twoPairs`:
+        state.user.diceValuesFavs[maxValue - 1] += 2
+        state.user.diceValuesFavs[secondValue - 1] += 2
+        break
+      case `full`:
+        secondValue = state.combinationArray.find(value => value !== maxValue)
+        if (maxValueQuantity == 3) {
+          state.user.diceValuesFavs[maxValue - 1] += maxValueQuantity
+          state.user.diceValuesFavs[secondValue - 1] += 2
+        } else {
+          state.user.diceValuesFavs[maxValue - 1] += maxValueQuantity - 1
+          state.user.diceValuesFavs[secondValue - 1] += 3
+        }
+        break
+      case `small`:
+        // incrementing from 0 to 4
+        for (let index of 5) {
+          state.user.diceValuesFavs[index - 1] += 1
+        }
+        break
+      case `large`:
+        // incrementing from 1 to 5
+        for (let index of 5) {
+          state.user.diceValuesFavs[index] += 1
+        }
+        break
+      case `chance`:
+        // incrementing by values
+        for (let value of currentCombinationArray) {
+          let index = value - 1
+          state.user.diceValuesFavs[index] += 1
+        }
+        break
+      }
+    }
     // clear all temp results in store
-    for (const key in state.scoreArray) {
+    for (let key in state.scoreArray) {
       if (!state.scoreArray[key].final) {
         state.scoreArray[key].value = ``
       }
     }
     // deselect all dice
-    for (const key in state.diceArray) {
+    for (let key in state.diceArray) {
       if (state.diceArray[key].chosen) {
         state.diceArray[key].chosen = false
       }
     }
+    // reset combination array
+    state.combinationArray = []
   },
   setErrorMessage(state, error) {
     if (error !== false) {

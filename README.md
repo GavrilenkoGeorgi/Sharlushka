@@ -32,6 +32,5 @@ From the 1967 Yahtzee rulebook:
 So basically, in Sharluska you have thirty three turns, each turn consists of three rolls, or if you're lucky and got "poker" on the first roll, you can save current combination result immediately, so the remaining rolls are optional. But you have to complete all turns rolling the dice and saving results for each combination. If you're not so lucky, eventually you will have to write a zero to the empty combination, so that you can continue playing, but you should remember, more zeroes -- less score. School is different, you have to save all school results, even with minus, to complete it.
 
 ### :pencil: Known issues
-- User name doesn't update immetiately after login in navigation drawer.
-- If you play as a registered user, then logout and play, gathering new set of stats as Anonymous, on the next login, user "Dice values favorites" will be overwritten with the ones that you have gathered playing as Anonymous.
-- If you played as Anonymous and then logged in into existing account, user dice favs are overwritten on login with current localStorage values.
+- User name doesn't update immediately in navigation drawer after loggin.
+- If you play as a registered user, then logout and play gathering new set of stats as Anonymous, on the next login, user "Dice values favorites" will be overwritten with the ones that you have gathered playing as Anonymous.

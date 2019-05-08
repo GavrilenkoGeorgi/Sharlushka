@@ -159,7 +159,6 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(`Dice box mounted.`)
       if (`vibrate` in navigator) {
         // vibration API supported
         this.navigatorSupported = true
@@ -170,8 +169,6 @@ export default {
     restartGame() {
       console.log(`Restarting game.`)
       store.commit(`resetState`)
-      // cause of the same route
-      // this.$router.go(`/game`)
     },
     vibrate() {
       if (this.navigatorSupported) {
@@ -206,7 +203,7 @@ export default {
         this.$store.commit(`setDiceChosenState`, id)
         this.$store.dispatch(`computeScore`, id)
         // then save chosen dice value to favs
-        this.$store.dispatch(`saveFavDiceValue`, id)
+        // this.$store.dispatch(`saveFavDiceValue`, id)
         const dice = document.getElementById(id)
         const diceBox = dice.parentElement
         // get chosen dice quantity if any,

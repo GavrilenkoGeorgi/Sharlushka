@@ -49,6 +49,8 @@
           xs3
           pr-2
           class="score text-xs-right"
+          type="button"
+          @click="clearDiceSelection"
         >
           {{ getTotalScore }}
         </v-flex>
@@ -118,7 +120,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 import NetworkCheck from '../components/NetworkCheck.vue'
 import settingsIcon from '../assets/icons/baseline-menu-24px.svg'
@@ -191,8 +193,14 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      `clearResultBox`
+    ]),
     manipulateDrawer() {
       this.navDrawer = !this.navDrawer
+    },
+    clearDiceSelection() {
+      this.$store.commit(`clearResultBox`)
     }
   }
 }

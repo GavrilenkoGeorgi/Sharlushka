@@ -148,7 +148,6 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(`Game view mounted.`)
       if (this.getUserAuthState) {
         // shouldn't be here i guess
         let userNameToSet = localStorage.getItem(`userName`)
@@ -166,11 +165,12 @@ export default {
       // if this is not a new turn then
       if (!this.isNewTurn) {
         this.$store.dispatch(`saveResultInStore`, id).then(() => {
-          if (this.isNewTurn) {
-            this.$store.commit(`clearResultBox`)
+          if (this.isNewTurn && !this.isGameEnded) {
+            this.$store.commit(`nextTurn`)
+            /* this.$store.commit(`clearResultBox`)
             if (!this.isGameEnded) {
               this.$store.commit(`nextTurn`)
-            }
+            } */
           }
         })
       } else {
@@ -187,13 +187,6 @@ export default {
 p {
   margin: 0;
 }
-
-/*
-.dice-icon {
-  // class name directly from svg file?
-  // height: 3.6em;
-}
-*/
 
 .school-dice-layout, .school-dice-icon {
   padding: 0em .15em 0em .15em;
@@ -269,14 +262,6 @@ p {
     // border: 1px solid orange;
     width: 3.8em;
   }
-  /*
-  .dice-icon {
-    height: 3.1em;
-  }
-  .school-dice-layout {
-    width: 15%;
-  }
-  */
   .school-results-layout {
     flex-direction: column;
     width: 15%;

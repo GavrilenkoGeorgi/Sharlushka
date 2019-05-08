@@ -47,6 +47,7 @@ const actions = {
   saveResultInStore ({ commit }, id) {
     return new Promise((resolve) => {
       commit(`saveResultInStore`, id)
+      commit(`clearResultBox`, id)
       resolve()
     })
   },
@@ -62,9 +63,9 @@ const actions = {
       resolve()
     })
   },
-  saveFavDiceValue ({ commit }, error ) {
+  saveFavDiceValue ({ commit }, id ) {
     return new Promise((resolve) => {
-      commit(`saveFavDiceValue`, error)
+      commit(`saveFavDiceValue`, id)
       resolve()
     })
   },
