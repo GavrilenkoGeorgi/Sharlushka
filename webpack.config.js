@@ -44,6 +44,19 @@ module.exports = (env, argv) => ({
         include: [path.join(__dirname, 'src')],
       },
       {
+        test: /\.sass$/,
+        use: [
+          'vue-style-loader',
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              indentedSyntax: true
+            }
+          }
+        ]
+      },
+      {
         test: /\.scss|.css$/,
         use: [
           'vue-style-loader',

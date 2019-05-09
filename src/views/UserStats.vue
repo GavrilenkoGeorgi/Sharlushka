@@ -323,9 +323,9 @@ export default {
         // init everything
         this.userName = localStorage.getItem(`userName`)
         this.highestScore = localStorage.getItem(`highestScore`)
-        this.userScoresArray = this.assembleLastScoresArray()
+        this.userScoresArray = this.assembleLastScoresArray() // ?
         // school results array for chart display
-        this.assembleSchoolScoresArray()
+        this.assembleSchoolScoresArray() // ?
         this.setDiceFavsValuesChartSeries()
         this.setCombinationsFavsChartSeries()
         this.lastScoresToDisplay = this.userScoresArray.slice(0).slice(this.chartResultsToShow)
@@ -438,147 +438,107 @@ export default {
   }
 }
 </script>
+<style lang="sass">
+@import '../assets/scss/index.scss'
+@import '../assets/sass/mixins.sass'
 
-<style lang="scss">
+.user-name
+  color: $color-orange
+  font-size: 1.7em
+  +desktop(96dpi, 600px)
+    font-size: 3em
+  +handheld(2, 1024px)
+    font-size: 2.7em
 
-@import '../assets/scss/index.scss';
+.hi-score
+  line-height: 1
 
-.user-name {
-  color: $color-orange;
-  font-size: 1.7em;
-}
-.hi-score {
-  line-height: 1;
-}
-.hi-score-display {
-  color: $color-primary-1;
-  font-size: 1.7em;
-  text-align: center;
-}
-.stats-display {
-  color: $color-primary-3;
-  font-size: 1.1em;
-  font-weight: 700;
-  line-height: 1.3;
-}
+.hi-score-display
+  color: $color-primary-1
+  font-size: 1.7em
+  text-align: center
+  +desktop(96dpi, 600px)
+    font-size: 2em
+  +handheld(2, 1024px)
+    font-size: 2.7em
 
-.ct-series-a .ct-point {
-  stroke: $color-primary-1;
-  stroke-width: .1em;
-}
-.ct-series-a .ct-line {
-  stroke: #E1BEE7;
-  stroke-width: .06em;
-}
-.ct-series-a .ct-bar {
-  stroke: $color-primary-1;
-  stroke-width: .25em;
-}
-.ct-nodata {
-  visibility: hidden;
-  height: 0em;
-}
+.stats-display
+  color: $color-primary-3
+  font-size: 1.1em
+  font-weight: 700
+  line-height: 1.3
+  +desktop(96dpi, 600px)
+    font-size: 1.5em
+  +handheld(2, 1024px)
+    font-size: 2.2em
 
-.game-results-chart {
-  .ct-series-a .ct-bar {
-  stroke: $color-primary-1;
-  stroke-width: .25em;
-  }
-}
+.ct-label
+  color: $color-primary-3
 
-.dice-favs-chart {
-  .ct-series-a .ct-bar {
-    stroke-width: .3em;
-  }
-  .ct-end {
-    font-size: 1em;
-    color: $color-primary-1;
-  }
-}
+.game-results-chart
+  .ct-end
+    font-size: .6em
 
-.combinations-favs-chart {
-  .ct-start {
-    font-size: .9em;
-    color: $color-primary-1;
-  }
-  .ct-series-a .ct-bar {
-    stroke-width: .3em;
-  }
-}
+.ct-series-a .ct-point
+  stroke: $color-primary-1
+  stroke-width: .2em
+  +handheld(2, 1024px)
+    stroke-width: .4em
 
-// desktop
-@media screen and (max-resolution: 96dpi) and (min-width: 500px) {
-  .user-name {
-    font-size: 3em;
-  }
-  .hi-score-display {
-    font-size: 2em;
-  }
-  .stats-display {
-    font-size: 1.5em;
-  }
-}
+.ct-series-a .ct-line
+  stroke: #E1BEE7
+  stroke-width: .12em
+  +handheld(2, 1024px)
+    stroke-width: .24em
 
-#userStats {
-  height: 100%;
-}
+.ct-series-a .ct-bar
+  stroke: $color-primary-1
+  +handheld(2, 1024px)
+    stroke-width: 1em
 
-.message-to-anonymous {
-  font-family: $text-font;
-  padding: 2em 0em 2em 0em;
-}
+.ct-nodata
+  visibility: hidden
+  height: 0em
 
-@media screen and (orientation: landscape) {
-  .hi-score-display {
-    font-size: 1.8em;
-  }
-}
+.game-results-chart
+  .ct-series-a .ct-bar
+  stroke: $color-primary-1
+  stroke-width: .25em
+  +handheld(2, 1024px)
+    stroke-width: .5em
 
-// ipadPro
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) {
-  .user-name {
-    font-size: 2.7em;
-  }
-  .hi-score-display {
-    font-size: 2.7em;
-  }
-  .stats-display {
-    font-size: 2.2em;
-  }
+.dice-favs-chart
+  .ct-series-a .ct-bar
+    stroke-width: .6em
+    +handheld(2, 1024px)
+      stroke-width: 1em
 
-  .ct-series-a .ct-point {
-    stroke-width: .2em;
-  }
-  .ct-series-a .ct-line {
-    stroke: #E1BEE7;
-    stroke-width: .12em;
-  }
-  .ct-series-a .ct-bar {
-    stroke-width: .5em;
-  }
-  .game-results-chart {
-    .ct-series-a .ct-bar {
-    stroke-width: .5em;
-    }
-  }
+  .ct-end
+    font-size: 1em
+    color: $color-primary-1
+    +handheld(2, 1024px)
+      font-size: 1.6em
 
-  .dice-favs-chart {
-    .ct-series-a .ct-bar {
-      stroke-width: 1em;
-    }
-    .ct-end {
-      font-size: 1.8em;
-    }
-  }
+.combinations-favs-chart
+  .ct-start
+    font-size: .9em
+    color: $color-primary-1
+    +handheld(2, 1024px)
+      font-size: 1.6em
 
-  .combinations-favs-chart {
-    .ct-start {
-      font-size: 1.8em;
-    }
-    .ct-series-a .ct-bar {
-      stroke-width: 1em;
-    }
-  }
-}
+  .ct-end
+   font-size: .7em
 
+  .ct-series-a .ct-bar
+    stroke-width: .6em
+    +handheld(2, 1024px)
+      stroke-width: 1em
+
+.message-to-anonymous
+  font-family: $text-font
+  padding: 2em 0em 2em 0em
+
+@media screen and (orientation: landscape)
+  .hi-score-display
+    font-size: 1.8em
 </style>
