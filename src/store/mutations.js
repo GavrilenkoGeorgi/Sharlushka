@@ -249,7 +249,7 @@ export default {
         state.newTurn = true
       } else {
         console.log(`You clicked on an empty field
-and you can't save zero to school combination.`)
+          and you can't save zero to school combination.`)
       }
     } else if (state.schoolCompleted && !state.newTurn) {
       // record game result
@@ -325,11 +325,15 @@ and you can't save zero to school combination.`)
     for (const dice of state.diceArray) {
       // ----------- Every possible combination -----------
       /*
-      if (counter < 2) {
-        numbah = 6
-      } else if (counter <= 3){
-        numbah = 6
-      } else {
+      if (counter < 1) {
+        numbah = 2
+      } else if (counter < 2) {
+        numbah = 3
+      } else if (counter < 3) {
+        numbah = 4
+      } else if (counter < 4 ) {
+        numbah = 5
+      } else if (counter < 5 ) {
         numbah = 6
       }
       if (!dice.chosen) {
@@ -442,7 +446,7 @@ and you can't save zero to school combination.`)
     Object.assign(userToUpdate, valuesToSet)
   },
   setUserFavStats (state, values) {
-    console.log(`Setting user favs.`)
+    // console.log(`Setting user favs.`)
     let valuesToSet = {
       diceValuesFavs: values
     }
@@ -472,138 +476,146 @@ and you can't save zero to school combination.`)
         .map(x => [x, array.filter(y => y === x).length]))
       return quantity.get(max)
     }
-
-    if (id) { // adding saved combination to stats
-      // for school results
-      let combinationIndex = state.scoreArray.findIndex(combination => combination.id === id)
-      let schoolArray = state.scoreArray.slice(0, 6)
-
-      // for game results
-      let combination = state.scoreArray.find(combination => combination.id === id)
-      let currentCombinationArray = state.combinationArray
-
-      // for `two pairs` and `full` combinations
-      let maxValue = Math.max(...currentCombinationArray)
-      let secondValue = undefined
-      let maxValueQuantity = getMaxValueQuantity(state.combinationArray, maxValue)
-
-      // calculate two pairs combination values
-      if (id == `twoPairs`) {
-        // get current values
-        maxValue = Math.max(...currentCombinationArray)
-        console.dir(`Max value quantity ${maxValueQuantity}`)
-        console.log(maxValueQuantity)
-        // make some changes
-        if (maxValueQuantity == 1) {
-          console.log(`Two pairs. ${currentCombinationArray}`)
-          let itemToRemove = currentCombinationArray.indexOf(maxValue)
-          // remove current max value
-          if (itemToRemove > -1) {
-            currentCombinationArray.splice(itemToRemove, 1)
-          }
-          // so that we have new trimmed array of values
-          // and new maxValue from it for two pairs combination
-          maxValue = Math.max(...currentCombinationArray)
-          console.log(`new max value ${maxValue}`)
-          secondValue = state.combinationArray.find(value => value !== maxValue)
-        } else if (currentCombinationArray.length == 5) {
-          // not `full`, but two pairs with one additional die
-          // get other dice by clearing current max values
-          // from array
-          let twoPairsArray = []
-          for (let value of currentCombinationArray) {
-            if (value != maxValue) {
-              twoPairsArray.push(value)
-            }
-          }
-          console.log(`Trimmed array --> ${twoPairsArray}`)
-          if (twoPairsArray.length <= 3) {
-            // first element of array
-            secondValue = twoPairsArray[0]
-          } else {
-            let secondToMaxValue = Math.max(...twoPairsArray)
-            secondValue = twoPairsArray.find(value => value !== secondToMaxValue)
-          }
-        } else {
-          console.log(`Genuine two pairs!`)
-          // max value is above so
-          // just find second value
-          secondValue = state.combinationArray.find(value => value !== maxValue)
-        }
-      }
+    if (id) {
       // for calculating combinations
       // consisting from equal dice
       let gameCombinationValue = undefined
+      let combination = state.scoreArray.find(combination => combination.id === id)
+
       if (combination.displayValues) {
         gameCombinationValue = combination.displayValues[combination.displayValues.length - 1]
       } else {
         gameCombinationValue = combination.value
       }
 
-      switch (id) {
-      // school results
-      case `ones`:
-      case `twos`:
-      case `threes`:
-      case `fours`:
-      case `fives`:
-      case `sixes`:
-        for (let dice of currentCombinationArray) {
-          for (let index in schoolArray) {
-            if ((dice - 1) == index && index == combinationIndex) {
-              // increment
-              state.user.diceValuesFavs[index] += 1
+      if (gameCombinationValue) { // adding saved combination to stats
+        // for school results
+        let combinationIndex = state.scoreArray.findIndex(combination => combination.id === id)
+        let schoolArray = state.scoreArray.slice(0, 6)
+
+        // for game results
+        let currentCombinationArray = state.combinationArray
+
+        // for `two pairs` and `full` combinations
+        let maxValue = Math.max(...currentCombinationArray)
+        let secondValue = undefined
+        let diceQuantity = state.diceArray.length
+        let maxValueQuantity = getMaxValueQuantity(state.combinationArray, maxValue)
+
+        // calculate two pairs combination values
+        if (id == `twoPairs`) {
+          // get current values
+          maxValue = Math.max(...currentCombinationArray) // really need this?
+          // console.dir(`Max value quantity ${maxValueQuantity}`)
+          // console.log(maxValueQuantity)
+          // make some changes
+          if (maxValueQuantity == 1) {
+            // console.log(`Two pairs. ${currentCombinationArray}`)
+            let itemToRemove = currentCombinationArray.indexOf(maxValue)
+            // remove current max value
+            if (itemToRemove > -1) {
+              currentCombinationArray.splice(itemToRemove, 1)
             }
+            // so that we have new trimmed array of values
+            // and new maxValue from it for two pairs combination
+            maxValue = Math.max(...currentCombinationArray)
+            // console.log(`new max value ${maxValue}`)
+            secondValue = state.combinationArray.find(value => value !== maxValue)
+          } else if (currentCombinationArray.length == 5) {
+            // not `full`, but two pairs with one additional die
+            // get other dice by clearing current max values
+            // from array
+            let twoPairsArray = []
+            for (let value of currentCombinationArray) {
+              if (value != maxValue) {
+                twoPairsArray.push(value)
+              }
+            }
+            // console.log(`Trimmed array --> ${twoPairsArray}`)
+            if (twoPairsArray.length <= 3) {
+              // first element of array
+              secondValue = twoPairsArray[0]
+            } else {
+              let secondToMaxValue = Math.max(...twoPairsArray)
+              secondValue = twoPairsArray.find(value => value !== secondToMaxValue)
+            }
+          } else {
+            // genuine two pairs
+            // max value is above so
+            // just find the second value
+            secondValue = state.combinationArray.find(value => value !== maxValue)
           }
         }
-        break
-      // game results
-      case `pair`:
-        state.user.diceValuesFavs[gameCombinationValue/2 - 1] += 2
-        break
-      case `threeOfAKind`:
-        state.user.diceValuesFavs[gameCombinationValue/3 - 1] += 3
-        break
-      case `quads`:
-        state.user.diceValuesFavs[gameCombinationValue/4 - 1] += 4
-        break
-        // 6 in poker is 30 + 80
-      case `poker`:
-        state.user.diceValuesFavs[(gameCombinationValue - 80) / 5 - 1] += 5
-        break
-      case `twoPairs`:
-        state.user.diceValuesFavs[maxValue - 1] += 2
-        state.user.diceValuesFavs[secondValue - 1] += 2
-        break
-      case `full`:
-        secondValue = state.combinationArray.find(value => value !== maxValue)
-        if (maxValueQuantity == 3) {
-          state.user.diceValuesFavs[maxValue - 1] += maxValueQuantity
+
+        switch (id) {
+        // school results
+        case `ones`:
+        case `twos`:
+        case `threes`:
+        case `fours`:
+        case `fives`:
+        case `sixes`:
+          for (let dice of currentCombinationArray) {
+            for (let index in schoolArray) {
+              if ((dice - 1) == index && index == combinationIndex) {
+                // increment
+                state.user.diceValuesFavs[index] += 1
+              }
+            }
+          }
+          break
+        // game results
+        case `pair`:
+          state.user.diceValuesFavs[gameCombinationValue/2 - 1] += 2
+          break
+        case `threeOfAKind`:
+          state.user.diceValuesFavs[gameCombinationValue/3 - 1] += 3
+          break
+        case `quads`:
+          state.user.diceValuesFavs[gameCombinationValue/4 - 1] += 4
+          break
+          // 6 in poker is 30 + 80
+        case `poker`:
+          state.user.diceValuesFavs[(gameCombinationValue - 80) / 5 - 1] += 5
+          break
+        case `twoPairs`:
+          state.user.diceValuesFavs[maxValue - 1] += 2
           state.user.diceValuesFavs[secondValue - 1] += 2
-        } else {
-          state.user.diceValuesFavs[maxValue - 1] += maxValueQuantity - 1
-          state.user.diceValuesFavs[secondValue - 1] += 3
+          break
+        case `full`:
+          secondValue = state.combinationArray.find(value => value !== maxValue)
+          if (maxValueQuantity == 3) {
+            state.user.diceValuesFavs[maxValue - 1] += maxValueQuantity
+            state.user.diceValuesFavs[secondValue - 1] += 2
+          } else {
+            state.user.diceValuesFavs[maxValue - 1] += maxValueQuantity - 1
+            state.user.diceValuesFavs[secondValue - 1] += 3
+          }
+          break
+        case `small`:
+          while (diceQuantity != 0) {
+            // small combination
+            // from value `five` to `one`
+            state.user.diceValuesFavs[diceQuantity - 1] += 1
+            diceQuantity--
+          }
+          break
+        case `large`:
+          while (diceQuantity != 0) {
+            // large combination
+            // from value `six` to `two`
+            state.user.diceValuesFavs[diceQuantity] += 1
+            diceQuantity--
+          }
+          break
+        case `chance`:
+          // incrementing by values
+          for (let value of currentCombinationArray) {
+            let index = value - 1
+            state.user.diceValuesFavs[index] += 1
+          }
+          break
         }
-        break
-      case `small`:
-        // incrementing from 0 to 4
-        for (let index of 5) {
-          state.user.diceValuesFavs[index - 1] += 1
-        }
-        break
-      case `large`:
-        // incrementing from 1 to 5
-        for (let index of 5) {
-          state.user.diceValuesFavs[index] += 1
-        }
-        break
-      case `chance`:
-        // incrementing by values
-        for (let value of currentCombinationArray) {
-          let index = value - 1
-          state.user.diceValuesFavs[index] += 1
-        }
-        break
       }
     }
     // clear all temp results in store
