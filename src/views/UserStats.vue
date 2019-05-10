@@ -439,8 +439,6 @@ export default {
 }
 </script>
 <style lang="sass">
-@import '../assets/scss/index.scss'
-@import '../assets/sass/mixins.sass'
 
 .user-name
   color: $color-orange
@@ -535,7 +533,6 @@ export default {
       stroke-width: 1em
 
 .message-to-anonymous
-  font-family: $text-font
   padding: 2em 0em 2em 0em
 
 @media screen and (orientation: landscape)

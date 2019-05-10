@@ -199,46 +199,38 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import "../assets/scss/index.scss"; // is this really neccesary?
+<style lang="sass" scoped>
+@import "../assets/sass/fonts.sass"
 
-#leaderboard {
-  font-family: $text-font;
-}
+#leaderboard
+  font-family: $text-font
 
-.leaderboard-title {
-  font-size: 2em;
-}
+.leaderboard-title
+  font-size: 2em
 
-.leaderboard-legend {
-  font-weight: 700;
-  color: $color-primary-3;
-  background-color: $color-pale-primary;
-}
+.leaderboard-legend
+  font-weight: 700
+  color: $color-primary-3
+  background-color: $color-pale-primary
 
-.no-leaderboard-message {
-  margin: 1em 0em 1em 0em;
-  color: $color-primary-2;
-  font-size: 1.6em;
-}
+.no-leaderboard-message
+  margin: 1em 0em 1em 0em
+  color: $color-primary-2
+  font-size: 1.6em
 
-.error-message {
-  font-size: 1.3em;
-  color: $color-error-message-red-text;
-}
+.error-message
+  font-size: 1.3em
+  color: $color-error-message-red-text
 
-.leaderboard {
-  font-size: 1.2em;
-  font-weight: 700;
-  color: $color-primary-2;
-}
+.leaderboard
+  font-size: 1.2em
+  font-weight: 700
+  color: $color-primary-2
 
-.leaderboard-item:hover {
-  background-color: $color-pale-primary;
-}
+.leaderboard-item:hover
+  background-color: $color-pale-primary
 
-.v-progress-circular {
+.v-progress-circular
   margin: 1rem
-}
 
 </style>

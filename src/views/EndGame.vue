@@ -319,30 +319,25 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-@import "../assets/scss/index.scss";
+<style lang="sass" scoped>
 
-.user-name-game-end {
-  span {
-    color: $color-chosen;
-  }
-}
-.message-school {
-  line-height: 1.5;
-}
+.user-name-game-end
+  span
+    color: $color-chosen
 
-.network-check-background {
-  height: 3em;
-}
+.message-school
+  line-height: 1.5
 
-.offline-dialog {
-  border-radius: .3em;
-  border: .1em solid $color-primary-0;
-}
+.network-check-background
+  height: 3em
 
-.offline-dialog-message {
-  padding-top: 0em;
-  font-size: 1.2em;
-  color: $color-primary-3;
-}
+.offline-dialog
+  border-radius: .3em
+  border: .1em solid $color-primary-0
+
+.offline-dialog-message
+  padding-top: 0em
+  font-size: 1.2em
+  color: $color-primary-3
+
 </style>

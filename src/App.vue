@@ -50,22 +50,20 @@ export default {
 </style>
 <style src='../node_modules/chartist/dist/chartist.min.css'>
 </style>
-<style lang="scss">
-@import './assets/scss/index.scss';
-@import './assets/scss/animations.scss';
+<style lang="sass">
+@import "/assets/sass/animations.sass"
+@import "/assets/sass/index.sass"
 
-#app {
-  background: #ffffff;
-}
+#app
+  background: #ffffff
+  font-family: $text-font
 
 // nav bar links padding
-.v-list__tile {
-  padding: 0em;
-}
+.v-list__tile
+  padding: 0em
 
-@media only screen and (max-width: 959px) {
-  .v-toolbar__content, .v-toolbar__extension {
-    padding: 0 0px;
-  }
-}
+@media only screen and (max-width: 959px)
+  .v-toolbar__content, .v-toolbar__extension
+    padding: 0 0px
+
 </style>

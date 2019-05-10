@@ -308,15 +308,14 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import "../assets/scss/vars/colors.scss";
+<style lang="sass" scoped>
+@import "../assets/sass/index.sass"
 
-.showPass {
-  color: $color-primary-0;
-}
+.showPass
+  color: $color-primary-0
 
-.button {
-  line-height: 2em;
-}
+.button
+  line-height: 2em
+
 </style>
 

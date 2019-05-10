@@ -181,152 +181,100 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import "../assets/scss/vars/colors.scss";
+<style lang="sass" scoped>
 
-p {
-  margin: 0;
-}
+p
+  margin: 0
 
-.school-dice-layout, .school-dice-icon {
-  padding: 0em .15em 0em .15em;
-}
+.school-dice-layout, .school-dice-icon
+  padding: 0em .15em 0em .15em
 
-.game-layout {
-  transition: background-color 1s ease-in;
-  padding: .3em 0em .3em 0em;
-  color: $color-primary-0;
-}
-.school-results-layout {
-  height: 1em;
-  font-size: 1.5em;
-}
-.game-combinations-layout {
-  font-size: 1.8em;
-}
-.game-combination {
-  padding: .075em 0em .075em 0em;
-}
-.accented {
-  background-color: $color-combination-highlight;
-}
-.background-transition {
-  transition: background-color .6s ease-in;
-}
-.chosen {
-  color: $color-chosen;
-}
-.v-progress-linear {
-  margin: 0em;
-  position: absolute;
-  bottom: 0;
-}
+.school-dice-icon
+  +desktop(96dpi, 600px)
+    width: 7em
 
-@keyframes blinker {
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
+.game-layout
+  transition: background-color 1s ease-in
+  padding: .3em 0em .3em 0em
+  color: $color-primary-0
 
-// Nokia5
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 360px) {
-  .dice-icon {
-    height: 3.8em;
-  }
-  .school-result {
-    font-size: 1.1em;
-  }
-  .game-combination {
-    font-size: 1.05em;
-  }
-}
+.school-results-layout
+  height: 1em
+  font-size: 1.5em
+
+.school-result
+  +handheld(2, 360px)
+    font-size: 1.1em
+  +desktop(96dpi, 600px)
+    font-size: 2.5em
+  +handheld(2, 768px)
+    font-size: 2.2em
+  +handheld(2, 1024px)
+    font-size: 2.5em
+
+.game-combinations-layout
+  font-size: 1.8em
+
+.game-combination
+  padding: .075em 0em .075em 0em
+  +handheld(2, 360px)
+    font-size: 1.05em
+  +handheld(3, 375px)
+    font-size: 1.3em
+  +handheld(3, 414px)
+    font-size: 1.35em
+  +desktop(96dpi, 600px)
+    font-size: 2.5em
+  +handheld(2, 768px)
+    font-size: 1.7em
+  +handheld(2, 1024px)
+    font-size: 2.3em
+
+.accented
+  background-color: $color-combination-highlight
+
+.background-transition
+  transition: background-color .6s ease-in
+
+.chosen
+  color: $color-chosen
+
+.v-progress-linear
+  margin: 0em
+  position: absolute
+  bottom: 0
+
+@keyframes blinker
+  0%
+    opacity: 0
+  50%
+    opacity: 1
+  100%
+    opacity: 0
 
 // Landscape mode
-@media screen and (orientation: landscape) {
-  .game-layout {
-    flex-direction: row;
-  }
-  .school-dice-layout {
-    flex-direction: column;
-    padding-left: 1em;
-    // border: 1px solid red;
-    // width: 3em;
-  }
-  .school-dice-icon {
+@media screen and (orientation: landscape)
+  .game-layout
+    flex-direction: row
+
+  .school-dice-layout
+    flex-direction: column
+    padding-left: 1em
+
+  .school-dice-icon
     // border: 1px solid orange;
-    width: 3.8em;
-  }
-  .school-results-layout {
-    flex-direction: column;
-    width: 15%;
-    padding-right: 2em;
-    height: auto;
-  }
-  .game-combinations-layout {
-    font-size: 1.1em;
-    width: 60%;
-  }
-  .game-combination {
-    padding: 0em;
-  }
-}
+    width: 3.8em
 
-// desktop
-@media screen and (max-resolution: 96dpi) and (min-width: 500px) {
-  .school-dice-icon {
-    width: 7em;
-  }
-  .school-result {
-    font-size: 2.5em;
-  }
-  .game-combination {
-    font-size: 2.5em;
-  }
-}
+  .school-results-layout
+    flex-direction: column
+    width: 15%
+    padding-right: 2em
+    height: auto
 
-// iphoneX
-@media screen and (-webkit-min-device-pixel-ratio: 3) and (min-width: 375px) {
-  .game-combination {
-    font-size: 1.3em;
-  }
-}
+  .game-combinations-layout
+    font-size: 1.1em
+    width: 60%
 
-// iphone678plus
-@media screen and (-webkit-min-device-pixel-ratio: 3) and (min-width: 414px) {
-  .game-combination {
-    font-size: 1.35em;
-  }
-}
-
-// ipad
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) {
-  .dice-icon {
-    height: 7em;
-  }
-  .school-result {
-    font-size: 2.2em;
-  }
-  .game-combination {
-    font-size: 1.7em;
-  }
-}
-
-// ipadPro
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) {
-  .dice-icon {
-    height: 8em;
-  }
-  .school-result {
-    font-size: 2.5em;
-  }
-  .game-combination {
-    font-size: 2.3em;
-  }
-}
+  .game-combination
+    padding: 0em
 </style>

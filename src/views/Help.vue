@@ -156,52 +156,44 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="sass" scoped>
+@import "../assets/sass/fonts.sass"
 
-@import "../assets/scss/index.scss";
+.rules-text
+  padding: 0em 1em 0em 1em
+  line-height: 1.4em
+  font-size: 1.25em
+  text-indent: 1em
+  font-family: $cyrillic-font
 
-.rules-text {
-  padding: 0em 1em 0em 1em;
-  line-height: 1.4em;
-  font-size: 1.25em;
-  text-indent: 1em;
-  font-family: $cyrillic-font;
-}
-.rules-text-eng {
-  padding: 0em 1em 0em 1em;
-  text-indent: 1em;
-  font-size: 1.4em;
-}
+.rules-text-eng
+  padding: 0em 1em 0em 1em
+  text-indent: 1em
+  font-size: 1.4em
 
-.score-value {
-  font-weight: 500;
-  color: $color-chosen;
-}
+.score-value
+  font-weight: 500
+  color: $color-chosen
 
-.combination-descr {
-  font-size: 1.1em;
-  font-weight: 500;
-  transition: background-color 500ms ease-in-out;
-}
-.combination-descr:hover {
-  background-color: $color-pale-primary;
-  .dice-icon {
-    color: $color-chosen;
-  }
-}
+.combination-descr
+  font-size: 1.1em
+  font-weight: 500
+  transition: background-color 500ms ease-in-out
 
-.help-section-dice-icon {
-  height: 1.4em;
-}
+.combination-descr:hover
+  background-color: $color-pale-primary
+  .dice-icon
+    color: $color-chosen
 
-.dice-icon {
-  color: $color-primary-0;
-  transition: color 500ms ease-in-out;
-}
+.help-section-dice-icon
+  height: 1.4em
 
-@media screen and (orientation: landscape) {
-  .combination-descr {
-    font-size: 1.7em;
-  }
-}
+.dice-icon
+  color: $color-primary-0
+  transition: color 500ms ease-in-out
+
+@media screen and (orientation: landscape)
+  .combination-descr
+    font-size: 1.7em
+
 </style>

@@ -150,35 +150,25 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import "../assets/scss/vars/colors.scss";
+<style lang="sass" scoped>
 
-.game-name {
-  font-size: 3em;
-  color: $color-primary-0;
-}
+.game-name
+  font-size: 3em
+  color: $color-primary-0
+  +desktop(96dpi, 600px)
+    font-size: 5em
 
-.user-name-main-page {
-  font-size: 2.3em;
-  color: $color-primary-3;
-}
+.user-name-main-page
+  font-size: 2.3em
+  color: $color-primary-3
+  +desktop(96dpi, 600px)
+    font-size: 4.3em
 
-.playing {
-  color: $color-chosen !important;
-}
+.playing
+  color: $color-chosen !important
 
-.copyrights {
-  font-size: .9em;
-  color: $color-copyrights;
-}
+.copyrights
+  font-size: .9em
+  color: $color-copyrights
 
-// desktop
-@media screen and (max-resolution: 96dpi) and (min-width: 500px) {
-  .game-name {
-    font-size: 5em;
-  }
-  .user-name-main-page {
-    font-size: 4.3em;
-  }
-}
 </style>

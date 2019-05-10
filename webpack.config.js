@@ -51,7 +51,8 @@ module.exports = (env, argv) => ({
           {
             loader: 'sass-loader',
             options: {
-              indentedSyntax: true
+              indentedSyntax: true,
+              data: `@import "@/assets/sass/colors.sass"; @import "@/assets/sass/mixins.sass";`
             }
           }
         ]

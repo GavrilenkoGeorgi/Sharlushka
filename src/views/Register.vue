@@ -263,24 +263,15 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="sass" scoped>
 
-@import '../assets/scss/index.scss';
+#register
+  height: 100%
 
-* {
-  font-family: $text-font;
-}
+.button
+  line-height: 2em
 
-#register {
-  height: 100%;
-}
-
-.button {
-  line-height: 2em;
-}
-
-.showPass, .showConfPass {
-  color: $color-primary-0;
-}
+.showPass, .showConfPass
+  color: $color-primary-0
 
 </style>
