@@ -11,12 +11,12 @@ export default new Router({
       path: `/`,
       name: `MainPage`,
       component: () => import(/* webpackChunkName: "mainpage" */ `../views/MainPage.vue`)
-    },
+    }, /*
     {
       path: `/register`,
       name: `Register`,
-      component: () => import(/* webpackChunkName: "register" */ `../views/Register.vue`)
-    },
+      component: () => import( */ /* webpackChunkName: "register" */ /* `../views/Register.vue`)
+    }, */
     {
       path: `/userstats`,
       name: `UserStats`,
@@ -26,12 +26,12 @@ export default new Router({
       path: `/game`,
       name: `Game`,
       component: () => import(/* webpackChunkName: "game" */ `../views/Game.vue`)
-    },
+    }, /*
     {
       path: `/endgame`,
       name: `EndGame`,
-      component: () => import(/* webpackChunkName: "endgame" */ `../views/EndGame.vue`)
-    },
+      component: () => import( */ /* webpackChunkName: "endgame" */ /* `../views/EndGame.vue`)
+    }, */
     {
       path: `/help`,
       name: `Help`,
@@ -46,11 +46,11 @@ export default new Router({
       path: `/login`,
       name: `Login`,
       component: () => import(/* webpackChunkName: "login" */ `../views/Login.vue`)
-    },
-    {
+    }
+    /* {
       path: `/leaderboard`,
       name: `LeaderBoard`,
-      component: () => import(/* webpackChunkName: "leaderboard" */ `../views/Leaderboard.vue`)
-    }
+      component: () => import( */ /* webpackChunkName: "leaderboard" */ /* `../views/Leaderboard.vue`)
+    } */
   ]
 })

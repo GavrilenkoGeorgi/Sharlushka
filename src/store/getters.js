@@ -57,7 +57,12 @@ export default {
     return combinationArray
   },
   getMaxPossibleScore: (state) => state.maxPossibleScore,
-  getUserAuthState: (state) => state.user.isAuthenticated,
+  /*
+  getUserAuthState (state) {
+    console.log(state.userData.isAuthenticated)
+    state.userData.isAuthenticated
+  }, */
+  userData: state => state.userData,
   getUserData: (state) => state.user,
   getTotalScore(state) {
     return state.schoolScoreTotal + state.gameTotal

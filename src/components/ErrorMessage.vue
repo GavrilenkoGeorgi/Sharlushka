@@ -56,23 +56,22 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import '../assets/scss/vars/colors.scss';
+<style lang="sass" scoped>
 
-.error-message {
-  position: fixed;
-  top: 3.5em;
-  margin: 0em 1em 0em 1em;
-  right: 0;
-  left: 0;
-  border: .066em solid $color-error-message-red;
-  color: $color-error-message-red-text;
-  padding-left: .5em;
-  border-radius: .2em;
-  font-size: 1em;
-}
-.error-close-icon {
-  fill: $color-error-message-red;
-}
+.error-message
+  position: fixed
+  top: 3.5em
+  margin: 0em 1em 0em 1em
+  right: 0
+  left: 0
+  border: .066em solid $color-error-message-red
+  color: $color-error-message-red-text
+  padding-left: .5em
+  border-radius: .2em
+  font-size: 1em
+
+.error-close-icon
+  fill: $color-error-message-red
+
 </style>
 

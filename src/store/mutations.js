@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 export default {
   computeScore(state) { // some code on prod
     if (!state.newTurn) {
@@ -453,12 +455,25 @@ export default {
     let userToUpdate = state.user
     Object.assign(userToUpdate, valuesToSet)
   },
-  setUserIsLoggedIn(state, value) {
+  setCurrentUser(state, userData) {
+    // console.log(`Setting user to:`)
+    // console.log(userData)
+    /*
+    let userData = {
+      isAuthenticated: true,
+      uid: payload.uid,
+      email: payload.email
+    } */
+    // console.log(userData)
+    /*
     let userStateUpdate = {
-      isAuthenticated: value
-    }
-    let userToUpdate = state.user
-    Object.assign(userToUpdate, userStateUpdate)
+      isAuthenticated: payload
+    } */
+    // let userToUpdate = state.user
+    Vue.set(state, `userData`, userData)
+    // Object.assign(state.userData, userData)
+    // console.log(`Resulting user in state is:`)
+    // console.log(state.userData)
   },
   setLastSave (state, value) {
     let userStateUpdate = {

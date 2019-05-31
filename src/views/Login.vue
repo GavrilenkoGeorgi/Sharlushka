@@ -86,7 +86,7 @@
           <v-btn
             :type="'submit'"
             :loading="loggingIn"
-            :disabled="getUserAuthState"
+            :disabled="userData.isAuthenticated"
             outline
             ripple
             class="white--text button"
@@ -106,7 +106,6 @@
           md2
         >
           <v-btn
-            :disabled="valid"
             outline
             ripple
             class="white--text button"
@@ -133,12 +132,12 @@
         >
           <v-btn
             :loading="signingOut"
-            :disabled="!getUserAuthState"
+            :disabled="!userData.isAuthenticated"
             outline
             ripple
             class="white--text button"
             color="purple darken-1"
-            @click="signOut"
+            @click="logout"
           >
             log out
           </v-btn>
@@ -169,10 +168,7 @@
 <script>
 import errorMessageDialog from '../components/ErrorMessage.vue'
 import showPassIcon from '../assets/icons/baseline-remove_red_eye-24px.svg'
-import { mapGetters } from 'vuex'
-import firebase from 'firebase/app'
-import db from '../firebase/firebaseInit'
-import 'firebase/auth'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: `Login`,
@@ -201,105 +197,32 @@ export default {
   }),
   computed: {
     ...mapGetters([
-      `getUserAuthState`
+      `userData`
     ])
   },
-  mounted() {
-    this.$nextTick(() => {
-      console.log(`Login page mounted.`)
-    })
+  watch: {
+    userData (userData) {
+      console.log(`User auth state changed to ${userData.isAuthenticated}!`)
+    }
   },
   methods: {
-    testEnterKey() {
-      console.log(`Enter was pressed.`)
-    },
-    login() {
-      console.log(`Signing user in.`)
-      if (this.email && this.password) { // need some proper validation
-        this.toggleButtonLoadingState(`login`)
-        firebase.auth()
-          .signInWithEmailAndPassword(this.email, this.password)
-          .then(response => {
-            this.getUserDataFromDB(response.user.uid)
-          }).then(() => {
-            this.$store.commit(`setUserIsLoggedIn`, true)
-            this.toggleButtonLoadingState(`login`)
-            this.$router.push(`/game`)
-          }).catch(err => {
-            this.$store.dispatch(`setErrorMessage`, err)
-            this.toggleButtonLoadingState(`login`)
-            return false
-          })
-        // set user name in store
-        // let userNameToSet = localStorage.getItem(`userName`)
-        // this.$store.dispatch(`setUserName`, userNameToSet)
-        // this.$router.push(`/game`)
-        // return true
-      }
-    },
-    signOut() {
-      console.log(`Signing user out.`)
-      this.toggleButtonLoadingState(`signout`)
-      firebase.auth().signOut().then(() => {
-        this.$store.commit(`setUserIsLoggedIn`, false)
-        this.$store.commit(`setUserName`, undefined)
-        localStorage.clear()
-        this.toggleButtonLoadingState(`signout`)
-        // this.$router.push(`/`)
-        // for now
-        // let userStatsToSet = [0, 0, 0, 0, 0, 0]
-        // this.$store.state.dispatch(`setUserFavStats`, userStatsToSet)
-      }).catch((err) => {
-        this.$store.dispatch(`setErrorMessage`, err)
-        this.toggleButtonLoadingState(`signout`)
-      })
-    },
-    getUserDataFromDB(uid) {
-      db.collection(this.usersCollRef).where(`uid`, `==`, uid)
-        .get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(doc => {
-            if (doc.data().uid === uid) {
-              // save to local storage
-              localStorage.setItem(`userName`, doc.data().name)
-              localStorage.setItem(`userUid`, doc.data().uid)
-              localStorage.setItem(`highestScore`, doc.data().hiScore)
-              localStorage.setItem(`lastScoresArray`, doc.data().resultsArray)
-              localStorage.setItem(`schoolScores`, doc.data().schoolResultsArray)
-              if (doc.data().diceValuesFavs === undefined) {
-                localStorage.setItem(`diceValuesFavs`, ``)
-              } else {
-                localStorage.setItem(`diceValuesFavs`, doc.data().diceValuesFavs)
-                // let userStatsToSet = doc.data().diceValuesFavs
-                // this.$store.dispatch(`setUserFavStats`, userStatsToSet)
-              }
-              if (!doc.data().combinationsFavs) {
-                localStorage.setItem(`combinationsFavs`, ``)
-              } else {
-                localStorage.setItem(`combinationsFavs`, doc.data().combinationsFavs)
-              }
-              // let userStatsToSet = doc.data().diceValuesFavs
-              // this.$store.dispatch(`setUserFavStats`, userStatsToSet)
-            }
-          })
-        })
-        .catch(err => {
-          this.$store.dispatch(`setErrorMessage`, err)
-          console.log(`Error getting documents: `, err)
+    ...mapActions([
+      `setUserAuthState`
+    ]),
+    async login () {
+      this.loggingIn = !this.loggingIn
+      await this.$auth.login(this.email, this.password)
+        .then(() => {
+          this.clearForm()
+          this.loggingIn = !this.loggingIn
         })
     },
-    toggleButtonLoadingState(btn) {
-      // console.log(`Button to toggle ${btn}`)
-      if (btn === `login`) {
-        this.loggingIn = !this.loggingIn
-        return true
-      } else if (btn === `signout`) {
-        this.signingOut = !this.signingOut
-        return true
-      } else {
-        console.log(`Nothing to toggle, button is ${typeof button}`)
-        return false
-      }
+    async logout () {
+      this.signingOut = !this.signingOut
+      await this.$auth.logout()
+        .then(() => {
+          this.signingOut = !this.signingOut
+        })
     },
     clearForm() {
       this.$refs.form.reset()

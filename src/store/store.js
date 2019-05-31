@@ -3,14 +3,17 @@ import Vuex from 'vuex'
 import getters from './getters'
 import mutations from './mutations'
 import getDefaultState from './defaultState.js'
-// import getDefaultState from './debugState.js'
 
 Vue.use(Vuex)
+
 // initial state
 const state = getDefaultState()
 
 const actions = {
-  /* increment: (context, payload) => context.commit('increment'), */
+  setUserAuthState: async ({ commit }, userData) => {
+    console.log(`Action set user state with ${userData}`)
+    commit(`setCurrentUser`, userData)
+  },
   setCurrentIcon: ({
     commit
   }) => commit(`setCurrentIcon`),

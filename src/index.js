@@ -1,24 +1,19 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import App from './App.vue'
-import router from './router'
+import router from './router/router'
 import store from './store/store'
 import VueOffline from 'vue-offline'
-
-import firebaseConfig from './firebase/firebaseConfig.js'
-import firebase from 'firebase/app'
-import 'firebase/auth'
+import fireBaseAuthPlugin from './services/firebaseAuthPlugin'
 
 Vue.config.productionTip = true
 
+Vue.use(fireBaseAuthPlugin)
 Vue.use(Vuetify)
 Vue.use(VueOffline)
 Vue.use(require(`vue-chartist`))
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig)
-}
-
+/*
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     console.log(`User is logged in: ${user.email}.`)
@@ -45,7 +40,7 @@ firebase.auth().onAuthStateChanged((user) => {
     }
   }
 })
-
+*/
 if (`serviceWorker` in navigator) {
   window.addEventListener(`load`, function() {
     navigator.serviceWorker.register(`/service-worker.js`).then(function(registration) {
