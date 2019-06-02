@@ -220,13 +220,14 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: `UserStats`,
   data() {
     return {
-      userName: ``,
+      userName: `Default`,
+      knownUser: false,
       anonymousUserNoGames: false, // really need this?
       messageToAnonymous: null,
       // if user played at least one game, we have a 'high score'
@@ -312,13 +313,41 @@ export default {
   computed: {
     ...mapGetters([
       `getMaxPossibleScore`,
-      `getUserAuthState`,
-      `getDiceValuesFavs`
-    ])
+      `getUserStats`
+    ]),
+    ...mapState([`userData`, `userStats`])
+  },
+  watch: {
+    userData(data) {
+      if (data.isAuthenticated) {
+        console.log(`Known user.`)
+        this.knownUser = true
+      } else {
+        this.userName = `Anonymous`
+      }
+    },
+    userStats(stats) {
+      if (this.knownUser) {
+        this.userName = stats.userName
+        // user stats are stored in db
+        // and are already set in store
+      } else {
+        // this.userName = `Anonymous`
+        // user stats are stored in localStorage
+      }
+    }
   },
   mounted() {
     this.$nextTick(() => {
       console.log(`User stats page mounted.`)
+      // user authenticated
+      /*
+      if (this.getUserData.isAuthenticated) {
+        console.log(`Hi registered user.`)
+      } else {
+        console.log(`No auth`)
+      } */
+      /*
       if (localStorage.hasOwnProperty(`userName`)) {
         // init everything
         this.userName = localStorage.getItem(`userName`)
@@ -348,7 +377,7 @@ export default {
           this.messageToAnonymous = `You have to finish at least one game to
           calculate stats.`
         }
-      }
+      } */
     })
   },
   methods: {

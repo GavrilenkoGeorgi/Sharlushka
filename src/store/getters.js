@@ -1,4 +1,6 @@
 export default {
+  getUserData: state => state.userData,
+  getUserStats: state => state.userStats,
   getCurrentGameState(state) {
     const currentGameState = {
       schoolCompleted: state.schoolCompleted,
@@ -8,11 +10,6 @@ export default {
       newTurn: state.newTurn
     }
     return currentGameState
-  },
-  getUserName(state) {
-    if (state.user.name === undefined) {
-      return `Anonymous`
-    } else return state.user.name
   },
   progressBarState(state) {
     let fraction = 3
@@ -45,7 +42,7 @@ export default {
   },
   isGameEnded: (state) => state.gameOver,
   isNewTurn: (state) => state.newTurn,
-  isLastResultSaved: (state) => state.user.lastResultSaved,
+  // isLastResultSaved: (state) => state.user.lastResultSaved,
   isGameInProgress (state) {
     if (state.currentGameTurn === 1 && state.rollCount === 3) {
       return false
@@ -63,7 +60,6 @@ export default {
     state.userData.isAuthenticated
   }, */
   userData: state => state.userData,
-  getUserData: (state) => state.user,
   getTotalScore(state) {
     return state.schoolScoreTotal + state.gameTotal
   },
@@ -78,9 +74,10 @@ export default {
   },
   error: state => state.error,
   // getDiceValuesFavs: state => state.user.diceValuesFavs
+  /*
   getDiceValuesFavs(state) {
     return state.user.diceValuesFavs
-  },
+  }, */
   getCurrentNonZeroCombinations(state) {
     // console.log(`Getting current non zero combinations.`)
     let arrayWithResults = state.scoreArray.slice(state.diceArray.length + 1, state.scoreArray.length)

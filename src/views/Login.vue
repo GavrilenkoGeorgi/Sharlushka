@@ -131,7 +131,7 @@
           md2
         >
           <v-btn
-            :loading="signingOut"
+            :loading="loggingOut"
             :disabled="!userData.isAuthenticated"
             outline
             ripple
@@ -178,7 +178,7 @@ export default {
   },
   data: () => ({
     loggingIn: false,
-    signingOut: false,
+    loggingOut: false,
     newUserBtnText: `Register`,
     pageTitle: `Log In`,
     valid: true,
@@ -191,7 +191,6 @@ export default {
     showPass: false,
     passwordRules: [
       (v) => !!v || `Password is required`
-      // (v) => v && (v.length >= 6 && v.length <= 12) || `Password must be greater than 6 and less than 12.`
     ],
     usersCollRef: `users`
   }),
@@ -207,21 +206,34 @@ export default {
   },
   methods: {
     ...mapActions([
-      `setUserAuthState`
+      `setUserAuthState`,
+      `clearUserStats`
     ]),
     async login () {
       this.loggingIn = !this.loggingIn
-      await this.$auth.login(this.email, this.password)
-        .then(() => {
+      let email = `dale@aol.com`
+      let password = `propane`
+      await this.$auth.login(email, password)
+        .then(response => {
+          console.log(response.user.uid)
           this.clearForm()
+        }).catch(error => {
+          console.error(error)
+        }).finally(() => {
           this.loggingIn = !this.loggingIn
         })
     },
     async logout () {
-      this.signingOut = !this.signingOut
+      this.loggingOut = !this.loggingOut
       await this.$auth.logout()
         .then(() => {
-          this.signingOut = !this.signingOut
+          this.clearUserStats()
+          // clear user stats from localStorage
+          // and reset state
+        }).catch(error => {
+          console.error(error)
+        }).finally(() => {
+          this.loggingOut = !this.loggingOut
         })
     },
     clearForm() {

@@ -455,25 +455,17 @@ export default {
     let userToUpdate = state.user
     Object.assign(userToUpdate, valuesToSet)
   },
+  // action
   setCurrentUser(state, userData) {
-    // console.log(`Setting user to:`)
-    // console.log(userData)
-    /*
-    let userData = {
-      isAuthenticated: true,
-      uid: payload.uid,
-      email: payload.email
-    } */
-    // console.log(userData)
-    /*
-    let userStateUpdate = {
-      isAuthenticated: payload
-    } */
-    // let userToUpdate = state.user
     Vue.set(state, `userData`, userData)
-    // Object.assign(state.userData, userData)
-    // console.log(`Resulting user in state is:`)
-    // console.log(state.userData)
+  },
+  // used inside get userDataFromDB
+  setUserStats (state, userStats) {
+    Vue.set(state, `userStats`, userStats)
+  },
+  // action
+  clearUserStats (state) {
+    Vue.set(state, `userStats`, {})
   },
   setLastSave (state, value) {
     let userStateUpdate = {

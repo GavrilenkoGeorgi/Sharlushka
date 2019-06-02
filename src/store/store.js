@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import getters from './getters'
 import mutations from './mutations'
 import getDefaultState from './defaultState.js'
+// import { getUserStats } from '../services/api.js'
 
 Vue.use(Vuex)
 
@@ -10,9 +11,16 @@ Vue.use(Vuex)
 const state = getDefaultState()
 
 const actions = {
-  setUserAuthState: async ({ commit }, userData) => {
-    console.log(`Action set user state with ${userData}`)
+  setCurrentUser: async ({ commit }, userData) => {
     commit(`setCurrentUser`, userData)
+  }, /*
+  getUserDataFromDB: async ({ commit }, uid) => {
+    getUserStats(uid).then(data => {
+      commit(`setUserStats`, data)
+    })
+  }, */
+  clearUserStats: async ({ commit }) => {
+    commit(`clearUserStats`)
   },
   setCurrentIcon: ({
     commit
