@@ -14,19 +14,17 @@
         {{ userName }}!
       </h2>
       <!-- Unregistered anonymous user info -->
-      <v-flex
-        v-if="anonymousUserNoGames"
+      <!--v-flex
+        v-if="!knownUser"
       >
         <h3
           class="message-to-anonymous"
         >
-          {{ messageToAnonymous }}
+          messageToAnonymous
         </h3>
-      </v-flex>
+      </v-flex-->
       <!-- Registered user info -->
-      <v-flex
-        v-else
-      >
+      <v-flex>
         <h3
           class="hi-score pb-2"
         >
@@ -46,7 +44,6 @@
     </v-layout>
     <!-- Charts -->
     <v-layout
-      v-if="!anonymousUserNoGames"
       column
     >
       <!-- School chart-->
@@ -93,7 +90,7 @@
           </h2>
         </v-flex>
         <v-flex
-          v-for="item in newStats"
+          v-for="item in gameStats"
           :key="item.msg"
           xs12
           class="stats-display pb-1"
@@ -119,8 +116,8 @@
             ratio="ct-major-twelfth"
             type="Line"
             class="game-results-chart"
-            :data="chartData"
-            :options="chartOptions"
+            :data="gameChartData"
+            :options="gameChartOptions"
           />
         </v-flex>
       </v-layout>
@@ -236,11 +233,11 @@ export default {
       lastScoresToDisplay: ``,
       userGamesPlayed: ``,
       chartResultsToShow: -16, // minus sign cause of array slicing
-      chartData: {
+      gameChartData: {
         labels: [],
         series: []
       },
-      chartOptions: {
+      gameChartOptions: {
         fullWidth: true,
         lineSmooth: true,
         showArea: true,
@@ -263,7 +260,7 @@ export default {
           showLabel: true
         }
       },
-      newStats: {
+      gameStats: {
         gamesPlayed: {
           msg: `Games played`,
           value: ``
@@ -322,7 +319,11 @@ export default {
       if (data.isAuthenticated) {
         console.log(`Known user.`)
         this.knownUser = true
+        // name is setfrom userStats
+        // cause we don't have `display name`
+        // in userData
       } else {
+        console.log(`Anonymous.`)
         this.userName = `Anonymous`
       }
     },
@@ -331,8 +332,11 @@ export default {
         this.userName = stats.userName
         // user stats are stored in db
         // and are already set in store
+        this.highestScore = this.getHighestScore(stats.resultsArray)
+        this.schoolChartData.series = [ this.getResultsForChart(stats.schoolScores, -16) ]
+        this.gameChartData.series = [ this.getResultsForChart(stats.resultsArray, -16) ]
+        this.setGameStats(stats.resultsArray)
       } else {
-        // this.userName = `Anonymous`
         // user stats are stored in localStorage
       }
     }
@@ -381,6 +385,35 @@ export default {
     })
   },
   methods: {
+    /*
+    /* @param {string} scores String with scores from
+    /*                        store or localStorage
+    /* @return {integer}      Highest user score
+    */
+    getHighestScore (scores) {
+      let scoresArray = scores.split(`,`).map(Number)
+      return Math.max(...scoresArray)
+    },
+    /*
+    /* @param {string} scores     Scores string
+    /* @param {integer} quantity  How many results to show
+    /* @return {array}            Scores to display on chart
+    */
+    getResultsForChart (scores, quantity) {
+      let schoolScoresForChart = scores.split(`,`).slice(quantity)
+      return schoolScoresForChart
+    },
+    /*
+    /* @param {string} gameResults Scores string
+    */
+    setGameStats(gameResults) {
+      let results = gameResults.split(`,`).map(Number)
+      this.gameStats.gamesPlayed.value = results.length
+      this.gameStats.averageScore.value = this.computeAverageScore(results)
+      this.gameStats.percentFromMax.value = // bear with me )
+        this.computePercentFromMax(this.gameStats.averageScore.value,
+          this.getMaxPossibleScore)
+    },
     restartGame() {
       console.log(`Restarting.`)
       this.$store.commit(`resetState`)
@@ -390,6 +423,7 @@ export default {
       let lastScoresString = localStorage.getItem(`lastScoresArray`)
       return lastScoresString.split(`,`)
     },
+    /*
     assembleSchoolScoresArray() {
       this.schoolScores = localStorage.getItem(`schoolScores`)
       if (this.schoolScores) {
@@ -397,7 +431,7 @@ export default {
         const slicedArray = arrayToDisplay.slice(this.chartResultsToShow)
         this.schoolChartData.series = [slicedArray]
       }
-    },
+    }, */
     //
     // values array
     //
@@ -442,22 +476,30 @@ export default {
         return labelsArray.reverse()
       }
     },
-    computeAverageScore() {
-      if (this.userScoresArray) {
-        const arrayToReduce = []
-        const scoreSum = (accumulator, currentValue) => accumulator + currentValue
-        for (const value of this.userScoresArray) {
-          arrayToReduce.push(parseInt(value))
-        }
-        if (arrayToReduce.length > 0) {
-          return parseInt(arrayToReduce.reduce(scoreSum) / arrayToReduce.length)
-        } else {
-          return 0
-        }
+    /*
+    /* @param {array} scores Array of integers
+    /* @return {integer}     Average user score
+    */
+    computeAverageScore(scores) {
+      const arrayToReduce = []
+      const scoreSum = (accumulator, currentValue) => accumulator + currentValue
+      for (const value of scores) {
+        arrayToReduce.push(value)
+      }
+      if (arrayToReduce.length > 0) {
+        return parseInt(arrayToReduce.reduce(scoreSum) / arrayToReduce.length)
+      } else {
+        return 0
       }
     },
-    computePercentFromMax() {
-      const result = Math.floor(this.newStats.averageScore.value / this.getMaxPossibleScore * 100)
+    /*
+    /* @param {integer} averageScore     Average user score
+    /* @param {integer} maxPossibleScore Max possible score in game
+    /* @return {integer}                 User percent from max
+    /*                                   possible score
+    */
+    computePercentFromMax(averageScore, maxPossibleScore) {
+      let result = Math.floor(averageScore / maxPossibleScore * 100)
       if (result) {
         return result + `%`
       } else {
