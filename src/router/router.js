@@ -26,12 +26,12 @@ export default new Router({
       path: `/game`,
       name: `Game`,
       component: () => import(/* webpackChunkName: "game" */ `../views/Game.vue`)
-    }, /*
+    },
     {
       path: `/endgame`,
       name: `EndGame`,
-      component: () => import( */ /* webpackChunkName: "endgame" */ /* `../views/EndGame.vue`)
-    }, */
+      component: () => import(/* webpackChunkName: "endgame" */ `../views/EndGame.vue`)
+    },
     {
       path: `/help`,
       name: `Help`,

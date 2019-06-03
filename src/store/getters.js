@@ -42,7 +42,7 @@ export default {
   },
   isGameEnded: (state) => state.gameOver,
   isNewTurn: (state) => state.newTurn,
-  // isLastResultSaved: (state) => state.user.lastResultSaved,
+  isLastResultSaved: (state) => state.user.lastResultSaved,
   isGameInProgress (state) {
     if (state.currentGameTurn === 1 && state.rollCount === 3) {
       return false

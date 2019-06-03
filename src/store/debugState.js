@@ -7,6 +7,10 @@ export default () => {
       lastResultSaved: false, // current result saved
       diceValuesFavs: [0, 0, 0, 0, 0, 0] // favorite dice values stats
     },
+    userData: {},
+    userStats: {
+      diceValuesFavs: [0, 0, 0, 0, 0, 0]
+    },
     error: false,
     currentGameTurn: 32, // game turns counter
     rollCount: 3, // roll counter for the current turn

@@ -254,9 +254,7 @@ export default {
       },
       diceValuesFavsChartOptions: {
         axisX: {
-          // We can disable the grid for this axis
           showGrid: true,
-          // and also don't show the label
           showLabel: true
         }
       },
@@ -310,40 +308,56 @@ export default {
   computed: {
     ...mapGetters([
       `getMaxPossibleScore`,
-      `getUserStats`
+      `getUserStats`,
+      `getUserData`
     ]),
     ...mapState([`userData`, `userStats`])
   },
+  // if user reloads the stats page
   watch: {
     userData(data) {
+      console.log(`User data watcher, auth is:`, data.isAuthenticated)
+      /*
       if (data.isAuthenticated) {
-        console.log(`Known user.`)
-        this.knownUser = true
+        console.log(`User data watcher auth.`)
+        // this.knownUser = true
         // name is setfrom userStats
         // cause we don't have `display name`
         // in userData
       } else {
-        console.log(`Anonymous.`)
-        this.userName = `Anonymous`
-      }
+        console.log(`Anonymous not auth.`)
+        // this.userName = `Anonymous`
+      } */
     },
     userStats(stats) {
-      if (this.knownUser) {
-        this.userName = stats.userName
-        // user stats are stored in db
-        // and are already set in store
-        this.highestScore = this.getHighestScore(stats.resultsArray)
-        this.schoolChartData.series = [ this.getResultsForChart(stats.schoolScores, -16) ]
-        this.gameChartData.series = [ this.getResultsForChart(stats.resultsArray, -16) ]
-        this.setGameStats(stats.resultsArray)
-      } else {
-        // user stats are stored in localStorage
-      }
+      console.log(`User stats watcher, stats data changed, setting current..`)
+      this.setStats(stats)
+      /*
+      this.userName = stats.userName
+      // user stats are stored in db
+      // and are already set in store
+      this.highestScore = this.getHighestScore(stats.resultsArray)
+      this.schoolChartData.series = [ this.getResultsForChart(stats.schoolScores, -16) ]
+      this.gameChartData.series = [ this.getResultsForChart(stats.resultsArray, -16) ]
+      this.setGameStats(stats.resultsArray)
+      */
+      // user stats are stored in localStorage
     }
   },
   mounted() {
     this.$nextTick(() => {
       console.log(`User stats page mounted.`)
+      // user navigated from another page
+      // check if he is logged in or not
+      if (this.getUserData.isAuthenticated) {
+        // set stats from store
+        this.setStats(this.getUserStats)
+        console.log(`Stats are in this format`)
+        console.log(this.getUserStats)
+      } else {
+        // set stats from local storage
+        console.log(`Unknown user setting from local storage`)
+      }
       // user authenticated
       /*
       if (this.getUserData.isAuthenticated) {
@@ -385,6 +399,25 @@ export default {
     })
   },
   methods: {
+    /*
+    /*
+    /*
+    */
+    setStats(stats) {
+      console.log(`Setting stats..`, stats)
+      if(this.getUserData) {
+        console.log(`User authenticated, data is in store.`)
+        this.userName = stats.userName
+        // user stats are stored in db
+        // and are already set in store
+        this.highestScore = this.getHighestScore(stats.resultsArray)
+        this.schoolChartData.series = [ this.getResultsForChart(stats.schoolScores, -16) ]
+        this.gameChartData.series = [ this.getResultsForChart(stats.resultsArray, -16) ]
+        this.setGameStats(stats.resultsArray)
+      } else {
+        console.log(`User notauthenticated, data is in localStorage.`)
+      }
+    },
     /*
     /* @param {string} scores String with scores from
     /*                        store or localStorage

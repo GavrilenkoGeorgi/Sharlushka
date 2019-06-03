@@ -114,10 +114,11 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import SharlushkaLogo from '../assets/images/sharlushkaLogo.svg'
 import doneIcon from '../assets/icons/baseline-done-24px.svg'
 import regIcon from '../assets/icons/baseline-how_to_reg-24px.svg'
+import { setUpLocalStorage } from '../services/setUpLocalStorage.js'
 
 export default {
   name: `Main`,
@@ -141,11 +142,28 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(`Main page mounted.`)
-      if (localStorage.hasOwnProperty(`userName`)) {
-        this.userName = localStorage.getItem(`userName`)
+      // on the first run if
+      // local storage is not set, set it up
+      if (!localStorage.hasOwnProperty(`userName`)) {
+        setUpLocalStorage()
+      } else {
+        // local storage data is type of string.
+        // to save user dice favourites values
+        // we need an array as data is saved
+        // each time after the combination is
+        // chosen to save, so we get
+        // some string and split it
+        // into an array that we can increment
+        // in store during game
+        let diceFavs = localStorage.getItem(`diceValuesFavs`).split(`,`).map(Number)
+        this.setAnonymousDiceFavs(diceFavs)
       }
     })
+  },
+  methods: {
+    ...mapActions([
+      `setAnonymousDiceFavs`
+    ])
   }
 }
 </script>

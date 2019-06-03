@@ -566,44 +566,44 @@ export default {
             for (let index in schoolArray) {
               if ((dice - 1) == index && index == combinationIndex) {
                 // increment
-                state.user.diceValuesFavs[index] += 1
+                state.userStats.diceValuesFavs[index] += 1
               }
             }
           }
           break
         // game results
         case `pair`:
-          state.user.diceValuesFavs[gameCombinationValue/2 - 1] += 2
+          state.userStats.diceValuesFavs[gameCombinationValue/2 - 1] += 2
           break
         case `threeOfAKind`:
-          state.user.diceValuesFavs[gameCombinationValue/3 - 1] += 3
+          state.userStats.diceValuesFavs[gameCombinationValue/3 - 1] += 3
           break
         case `quads`:
-          state.user.diceValuesFavs[gameCombinationValue/4 - 1] += 4
+          state.userStats.diceValuesFavs[gameCombinationValue/4 - 1] += 4
           break
           // 6 in poker is 30 + 80
         case `poker`:
-          state.user.diceValuesFavs[(gameCombinationValue - 80) / 5 - 1] += 5
+          state.userStats.diceValuesFavs[(gameCombinationValue - 80) / 5 - 1] += 5
           break
         case `twoPairs`:
-          state.user.diceValuesFavs[maxValue - 1] += 2
-          state.user.diceValuesFavs[secondValue - 1] += 2
+          state.userStats.diceValuesFavs[maxValue - 1] += 2
+          state.userStats.diceValuesFavs[secondValue - 1] += 2
           break
         case `full`:
           secondValue = state.combinationArray.find(value => value !== maxValue)
           if (maxValueQuantity == 3) {
-            state.user.diceValuesFavs[maxValue - 1] += maxValueQuantity
-            state.user.diceValuesFavs[secondValue - 1] += 2
+            state.userStats.diceValuesFavs[maxValue - 1] += maxValueQuantity
+            state.userStats.diceValuesFavs[secondValue - 1] += 2
           } else {
-            state.user.diceValuesFavs[maxValue - 1] += maxValueQuantity - 1
-            state.user.diceValuesFavs[secondValue - 1] += 3
+            state.userStats.diceValuesFavs[maxValue - 1] += maxValueQuantity - 1
+            state.userStats.diceValuesFavs[secondValue - 1] += 3
           }
           break
         case `small`:
           while (diceQuantity != 0) {
             // small combination
             // from value `five` to `one`
-            state.user.diceValuesFavs[diceQuantity - 1] += 1
+            state.userStats.diceValuesFavs[diceQuantity - 1] += 1
             diceQuantity--
           }
           break
@@ -611,7 +611,7 @@ export default {
           while (diceQuantity != 0) {
             // large combination
             // from value `six` to `two`
-            state.user.diceValuesFavs[diceQuantity] += 1
+            state.userStats.diceValuesFavs[diceQuantity] += 1
             diceQuantity--
           }
           break
@@ -619,7 +619,7 @@ export default {
           // incrementing by values
           for (let value of currentCombinationArray) {
             let index = value - 1
-            state.user.diceValuesFavs[index] += 1
+            state.userStats.diceValuesFavs[index] += 1
           }
           break
         }
@@ -645,15 +645,23 @@ export default {
       state.error = error
     } else state.error = false
   },
+  setAnonymousDiceFavs (state, favs) {
+    console.log(`Anonymous favs are:`, favs)
+    state.userStats.diceValuesFavs = favs
+  },
+  resetDiceValueFavs (state) {
+    state.userStats.diceValuesFavs = [0, 0, 0, 0, 0, 0]
+  }
+  /*
   saveFavDiceValue(state, id) {
     let dice = state.diceArray.find(dice => {
       return dice.id === id
     })
-    let currentState = state.user.diceValuesFavs
+    let currentState = state.userStats.diceValuesFavs
     if (dice.chosen) {
       currentState[dice.value - 1]++
     } else {
       currentState[dice.value - 1]--
     }
-  }
+  } */
 }

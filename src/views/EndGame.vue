@@ -15,8 +15,8 @@
         d-flex
       >
         <h1>
-          {{ message }}<br>
-          <span>{{ userName }}{{ exclamation }}</span>
+          Game over,<br>
+          <span>{{ userName }}!</span>
         </h1>
       </v-flex>
       <!-- School message -->
@@ -32,7 +32,7 @@
         v-if="getCurrentGameState.schoolCompleted"
         class="message-game text-xs-center"
       >
-        <h2>{{ messageText }} <span class="highlighted">{{ getTotalScore }}</span></h2>
+        <h2>Your score is <span class="highlighted">{{ getTotalScore }}</span></h2>
       </v-flex>
       <!-- Buttons -->
       <v-layout
@@ -80,7 +80,7 @@
             outline
             :loading="tryAgainBtnLoading"
             class="button"
-            @click="syncScoreWithFirestore"
+            @click="console.log(`saving`)"
           >
             <restartIcon class="highlighted" />
             Try again
@@ -105,10 +105,11 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import store from '../store/store' // $this.store?
-import db from '../firebase/firebaseInit'
+// import db from '../firebase/firebaseInit'
 import NetworkCheck from '../components/NetworkCheck.vue'
 import restartIcon from '../assets/icons/baseline-replay-24px.svg'
 import cancelIcon from '../assets/icons/baseline-cancel-24px.svg'
+import { appendToStorage, sumTwoArrays } from '../services/setUpLocalStorage'
 
 export default {
   components: {
@@ -146,19 +147,44 @@ export default {
       `getCurrentGameState`,
       `getDefaultUserName`,
       `getUserData`,
+      `getUserStats`,
       `isGameEnded`,
       `getCurrentNonZeroCombinations`
     ])
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(`Game over view mounted.`)
-      // check user auth status
+      this.userName = localStorage.getItem(`userName`)
+      if (this.isGameEnded) {
+        console.log(`Game ended.`)
+        // save new dice values favs to local storage
+        let favsToAdd = this.getUserStats.diceValuesFavs
+        let currentFavs = localStorage.getItem(`diceValuesFavs`).split(`,`).map(Number)
+        let updatedFavs = sumTwoArrays(currentFavs, favsToAdd)
+        // set new dice value favs to localStorage
+        localStorage.setItem(`diceValuesFavs`, updatedFavs)
+        // reset them in store
+        this.resetDiceValueFavs()
+        // append current score
+        appendToStorage(`lastScoresArray`, `${this.getTotalScore},`)
+        appendToStorage(`schoolScores`, `${this.getSchoolScore},`)
+        // current non zero combinations
+        // console.log(`Non zero combinations`)
+        // console.log(this.getCurrentNonZeroCombinations)
+        let currentCombinationsFavs = localStorage.getItem(`combinationsFavs`).split(`,`).map(Number)
+        let newCombinationsFavs = this.getCurrentNonZeroCombinations
+        let updatedNonZeroCombinations = sumTwoArrays(currentCombinationsFavs, newCombinationsFavs)
+        localStorage.setItem(`combinationsFavs`, updatedNonZeroCombinations)
+      } else {
+        console.log(`User reloading the page, so we aren't saving anything.`)
+      }
+      /*
       if (this.getUserData.isAuthenticated) {
         this.userName = localStorage.getItem(`userName`)
       } else {
         this.userName = this.getDefaultUserName
-      }
+      } */
+      /*
       if (this.isGameEnded) {
         // collect them when game finished
         // i.e. user played the game till the end
@@ -190,19 +216,21 @@ export default {
         })
       } else {
         console.log(`Nothing to record, play the game.`)
-      }
+      } */
     })
   },
   methods: {
     ...mapActions([
       `resetGameOver`,
-      `setLastSave`
+      `setLastSave`,
+      `resetDiceValueFavs`
     ]),
     restartGame() {
       console.log(`Restarting game.`)
       store.commit(`resetState`)
       this.$router.push(`/game`)
     },
+    /*
     // add anonymous score to local storage
     addScoreToDatabase() {
       console.log(`Adding score.`)
@@ -312,7 +340,7 @@ export default {
           this.tryAgainBtnLoading = !this.tryAgainBtnLoading
           console.log(`Error getting documents: `, error)
         })
-    },
+    }, */
     toggleNetworkProblemDialog () {
       this.networkProblemDialog = !this.networkProblemDialog
     }
