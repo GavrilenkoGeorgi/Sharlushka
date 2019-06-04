@@ -118,7 +118,7 @@ import { mapGetters, mapActions } from 'vuex'
 import SharlushkaLogo from '../assets/images/sharlushkaLogo.svg'
 import doneIcon from '../assets/icons/baseline-done-24px.svg'
 import regIcon from '../assets/icons/baseline-how_to_reg-24px.svg'
-import { setUpLocalStorage } from '../services/setUpLocalStorage.js'
+import { setLocalStorageDefaults } from '../services/LocalStorageHandler'
 
 export default {
   name: `Main`,
@@ -145,7 +145,7 @@ export default {
       // on the first run if
       // local storage is not set, set it up
       if (!localStorage.hasOwnProperty(`userName`)) {
-        setUpLocalStorage()
+        setLocalStorageDefaults()
       } else {
         // local storage data is type of string.
         // to save user dice favourites values

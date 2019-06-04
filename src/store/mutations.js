@@ -403,7 +403,7 @@ export default {
     }
     state.combinationArray = []
   },
-  resetState(state) {
+  resetGameState(state) {
     // hard reset
     // Object.assign(state, getDefaultState())
     let valuesToReset = {
@@ -443,14 +443,6 @@ export default {
     // console.log(`Setting user name.`)
     let valuesToSet = {
       name: values
-    }
-    let userToUpdate = state.user
-    Object.assign(userToUpdate, valuesToSet)
-  },
-  setUserFavStats (state, values) {
-    // console.log(`Setting user favs.`)
-    let valuesToSet = {
-      diceValuesFavs: values
     }
     let userToUpdate = state.user
     Object.assign(userToUpdate, valuesToSet)
@@ -646,7 +638,6 @@ export default {
     } else state.error = false
   },
   setAnonymousDiceFavs (state, favs) {
-    console.log(`Anonymous favs are:`, favs)
     state.userStats.diceValuesFavs = favs
   },
   resetDiceValueFavs (state) {

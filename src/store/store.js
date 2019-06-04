@@ -81,15 +81,9 @@ const actions = {
       resolve()
     })
   },
-  setUserFavStats ({ commit }, values ) {
-    return new Promise((resolve) => {
-      commit(`setUserFavStats`, values)
-      resolve()
-    })
+  resetGameState: async ({ commit }) => {
+    commit(`resetGameState`)
   },
-  resetGameState: ({
-    commit
-  }) => commit(`resetState`),
   rollDice: ({
     commit
   }) => commit(`rollDice`),

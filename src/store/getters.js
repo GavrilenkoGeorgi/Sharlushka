@@ -7,7 +7,8 @@ export default {
       currentGameTurn: state.currentGameTurn,
       currentRollCount: state.rollCount,
       rollsCountForButton: state.rollCount,
-      newTurn: state.newTurn
+      newTurn: state.newTurn,
+      gameOver: state.gameOver
     }
     return currentGameState
   },

@@ -5,25 +5,30 @@
     class="text-xs-center"
   >
     <!-- Title and user name -->
+    <h2 class="user-name">
+      {{ userName }}!
+    </h2>
     <v-layout
+      v-if="unknownUser"
       column
       align-center
       pt-2
     >
-      <h2 class="user-name">
-        {{ userName }}!
-      </h2>
       <!-- Unregistered anonymous user info -->
-      <!--v-flex
-        v-if="!knownUser"
-      >
+      <v-flex>
         <h3
           class="message-to-anonymous"
         >
-          messageToAnonymous
+          Please, play at least one game to calculate stats.
         </h3>
-      </v-flex-->
-      <!-- Registered user info -->
+      </v-flex>
+    </v-layout>
+    <v-layout
+      v-else
+      column
+      pt-2
+    >
+      <!-- Known user stats -->
       <v-flex>
         <h3
           class="hi-score pb-2"
@@ -41,11 +46,6 @@
           Max possible score {{ getMaxPossibleScore }}
         </h3>
       </v-flex>
-    </v-layout>
-    <!-- Charts -->
-    <v-layout
-      column
-    >
       <!-- School chart-->
       <v-layout
         row
@@ -98,7 +98,7 @@
           {{ item.msg }}&nbsp;{{ item.value }}
         </v-flex>
       </v-layout>
-      <!-- Game results chart style="border: 1px solid pink" -->
+      <!-- Game results chart -->
       <v-layout
         wrap
         justify-center
@@ -218,20 +218,17 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex'
+import { gatherDataFromLocalStorage } from '../services/LocalStorageHandler'
 
 export default {
   name: `UserStats`,
   data() {
     return {
-      userName: `Default`,
-      knownUser: false,
-      anonymousUserNoGames: false, // really need this?
+      userName: `Anonymous`,
+      unknownUser: false,
       messageToAnonymous: null,
-      // if user played at least one game, we have a 'high score'
       highestScore: ``,
-      userScoresArray: ``,
       lastScoresToDisplay: ``,
-      userGamesPlayed: ``,
       chartResultsToShow: -16, // minus sign cause of array slicing
       gameChartData: {
         labels: [],
@@ -294,7 +291,7 @@ export default {
       // Combination favs chart data
       combinationsFavsChartData: {
         labels: [`Pair`, `Two pairs`, `Three O.A.K`, `Full`, `Quads`, `Poker`, `Small`, `Large`, `Chance`],
-        series: [[18, 14, 6, 4, 5, 1, 10, 5, 19]]
+        series: [[10, 10, 10, 10, 10, 5, 10, 10, 10]]
       },
       combinationsFavsChartOptions: {
         reverseData: true,
@@ -313,109 +310,36 @@ export default {
     ]),
     ...mapState([`userData`, `userStats`])
   },
-  // if user reloads the stats page
-  watch: {
-    userData(data) {
-      console.log(`User data watcher, auth is:`, data.isAuthenticated)
-      /*
-      if (data.isAuthenticated) {
-        console.log(`User data watcher auth.`)
-        // this.knownUser = true
-        // name is setfrom userStats
-        // cause we don't have `display name`
-        // in userData
-      } else {
-        console.log(`Anonymous not auth.`)
-        // this.userName = `Anonymous`
-      } */
-    },
-    userStats(stats) {
-      console.log(`User stats watcher, stats data changed, setting current..`)
-      this.setStats(stats)
-      /*
-      this.userName = stats.userName
-      // user stats are stored in db
-      // and are already set in store
-      this.highestScore = this.getHighestScore(stats.resultsArray)
-      this.schoolChartData.series = [ this.getResultsForChart(stats.schoolScores, -16) ]
-      this.gameChartData.series = [ this.getResultsForChart(stats.resultsArray, -16) ]
-      this.setGameStats(stats.resultsArray)
-      */
-      // user stats are stored in localStorage
-    }
-  },
   mounted() {
     this.$nextTick(() => {
-      console.log(`User stats page mounted.`)
-      // user navigated from another page
-      // check if he is logged in or not
-      if (this.getUserData.isAuthenticated) {
-        // set stats from store
-        this.setStats(this.getUserStats)
-        console.log(`Stats are in this format`)
-        console.log(this.getUserStats)
-      } else {
-        // set stats from local storage
-        console.log(`Unknown user setting from local storage`)
-      }
-      // user authenticated
-      /*
-      if (this.getUserData.isAuthenticated) {
-        console.log(`Hi registered user.`)
-      } else {
-        console.log(`No auth`)
-      } */
-      /*
-      if (localStorage.hasOwnProperty(`userName`)) {
-        // init everything
-        this.userName = localStorage.getItem(`userName`)
-        this.highestScore = localStorage.getItem(`highestScore`)
-        this.userScoresArray = this.assembleLastScoresArray() // ?
-        // school results array for chart display
-        this.assembleSchoolScoresArray() // ?
-        this.setDiceFavsValuesChartSeries()
-        this.setCombinationsFavsChartSeries()
-        this.lastScoresToDisplay = this.userScoresArray.slice(0).slice(this.chartResultsToShow)
-        this.newStats.gamesPlayed.value = this.userScoresArray.length
-        this.newStats.averageScore.value = this.computeAverageScore()
-        this.newStats.percentFromMax.value = this.computePercentFromMax()
-        if (this.userScoresArray.length) {
-          this.chartData.labels = this.prepareLabelsForChart(this.userScoresArray.length)
-          this.chartData.series = [this.lastScoresToDisplay]
-        }
-        if (localStorage.getItem(`highestScore`) == ``) {
-          console.log(`You are truly an Anonymous!`)
-          this.userName = `Anonymous`
-          this.anonymousUserNoGames = true
-          this.messageToAnonymous = `You have to finish at least one game to
-          calculate stats.`
-        } else if (localStorage.getItem(`lastScoresArray`) == ``) {
-          // still no games played
-          this.anonymousUserNoGames = true
-          this.messageToAnonymous = `You have to finish at least one game to
-          calculate stats.`
-        }
-      } */
+      gatherDataFromLocalStorage().then(stats => {
+        this.displayStats(stats)
+      })
     })
   },
   methods: {
     /*
-    /*
-    /*
+    /* @param {object} User stats from store or localStorage
     */
-    setStats(stats) {
-      console.log(`Setting stats..`, stats)
-      if(this.getUserData) {
-        console.log(`User authenticated, data is in store.`)
-        this.userName = stats.userName
-        // user stats are stored in db
-        // and are already set in store
-        this.highestScore = this.getHighestScore(stats.resultsArray)
-        this.schoolChartData.series = [ this.getResultsForChart(stats.schoolScores, -16) ]
-        this.gameChartData.series = [ this.getResultsForChart(stats.resultsArray, -16) ]
+    displayStats(stats) {
+      if (stats.schoolResultsArray !== ``) {
+        // user played at least one game
+        // setting numeric stats
         this.setGameStats(stats.resultsArray)
+        this.highestScore = this.getHighestScore(stats.resultsArray)
+        // setting graphs
+        this.schoolChartData.series = [ this.getResultsForChart(stats.schoolResultsArray, this.chartResultsToShow) ]
+        this.schoolChartData.labels = this.prepareLabelsForChart(16)
+        this.gameChartData.series = [ this.getResultsForChart(stats.resultsArray, this.chartResultsToShow) ]
+        this.gameChartData.labels = this.prepareLabelsForChart(16)
+        this.diceValuesFavsChartData.series = [this.convertValuesToPercent(stats.diceValuesFavs)]
+        // should be array by now
+        let combinationsFavs = stats.combinationsFavs.split(`,`).map(Number)
+        this.combinationsFavsChartData.series = [this.convertValuesToPercent(combinationsFavs)]
       } else {
-        console.log(`User notauthenticated, data is in localStorage.`)
+        // stats are empty
+        console.log(`'Play the game! Harding!.. Play the game!'`)
+        this.unknownUser = !this.unknownUser
       }
     },
     /*
@@ -433,46 +357,32 @@ export default {
     /* @return {array}            Scores to display on chart
     */
     getResultsForChart (scores, quantity) {
-      let schoolScoresForChart = scores.split(`,`).slice(quantity)
-      return schoolScoresForChart
+      let scoresForChart = scores.split(`,`).slice(quantity)
+      // console.log(scoresForChart)
+      return scoresForChart
     },
     /*
     /* @param {string} gameResults Scores string
     */
     setGameStats(gameResults) {
       let results = gameResults.split(`,`).map(Number)
+      this.lastScoresToDisplay = results.slice(-16) // this
       this.gameStats.gamesPlayed.value = results.length
       this.gameStats.averageScore.value = this.computeAverageScore(results)
       this.gameStats.percentFromMax.value = // bear with me )
         this.computePercentFromMax(this.gameStats.averageScore.value,
           this.getMaxPossibleScore)
     },
-    restartGame() {
-      console.log(`Restarting.`)
-      this.$store.commit(`resetState`)
-      this.$router.push(`/game`)
-    },
-    assembleLastScoresArray() {
-      let lastScoresString = localStorage.getItem(`lastScoresArray`)
-      return lastScoresString.split(`,`)
-    },
     /*
-    assembleSchoolScoresArray() {
-      this.schoolScores = localStorage.getItem(`schoolScores`)
-      if (this.schoolScores) {
-        const arrayToDisplay = this.schoolScores.split(`,`)
-        const slicedArray = arrayToDisplay.slice(this.chartResultsToShow)
-        this.schoolChartData.series = [slicedArray]
-      }
-    }, */
-    //
-    // values array
-    //
+    /* @param {Array}  Values array
+    /* @return {Array} Of percentages for chart
+    */
     convertValuesToPercent(values) {
       let percentages = []
       let highestValue = Math.max(...values)
       for (let value of values) {
         if (value === highestValue) {
+          percentages.push((value/value) * 100)
           continue
         } else {
           percentages.push(Math.floor((value / highestValue) * 100))
@@ -480,17 +390,12 @@ export default {
       }
       return percentages
     },
-    setDiceFavsValuesChartSeries() {
-      let values = localStorage.getItem(`diceValuesFavs`).split(`,`)
-      let percentages = this.convertValuesToPercent(values)
-      this.diceValuesFavsChartData.series = [percentages]
-    },
-    setCombinationsFavsChartSeries() {
-      let values = localStorage.getItem(`combinationsFavs`).split(`,`)
-      let percentages = this.convertValuesToPercent(values)
-      this.combinationsFavsChartData.series = [percentages]
-    },
+    /*
+    /* @param {Integer} Length of results array
+    /* @return {Array} Labels to display on chart
+    */
     prepareLabelsForChart(numOfLabels) {
+      // this one is glitchy
       const resultsToDisplay = Math.abs(this.chartResultsToShow)
       const lastLabelToDisplay = numOfLabels - resultsToDisplay
       const labelsArray = []
@@ -542,6 +447,7 @@ export default {
   }
 }
 </script>
+
 <style lang="sass">
 
 .user-name
@@ -642,4 +548,5 @@ export default {
 @media screen and (orientation: landscape)
   .hi-score-display
     font-size: 1.8em
+
 </style>

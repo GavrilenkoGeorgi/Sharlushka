@@ -169,6 +169,7 @@
 import errorMessageDialog from '../components/ErrorMessage.vue'
 import showPassIcon from '../assets/icons/baseline-remove_red_eye-24px.svg'
 import { mapGetters, mapActions } from 'vuex'
+import { setLocalStorageDefaults } from '../services/LocalStorageHandler'
 
 export default {
   name: `Login`,
@@ -228,6 +229,7 @@ export default {
       await this.$auth.logout()
         .then(() => {
           this.clearUserStats()
+          setLocalStorageDefaults()
           // clear user stats from localStorage
           // and reset state
         }).catch(error => {

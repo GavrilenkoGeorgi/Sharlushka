@@ -9,7 +9,8 @@ export default () => {
     },
     userData: {},
     userStats: {
-      diceValuesFavs: [0, 0, 0, 0, 0, 0]
+      diceValuesFavs: [0, 0, 0, 0, 0, 0],
+      combinationsFavs: [0, 0, 0, 0, 0, 0, 0, 0, 0]
     },
     error: false,
     currentGameTurn: 32, // game turns counter

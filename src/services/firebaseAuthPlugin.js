@@ -2,7 +2,8 @@ import store from '../store/store'
 import config from '../services/firebaseConfig.js'
 import firebase from 'firebase/app'
 import 'firebase/auth'
-import { getUserStats } from '../services/api.js'
+import { getUserStatsFromDb } from '../services/api.js'
+import { setDataFromDb } from '../services/LocalStorageHandler'
 
 export default {
   install: (Vue) => {
@@ -27,8 +28,9 @@ export default {
     auth.onAuthStateChanged(user => {
       let userData
       if (user) {
-        getUserStats(user.uid).then(stats => {
-          store.commit(`setUserStats`, stats)
+        getUserStatsFromDb(user.uid).then(stats => {
+          // store.commit(`setUserStats`, stats)
+          setDataFromDb(stats)
         }).catch(error => {
           console.error(error)
         })

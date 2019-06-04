@@ -1,9 +1,8 @@
 import database from './database'
 import 'firebase/firestore'
-
 const db = database.firestore()
 
-export async function getUserStats (uid) {
+export async function getUserStatsFromDb (uid) {
   let result = undefined
   await db.collection(`users`).where(`uid`, `==`, uid)
     .get()
@@ -14,10 +13,11 @@ export async function getUserStats (uid) {
             // should be `display name`
             userName: doc.data().name,
             // userUid: doc.data().uid,
-            highestScore: doc.data().hiScore,
+            // highestScore: doc.data().hiScore,
             resultsArray:  doc.data().resultsArray,
-            schoolScores: doc.data().schoolResultsArray,
-            diceValuesFavs: doc.data().diceValuesFavs
+            schoolResultsArray: doc.data().schoolResultsArray,
+            diceValuesFavs: doc.data().diceValuesFavs,
+            combinationsFavs: doc.data().combinationsFavs
           }
         }
       })
@@ -25,3 +25,7 @@ export async function getUserStats (uid) {
   return result
 }
 
+export async function syncUserStatsWithDB (uid, data) {
+  console.log(`Saving to firestore stats for user with ${uid} and`, data)
+  return true
+}
