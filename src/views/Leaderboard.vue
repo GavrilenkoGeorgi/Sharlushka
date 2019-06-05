@@ -11,7 +11,7 @@
       <!-- Title -->
       <v-flex py-3>
         <h1 class="leaderboard-title text-capitalize">
-          {{ title }}
+          Leaderboard
         </h1>
       </v-flex>
       <!-- Users leaderboard legend -->
@@ -60,13 +60,10 @@
       </v-flex>
       <!-- No leaderboard message -->
       <v-flex
-        v-else-if="noLeaderboardMessage"
+        v-if="noLeaderboardMessage"
         xs12
         pt-2
       >
-        <p class="error-message">
-          You got: {{ errorMessage }}
-        </p>
         <p class="no-leaderboard-message">
           {{ noLeaderboardMessage }}
         </p>
@@ -78,7 +75,7 @@
         class="leaderboard"
       >
         <v-layout
-          v-for="(user, index) in leaderboard"
+          v-for="(user, index) in userDataFromDB"
           :key="index"
           class="leaderboard-item"
           :class="{ 'orange--text': user.userName === userName }"
@@ -116,8 +113,9 @@
 
 <script>
 import listIcon from '../assets/icons/baseline-import_export-24px.svg'
-import {mapGetters} from 'vuex'
-import db from '../firebase/firebaseInit'
+import { mapGetters, mapActions, mapState } from 'vuex'
+import { getLeaderboardStats } from '../services/api'
+import { computeAverageScore, computePercentFromMax } from '../services/statsHelpers'
 
 export default {
   name: `Leaderboard`,
@@ -125,76 +123,58 @@ export default {
     listIcon
   },
   data: () => ({
-    title: `leaderboard`,
     userName: null,
-    leaderboard: [],
     userDataFromDB: [],
-    noLeaderboardMessage: null,
+    noLeaderboardMessage: false,
     errorMessage: null,
-    leaderboardLoading: false
+    leaderboardLoading: true
   }),
   computed: {
     ...mapGetters([
-      `getDefaultUserName`,
-      `getUserData`,
-      `getMaxPossibleScore`
+      `getMaxPossibleScore`,
+      `getLeaderboardStats`
+    ]),
+    ...mapState([
+      `leaderboardStats`,
+      `userData`
     ])
+  },
+  watch: {
+    leaderboardStats(data) {
+      // preparing stats
+      for (let user of data) {
+        let scores = user.resultsArray.split(`,`).map(Number)
+        let average = computeAverageScore(scores)
+        let userData = {
+          userName: user.userName,
+          hiScore: Math.max(...scores),
+          averageScore: average,
+          percentFromMax: computePercentFromMax(average, this.getMaxPossibleScore),
+          gamesPlayed: scores.length
+        }
+        this.userDataFromDB.push(userData)
+      }
+      this.userDataFromDB.sort((a,b) => (a.hiScore > b.hiScore) ? 1 : ((b.hiScore > a.hiScore) ? -1 : 0))
+      this.userDataFromDB.reverse()
+    }
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(`Leaderboard mounted.`)
-      // console.log(`Getting leaderboard data from db...`)
-      this.leaderboardLoading = true
-      this.getDataForLeaderboard()
+      // should be from userData in store
       this.userName = localStorage.getItem(`userName`)
+      getLeaderboardStats().then(stats => {
+        this.setLeaderboardStats(stats)
+      }).catch(error => {
+        console.error(error)
+      }).finally(() => {
+        this.leaderboardLoading = false
+      })
     })
   },
   methods: {
-    getDataForLeaderboard() {
-      const usersDataRef = db.collection(`users`)
-      usersDataRef.orderBy(`hiScore`).get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            const userData = {
-              id: doc.id,
-              userName: doc.data().name,
-              hiScore: doc.data().hiScore,
-              resultsArray: doc.data().resultsArray
-            }
-            this.userDataFromDB.push(userData)
-          })
-        })
-        .then(() => {
-          for (const user of this.userDataFromDB) {
-            // prepare data for leaderboard display
-            const arraySum = (accumulator, currentValue) =>
-              accumulator + currentValue
-            const userResultsArray = user.resultsArray.split(`,`).map(Number)
-            const averageScore = parseInt(userResultsArray.reduce(arraySum) /
-                userResultsArray.length)
-            const percent = Math.floor(averageScore /
-                this.getMaxPossibleScore * 100)
-            const leaderBoardUserData = {
-              id: user.id,
-              userName: user.userName,
-              hiScore: parseInt(user.hiScore),
-              averageScore: averageScore,
-              percentFromMax: percent,
-              gamesPlayed: userResultsArray.length
-            }
-            this.leaderboard.push(leaderBoardUserData)
-          }
-          this.leaderboard.reverse()
-          this.leaderboardLoading = false
-        })
-        .catch(error => {
-          this.noLeaderboardMessage = `${this.userName}!
-          Please register to view more sensitive anonymous data.`
-          this.errorMessage = error.message
-          this.leaderboardLoading = false
-          console.log(`Error getting documents: `, error)
-        })
-    }
+    ...mapActions([
+      `setLeaderboardStats`
+    ])
   }
 }
 </script>

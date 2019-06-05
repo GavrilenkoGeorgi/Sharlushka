@@ -12,6 +12,7 @@ export default {
     }
     return currentGameState
   },
+  getLeaderboardStats: state => state.leaderboardData,
   progressBarState(state) {
     let fraction = 3
     let numbah = state.rollCount - fraction

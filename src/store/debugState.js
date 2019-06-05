@@ -12,6 +12,7 @@ export default () => {
       diceValuesFavs: [0, 0, 0, 0, 0, 0],
       combinationsFavs: [0, 0, 0, 0, 0, 0, 0, 0, 0]
     },
+    leaderboardStats: {},
     error: false,
     currentGameTurn: 32, // game turns counter
     rollCount: 3, // roll counter for the current turn

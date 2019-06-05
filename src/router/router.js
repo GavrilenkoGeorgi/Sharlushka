@@ -46,11 +46,11 @@ export default new Router({
       path: `/login`,
       name: `Login`,
       component: () => import(/* webpackChunkName: "login" */ `../views/Login.vue`)
-    }
-    /* {
+    },
+    {
       path: `/leaderboard`,
       name: `LeaderBoard`,
-      component: () => import( */ /* webpackChunkName: "leaderboard" */ /* `../views/Leaderboard.vue`)
-    } */
+      component: () => import( /* webpackChunkName: "leaderboard" */ `../views/Leaderboard.vue`)
+    }
   ]
 })

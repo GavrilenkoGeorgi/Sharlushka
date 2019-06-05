@@ -27,6 +27,23 @@ export async function getUserStatsFromDb (uid) {
   return result
 }
 
+export async function getLeaderboardStats () {
+  let result = []
+  await db.collection(`users`).orderBy(`hiScore`).get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const userData = {
+          id: doc.id,
+          userName: doc.data().name,
+          hiScore: doc.data().hiScore,
+          resultsArray: doc.data().resultsArray
+        }
+        result.push(userData)
+      })
+    }).catch(error => console.error(error))
+  return result
+}
+
 export class connectToDb {
   constructor(uid, data) {
     this.uid = uid

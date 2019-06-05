@@ -455,6 +455,9 @@ export default {
   setUserStats (state, userStats) {
     Vue.set(state, `userStats`, userStats)
   },
+  setLeaderboardStats (state, stats) {
+    Vue.set(state, `leaderboardStats`, stats)
+  },
   // action
   clearUserStats (state) {
     Vue.set(state, `userStats`, {})

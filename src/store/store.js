@@ -17,6 +17,9 @@ const actions = {
   clearUserStats: async ({ commit }) => {
     commit(`clearUserStats`)
   },
+  setLeaderboardStats: async ( { commit }, stats) => {
+    commit(`setLeaderboardStats`, stats)
+  },
   setAnonymousDiceFavs: async ({ commit }, favs) => {
     commit(`setAnonymousDiceFavs`, favs)
   },
