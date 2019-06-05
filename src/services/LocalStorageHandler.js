@@ -9,7 +9,7 @@ export function setLocalStorageDefaults () {
 }
 
 // set user stats to local storage upon loggin in
-export function setDataFromDb (data) {
+export function setDataFromDbToLs (data) {
   localStorage.setItem(`userName`, data.userName)
   localStorage.setItem(`lastScoresArray`, data.resultsArray)
   localStorage.setItem(`schoolScores`, data.schoolResultsArray)

@@ -21,11 +21,40 @@ export async function getUserStatsFromDb (uid) {
           }
         }
       })
+    }).catch(error => {
+      console.log(`Error getting documents: `, error)
     })
   return result
 }
 
-export async function syncUserStatsWithDB (uid, data) {
-  console.log(`Saving to firestore stats for user with ${uid} and`, data)
-  return true
+export class connectToDb {
+  constructor(uid, data) {
+    this.uid = uid
+    this.data = data
+  }
+  sync() {
+    let colRef = `users`
+    db.collection(colRef).where(`uid`, `==`, this.uid).get()
+      .then(querySnapshot => {
+        let docToUpdateId
+        querySnapshot.forEach(doc => {
+          // doc.data() is never undefined for query doc snapshots
+          if (doc.data().uid === this.uid) {
+            docToUpdateId = doc.id
+          }
+        })
+        return docToUpdateId
+      }).then((docToUpdateId) => {
+        // console.log(docToUpdateId)
+        const docRef = db.collection(colRef).doc(docToUpdateId)
+        docRef.update({
+          resultsArray: this.data.resultsArray,
+          schoolResultsArray: this.data.schoolResultsArray,
+          diceValuesFavs: this.data.diceValuesFavs,
+          combinationsFavs: this.data.combinationsFavs
+        }).catch(error => {
+          console.log(`Error getting documents: `, error)
+        })
+      })
+  }
 }
