@@ -9,7 +9,6 @@ yarn-error.log*
 /test/e2e/reports/
 selenium-debug.log
 /src/services/firebaseConfig.js
-/src/services/database.js
 /platforms/android/
 /platforms
 
