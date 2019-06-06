@@ -12,6 +12,7 @@ selenium-debug.log
 /platforms/android/
 /platforms
 
+
 # Editor directories and files
 .idea
 .vscode
