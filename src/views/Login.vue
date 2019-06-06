@@ -169,7 +169,7 @@
 import errorMessageDialog from '../components/ErrorMessage.vue'
 import showPassIcon from '../assets/icons/baseline-remove_red_eye-24px.svg'
 import { mapGetters, mapActions } from 'vuex'
-import { setLocalStorageDefaults } from '../services/LocalStorageHandler'
+import { setLocalStorageDefaults } from '../services/localStorageHelper'
 
 export default {
   name: `Login`,
@@ -212,9 +212,7 @@ export default {
     ]),
     async login () {
       this.loggingIn = !this.loggingIn
-      let email = `dale@aol.com`
-      let password = `propane`
-      await this.$auth.login(email, password)
+      await this.$auth.login(this.email, this.password)
         .then(response => {
           console.log(response.user.uid)
           this.clearForm()

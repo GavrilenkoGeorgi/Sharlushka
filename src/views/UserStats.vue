@@ -218,7 +218,7 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex'
-import { gatherDataFromLocalStorage } from '../services/LocalStorageHandler'
+import { gatherDataFromLocalStorage } from '../services/localStorageHelper'
 import { computeAverageScore,
   computePercentFromMax,
   convertValuesToPercent,

@@ -111,7 +111,7 @@ import { mapGetters, mapActions } from 'vuex'
 import NetworkCheck from '../components/NetworkCheck.vue'
 import restartIcon from '../assets/icons/baseline-replay-24px.svg'
 import cancelIcon from '../assets/icons/baseline-cancel-24px.svg'
-import { appendToStorage, sumTwoArrays, gatherDataFromLocalStorage } from '../services/LocalStorageHandler'
+import { appendToStorage, sumTwoArrays, gatherDataFromLocalStorage } from '../services/localStorageHelper'
 import { connectToDb } from '../services/api'
 
 export default {

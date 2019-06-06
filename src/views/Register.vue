@@ -154,7 +154,7 @@
 import errorMessageDialog from '../components/ErrorMessage.vue'
 import showPassIcon from '../assets/icons/baseline-remove_red_eye-24px.svg'
 import { signUp, addNewUserData, connectToDb } from '../services/api'
-import { gatherDataFromLocalStorage } from '../services/LocalStorageHandler'
+import { gatherDataFromLocalStorage } from '../services/localStorageHelper'
 
 export default {
   name: `Register`,

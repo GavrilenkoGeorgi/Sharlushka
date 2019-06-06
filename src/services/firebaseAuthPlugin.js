@@ -2,7 +2,7 @@ import store from '../store/store'
 import config from '../services/firebaseConfig.js'
 import firebase from 'firebase/app'
 import 'firebase/auth'
-import { setDataFromDbToLs } from '../services/LocalStorageHandler'
+import { setDataFromDbToLs } from './localStorageHelper'
 import { getUserStatsFromDb } from '../services/api'
 
 export default {

@@ -118,7 +118,7 @@ import { mapGetters } from 'vuex'
 import SharlushkaLogo from '../assets/images/sharlushkaLogo.svg'
 import doneIcon from '../assets/icons/baseline-done-24px.svg'
 import regIcon from '../assets/icons/baseline-how_to_reg-24px.svg'
-import { setLocalStorageDefaults } from '../services/LocalStorageHandler'
+import { setLocalStorageDefaults } from '../services/localStorageHelper'
 
 export default {
   name: `Main`,
