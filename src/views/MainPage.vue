@@ -15,7 +15,7 @@
         align-end
       >
         <h1 class="game-name">
-          {{ gameName }}
+          Sharlushka
         </h1>
       </v-flex>
       <v-layout
@@ -34,7 +34,7 @@
         align-center
       >
         <h2 class="user-name-main-page">
-          {{ greeting }} {{ userName }}{{ exclamation }}
+          Hi, {{ userName }}!
         </h2>
       </v-flex>
       <v-layout
@@ -114,7 +114,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import SharlushkaLogo from '../assets/images/sharlushkaLogo.svg'
 import doneIcon from '../assets/icons/baseline-done-24px.svg'
 import regIcon from '../assets/icons/baseline-how_to_reg-24px.svg'
@@ -129,10 +129,7 @@ export default {
   },
   data() {
     return {
-      gameName: `Sharlushka`,
-      userName: `Anonymous`,
-      greeting: `Hi,`,
-      exclamation: `.`
+      userName: `Anonymous`
     }
   },
   computed: {
@@ -147,23 +144,9 @@ export default {
       if (!localStorage.hasOwnProperty(`userName`)) {
         setLocalStorageDefaults()
       } else {
-        // local storage data is type of string.
-        // to save user dice favourites values
-        // we need an array as data is saved
-        // each time after the combination is
-        // chosen to save, so we get
-        // some string and split it
-        // into an array that we can increment
-        // in store during game
-        let diceFavs = localStorage.getItem(`diceValuesFavs`).split(`,`).map(Number)
-        this.setAnonymousDiceFavs(diceFavs)
+        this.userName = localStorage.getItem(`userName`)
       }
     })
-  },
-  methods: {
-    ...mapActions([
-      `setAnonymousDiceFavs`
-    ])
   }
 }
 </script>

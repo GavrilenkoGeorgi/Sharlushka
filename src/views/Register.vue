@@ -19,7 +19,7 @@
         xs12
         class="register-title text-xs-center py-4"
       >
-        <h1>{{ pageTitle }}</h1>
+        <h1>Register</h1>
       </v-flex>
       <v-flex
         xs10
@@ -163,11 +163,8 @@ export default {
     showPassIcon
   },
   data: () => ({
-    pageTitle: `Register`,
     registering: false,
-    errorMessage: ``,
     valid: true,
-    usersCollRef: `users`,
     userNameFormValue: undefined,
     nameRules: [
       (v) => (!v || v.length <= 10) || `Name must be less than 10 characters`
@@ -190,11 +187,6 @@ export default {
     comparePasswords() {
       return this.password !== this.confirmPassword ? `Passwords do not match` : true
     }
-  },
-  mounted() {
-    this.$nextTick(() => {
-      console.log(`Register page mounted.`)
-    })
   },
   methods: {
     signUpNewUser() {

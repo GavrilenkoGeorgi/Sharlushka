@@ -219,6 +219,10 @@
 <script>
 import { mapGetters, mapState } from 'vuex'
 import { gatherDataFromLocalStorage } from '../services/LocalStorageHandler'
+import { computeAverageScore,
+  computePercentFromMax,
+  convertValuesToPercent,
+  prepareLabelsForChart } from '../services/statsHelpers'
 
 export default {
   name: `UserStats`,
@@ -228,7 +232,7 @@ export default {
       unknownUser: false,
       messageToAnonymous: null,
       highestScore: ``,
-      lastScoresToDisplay: ``,
+      lastScoresToDisplay: undefined,
       chartResultsToShow: -16, // minus sign cause of array slicing
       gameChartData: {
         labels: [],
@@ -291,7 +295,7 @@ export default {
       // Combination favs chart data
       combinationsFavsChartData: {
         labels: [`Pair`, `Two pairs`, `Three O.A.K`, `Full`, `Quads`, `Poker`, `Small`, `Large`, `Chance`],
-        series: [[10, 10, 10, 10, 10, 5, 10, 10, 10]]
+        series: []
       },
       combinationsFavsChartOptions: {
         reverseData: true,
@@ -312,6 +316,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
+      this.userName = localStorage.getItem(`userName`)
       gatherDataFromLocalStorage().then(stats => {
         this.displayStats(stats)
       })
@@ -319,23 +324,32 @@ export default {
   },
   methods: {
     /*
-    /* @param {object} User stats from store or localStorage
+    /* @param {object} stats
+    /*   User stats from localStorage
     */
     displayStats(stats) {
       if (stats.schoolResultsArray !== ``) {
         // user played at least one game
-        // setting numeric stats
-        this.setGameStats(stats.resultsArray)
-        this.highestScore = this.getHighestScore(stats.resultsArray)
-        // setting graphs
-        this.schoolChartData.series = [ this.getResultsForChart(stats.schoolResultsArray, this.chartResultsToShow) ]
-        this.schoolChartData.labels = this.prepareLabelsForChart(16)
-        this.gameChartData.series = [ this.getResultsForChart(stats.resultsArray, this.chartResultsToShow) ]
-        this.gameChartData.labels = this.prepareLabelsForChart(16)
-        this.diceValuesFavsChartData.series = [this.convertValuesToPercent(stats.diceValuesFavs)]
-        // should be array by now
+        // strings from localStorage
+        // this!
+        let schoolResults = stats.schoolResultsArray.split(`,`).map(Number)
+        let gameResults = stats.resultsArray.split(`,`).map(Number)
+        let diceValuesFavs = stats.diceValuesFavs.split(`,`).map(Number)
         let combinationsFavs = stats.combinationsFavs.split(`,`).map(Number)
-        this.combinationsFavsChartData.series = [this.convertValuesToPercent(combinationsFavs)]
+
+        // setting numeric stats
+        this.calculateGameStats(gameResults)
+        this.highestScore = Math.max(...gameResults)
+
+        // setting graphs
+        this.schoolChartData.series = [ schoolResults.slice(this.chartResultsToShow) ]
+        this.schoolChartData.labels = prepareLabelsForChart(schoolResults.length, Math.abs(this.chartResultsToShow))
+
+        this.gameChartData.series = [ gameResults.slice(this.chartResultsToShow) ]
+        this.gameChartData.labels = prepareLabelsForChart(gameResults.length, Math.abs(this.chartResultsToShow))
+
+        this.diceValuesFavsChartData.series = [convertValuesToPercent(diceValuesFavs)]
+        this.combinationsFavsChartData.series = [convertValuesToPercent(combinationsFavs)]
       } else {
         // stats are empty
         console.log(`'Play the game! Harding!.. Play the game!'`)
@@ -343,106 +357,15 @@ export default {
       }
     },
     /*
-    /* @param {string} scores String with scores from
-    /*                        store or localStorage
-    /* @return {integer}      Highest user score
+    * @param {Array} gameResults
     */
-    getHighestScore (scores) {
-      let scoresArray = scores.split(`,`).map(Number)
-      return Math.max(...scoresArray)
-    },
-    /*
-    /* @param {string} scores     Scores string
-    /* @param {integer} quantity  How many results to show
-    /* @return {array}            Scores to display on chart
-    */
-    getResultsForChart (scores, quantity) {
-      let scoresForChart = scores.split(`,`).slice(quantity)
-      // console.log(scoresForChart)
-      return scoresForChart
-    },
-    /*
-    /* @param {string} gameResults Scores string
-    */
-    setGameStats(gameResults) {
-      let results = gameResults.split(`,`).map(Number)
-      this.lastScoresToDisplay = results.slice(-16) // this
-      this.gameStats.gamesPlayed.value = results.length
-      this.gameStats.averageScore.value = this.computeAverageScore(results)
+    calculateGameStats(gameResults) {
+      this.lastScoresToDisplay = gameResults.slice(this.chartResultsToShow)
+      this.gameStats.gamesPlayed.value = gameResults.length
+      this.gameStats.averageScore.value = computeAverageScore(gameResults)
       this.gameStats.percentFromMax.value = // bear with me )
-        this.computePercentFromMax(this.gameStats.averageScore.value,
+        computePercentFromMax(this.gameStats.averageScore.value,
           this.getMaxPossibleScore)
-    },
-    /*
-    /* @param {Array}  Values array
-    /* @return {Array} Of percentages for chart
-    */
-    convertValuesToPercent(values) {
-      let percentages = []
-      let highestValue = Math.max(...values)
-      for (let value of values) {
-        if (value === highestValue) {
-          percentages.push((value/value) * 100)
-          continue
-        } else {
-          percentages.push(Math.floor((value / highestValue) * 100))
-        }
-      }
-      return percentages
-    },
-    /*
-    /* @param {Integer} Length of results array
-    /* @return {Array} Labels to display on chart
-    */
-    prepareLabelsForChart(numOfLabels) {
-      // this one is glitchy
-      const resultsToDisplay = Math.abs(this.chartResultsToShow)
-      const lastLabelToDisplay = numOfLabels - resultsToDisplay
-      const labelsArray = []
-      if (numOfLabels >= resultsToDisplay) {
-        while (numOfLabels !== lastLabelToDisplay) {
-          labelsArray.push(numOfLabels)
-          numOfLabels--
-        }
-        return labelsArray.reverse()
-      } else {
-        while (numOfLabels !== 0) {
-          labelsArray.push(numOfLabels)
-          numOfLabels--
-          // console.log(`Scaaary..`)
-        }
-        return labelsArray.reverse()
-      }
-    },
-    /*
-    /* @param {array} scores Array of integers
-    /* @return {integer}     Average user score
-    */
-    computeAverageScore(scores) {
-      const arrayToReduce = []
-      const scoreSum = (accumulator, currentValue) => accumulator + currentValue
-      for (const value of scores) {
-        arrayToReduce.push(value)
-      }
-      if (arrayToReduce.length > 0) {
-        return parseInt(arrayToReduce.reduce(scoreSum) / arrayToReduce.length)
-      } else {
-        return 0
-      }
-    },
-    /*
-    /* @param {integer} averageScore     Average user score
-    /* @param {integer} maxPossibleScore Max possible score in game
-    /* @return {integer}                 User percent from max
-    /*                                   possible score
-    */
-    computePercentFromMax(averageScore, maxPossibleScore) {
-      let result = Math.floor(averageScore / maxPossibleScore * 100)
-      if (result) {
-        return result + `%`
-      } else {
-        return ``
-      }
     }
   }
 }

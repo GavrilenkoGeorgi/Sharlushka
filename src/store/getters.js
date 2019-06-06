@@ -56,11 +56,6 @@ export default {
     return combinationArray
   },
   getMaxPossibleScore: (state) => state.maxPossibleScore,
-  /*
-  getUserAuthState (state) {
-    console.log(state.userData.isAuthenticated)
-    state.userData.isAuthenticated
-  }, */
   userData: state => state.userData,
   getTotalScore(state) {
     return state.schoolScoreTotal + state.gameTotal
@@ -75,11 +70,6 @@ export default {
     return state.schoolCompleted
   },
   error: state => state.error,
-  // getDiceValuesFavs: state => state.user.diceValuesFavs
-  /*
-  getDiceValuesFavs(state) {
-    return state.user.diceValuesFavs
-  }, */
   getCurrentNonZeroCombinations(state) {
     // console.log(`Getting current non zero combinations.`)
     let arrayWithResults = state.scoreArray.slice(state.diceArray.length + 1, state.scoreArray.length)
@@ -94,8 +84,6 @@ export default {
         }
       }
     }
-    // console.log(`Returning this -->`)
-    // console.log(combinationsFavsArray)
     return combinationsFavsArray
   }
 }

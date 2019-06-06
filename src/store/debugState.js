@@ -2,10 +2,12 @@ export default () => {
   return {
     defaultUserName: `Anonymous`,
     user: {
-      isAuthenticated: false,
-      name: undefined,
-      lastResultSaved: false, // current result saved
-      diceValuesFavs: [0, 0, 0, 0, 0, 0] // favorite dice values stats
+      // isAuthenticated: false,
+      // name: undefined,
+      // remove this!
+      lastResultSaved: false // current result saved
+      // remove this!
+      // diceValuesFavs: [0, 0, 0, 0, 0, 0] // favorite dice values stats
     },
     userData: {},
     userStats: {

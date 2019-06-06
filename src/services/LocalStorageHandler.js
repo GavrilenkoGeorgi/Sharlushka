@@ -33,7 +33,7 @@ export function appendToStorage (name, data) {
 export async function gatherDataFromLocalStorage () {
   const dataToSave = {
     combinationsFavs: localStorage.getItem(`combinationsFavs`),
-    diceValuesFavs: localStorage.getItem(`diceValuesFavs`).split(`,`).map(Number),
+    diceValuesFavs: localStorage.getItem(`diceValuesFavs`),
     resultsArray: localStorage.getItem(`lastScoresArray`),
     schoolResultsArray: localStorage.getItem(`schoolScores`)
   }

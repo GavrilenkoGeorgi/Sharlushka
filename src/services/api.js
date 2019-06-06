@@ -43,19 +43,15 @@ export async function getLeaderboardStats () {
 }
 
 export async function signUp (email, password) {
-  console.log(`Signing user up with email ${email} and password ${password}`)
   let result = {}
   await database.auth().createUserWithEmailAndPassword(email, password)
     .then(response => {
-      // console.log(response)
       result = response
     }).catch(error => console.error(error))
   return result
 }
 
 export async function addNewUserData (newUserData) {
-  console.log(`Adding user data --->>>`)
-  console.log(newUserData)
   const newUserRef = db.collection(`users`).doc()
   newUserRef.set(newUserData)
 }
@@ -78,7 +74,6 @@ export class connectToDb {
         })
         return docToUpdateId
       }).then((docToUpdateId) => {
-        // console.log(docToUpdateId)
         const docRef = db.collection(colRef).doc(docToUpdateId)
         docRef.update({
           resultsArray: this.data.resultsArray,

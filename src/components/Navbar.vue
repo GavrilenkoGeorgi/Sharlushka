@@ -40,7 +40,7 @@
             class="game-name"
           >
             <router-link :to="{ path: '/' }">
-              {{ gameName }}
+              Sharlushka
             </router-link>
           </v-toolbar-title>
         </v-flex>
@@ -88,7 +88,7 @@
             </v-flex>
           </v-list-tile-action>
           <v-list-tile-content class="drawer-menu-item pa-0 user-name">
-            Hi,&nbsp; getUserName .
+            {{ userName }}.
           </v-list-tile-content>
         </v-list-tile>
         <!-- Nav drawer links -->
@@ -124,7 +124,6 @@ import { mapGetters, mapActions } from 'vuex'
 
 import NetworkCheck from '../components/NetworkCheck.vue'
 import settingsIcon from '../assets/icons/baseline-menu-24px.svg'
-
 import userStatsIcon from '../assets/icons/baseline-equalizer-24px.svg'
 import leaderBoardIcon from '../assets/icons/baseline-import_export-24px.svg'
 import logInOutIcon from '../assets/icons/baseline-exit_to_app-24px.svg'
@@ -146,6 +145,7 @@ export default {
   },
   data: () => ({
     navDrawer: false,
+    userName: undefined,
     navDrawerLinks: [
       {
         path: `/game`,
@@ -184,10 +184,12 @@ export default {
   computed: {
     ...mapGetters([
       `getTotalScore`
-    ]),
-    gameName() {
-      return `Sharlushka`
-    }
+    ])
+  },
+  mounted () {
+    this.$nextTick(() => {
+      this.userName = localStorage.getItem(`userName`)
+    })
   },
   methods: {
     ...mapActions([
