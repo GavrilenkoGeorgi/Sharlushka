@@ -7,7 +7,7 @@
   "author": "Gavrilenko <gavrilenko.georgi@gmail.com>",
   "scripts": {
     "dev": "webpack-dev-server --progress",
-    "build": "webpack -p --mode production",
+    "buildprod": "webpack -p --mode production",
     "build:dev": "webpack -d --mode development",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
     "test:e2e": "node test/e2e/runner.js",
