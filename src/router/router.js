@@ -11,12 +11,12 @@ export default new Router({
       path: `/`,
       name: `MainPage`,
       component: () => import(/* webpackChunkName: "mainpage" */ `../views/MainPage.vue`)
-    }, /*
+    },
     {
       path: `/register`,
       name: `Register`,
-      component: () => import( */ /* webpackChunkName: "register" */ /* `../views/Register.vue`)
-    }, */
+      component: () => import(/* webpackChunkName: "register" */ `../views/Register.vue`)
+    },
     {
       path: `/userstats`,
       name: `UserStats`,

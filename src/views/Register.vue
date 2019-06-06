@@ -125,7 +125,7 @@
               class="white--text button"
               outline
               color="orange"
-              @click.prevent="signUp"
+              @click.prevent="signUpNewUser"
             >
               register
             </v-btn>
@@ -153,9 +153,8 @@
 <script>
 import errorMessageDialog from '../components/ErrorMessage.vue'
 import showPassIcon from '../assets/icons/baseline-remove_red_eye-24px.svg'
-import db from '../firebase/firebaseInit'
-import firebase from 'firebase/app'
-import 'firebase/auth'
+import { signUp, addNewUserData, connectToDb } from '../services/api'
+import { gatherDataFromLocalStorage } from '../services/LocalStorageHandler'
 
 export default {
   name: `Register`,
@@ -169,7 +168,7 @@ export default {
     errorMessage: ``,
     valid: true,
     usersCollRef: `users`,
-    userNameFormValue: ``,
+    userNameFormValue: undefined,
     nameRules: [
       (v) => (!v || v.length <= 10) || `Name must be less than 10 characters`
     ],
@@ -191,12 +190,6 @@ export default {
     comparePasswords() {
       return this.password !== this.confirmPassword ? `Passwords do not match` : true
     }
-    // comparePasswords: () => this.password !== this.confirmPassword ? `Passwords do not match` : true
-    /*
-    comparePasswords() {
-      return this.password !== this.confirmPassword ? `Passwords do not match` : true
-    }
-    */
   },
   mounted() {
     this.$nextTick(() => {
@@ -204,55 +197,19 @@ export default {
     })
   },
   methods: {
-    signUp() {
-      this.errorMessage = `` // clear error message?
-      if (this.email && this.password) {
-        this.registering = true
-        firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-          .then(response => {
-            // add new user data to db
-            if (this.userNameFormValue === ``) { // it is optional, privacy meh
-              this.userNameFormValue = `Anonymous` // get default name??
-            }
-            localStorage.setItem(`userUid`, response.user.uid)
-            localStorage.setItem(`userName`, this.userNameFormValue)
-            const newUserData = {
-              name: localStorage.getItem(`userName`),
-              uid: response.user.uid,
-              email: response.user.email,
-              hiScore: localStorage.getItem(`highestScore`),
-              resultsArray: localStorage.getItem(`lastScoresArray`),
-              schoolResultsArray: localStorage.getItem(`schoolScores`),
-              diceValuesFavs: localStorage.getItem(`diceValuesFavs`),
-              combinationsFavs: localStorage.getItem(`combinationsFavs`)
-            }
-            this.addNewUser(newUserData)
-            console.log(`User added ${response.user.email}`)
-            this.verifyUserEmail()
-            // some message with button to the game view needed
-            this.$router.push(`/game`)
-          })
-          .catch(err => {
-            console.log(err.message)
-            this.errorMessage = err.message
-            this.registering = false
-          })
-      }
-    },
-    addNewUser(userData) {
-      console.log(`Adding user`)
-      // Add a new document with a generated id.
-      const newUserRef = db.collection(this.usersCollRef).doc()
-      newUserRef.set(userData)
-      console.log(`Document successfully written!`)
-    }, // end of user adding
-    verifyUserEmail() {
-      const user = firebase.auth().currentUser
-      user.sendEmailVerification().then(() => {
-        console.log(`Email sent`)
-      }).catch(function(error) {
-        console.log(`Error! ${error}`)
-      })
+    signUpNewUser() {
+      signUp(this.email, this.password).then(response => {
+        let userUid = {
+          uid: response.user.uid,
+          name: !this.userNameFormValue ? localStorage.getItem(`userName`) : this.userNameFormValue
+        }
+        gatherDataFromLocalStorage().then(newUserData => {
+          Object.assign(newUserData, userUid)
+          addNewUserData(newUserData)
+          const db = new connectToDb
+          db.verifyUserEmail()
+        })
+      }).catch(error => console.error(error))
     },
     clear() {
       this.$refs.form.reset()

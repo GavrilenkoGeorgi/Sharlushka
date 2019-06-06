@@ -44,7 +44,6 @@ export async function gatherDataFromLocalStorage () {
 // not exactly local storage related
 export function sumTwoArrays (current, newOne) {
   let updated = current.map((num, idx) => {
-    console.log(`Currently adding ${num} + ${newOne[idx]}`)
     return num + newOne[idx]
   })
   return updated

@@ -1,5 +1,6 @@
 import database from './database'
 import 'firebase/firestore'
+import 'firebase/auth'
 const db = database.firestore()
 
 export async function getUserStatsFromDb (uid) {
@@ -10,10 +11,7 @@ export async function getUserStatsFromDb (uid) {
       querySnapshot.forEach(doc => {
         if (doc.data().uid === uid) {
           result = {
-            // should be `display name`
             userName: doc.data().name,
-            // userUid: doc.data().uid,
-            // highestScore: doc.data().hiScore,
             resultsArray:  doc.data().resultsArray,
             schoolResultsArray: doc.data().schoolResultsArray,
             diceValuesFavs: doc.data().diceValuesFavs,
@@ -42,6 +40,24 @@ export async function getLeaderboardStats () {
       })
     }).catch(error => console.error(error))
   return result
+}
+
+export async function signUp (email, password) {
+  console.log(`Signing user up with email ${email} and password ${password}`)
+  let result = {}
+  await database.auth().createUserWithEmailAndPassword(email, password)
+    .then(response => {
+      // console.log(response)
+      result = response
+    }).catch(error => console.error(error))
+  return result
+}
+
+export async function addNewUserData (newUserData) {
+  console.log(`Adding user data --->>>`)
+  console.log(newUserData)
+  const newUserRef = db.collection(`users`).doc()
+  newUserRef.set(newUserData)
 }
 
 export class connectToDb {
@@ -73,5 +89,12 @@ export class connectToDb {
           console.log(`Error getting documents: `, error)
         })
       })
+  }
+  verifyUserEmail() {
+    console.log(`Sending verification email`)
+    const user = database.auth().currentUser
+    user.sendEmailVerification().then(() => {
+      console.log(`Email sent`)
+    }).catch(error => console.error(error))
   }
 }
