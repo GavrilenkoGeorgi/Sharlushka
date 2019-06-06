@@ -6,7 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
 const PUBLIC_PATH = '/';
-const TerserPlugin = require('terser-webpack-plugin');
+// const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = (env, argv) => ({
   mode: argv && argv.mode || 'development',
@@ -113,7 +113,7 @@ module.exports = (env, argv) => ({
       toType: 'dir'
     }])
   ],
-  optimization: {
+  optimization: { /*
     minimizer: [
       new TerserPlugin({
         test: /\.js(\?.*)?$/i,
@@ -135,7 +135,7 @@ module.exports = (env, argv) => ({
           safari10: false,
         },
       }),
-    ],
+    ], */
     splitChunks: {
       chunks: 'all',
       maxInitialRequests: Infinity,
