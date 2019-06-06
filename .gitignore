@@ -8,9 +8,10 @@ yarn-error.log*
 /test/unit/coverage/
 /test/e2e/reports/
 selenium-debug.log
-/src/firebase/firebaseConfig.js
+/src/services/firebaseConfig.js
 /platforms/android/
 /platforms
+
 
 # Editor directories and files
 .idea
