@@ -22,7 +22,9 @@ module.exports = (env, argv) => ({
     publicPath: PUBLIC_PATH
   },
 
-  node: false,
+  performance: {
+    hints: false
+  },
 
   module: {
     rules: [
