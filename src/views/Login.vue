@@ -5,8 +5,6 @@
     class="text-xs-center"
   >
     <v-layout column>
-      <!-- Error message if any -->
-      <errorMessageDialog />
       <!-- Page title -->
       <v-flex
         d-flex
@@ -86,7 +84,7 @@
           <v-btn
             :type="'submit'"
             :loading="loggingIn"
-            :disabled="userData.isAuthenticated"
+            :disabled="userData.isAuthenticated || !email || !password"
             outline
             ripple
             class="white--text button"
@@ -162,11 +160,13 @@
       </v-layout>
       <!-- End of buttons layout -->
     </v-layout>
+    <error-message />
   </v-container>
 </template>
 
 <script>
-import errorMessageDialog from '../components/ErrorMessage.vue'
+// import errorMessageDialog from '../components/ErrorMessage.vue'
+import errorMessage from '../components/error-message.vue'
 import showPassIcon from '../assets/icons/baseline-remove_red_eye-24px.svg'
 import { mapGetters, mapActions } from 'vuex'
 import { setLocalStorageDefaults } from '../services/localStorageHelper'
@@ -174,8 +174,8 @@ import { setLocalStorageDefaults } from '../services/localStorageHelper'
 export default {
   name: `Login`,
   components: {
-    errorMessageDialog,
-    showPassIcon
+    showPassIcon,
+    errorMessage
   },
   data: () => ({
     loggingIn: false,
@@ -183,12 +183,12 @@ export default {
     newUserBtnText: `Register`,
     pageTitle: `Log In`,
     valid: true,
-    email: ``,
+    email: undefined,
     emailRules: [
       (v) => !!v || `E-mail is required`,
       (v) => /.+@.+/.test(v) || `E-mail must be valid`
     ],
-    password: ``,
+    password: undefined,
     showPass: false,
     passwordRules: [
       (v) => !!v || `Password is required`
@@ -200,21 +200,17 @@ export default {
       `userData`
     ])
   },
-  watch: {
-    userData (userData) {
-      console.log(`User auth state changed to ${userData.isAuthenticated}!`)
-    }
-  },
   methods: {
     ...mapActions([
       `setUserAuthState`,
-      `clearUserStats`
+      `clearUserStats`,
+      `setErrorMessage`
     ]),
     async login () {
       this.loggingIn = !this.loggingIn
       await this.$auth.login(this.email, this.password)
-        .then(response => {
-          console.log(response.user.uid)
+        .then(() => {
+          // console.log(response.user.uid)
           this.clearForm()
         }).catch(error => {
           console.error(error)

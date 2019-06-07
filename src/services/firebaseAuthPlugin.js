@@ -14,7 +14,8 @@ export default {
         try {
           return await auth.signInWithEmailAndPassword(username, pass)
         } catch (error) {
-          console.error(error)
+          // console.error(error)
+          store.commit(`setErrorMessage`, error.message)
         }
       },
       logout: async () => {

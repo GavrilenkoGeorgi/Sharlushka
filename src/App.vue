@@ -37,11 +37,6 @@ export default {
   name: `App`,
   components: {
     navBar
-  },
-  mounted() {
-    this.$nextTick(() => {
-      console.log(`App started.`)
-    })
   }
 }
 </script>

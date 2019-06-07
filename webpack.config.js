@@ -4,7 +4,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const webpack = require('webpack');
+// const webpack = require('webpack');
 const PUBLIC_PATH = '/';
 const TerserPlugin = require('terser-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
@@ -97,7 +97,7 @@ module.exports = (env, argv) => ({
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new VueLoaderPlugin(),
-    new webpack.HashedModuleIdsPlugin(), // so that file hashes don't change unexpectedly
+    // new webpack.HashedModuleIdsPlugin(), // so that file hashes don't change unexpectedly
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'static', 'index.html'),
       inject: true,
@@ -179,6 +179,6 @@ module.exports = (env, argv) => ({
     https: false,
     open: true,
     overlay: true,
-    port: 8080 //??? webpack dev server
+    port: 8081 //??? webpack dev server
   }
 })

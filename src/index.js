@@ -7,6 +7,9 @@ import VueOffline from 'vue-offline'
 import fireBaseAuthPlugin from './services/firebaseAuthPlugin'
 
 Vue.config.productionTip = true
+Vue.config.errorHandler = (err, vm, info) => {
+  console.log(`Error: ${err.toString()}\nInfo: ${info}`)
+}
 
 Vue.use(fireBaseAuthPlugin)
 Vue.use(Vuetify)
@@ -22,7 +25,7 @@ if (`serviceWorker` in navigator) {
     })
   })
 }
-console.log(`Env is ${process.env.NODE_ENV}`)
+
 /* eslint-disable no-new */
 new Vue({
   el: `#app`,

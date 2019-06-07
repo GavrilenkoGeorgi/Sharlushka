@@ -69,7 +69,7 @@ export default {
   schoolFinished(state) {
     return state.schoolCompleted
   },
-  error: state => state.error,
+  errorIsSet: state => state.error,
   getCurrentNonZeroCombinations(state) {
     // console.log(`Getting current non zero combinations.`)
     let arrayWithResults = state.scoreArray.slice(state.diceArray.length + 1, state.scoreArray.length)

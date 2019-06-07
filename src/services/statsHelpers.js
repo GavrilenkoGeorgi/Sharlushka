@@ -53,9 +53,6 @@ export function convertValuesToPercent(values) {
 /* @return {Array} Labels to display on chart
 */
 export function prepareLabelsForChart(quantityOfLabels, numberToDisplay) {
-  console.log(`Quantity of labels`, quantityOfLabels)
-  console.log(`Number to display`, numberToDisplay)
-  // this one is glitchy
   const resultsToDisplay = Math.abs(numberToDisplay)
   const lastLabelToDisplay = quantityOfLabels - resultsToDisplay
   const labelsArray = []

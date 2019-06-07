@@ -447,6 +447,9 @@ export default {
     let userToUpdate = state.user
     Object.assign(userToUpdate, valuesToSet)
   },
+  setErrorMessage(state, error) {
+    Vue.set(state, `error`, error)
+  },
   // action
   setCurrentUser(state, userData) {
     Vue.set(state, `userData`, userData)
@@ -635,27 +638,10 @@ export default {
     // reset combination array
     state.combinationArray = []
   },
-  setErrorMessage(state, error) {
-    if (error !== false) {
-      state.error = error
-    } else state.error = false
-  },
   setAnonymousDiceFavs (state, favs) {
     state.userStats.diceValuesFavs = favs
   },
   resetDiceValueFavs (state) {
     state.userStats.diceValuesFavs = [0, 0, 0, 0, 0, 0]
   }
-  /*
-  saveFavDiceValue(state, id) {
-    let dice = state.diceArray.find(dice => {
-      return dice.id === id
-    })
-    let currentState = state.userStats.diceValuesFavs
-    if (dice.chosen) {
-      currentState[dice.value - 1]++
-    } else {
-      currentState[dice.value - 1]--
-    }
-  } */
 }
