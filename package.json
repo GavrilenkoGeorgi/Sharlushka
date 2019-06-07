@@ -7,7 +7,7 @@
   "author": "Gavrilenko <gavrilenko.georgi@gmail.com>",
   "scripts": {
     "dev": "webpack-dev-server --progress",
-    "buildprod": "webpack -p --mode production",
+    "build:prod": "webpack -p --mode production",
     "build:dev": "webpack -d --mode development",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
     "test:e2e": "node test/e2e/runner.js",
@@ -45,6 +45,7 @@
     "cross-env": "^5.2.0",
     "cross-spawn": "^5.0.1",
     "css-loader": "^2.1.1",
+    "dotenv-webpack": "^1.7.0",
     "eslint": "^5.16.0",
     "eslint-config-google": "^0.12.0",
     "eslint-config-recommended": "^4.0.0",

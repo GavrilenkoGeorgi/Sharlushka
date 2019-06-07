@@ -22,7 +22,7 @@ if (`serviceWorker` in navigator) {
     })
   })
 }
-console.log(`Env is ${process.env.PROJECT_ID}`)
+console.log(`Env is ${process.env.NODE_ENV}`)
 /* eslint-disable no-new */
 new Vue({
   el: `#app`,
