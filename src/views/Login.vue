@@ -160,13 +160,11 @@
       </v-layout>
       <!-- End of buttons layout -->
     </v-layout>
-    <error-message />
   </v-container>
 </template>
 
 <script>
-// import errorMessageDialog from '../components/ErrorMessage.vue'
-import errorMessage from '../components/error-message.vue'
+// import errorMessage from '../components/error-message.vue'
 import showPassIcon from '../assets/icons/baseline-remove_red_eye-24px.svg'
 import { mapGetters, mapActions } from 'vuex'
 import { setLocalStorageDefaults } from '../services/localStorageHelper'
@@ -174,8 +172,7 @@ import { setLocalStorageDefaults } from '../services/localStorageHelper'
 export default {
   name: `Login`,
   components: {
-    showPassIcon,
-    errorMessage
+    showPassIcon
   },
   data: () => ({
     loggingIn: false,

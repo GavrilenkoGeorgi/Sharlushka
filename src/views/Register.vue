@@ -186,6 +186,7 @@ export default {
     ]),
     signUpNewUser() {
       if (this.valid && this.email) {
+        this.registering = true
         let db = new firestoreConnection()
         db.signUp(this.email, this.password).then(response => {
           if (response instanceof Error) {
@@ -202,6 +203,7 @@ export default {
             })
           }
         }).catch(error => console.error(error))
+          .finally(() => this.registering = !this.registering)
       }
     },
     clear() {

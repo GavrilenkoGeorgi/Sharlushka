@@ -6,18 +6,23 @@
     <v-flex class="modal-wrapper">
       <v-layout
         column
+        align-center
         class="modal-container"
       >
         <v-flex>
-          Here's you error message, punk:
-          <span class="red--text">
+          <p ma-0>
+            Here's your error message:
+          </p>
+          <p class="red--text ma-0">
             {{ errorMessage }}
-          </span>
+          </p>
         </v-flex>
         <v-flex>
           <v-btn
-            class="elevation-2"
-            flat
+            class="elevation-3"
+            outline
+            ripple
+            color="purple darken-1"
             @click="showModal = !showModal"
           >
             Close
@@ -52,7 +57,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(`Alert mounted.`)
+      console.log(`Error message mounted.`)
     })
   }
 }
@@ -84,7 +89,6 @@ export default {
   border-radius: .3em
   box-shadow: 0 2px 8px rgba(0, 0, 0, .33)
   transition: all .3s ease
-  font-family: Helvetica, Arial, sans-serif
 
 .modal-header h3
   margin-top: 0
@@ -115,5 +119,8 @@ export default {
 .modal-leave-active .modal-container
   -webkit-transform: scale(1.1)
   transform: scale(1.1)
+
+button
+  border-radius: .3em
 
 </style>

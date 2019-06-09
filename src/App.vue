@@ -7,8 +7,10 @@
       enter-active-class="animated fadeIn slow"
       leave-active-class="animated fadeOut slow"
     >
-      <navBar />
+      <nav-bar />
     </transition>
+    <!-- Error message -->
+    <error-message />
     <v-content>
       <!-- Router view -->
       <v-container
@@ -32,11 +34,13 @@
 
 <script>
 import navBar from './components/Navbar.vue'
+import errorMessage from './components/error-message.vue'
 
 export default {
   name: `App`,
   components: {
-    navBar
+    navBar,
+    errorMessage
   }
 }
 </script>

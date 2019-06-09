@@ -81,7 +81,9 @@ export class firestoreConnection {
     await database.auth().createUserWithEmailAndPassword(email, password)
       .then(response => {
         data = response
-      }).catch(error => error)
+      }).catch(error => {
+        data = error
+      })
     return data
   }
   // add new user data
