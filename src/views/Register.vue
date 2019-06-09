@@ -8,12 +8,6 @@
       justify-center
       wrap
     >
-      <!-- Error message if any -->
-      <v-flex
-        xs12
-      >
-        <errorMessageDialog />
-      </v-flex>
       <!-- Page title -->
       <v-flex
         xs12
@@ -58,7 +52,7 @@
                 color="purple accent-4"
                 required
                 hint="At least 6 characters"
-                @keyup.enter="signUp"
+                @keyup.enter="signUpNewUser"
               />
             </v-flex>
             <v-flex
@@ -86,7 +80,7 @@
                 autocomplete="off"
                 color="purple accent-4"
                 required
-                @keyup.enter="signUp"
+                @keyup.enter="signUpNewUser"
               />
             </v-flex>
             <v-flex
@@ -120,7 +114,7 @@
             d-flex
           >
             <v-btn
-              :disabled="!valid"
+              :disabled="!valid || !email"
               :loading="registering"
               class="white--text button"
               outline
@@ -135,7 +129,6 @@
             d-flex
           >
             <v-btn
-              :disabled="valid"
               class="button white--text"
               outline
               color="purple darken-1"
@@ -151,10 +144,10 @@
 </template>
 
 <script>
-// import errorMessageDialog from '../components/ErrorMessage.vue'
 import showPassIcon from '../assets/icons/baseline-remove_red_eye-24px.svg'
-import { signUp, addNewUserData, connectToDb } from '../services/api'
+import { firestoreConnection } from '../services/api'
 import { gatherDataFromLocalStorage } from '../services/localStorageHelper'
+import { mapActions } from 'vuex'
 
 export default {
   name: `Register`,
@@ -168,18 +161,18 @@ export default {
     nameRules: [
       (v) => (!v || v.length <= 10) || `Name must be less than 10 characters`
     ],
-    email: ``,
+    email: undefined,
     emailRules: [
       (v) => !!v || `E-mail is required`,
       (v) => /^([a-zA-Z0-9_\-\\.]+)@([a-zA-Z0-9_\-\\.]+)\.([a-zA-Z]{2,5})$/.test(v) || `E-mail must be valid`
     ],
-    password: ``,
+    password: undefined,
     showPass: false,
     passwordRules: [
       (v) => !!v || `Password is required`,
       (v) => (v && v.length <= 12) || `Password must be less than 12 characters`
     ],
-    confirmPassword: ``,
+    confirmPassword: undefined,
     showConfPass: false
   }),
   computed: {
@@ -188,19 +181,28 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      `setErrorMessage`
+    ]),
     signUpNewUser() {
-      signUp(this.email, this.password).then(response => {
-        let userUid = {
-          uid: response.user.uid,
-          name: !this.userNameFormValue ? localStorage.getItem(`userName`) : this.userNameFormValue
-        }
-        gatherDataFromLocalStorage().then(newUserData => {
-          Object.assign(newUserData, userUid)
-          addNewUserData(newUserData)
-          const db = new connectToDb
-          db.verifyUserEmail()
-        })
-      }).catch(error => console.error(error))
+      if (this.valid && this.email) {
+        let db = new firestoreConnection()
+        db.signUp(this.email, this.password).then(response => {
+          if (response instanceof Error) {
+            this.setErrorMessage(response.message)
+          } else {
+            let userUid = {
+              uid: response.user.uid,
+              name: !this.userNameFormValue ? localStorage.getItem(`userName`) : this.userNameFormValue
+            }
+            gatherDataFromLocalStorage().then(newUserData => {
+              Object.assign(newUserData, userUid)
+              db.addNewUserData(newUserData)
+              db.verifyUserEmail()
+            })
+          }
+        }).catch(error => console.error(error))
+      }
     },
     clear() {
       this.$refs.form.reset()

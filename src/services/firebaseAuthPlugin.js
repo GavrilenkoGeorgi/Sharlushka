@@ -3,7 +3,7 @@ import config from '../services/firebaseConfig.js'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import { setDataFromDbToLs } from './localStorageHelper'
-import { getUserStatsFromDb } from '../services/api'
+import { firestoreConnection } from '../services/api'
 
 export default {
   install: (Vue) => {
@@ -14,7 +14,6 @@ export default {
         try {
           return await auth.signInWithEmailAndPassword(username, pass)
         } catch (error) {
-          // console.error(error)
           store.commit(`setErrorMessage`, error.message)
         }
       },
@@ -22,14 +21,15 @@ export default {
         try {
           return await auth.signOut()
         } catch (error) {
-          console.error(error)
+          store.commit(`setErrorMessage`, error.message)
         }
       }
     }
     auth.onAuthStateChanged(user => {
       let userData
       if (user) {
-        getUserStatsFromDb(user.uid)
+        new firestoreConnection()
+          .getUserStatsFromDb(user.uid)
           .then((stats) => {
             setDataFromDbToLs(stats)
           }).catch(error => console.log(error))

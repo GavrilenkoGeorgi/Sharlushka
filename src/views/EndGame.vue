@@ -112,7 +112,7 @@ import NetworkCheck from '../components/NetworkCheck.vue'
 import restartIcon from '../assets/icons/baseline-replay-24px.svg'
 import cancelIcon from '../assets/icons/baseline-cancel-24px.svg'
 import { appendToStorage, sumTwoArrays, gatherDataFromLocalStorage } from '../services/localStorageHelper'
-import { connectToDb } from '../services/api'
+import { firestoreConnection } from '../services/api'
 
 export default {
   components: {
@@ -170,8 +170,7 @@ export default {
         if (this.getUserData.isAuthenticated) {
           console.log(`User auth is ${this.getUserData.isAuthenticated}`)
           gatherDataFromLocalStorage().then((data) => {
-            const db = new connectToDb(this.getUserData.uid, data)
-            db.sync()
+            new firestoreConnection().sync(this.getUserData.uid, data)
           })
         } else {
           console.log(`User auth is ${this.getUserData.isAuthenticated}, no need to update firestore`)

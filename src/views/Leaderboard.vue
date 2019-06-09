@@ -114,8 +114,9 @@
 <script>
 import listIcon from '../assets/icons/baseline-import_export-24px.svg'
 import { mapGetters, mapActions, mapState } from 'vuex'
-import { getLeaderboardStats } from '../services/api'
+// import { getLeaderboardStats } from '../services/api'
 import { computeAverageScore, computePercentFromMax } from '../services/statsHelpers'
+import { firestoreConnection } from '../services/api'
 
 export default {
   name: `Leaderboard`,
@@ -160,20 +161,18 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      // should be from userData in store
       this.userName = localStorage.getItem(`userName`)
-      getLeaderboardStats().then(stats => {
-        this.setLeaderboardStats(stats)
-      }).catch(error => {
-        console.error(error)
-      }).finally(() => {
-        this.leaderboardLoading = false
-      })
+      new firestoreConnection()
+        .getLeaderboardStats()
+        .then(stats => this.setLeaderboardStats(stats))
+        .catch(error => this.setErrorMessage(error))
+        .finally(() => this.leaderboardLoading = !this.leaderboardLoading)
     })
   },
   methods: {
     ...mapActions([
-      `setLeaderboardStats`
+      `setLeaderboardStats`,
+      `setErrorMessage`
     ])
   }
 }

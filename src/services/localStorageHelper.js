@@ -1,6 +1,5 @@
 // set up initial localStorage values
 export function setLocalStorageDefaults () {
-  console.log(`Inside async local storage setup!`)
   localStorage.setItem(`userName`, `Anonymous`)
   localStorage.setItem(`lastScoresArray`, ``)
   localStorage.setItem(`schoolScores`, ``)
