@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import getters from './getters'
 import mutations from './mutations'
-import getDefaultState from './defaultState.js'
-// import getDefaultState from './debugState.js'
+// import getDefaultState from './defaultState.js'
+import getDefaultState from './debugState.js'
 
 Vue.use(Vuex)
 
@@ -26,6 +26,10 @@ const actions = {
   resetDiceValueFavs: async ({ commit }) => {
     commit(`resetDiceValueFavs`)
   },
+  restartGame: async ({ commit }) => {
+    commit(`restartGame`)
+  },
+  nextTurn: async ({ commit }) => commit(`nextTurn`),
   setCurrentIcon: ({
     commit
   }) => commit(`setCurrentIcon`),
@@ -89,10 +93,7 @@ const actions = {
   },
   rollDice: ({
     commit
-  }) => commit(`rollDice`),
-  nextTurn: ({
-    commit
-  }) => commit(`nextTurn`)
+  }) => commit(`rollDice`)
 }
 
 export default new Vuex.Store({

@@ -138,34 +138,24 @@ export default {
   }),
   computed: {
     ...mapGetters([
-      `isNewTurn`,
-      `isGameEnded`,
       `getSchoolArray`,
       `progressBarState`,
-      `getCombinationArray`
+      `getCombinationArray`,
+      `getCurrentGameState`
     ])
-  },
-  mounted() {
-    this.$nextTick(() => {
-      console.log(`Game view mounted.`)
-    })
   },
   methods: {
     ...mapActions([
       `nextTurn`,
-      `saveResultInStore`,
-      `clearResultBox`
+      `saveResultInStore`
     ]),
     recordResult(id) {
       // if this is not a new turn then
-      if (!this.isNewTurn) {
-        this.$store.dispatch(`saveResultInStore`, id).then(() => {
-          if (this.isNewTurn && !this.isGameEnded) {
-            this.$store.commit(`nextTurn`)
-            /* this.$store.commit(`clearResultBox`)
-            if (!this.isGameEnded) {
-              this.$store.commit(`nextTurn`)
-            } */
+      if (!this.getCurrentGameState.newTurn) {
+        this.saveResultInStore(id).then(() => {
+          if (this.getCurrentGameState.newTurn
+            && !this.getCurrentGameState.gameOver) {
+            this.nextTurn()
           }
         })
       } else {

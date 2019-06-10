@@ -114,7 +114,6 @@
 <script>
 import listIcon from '../assets/icons/baseline-import_export-24px.svg'
 import { mapGetters, mapActions, mapState } from 'vuex'
-// import { getLeaderboardStats } from '../services/api'
 import { computeAverageScore, computePercentFromMax } from '../services/statsHelpers'
 import { firestoreConnection } from '../services/api'
 
@@ -132,8 +131,7 @@ export default {
   }),
   computed: {
     ...mapGetters([
-      `getMaxPossibleScore`,
-      `getLeaderboardStats`
+      `getMaxPossibleScore`
     ]),
     ...mapState([
       `leaderboardStats`,

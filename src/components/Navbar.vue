@@ -52,7 +52,7 @@
           type="button"
           @click="clearDiceSelection"
         >
-          {{ getTotalScore }}
+          {{ getCurrentGameState.totalScore }}
         </v-flex>
       </v-layout>
     </v-toolbar>
@@ -183,7 +183,7 @@ export default {
   }),
   computed: {
     ...mapGetters([
-      `getTotalScore`
+      `getCurrentGameState`
     ])
   },
   mounted () {

@@ -1,14 +1,5 @@
 export default () => {
   return {
-    defaultUserName: `Anonymous`,
-    user: {
-      // isAuthenticated: false,
-      // name: undefined,
-      // remove this!
-      lastResultSaved: false // current result saved
-      // remove this!
-      // diceValuesFavs: [0, 0, 0, 0, 0, 0] // favorite dice values stats
-    },
     userData: {},
     userStats: {
       diceValuesFavs: [0, 0, 0, 0, 0, 0],
@@ -16,51 +7,52 @@ export default () => {
     },
     leaderboardStats: {},
     error: false,
-    currentGameTurn: 32, // game turns counter
+    currentGameTurn: 6, // game turns counter
     rollCount: 3, // roll counter for the current turn
     maxGameTurns: 33, // 6 turns for school, 27 for the game
     maxPossibleScore: 879, // from all combinations with highest values set to final
     newTurn: true, // 1st turn in game is new turn
-    schoolCompleted: true, // check if school is completed
+    schoolCompleted: false, // check if school is completed
     gameOver: false,
+    lastResultSaved: false, // check if user saved last result
     zeroCheck: false, // to check if zero was saving during turn
     schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score
-    debug: false, // Vue Devtools will do
+    debug: true,
     combinationArray: [],
     scoreArray: [{
-      value: `1`, // school combinations store module?
+      value: `2`, // school combinations store module?
       final: true,
       id: `ones`,
       icon: `diceOnes`
     },
     {
-      value: `2`,
+      value: `1`,
       final: true,
       id: `twos`,
       icon: `diceTwos`
     },
     {
-      value: `3`,
+      value: `-3`,
       final: true,
       id: `threes`,
       icon: `diceThrees`
     },
     {
-      value: `4`,
+      value: `8`,
       final: true,
       id: `fours`,
       icon: `diceFours`
     },
     {
-      value: `5`,
+      value: `-5`,
       final: true,
       id: `fives`,
       icon: `diceFives`
     },
     {
-      value: `6`,
-      final: true,
+      value: ``,
+      final: false,
       id: `sixes`,
       icon: `diceSixes` // 5
     },

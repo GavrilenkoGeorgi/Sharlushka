@@ -403,7 +403,9 @@ export default {
     }
     state.combinationArray = []
   },
-  resetGameState(state) {
+  // resetGameState(state) {
+  restartGame(state) {
+    console.log(`Final mutation, debug is`, state.debug)
     // hard reset
     // Object.assign(state, getDefaultState())
     let valuesToReset = {
@@ -416,15 +418,10 @@ export default {
       zeroCheck: false, // to check if zero was saving during turn
       schoolScoreTotal: 0, // total school score
       gameTotal: 0, // total game score
-      combinationArray: []
-    }
-    Object.assign(state, valuesToReset)
-
-    let userToUpdate = state.user
-    let userValuesToUpdate = {
+      combinationArray: [],
       lastResultSaved: false
     }
-    Object.assign(userToUpdate, userValuesToUpdate)
+    Object.assign(state, valuesToReset)
     // and clear results
     for (const result of state.scoreArray) {
       result.value = ``
@@ -466,11 +463,7 @@ export default {
     Vue.set(state, `userStats`, {})
   },
   setLastSave (state, value) {
-    let userStateUpdate = {
-      lastResultSaved: value
-    }
-    let userToUpdate = state.user
-    Object.assign(userToUpdate, userStateUpdate)
+    Vue.set(state, `lastResultSaved`, value)
   },
   resetGameOver (state, value) {
     state.gameOver = value

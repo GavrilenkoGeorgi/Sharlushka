@@ -55,7 +55,7 @@
             color="purple darken-2"
             aria-label="Start game"
             class="button"
-            :class="{ playing:isGameInProgress }"
+            :class="{ playing:getCurrentGameState.gameInProgress }"
           >
             <doneIcon
               class="button-icon-margin"
@@ -134,7 +134,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      `isGameInProgress`
+      `getCurrentGameState`
     ])
   },
   mounted() {

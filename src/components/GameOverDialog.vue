@@ -9,18 +9,18 @@
           {{ userName }}!
         </h2>
         <p
-          v-if="isGameEnded && schoolFinished"
+          v-if="getCurrentGameState.gameOver && getCurrentGameState.schoolCompleted"
           class="ma-0"
         >
           Your score is:
-          <span class="highlighted">{{ getTotalScore }}.</span>
+          <span class="highlighted">{{ getCurrentGameState.totalScore }}.</span>
         </p>
         <p
           v-else
           class="ma-0"
         >
           You can't even finish the school, your score is
-          <span class="highlighted">{{ getSchoolScore }}.</span>
+          <span class="highlighted">{{ getCurrentGameState.schoolScore }}.</span>
         </p>
       </v-card-text>
       <v-card-actions>
@@ -34,7 +34,7 @@
             color="purple darken-2"
             :to="'/endgame'"
           >
-            <saveIcon class="default-icon-color button-icon-margin" />
+            <save-icon class="default-icon-color button-icon-margin" />
             Save
           </v-btn>
         </v-layout>
@@ -58,14 +58,12 @@ export default {
   }),
   computed: {
     ...mapGetters([
-      `isGameEnded`,
-      `getSchoolScore`,
-      `getTotalScore`,
-      `schoolFinished`
+      `getCurrentGameState`
     ]),
+    // this
     gameOverDialog: {
       get () {
-        return this.isGameEnded
+        return this.getCurrentGameState.gameOver
       },
       set () {
         return false
