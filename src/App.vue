@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import navBar from './components/Navbar.vue'
-import errorMessage from './components/error-message.vue'
+import navBar from './components/navBar.vue'
+import errorMessage from './components/errorMessage.vue'
 
 export default {
   name: `App`,
