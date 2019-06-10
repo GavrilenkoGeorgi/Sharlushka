@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import navBar from './components/navbar.vue'
+import navBar from './components/navBar.vue'
 import errorMessage from './components/errorMessage.vue'
 
 export default {
