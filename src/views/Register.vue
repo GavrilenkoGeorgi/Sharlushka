@@ -8,18 +8,12 @@
       justify-center
       wrap
     >
-      <!-- Error message if any -->
-      <v-flex
-        xs12
-      >
-        <errorMessageDialog />
-      </v-flex>
       <!-- Page title -->
       <v-flex
         xs12
         class="register-title text-xs-center py-4"
       >
-        <h1>{{ pageTitle }}</h1>
+        <h1>Register</h1>
       </v-flex>
       <v-flex
         xs10
@@ -58,7 +52,7 @@
                 color="purple accent-4"
                 required
                 hint="At least 6 characters"
-                @keyup.enter="signUp"
+                @keyup.enter="signUpNewUser"
               />
             </v-flex>
             <v-flex
@@ -86,7 +80,7 @@
                 autocomplete="off"
                 color="purple accent-4"
                 required
-                @keyup.enter="signUp"
+                @keyup.enter="signUpNewUser"
               />
             </v-flex>
             <v-flex
@@ -120,12 +114,12 @@
             d-flex
           >
             <v-btn
-              :disabled="!valid"
+              :disabled="!valid || !email"
               :loading="registering"
               class="white--text button"
               outline
               color="orange"
-              @click.prevent="signUp"
+              @click.prevent="signUpNewUser"
             >
               register
             </v-btn>
@@ -135,7 +129,6 @@
             d-flex
           >
             <v-btn
-              :disabled="valid"
               class="button white--text"
               outline
               color="purple darken-1"
@@ -151,108 +144,67 @@
 </template>
 
 <script>
-import errorMessageDialog from '../components/ErrorMessage.vue'
 import showPassIcon from '../assets/icons/baseline-remove_red_eye-24px.svg'
-import db from '../firebase/firebaseInit'
-import firebase from 'firebase/app'
-import 'firebase/auth'
+import { firestoreConnection } from '../services/api'
+import { gatherDataFromLocalStorage } from '../services/localStorageHelper'
+import { mapActions } from 'vuex'
 
 export default {
   name: `Register`,
   components: {
-    errorMessageDialog,
     showPassIcon
   },
   data: () => ({
-    pageTitle: `Register`,
     registering: false,
-    errorMessage: ``,
     valid: true,
-    usersCollRef: `users`,
-    userNameFormValue: ``,
+    userNameFormValue: undefined,
     nameRules: [
       (v) => (!v || v.length <= 10) || `Name must be less than 10 characters`
     ],
-    email: ``,
+    email: undefined,
     emailRules: [
       (v) => !!v || `E-mail is required`,
       (v) => /^([a-zA-Z0-9_\-\\.]+)@([a-zA-Z0-9_\-\\.]+)\.([a-zA-Z]{2,5})$/.test(v) || `E-mail must be valid`
     ],
-    password: ``,
+    password: undefined,
     showPass: false,
     passwordRules: [
       (v) => !!v || `Password is required`,
       (v) => (v && v.length <= 12) || `Password must be less than 12 characters`
     ],
-    confirmPassword: ``,
+    confirmPassword: undefined,
     showConfPass: false
   }),
   computed: {
     comparePasswords() {
       return this.password !== this.confirmPassword ? `Passwords do not match` : true
     }
-    // comparePasswords: () => this.password !== this.confirmPassword ? `Passwords do not match` : true
-    /*
-    comparePasswords() {
-      return this.password !== this.confirmPassword ? `Passwords do not match` : true
-    }
-    */
-  },
-  mounted() {
-    this.$nextTick(() => {
-      console.log(`Register page mounted.`)
-    })
   },
   methods: {
-    signUp() {
-      this.errorMessage = `` // clear error message?
-      if (this.email && this.password) {
+    ...mapActions([
+      `setErrorMessage`
+    ]),
+    signUpNewUser() {
+      if (this.valid && this.email) {
         this.registering = true
-        firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-          .then(response => {
-            // add new user data to db
-            if (this.userNameFormValue === ``) { // it is optional, privacy meh
-              this.userNameFormValue = `Anonymous` // get default name??
-            }
-            localStorage.setItem(`userUid`, response.user.uid)
-            localStorage.setItem(`userName`, this.userNameFormValue)
-            const newUserData = {
-              name: localStorage.getItem(`userName`),
+        let db = new firestoreConnection()
+        db.signUp(this.email, this.password).then(response => {
+          if (response instanceof Error) {
+            this.setErrorMessage(response.message)
+          } else {
+            let userUid = {
               uid: response.user.uid,
-              email: response.user.email,
-              hiScore: localStorage.getItem(`highestScore`),
-              resultsArray: localStorage.getItem(`lastScoresArray`),
-              schoolResultsArray: localStorage.getItem(`schoolScores`),
-              diceValuesFavs: localStorage.getItem(`diceValuesFavs`),
-              combinationsFavs: localStorage.getItem(`combinationsFavs`)
+              name: !this.userNameFormValue ? localStorage.getItem(`userName`) : this.userNameFormValue
             }
-            this.addNewUser(newUserData)
-            console.log(`User added ${response.user.email}`)
-            this.verifyUserEmail()
-            // some message with button to the game view needed
-            this.$router.push(`/game`)
-          })
-          .catch(err => {
-            console.log(err.message)
-            this.errorMessage = err.message
-            this.registering = false
-          })
+            gatherDataFromLocalStorage().then(newUserData => {
+              Object.assign(newUserData, userUid)
+              db.addNewUserData(newUserData)
+              db.verifyUserEmail()
+            })
+          }
+        }).catch(error => console.error(error))
+          .finally(() => this.registering = !this.registering)
       }
-    },
-    addNewUser(userData) {
-      console.log(`Adding user`)
-      // Add a new document with a generated id.
-      const newUserRef = db.collection(this.usersCollRef).doc()
-      newUserRef.set(userData)
-      console.log(`Document successfully written!`)
-    }, // end of user adding
-    verifyUserEmail() {
-      const user = firebase.auth().currentUser
-      user.sendEmailVerification().then(() => {
-        console.log(`Email sent`)
-      }).catch(function(error) {
-        console.log(`Error! ${error}`)
-      })
     },
     clear() {
       this.$refs.form.reset()

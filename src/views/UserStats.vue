@@ -5,28 +5,31 @@
     class="text-xs-center"
   >
     <!-- Title and user name -->
+    <h2 class="user-name">
+      {{ userName }}!
+    </h2>
     <v-layout
+      v-if="unknownUser"
       column
       align-center
       pt-2
     >
-      <h2 class="user-name">
-        {{ userName }}!
-      </h2>
       <!-- Unregistered anonymous user info -->
-      <v-flex
-        v-if="anonymousUserNoGames"
-      >
+      <v-flex>
         <h3
           class="message-to-anonymous"
         >
-          {{ messageToAnonymous }}
+          Please, play at least one game to calculate stats.
         </h3>
       </v-flex>
-      <!-- Registered user info -->
-      <v-flex
-        v-else
-      >
+    </v-layout>
+    <v-layout
+      v-else
+      column
+      pt-2
+    >
+      <!-- Known user stats -->
+      <v-flex>
         <h3
           class="hi-score pb-2"
         >
@@ -43,12 +46,6 @@
           Max possible score {{ getMaxPossibleScore }}
         </h3>
       </v-flex>
-    </v-layout>
-    <!-- Charts -->
-    <v-layout
-      v-if="!anonymousUserNoGames"
-      column
-    >
       <!-- School chart-->
       <v-layout
         row
@@ -93,7 +90,7 @@
           </h2>
         </v-flex>
         <v-flex
-          v-for="item in newStats"
+          v-for="item in gameStats"
           :key="item.msg"
           xs12
           class="stats-display pb-1"
@@ -101,7 +98,7 @@
           {{ item.msg }}&nbsp;{{ item.value }}
         </v-flex>
       </v-layout>
-      <!-- Game results chart style="border: 1px solid pink" -->
+      <!-- Game results chart -->
       <v-layout
         wrap
         justify-center
@@ -119,8 +116,8 @@
             ratio="ct-major-twelfth"
             type="Line"
             class="game-results-chart"
-            :data="chartData"
-            :options="chartOptions"
+            :data="gameChartData"
+            :options="gameChartOptions"
           />
         </v-flex>
       </v-layout>
@@ -220,26 +217,28 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
+import { gatherDataFromLocalStorage } from '../services/localStorageHelper'
+import { computeAverageScore,
+  computePercentFromMax,
+  convertValuesToPercent,
+  prepareLabelsForChart } from '../services/statsHelpers'
 
 export default {
   name: `UserStats`,
   data() {
     return {
-      userName: ``,
-      anonymousUserNoGames: false, // really need this?
+      userName: `Anonymous`,
+      unknownUser: false,
       messageToAnonymous: null,
-      // if user played at least one game, we have a 'high score'
       highestScore: ``,
-      userScoresArray: ``,
-      lastScoresToDisplay: ``,
-      userGamesPlayed: ``,
+      lastScoresToDisplay: undefined,
       chartResultsToShow: -16, // minus sign cause of array slicing
-      chartData: {
+      gameChartData: {
         labels: [],
         series: []
       },
-      chartOptions: {
+      gameChartOptions: {
         fullWidth: true,
         lineSmooth: true,
         showArea: true,
@@ -256,13 +255,11 @@ export default {
       },
       diceValuesFavsChartOptions: {
         axisX: {
-          // We can disable the grid for this axis
           showGrid: true,
-          // and also don't show the label
           showLabel: true
         }
       },
-      newStats: {
+      gameStats: {
         gamesPlayed: {
           msg: `Games played`,
           value: ``
@@ -298,7 +295,7 @@ export default {
       // Combination favs chart data
       combinationsFavsChartData: {
         labels: [`Pair`, `Two pairs`, `Three O.A.K`, `Full`, `Quads`, `Poker`, `Small`, `Large`, `Chance`],
-        series: [[18, 14, 6, 4, 5, 1, 10, 5, 19]]
+        series: []
       },
       combinationsFavsChartOptions: {
         reverseData: true,
@@ -312,132 +309,68 @@ export default {
   computed: {
     ...mapGetters([
       `getMaxPossibleScore`,
-      `getUserAuthState`,
-      `getDiceValuesFavs`
-    ])
+      `getUserStats`,
+      `getUserData`
+    ]),
+    ...mapState([`userData`, `userStats`])
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(`User stats page mounted.`)
-      if (localStorage.hasOwnProperty(`userName`)) {
-        // init everything
-        this.userName = localStorage.getItem(`userName`)
-        this.highestScore = localStorage.getItem(`highestScore`)
-        this.userScoresArray = this.assembleLastScoresArray() // ?
-        // school results array for chart display
-        this.assembleSchoolScoresArray() // ?
-        this.setDiceFavsValuesChartSeries()
-        this.setCombinationsFavsChartSeries()
-        this.lastScoresToDisplay = this.userScoresArray.slice(0).slice(this.chartResultsToShow)
-        this.newStats.gamesPlayed.value = this.userScoresArray.length
-        this.newStats.averageScore.value = this.computeAverageScore()
-        this.newStats.percentFromMax.value = this.computePercentFromMax()
-        if (this.userScoresArray.length) {
-          this.chartData.labels = this.prepareLabelsForChart(this.userScoresArray.length)
-          this.chartData.series = [this.lastScoresToDisplay]
-        }
-        if (localStorage.getItem(`highestScore`) == ``) {
-          console.log(`You are truly an Anonymous!`)
-          this.userName = `Anonymous`
-          this.anonymousUserNoGames = true
-          this.messageToAnonymous = `You have to finish at least one game to
-          calculate stats.`
-        } else if (localStorage.getItem(`lastScoresArray`) == ``) {
-          // still no games played
-          this.anonymousUserNoGames = true
-          this.messageToAnonymous = `You have to finish at least one game to
-          calculate stats.`
-        }
-      }
+      this.userName = localStorage.getItem(`userName`)
+      gatherDataFromLocalStorage().then(stats => {
+        this.displayStats(stats)
+      })
     })
   },
   methods: {
-    restartGame() {
-      console.log(`Restarting.`)
-      this.$store.commit(`resetState`)
-      this.$router.push(`/game`)
-    },
-    assembleLastScoresArray() {
-      let lastScoresString = localStorage.getItem(`lastScoresArray`)
-      return lastScoresString.split(`,`)
-    },
-    assembleSchoolScoresArray() {
-      this.schoolScores = localStorage.getItem(`schoolScores`)
-      if (this.schoolScores) {
-        const arrayToDisplay = this.schoolScores.split(`,`)
-        const slicedArray = arrayToDisplay.slice(this.chartResultsToShow)
-        this.schoolChartData.series = [slicedArray]
-      }
-    },
-    //
-    // values array
-    //
-    convertValuesToPercent(values) {
-      let percentages = []
-      let highestValue = Math.max(...values)
-      for (let value of values) {
-        if (value === highestValue) {
-          continue
-        } else {
-          percentages.push(Math.floor((value / highestValue) * 100))
-        }
-      }
-      return percentages
-    },
-    setDiceFavsValuesChartSeries() {
-      let values = localStorage.getItem(`diceValuesFavs`).split(`,`)
-      let percentages = this.convertValuesToPercent(values)
-      this.diceValuesFavsChartData.series = [percentages]
-    },
-    setCombinationsFavsChartSeries() {
-      let values = localStorage.getItem(`combinationsFavs`).split(`,`)
-      let percentages = this.convertValuesToPercent(values)
-      this.combinationsFavsChartData.series = [percentages]
-    },
-    prepareLabelsForChart(numOfLabels) {
-      const resultsToDisplay = Math.abs(this.chartResultsToShow)
-      const lastLabelToDisplay = numOfLabels - resultsToDisplay
-      const labelsArray = []
-      if (numOfLabels >= resultsToDisplay) {
-        while (numOfLabels !== lastLabelToDisplay) {
-          labelsArray.push(numOfLabels)
-          numOfLabels--
-        }
-        return labelsArray.reverse()
+    /*
+    /* @param {object} stats
+    /*   User stats from localStorage
+    */
+    displayStats(stats) {
+      if (stats.schoolResultsArray !== ``) {
+        // user played at least one game
+        // strings from localStorage
+        // this!
+        let schoolResults = stats.schoolResultsArray.split(`,`).map(Number)
+        let gameResults = stats.resultsArray.split(`,`).map(Number)
+        let diceValuesFavs = stats.diceValuesFavs.split(`,`).map(Number)
+        let combinationsFavs = stats.combinationsFavs.split(`,`).map(Number)
+
+        // setting numeric stats
+        this.calculateGameStats(gameResults)
+        this.highestScore = Math.max(...gameResults)
+
+        // setting graphs
+        this.schoolChartData.series = [ schoolResults.slice(this.chartResultsToShow) ]
+        this.schoolChartData.labels = prepareLabelsForChart(schoolResults.length, Math.abs(this.chartResultsToShow))
+
+        this.gameChartData.series = [ gameResults.slice(this.chartResultsToShow) ]
+        this.gameChartData.labels = prepareLabelsForChart(gameResults.length, Math.abs(this.chartResultsToShow))
+
+        this.diceValuesFavsChartData.series = [convertValuesToPercent(diceValuesFavs)]
+        this.combinationsFavsChartData.series = [convertValuesToPercent(combinationsFavs)]
       } else {
-        while (numOfLabels !== 0) {
-          labelsArray.push(numOfLabels)
-          numOfLabels--
-          // console.log(`Scaaary..`)
-        }
-        return labelsArray.reverse()
+        // stats are empty
+        console.log(`'Play the game! Harding!.. Play the game!'`)
+        this.unknownUser = !this.unknownUser
       }
     },
-    computeAverageScore() {
-      if (this.userScoresArray) {
-        const arrayToReduce = []
-        const scoreSum = (accumulator, currentValue) => accumulator + currentValue
-        for (const value of this.userScoresArray) {
-          arrayToReduce.push(parseInt(value))
-        }
-        if (arrayToReduce.length > 0) {
-          return parseInt(arrayToReduce.reduce(scoreSum) / arrayToReduce.length)
-        } else {
-          return 0
-        }
-      }
-    },
-    computePercentFromMax() {
-      const result = Math.floor(this.newStats.averageScore.value / this.getMaxPossibleScore * 100)
-      if (result) {
-        return result + `%`
-      } else {
-        return ``
-      }
+    /*
+    * @param {Array} gameResults
+    */
+    calculateGameStats(gameResults) {
+      this.lastScoresToDisplay = gameResults.slice(this.chartResultsToShow)
+      this.gameStats.gamesPlayed.value = gameResults.length
+      this.gameStats.averageScore.value = computeAverageScore(gameResults)
+      this.gameStats.percentFromMax.value = // bear with me )
+        computePercentFromMax(this.gameStats.averageScore.value,
+          this.getMaxPossibleScore)
     }
   }
 }
 </script>
+
 <style lang="sass">
 
 .user-name
@@ -538,4 +471,5 @@ export default {
 @media screen and (orientation: landscape)
   .hi-score-display
     font-size: 1.8em
+
 </style>

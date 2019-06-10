@@ -96,13 +96,13 @@ test(`"clearResultBox" clears result box`, () => {
   mutations.clearResultBox(state)
   // clear all temp results in store
   for (let combination of state.scoreArray) {
-    if (!combination.final) {
-      expect(combination.value).toBe(``)
-    }
+    // if (!combination.final) {
+    expect(combination.value).toBe(``)
+    // }
     // deselect all dice
-    for (let dice of state.diceArray) {
-      expect(dice.chosen).toBeFalsy()
-    }
+  }
+  for (let dice of state.diceArray) {
+    expect(dice.chosen).toBeFalsy()
   }
 })
 

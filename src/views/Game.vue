@@ -142,17 +142,12 @@ export default {
       `isGameEnded`,
       `getSchoolArray`,
       `progressBarState`,
-      `getCombinationArray`,
-      `getUserAuthState`
+      `getCombinationArray`
     ])
   },
   mounted() {
     this.$nextTick(() => {
-      if (this.getUserAuthState) {
-        // shouldn't be here i guess
-        let userNameToSet = localStorage.getItem(`userName`)
-        this.$store.dispatch(`setUserName`, userNameToSet)
-      }
+      console.log(`Game view mounted.`)
     })
   },
   methods: {

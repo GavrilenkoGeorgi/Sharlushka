@@ -2,18 +2,26 @@ export default () => {
   return {
     defaultUserName: `Anonymous`,
     user: {
-      isAuthenticated: false,
-      name: undefined,
-      lastResultSaved: false, // current result saved
-      diceValuesFavs: [0, 0, 0, 0, 0, 0] // favorite dice values stats
+      // isAuthenticated: false,
+      // name: undefined,
+      // remove this!
+      lastResultSaved: false // current result saved
+      // remove this!
+      // diceValuesFavs: [0, 0, 0, 0, 0, 0] // favorite dice values stats
     },
+    userData: {},
+    userStats: {
+      diceValuesFavs: [0, 0, 0, 0, 0, 0],
+      combinationsFavs: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    leaderboardStats: {},
     error: false,
-    currentGameTurn: 6, // game turns counter
+    currentGameTurn: 32, // game turns counter
     rollCount: 3, // roll counter for the current turn
     maxGameTurns: 33, // 6 turns for school, 27 for the game
     maxPossibleScore: 879, // from all combinations with highest values set to final
     newTurn: true, // 1st turn in game is new turn
-    schoolCompleted: false, // check if school is completed
+    schoolCompleted: true, // check if school is completed
     gameOver: false,
     zeroCheck: false, // to check if zero was saving during turn
     schoolScoreTotal: 0, // total school score
@@ -51,8 +59,8 @@ export default () => {
       icon: `diceFives`
     },
     {
-      value: ``,
-      final: false,
+      value: `6`,
+      final: true,
       id: `sixes`,
       icon: `diceSixes` // 5
     },

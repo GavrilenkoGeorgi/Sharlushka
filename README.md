@@ -1,4 +1,4 @@
-# :game_die: Sharlushka
+# :game_die: Sharlushka [![Netlify Status](https://api.netlify.com/api/v1/badges/36738672-d7ee-434c-b0cd-9c4bd695065d/deploy-status)](https://app.netlify.com/sites/sharlushka/deploys)
 
 ## PWA dice game
 

@@ -50,7 +50,7 @@ export default new Router({
     {
       path: `/leaderboard`,
       name: `LeaderBoard`,
-      component: () => import(/* webpackChunkName: "leaderboard" */ `../views/Leaderboard.vue`)
+      component: () => import( /* webpackChunkName: "leaderboard" */ `../views/Leaderboard.vue`)
     }
   ]
 })

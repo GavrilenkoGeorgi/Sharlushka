@@ -15,8 +15,8 @@
         d-flex
       >
         <h1>
-          {{ message }}<br>
-          <span>{{ userName }}{{ exclamation }}</span>
+          Game over,<br>
+          <span>{{ userName }}!</span>
         </h1>
       </v-flex>
       <!-- School message -->
@@ -24,15 +24,15 @@
         v-if="!getCurrentGameState.schoolCompleted"
         class="message-school text-xs-center"
       >
-        <h3>{{ graduationMessage }}</h3>
-        <h2>{{ schoolScoreMessage }} {{ getTotalScore }}</h2>
+        <h3>You can't even finish the school.</h3>
+        <h2>Your score is <span class="highlighted">{{ getTotalScore }}</span></h2>
       </v-flex>
-      <!-- Game message -->
+      <!-- Game message v-else actually -->
       <v-flex
         v-if="getCurrentGameState.schoolCompleted"
         class="message-game text-xs-center"
       >
-        <h2>{{ messageText }} <span class="highlighted">{{ getTotalScore }}</span></h2>
+        <h2>Your score is <span class="highlighted">{{ getTotalScore }}</span></h2>
       </v-flex>
       <!-- Buttons -->
       <v-layout
@@ -71,7 +71,11 @@
         <v-card-text
           class="text-xs-left offline-dialog-message"
         >
-          {{ offlineSaveUserMessage }}
+          You are offline,
+          connect to the internet to save results.
+          If you choose to cancel, results are saved
+          in local storage and will be saved to DB
+          next time you finish the game.
         </v-card-text>
         <v-card-actions>
           <v-spacer />
@@ -80,7 +84,7 @@
             outline
             :loading="tryAgainBtnLoading"
             class="button"
-            @click="syncScoreWithFirestore"
+            @click="console.log(`saving`)"
           >
             <restartIcon class="highlighted" />
             Try again
@@ -104,11 +108,11 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import store from '../store/store' // $this.store?
-import db from '../firebase/firebaseInit'
 import NetworkCheck from '../components/NetworkCheck.vue'
 import restartIcon from '../assets/icons/baseline-replay-24px.svg'
 import cancelIcon from '../assets/icons/baseline-cancel-24px.svg'
+import { appendToStorage, sumTwoArrays, gatherDataFromLocalStorage } from '../services/localStorageHelper'
+import { firestoreConnection } from '../services/api'
 
 export default {
   components: {
@@ -118,25 +122,9 @@ export default {
   },
   data() {
     return {
-      message: `Game over,`,
-      messageText: `Your score is`,
-      graduationMessage: `You can't even finish the school.`,
-      schoolScoreMessage: `Your score is`,
       userName: ``,
-      highestScore: null,
       networkProblemDialog: false,
-      tryAgainBtnLoading: false,
-      offlineSaveUserMessage: `You are offline,
-        connect to the internet to save results.
-        If you choose to cancel, results are saved
-        in local storage and will be saved to DB
-        next time you finish the game.`,
-      // hiscoreGreeting: `Your highest score is`,
-      exclamation: `!`, // some over-engeneering
-      lastScores: ``,
-      schoolScores: ``,
-      combinationsFavs: ``,
-      dbUsersCollRef: `users`
+      tryAgainBtnLoading: false
     }
   },
   computed: {
@@ -144,174 +132,65 @@ export default {
       `getTotalScore`,
       `getSchoolScore`,
       `getCurrentGameState`,
-      `getDefaultUserName`,
       `getUserData`,
-      `isGameEnded`,
+      `getUserStats`,
       `getCurrentNonZeroCombinations`
     ])
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(`Game over view mounted.`)
-      // check user auth status
-      if (this.getUserData.isAuthenticated) {
-        this.userName = localStorage.getItem(`userName`)
-      } else {
-        this.userName = this.getDefaultUserName
-      }
-      if (this.isGameEnded) {
-        // collect them when game finished
-        // i.e. user played the game till the end
-        // and not actually reloading the page
-        if (localStorage.getItem(`highestScore`) === ``) {
-          // check if user ever played a game
-          console.log(`No local storage score array exist yet, creating one`)
-          this.highestScore = this.getTotalScore // first run
-          localStorage.setItem(`highestScore`, this.getTotalScore)
-          // and
-          this.addScoreToDatabase()
+      this.userName = localStorage.getItem(`userName`)
+      if (this.getCurrentGameState.gameOver) {
+        // append current score
+        if (this.getCurrentGameState.schoolCompleted) {
+          // handle dice values favs data
+          let currentFavs = localStorage.getItem(`diceValuesFavs`).split(`,`).map(Number)
+          let favsToAdd = this.getUserStats.diceValuesFavs
+          let updatedFavs = sumTwoArrays(currentFavs, favsToAdd)
+          // set new dice value favs to localStorage
+          localStorage.setItem(`diceValuesFavs`, updatedFavs)
+          // save game and school results
+          appendToStorage(`lastScoresArray`, `${this.getTotalScore}`)
+          appendToStorage(`schoolScores`, `${this.getSchoolScore}`)
+          // and non zero combinations stats
+          let currentCombinationsFavs = localStorage.getItem(`combinationsFavs`).split(`,`).map(Number)
+          let newCombinationsFavs = this.getCurrentNonZeroCombinations
+          let updatedNonZeroCombinations = sumTwoArrays(currentCombinationsFavs, newCombinationsFavs)
+          localStorage.setItem(`combinationsFavs`, updatedNonZeroCombinations)
         } else {
-          this.lastScores = localStorage.getItem(`lastScoresArray`)
-          this.schoolScores = localStorage.getItem(`schoolScores`)
-          this.highestScore = localStorage.getItem(`highestScore`)
-          this.combinationsFavs = localStorage.getItem(`combinationsFavs`)
-          // just add it already
-          this.addScoreToDatabase()
+          // school not finished
+          // save only school result
+          appendToStorage(`schoolScores`, `${this.getSchoolScore},`)
         }
-        this.$store.dispatch(`setLastSave`, true).then(() => {
-          // don't show dice box after saving results
-          // till reset
-          console.log(`This was the last save until reset.`)
-        })
-        this.$store.dispatch(`resetGameOver`, false).then(() => {
-          // set to default state so repeating visits
-          // to this page won't fill our array with zeroes
-          console.log(`Resetting game over.`)
-        })
+        // this really could be one action
+        this.resetDiceValueFavs()
+        this.setLastSave(true)
+        this.resetGameOver(false)
+        // and save to db if user is authenticated and we are online
+        if (this.getUserData.isAuthenticated) {
+          console.log(`User auth is ${this.getUserData.isAuthenticated}`)
+          gatherDataFromLocalStorage().then((data) => {
+            new firestoreConnection().sync(this.getUserData.uid, data)
+          })
+        } else {
+          console.log(`User auth is ${this.getUserData.isAuthenticated}, no need to update firestore`)
+        }
       } else {
-        console.log(`Nothing to record, play the game.`)
+        console.log(`User is reloading the page, so we aren't saving anything.`)
       }
     })
   },
   methods: {
     ...mapActions([
       `resetGameOver`,
-      `setLastSave`
+      `setLastSave`,
+      `resetDiceValueFavs`,
+      `resetGameState`
     ]),
     restartGame() {
       console.log(`Restarting game.`)
-      store.commit(`resetState`)
+      this.resetGameState()
       this.$router.push(`/game`)
-    },
-    // add anonymous score to local storage
-    addScoreToDatabase() {
-      console.log(`Adding score.`)
-      // one function?
-      if (this.lastScores === ``) {
-        this.lastScores = [] // first run
-      } else {
-        this.lastScores = this.lastScores.split(`,`)
-      }
-      if (this.schoolScores === ``) {
-        this.schoolScores = []
-      } else {
-        this.schoolScores = this.schoolScores.split(`,`)
-      }
-      if (this.combinationsFavs === ``) {
-        this.combinationsFavs = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-      } else {
-        this.combinationsFavs = this.combinationsFavs.split(`,`).map(Number)
-      }
-      // check for new highest score
-      if (this.getTotalScore > this.highestScore) {
-        this.highestScore = this.getTotalScore
-        localStorage.setItem(`highestScore`, this.getTotalScore)
-      } else {
-        console.log(`Your score is not so high: ${this.getTotalScore}`)
-      }
-      if (this.getCurrentGameState.schoolCompleted) {
-        // record game result if school completed
-        this.lastScores.push(this.getTotalScore)
-        localStorage.setItem(`lastScoresArray`, this.lastScores)
-        // and school result for stats
-        this.schoolScores.push(this.getSchoolScore)
-        localStorage.setItem(`schoolScores`, this.schoolScores)
-        // and update game combinations favs
-        // get current non zero combinations
-        // console.log(`Current non zero combinations is endgame -->`)
-        const currentGameCombinationsFavs = this.getCurrentNonZeroCombinations
-        // console.log(currentGameCombinationsFavs)
-        for (let index in this.combinationsFavs) {
-          this.combinationsFavs[index] += currentGameCombinationsFavs[index]
-        }
-        localStorage.setItem(`combinationsFavs`, this.combinationsFavs)
-      } else {
-        // game ended in school,
-        // so we have only school result to save
-        this.schoolScores.push(this.getSchoolScore)
-        localStorage.setItem(`schoolScores`, this.schoolScores)
-      }
-      // save updated dice stats to local storage
-      localStorage.setItem(`diceValuesFavs`, this.$store.state.user.diceValuesFavs)
-      //
-      // finally check if user is registered
-      //
-      if (!this.getUserData.isAuthenticated) {
-        console.log(`Anonymous! To save results please register.`)
-      } else if (this.getUserData.isAuthenticated && this.isOnline) {
-        console.log(`User is authenticated and network is online. Syncing with firestore.`)
-        this.syncScoreWithFirestore()
-      } else if (this.getUserData.isAuthenticated && !this.isOnline &&
-        this.isGameEnded) {
-        console.log(`User is authenticated but network is offline.`)
-        // this.networkProblemDialog = true
-        this.toggleNetworkProblemDialog()
-      } else {
-        console.log(`Something went wrong in the piping system.`)
-      }
-    },
-    // if user exists add score to the account
-    syncScoreWithFirestore() {
-      this.tryAgainBtnLoading = !this.tryAgainBtnLoading
-      console.log(`Syncing score for user ${localStorage.getItem(`userName`)}`)
-      const uid = localStorage.getItem(`userUid`)
-      db.collection(this.dbUsersCollRef).where(`uid`, `==`, uid)
-        .get()
-        .then(querySnapshot => {
-          let docToUpdateId
-          querySnapshot.forEach(doc => {
-            // doc.data() is never undefined for query doc snapshots
-            if (doc.data().uid === uid) {
-              docToUpdateId = doc.id
-            }
-          })
-          return docToUpdateId
-        })
-        .then(docToUpdateId => {
-          const docRef = db.collection(this.dbUsersCollRef).doc(docToUpdateId)
-          const resultsArrayToUpdate = localStorage.getItem(`lastScoresArray`)
-          const highestScoreToUpdate = localStorage.getItem(`highestScore`)
-          const schoolScoresToUpdate = localStorage.getItem(`schoolScores`)
-          const diceValuesFavs = this.$store.state.user.diceValuesFavs
-          const combinationsFavs = localStorage.getItem(`combinationsFavs`)
-          docRef.update({
-            resultsArray: resultsArrayToUpdate,
-            schoolResultsArray: schoolScoresToUpdate,
-            hiScore: highestScoreToUpdate,
-            diceValuesFavs: diceValuesFavs,
-            combinationsFavs: combinationsFavs
-          })
-          console.log(`...updating user stats`)
-          this.tryAgainBtnLoading = !this.tryAgainBtnLoading
-          this.networkProblemDialog = false
-          // this.networkProblemDialog = !this.networkProblemDialog
-          // this.toggleNetworkProblemDialog()
-          return true
-        })
-        .catch(error => {
-          this.tryAgainBtnLoading = !this.tryAgainBtnLoading
-          console.log(`Error getting documents: `, error)
-        })
     },
     toggleNetworkProblemDialog () {
       this.networkProblemDialog = !this.networkProblemDialog
@@ -319,6 +198,7 @@ export default {
   }
 }
 </script>
+
 <style lang="sass" scoped>
 
 .user-name-game-end

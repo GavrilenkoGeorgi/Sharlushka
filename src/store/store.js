@@ -6,11 +6,26 @@ import getDefaultState from './defaultState.js'
 // import getDefaultState from './debugState.js'
 
 Vue.use(Vuex)
+
 // initial state
 const state = getDefaultState()
 
 const actions = {
-  /* increment: (context, payload) => context.commit('increment'), */
+  setCurrentUser: async ({ commit }, userData) => {
+    commit(`setCurrentUser`, userData)
+  },
+  clearUserStats: async ({ commit }) => {
+    commit(`clearUserStats`)
+  },
+  setLeaderboardStats: async ( { commit }, stats) => {
+    commit(`setLeaderboardStats`, stats)
+  },
+  setAnonymousDiceFavs: async ({ commit }, favs) => {
+    commit(`setAnonymousDiceFavs`, favs)
+  },
+  resetDiceValueFavs: async ({ commit }) => {
+    commit(`resetDiceValueFavs`)
+  },
   setCurrentIcon: ({
     commit
   }) => commit(`setCurrentIcon`),
@@ -69,15 +84,9 @@ const actions = {
       resolve()
     })
   },
-  setUserFavStats ({ commit }, values ) {
-    return new Promise((resolve) => {
-      commit(`setUserFavStats`, values)
-      resolve()
-    })
+  resetGameState: async ({ commit }) => {
+    commit(`resetGameState`)
   },
-  resetGameState: ({
-    commit
-  }) => commit(`resetState`),
   rollDice: ({
     commit
   }) => commit(`rollDice`),

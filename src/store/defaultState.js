@@ -2,11 +2,14 @@ export default () => {
   return {
     defaultUserName: `Anonymous`,
     user: {
-      isAuthenticated: false,
-      name: undefined,
-      lastResultSaved: false, // current result saved
-      diceValuesFavs: [0, 0, 0, 0, 0, 0] // favorite dice values stats
+      lastResultSaved: false // current result saved
     },
+    userData: {},
+    userStats: {
+      diceValuesFavs: [0, 0, 0, 0, 0, 0],
+      combinationsFavs: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    leaderboardStats: {},
     error: false,
     currentGameTurn: 1, // game turns counter
     rollCount: 3, // roll counter for the current turn

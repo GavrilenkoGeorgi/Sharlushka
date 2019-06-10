@@ -15,7 +15,7 @@
         align-end
       >
         <h1 class="game-name">
-          {{ gameName }}
+          Sharlushka
         </h1>
       </v-flex>
       <v-layout
@@ -34,7 +34,7 @@
         align-center
       >
         <h2 class="user-name-main-page">
-          {{ greeting }} {{ userName }}{{ exclamation }}
+          Hi, {{ userName }}!
         </h2>
       </v-flex>
       <v-layout
@@ -118,6 +118,7 @@ import { mapGetters } from 'vuex'
 import SharlushkaLogo from '../assets/images/sharlushkaLogo.svg'
 import doneIcon from '../assets/icons/baseline-done-24px.svg'
 import regIcon from '../assets/icons/baseline-how_to_reg-24px.svg'
+import { setLocalStorageDefaults } from '../services/localStorageHelper'
 
 export default {
   name: `Main`,
@@ -128,10 +129,7 @@ export default {
   },
   data() {
     return {
-      gameName: `Sharlushka`,
-      userName: `Anonymous`,
-      greeting: `Hi,`,
-      exclamation: `.`
+      userName: `Anonymous`
     }
   },
   computed: {
@@ -141,8 +139,11 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(`Main page mounted.`)
-      if (localStorage.hasOwnProperty(`userName`)) {
+      // on the first run if
+      // local storage is not set, set it up
+      if (!localStorage.hasOwnProperty(`userName`)) {
+        setLocalStorageDefaults()
+      } else {
         this.userName = localStorage.getItem(`userName`)
       }
     })
