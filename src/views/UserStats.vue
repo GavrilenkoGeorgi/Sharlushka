@@ -217,7 +217,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import { gatherDataFromLocalStorage } from '../services/localStorageHelper'
 import { computeAverageScore,
   computePercentFromMax,
@@ -308,11 +308,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      `getMaxPossibleScore`,
-      `getUserStats`,
-      `getUserData`
-    ]),
-    ...mapState([`userData`, `userStats`])
+      `getMaxPossibleScore`
+    ])
   },
   mounted() {
     this.$nextTick(() => {

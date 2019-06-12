@@ -32,17 +32,20 @@ export default {
           .getUserStatsFromDb(user.uid)
           .then((stats) => {
             setDataFromDbToLs(stats)
-          }).catch(error => console.log(error))
+            store.commit(`setUserName`, stats.userName)
+          }).catch(error => console.error(error))
         userData = {
           isAuthenticated: true,
           uid: user.uid,
           email: user.email
         }
       } else {
+        // store.commit(`setUserName`, `Anonymous`)
         userData = {
           isAuthenticated: false,
           uid: null,
-          email: null
+          email: null,
+          name: null
         }
       }
       store.commit(`setCurrentUser`, userData)

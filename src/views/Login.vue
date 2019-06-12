@@ -199,9 +199,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      `setUserAuthState`,
-      `clearUserStats`,
-      `setErrorMessage`
+      `clearUserStats`
     ]),
     async login () {
       this.loggingIn = !this.loggingIn

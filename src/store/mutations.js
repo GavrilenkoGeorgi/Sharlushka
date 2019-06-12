@@ -436,13 +436,16 @@ export default {
       dice.chosen = false
     }
   },
-  setUserName (state, values) {
-    // console.log(`Setting user name.`)
+  // set user name after login
+  setUserName (state, name) {
+    console.log(`Setting user name:`, name)
+    /*
     let valuesToSet = {
-      name: values
-    }
-    let userToUpdate = state.user
-    Object.assign(userToUpdate, valuesToSet)
+      name: value
+    } */
+    // let userData = state.userData
+    // Object.assign(userData, valuesToSet)
+    Vue.set(state[`userData`], `name`, name)
   },
   setErrorMessage(state, error) {
     Vue.set(state, `error`, error)

@@ -1,6 +1,7 @@
 export default {
   getUserData: state => state.userData,
   getUserStats: state => state.userStats,
+  getCurrentUserName: state => state.userData.name,
   // to end the game we need this
   getCurrentGameState: state => {
     // is game in progress and it's not
