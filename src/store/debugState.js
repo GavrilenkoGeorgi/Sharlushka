@@ -7,12 +7,12 @@ export default () => {
     },
     leaderboardStats: {},
     error: false,
-    currentGameTurn: 6, // game turns counter
+    currentGameTurn: 32, // game turns counter
     rollCount: 3, // roll counter for the current turn
     maxGameTurns: 33, // 6 turns for school, 27 for the game
     maxPossibleScore: 879, // from all combinations with highest values set to final
     newTurn: true, // 1st turn in game is new turn
-    schoolCompleted: false, // check if school is completed
+    schoolCompleted: true, // check if school is completed
     gameOver: false,
     lastResultSaved: false, // check if user saved last result
     zeroCheck: false, // to check if zero was saving during turn
@@ -51,8 +51,8 @@ export default () => {
       icon: `diceFives`
     },
     {
-      value: ``,
-      final: false,
+      value: `0`,
+      final: true,
       id: `sixes`,
       icon: `diceSixes` // 5
     },

@@ -205,7 +205,6 @@ export default {
       this.loggingIn = !this.loggingIn
       await this.$auth.login(this.email, this.password)
         .then(() => {
-          // console.log(response.user.uid)
           this.clearForm()
         }).catch(error => {
           console.error(error)

@@ -164,11 +164,13 @@ export default {
   },
   methods: {
     ...mapActions([
-      `restartGame`
+      `restartGame`,
+      `rollDice`,
+      `setDiceChosenState`,
+      `computeScore`
     ]),
     restart() {
       this.restartGame()
-      // store.commit(`resetState`)
     },
     vibrate() {
       if (this.navigatorSupported) {
@@ -190,26 +192,23 @@ export default {
       }
     },
     handleMainGameButtonClick() {
-      if (this.$store.state.rollCount > 0) {
-        store.commit(`rollDice`)
-        this.animateDice()
-      } else if (this.$store.state.rollCount === 0) {
+      if (this.getCurrentGameState.currentRollCount > 0) {
+        this.rollDice().then(() => this.animateDice())
+      } else if (this.getCurrentGameState.currentRollCount === 0) {
         this.vibrate()
       }
     },
     selectDice(id) {
       // id of a dice e.g. `ones` or `sixes`
       if (!this.getCurrentGameState.newTurn) {
-        this.$store.commit(`setDiceChosenState`, id)
-        this.$store.dispatch(`computeScore`, id)
-        // then save chosen dice value to favs
-        // this.$store.dispatch(`saveFavDiceValue`, id)
+        this.setDiceChosenState(id)
         const dice = document.getElementById(id)
         const diceBox = dice.parentElement
         // get chosen dice quantity if any,
         // to add or remove dice on user click
         let chosenDiceQuantity = diceBox.querySelectorAll(`.chosen`).length
         diceBox.insertBefore(dice, diceBox.childNodes[chosenDiceQuantity])
+        this.computeScore(id)
       } else {
         console.log(`Roll some dice, duh.`)
       }

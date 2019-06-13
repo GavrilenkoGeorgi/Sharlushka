@@ -1,7 +1,13 @@
 import Vue from 'vue'
 
 export default {
-  computeScore(state) { // some code on prod
+  computeScore(state) {
+    // current score calculation logic
+    // collect chosen dice from store
+    // and determine score value
+    // `clearResultBox` does almost the same thing
+    // so we can probaly switch to using it later
+    // and remove this
     if (!state.newTurn) {
       // empty array for calculating score looks like this:
       const arrayToAnalyse = [[], [], [], [], [], []]
@@ -241,7 +247,6 @@ export default {
     if (!state.schoolCompleted && !state.newTurn) {
       if (!state.scoreArray[combinationIndexToSave].final
         && state.scoreArray[combinationIndexToSave].value !== ``) {
-        // console.log(`Saved school result.`)
         state.scoreArray[combinationIndexToSave].final = true
         state.schoolScoreTotal += state.scoreArray[combinationIndexToSave].value
         if (state.currentGameTurn === 6) {
@@ -250,15 +255,13 @@ export default {
         // new turn after school
         state.newTurn = true
       } else {
-        console.log(`You clicked on an empty field
-          and you can't save zero to school combination.`)
+        console.log(`You clicked on an empty field and you can't save zero to school combination.`)
       }
     } else if (state.schoolCompleted && !state.newTurn) {
       // record game result
       if (state.scoreArray[combinationIndexToSave].value !== `` &&
         !state.scoreArray[combinationIndexToSave].final &&
         state.scoreArray[combinationIndexToSave].displayValues.length < 3) {
-        // console.log(`Saved game result.`)
         state.scoreArray[combinationIndexToSave].displayValues.push(state.scoreArray[combinationIndexToSave].value)
         state.gameTotal += state.scoreArray[combinationIndexToSave].value
         // new turn after game
@@ -287,7 +290,6 @@ export default {
       if (state.currentGameTurn === state.maxGameTurns && state.newTurn) {
         console.log(`Last save!`)
         state.gameOver = true
-        // state.lastSave = true
       }
       if (state.scoreArray[combinationIndexToSave].displayValues.length === 3) {
         // set it to final
@@ -302,6 +304,8 @@ export default {
     }
   },
   setDiceChosenState(state, diceId) {
+    // after clicking single dice
+    // it gets chosen or unchosen
     for (const key in state.diceArray) {
       if (state.diceArray[key].id === diceId) {
         if (!state.diceArray[key].chosen) {
@@ -360,7 +364,7 @@ export default {
     // on last roll in school on the sixth turn we check if we can continue
     if (state.rollCount === 0 && state.currentGameTurn <= 6 && !state.schoolCompleted) {
       // check if we can record some result, if no -- game over
-      state.gameOver = true // cause are checking if it is not
+      state.gameOver = true // cause we are checking if it is not
       const emptyDice = []
       for (let index = 0; index <= 5; index++) {
         // check if all results are set
@@ -393,6 +397,7 @@ export default {
       }
     }
   },
+  // begin new turn
   nextTurn(state) {
     state.zeroCheck = false
     state.currentGameTurn++ // increment turn counter
@@ -403,9 +408,8 @@ export default {
     }
     state.combinationArray = []
   },
-  // resetGameState(state) {
+  // restart game
   restartGame(state) {
-    console.log(`Final mutation, debug is`, state.debug)
     // hard reset
     // Object.assign(state, getDefaultState())
     let valuesToReset = {
@@ -438,46 +442,50 @@ export default {
   },
   // set user name after login
   setUserName (state, name) {
-    console.log(`Setting user name:`, name)
-    /*
-    let valuesToSet = {
-      name: value
-    } */
-    // let userData = state.userData
-    // Object.assign(userData, valuesToSet)
     Vue.set(state[`userData`], `name`, name)
   },
-  setErrorMessage(state, error) {
-    Vue.set(state, `error`, error)
-  },
-  // action
+  // set current user data after login
   setCurrentUser(state, userData) {
     Vue.set(state, `userData`, userData)
+  },
+  // error message
+  setErrorMessage(state, error) {
+    Vue.set(state, `error`, error)
   },
   // used inside get userDataFromDB
   setUserStats (state, userStats) {
     Vue.set(state, `userStats`, userStats)
   },
+  // leaderboard view
   setLeaderboardStats (state, stats) {
     Vue.set(state, `leaderboardStats`, stats)
   },
-  // action
+  // end game view
+  setGameEnd (state) {
+    Vue.set(state, `lastResultSaved`, true)
+    Vue.set(state, `gameOver`, false) // get rid of this
+  },
+  // after loggin out
   clearUserStats (state) {
     Vue.set(state, `userStats`, {})
   },
-  setLastSave (state, value) {
-    Vue.set(state, `lastResultSaved`, value)
-  },
-  resetGameOver (state, value) {
-    state.gameOver = value
-  },
   clearResultBox(state, id) {
-    let getMaxValueQuantity = (array, max) => {
-      const quantity = new Map([...new Set(array)]
-        .map(x => [x, array.filter(y => y === x).length]))
-      return quantity.get(max)
-    }
+    // this thing is really messed up
+    // it clears the result box and
+    // removes dice values from favs array
+    console.log(`Clearing result box.`)
     if (id) {
+      // we are clearing and saved combination,
+      // hence the id to save dice of which the
+      // combination consists
+      // called with id when the combination is saved
+      // we can use it as a new score calculator
+      console.log(`Clearing result box with id:`, id)
+      const getMaxValueQuantity = (array, max) => {
+        let quantity = new Map([...new Set(array)]
+          .map(x => [x, array.filter(y => y === x).length]))
+        return quantity.get(max)
+      }
       // for calculating combinations
       // consisting from equal dice
       let gameCombinationValue = undefined
@@ -507,11 +515,8 @@ export default {
         if (id == `twoPairs`) {
           // get current values
           maxValue = Math.max(...currentCombinationArray) // really need this?
-          // console.dir(`Max value quantity ${maxValueQuantity}`)
-          // console.log(maxValueQuantity)
           // make some changes
           if (maxValueQuantity == 1) {
-            // console.log(`Two pairs. ${currentCombinationArray}`)
             let itemToRemove = currentCombinationArray.indexOf(maxValue)
             // remove current max value
             if (itemToRemove > -1) {
@@ -520,7 +525,6 @@ export default {
             // so that we have new trimmed array of values
             // and new maxValue from it for two pairs combination
             maxValue = Math.max(...currentCombinationArray)
-            // console.log(`new max value ${maxValue}`)
             secondValue = state.combinationArray.find(value => value !== maxValue)
           } else if (currentCombinationArray.length == 5) {
             // not `full`, but two pairs with one additional die
@@ -532,7 +536,6 @@ export default {
                 twoPairsArray.push(value)
               }
             }
-            // console.log(`Trimmed array --> ${twoPairsArray}`)
             if (twoPairsArray.length <= 3) {
               // first element of array
               secondValue = twoPairsArray[0]
@@ -633,11 +636,6 @@ export default {
     }
     // reset combination array
     state.combinationArray = []
-  },
-  setAnonymousDiceFavs (state, favs) {
-    state.userStats.diceValuesFavs = favs
-  },
-  resetDiceValueFavs (state) {
-    state.userStats.diceValuesFavs = [0, 0, 0, 0, 0, 0]
   }
 }
+

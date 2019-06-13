@@ -160,15 +160,12 @@ export default {
           // save only school result
           appendToStorage(`schoolScores`, `${this.getCurrentGameState.schoolScore}`)
         }
-        // this really could be one action
-        this.resetDiceValueFavs()
-        this.setLastSave(true)
-        this.resetGameOver(false)
+        this.setGameEnd()
         // and save to db if user is authenticated and we are online
         if (this.getUserData.isAuthenticated) {
           console.log(`User auth is ${this.getUserData.isAuthenticated}`)
           gatherDataFromLocalStorage().then((data) => {
-            new firestoreConnection().sync(this.getUserData.uid, data)
+            new firestoreConnection().syncStats(this.getUserData.uid, data)
           })
         } else {
           console.log(`User auth is ${this.getUserData.isAuthenticated}, no need to update firestore`)
@@ -180,13 +177,10 @@ export default {
   },
   methods: {
     ...mapActions([
-      `resetGameOver`,
-      `setLastSave`,
-      `resetDiceValueFavs`,
-      `restartGame`
+      `restartGame`,
+      `setGameEnd`
     ]),
     restart() {
-      console.log(`Restarting game.`)
       this.restartGame()
       this.$router.push(`/game`)
     },
