@@ -1,9 +1,5 @@
 export default () => {
   return {
-    defaultUserName: `Anonymous`,
-    user: {
-      lastResultSaved: false // current result saved
-    },
     userData: {},
     userStats: {
       diceValuesFavs: [0, 0, 0, 0, 0, 0],
@@ -18,6 +14,7 @@ export default () => {
     newTurn: true, // 1st turn in game is new turn
     schoolCompleted: false, // check if school is completed
     gameOver: false,
+    lastResultSaved: false, // check if user saved last result
     zeroCheck: false, // to check if zero was saving during turn
     schoolScoreTotal: 0, // total school score
     gameTotal: 0, // total game score

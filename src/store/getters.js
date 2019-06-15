@@ -1,26 +1,55 @@
 export default {
   getUserData: state => state.userData,
   getUserStats: state => state.userStats,
-  getCurrentGameState(state) {
+  getCurrentUserName: state => state.userData.name,
+  // to end the game we need this
+  getCurrentGameState: state => {
+    // is game in progress and it's not
+    // first turn and first roll
+    function isGameInProgress() {
+      if (state.currentGameTurn === 1 && state.rollCount === 3) {
+        return false
+      } else return true
+    }
+    function calcTotalScore () {
+      return state.schoolScoreTotal + state.gameTotal
+    }
     const currentGameState = {
       schoolCompleted: state.schoolCompleted,
       currentGameTurn: state.currentGameTurn,
       currentRollCount: state.rollCount,
-      rollsCountForButton: state.rollCount,
       newTurn: state.newTurn,
-      gameOver: state.gameOver
+      gameOver: state.gameOver,
+      gameInProgress: isGameInProgress(),
+      isLastResultSaved: state.lastResultSaved,
+      maxPossibleScore: state.maxPossibleScore,
+      schoolScore: state.schoolScoreTotal,
+      totalScore: calcTotalScore()
     }
     return currentGameState
   },
-  getLeaderboardStats: state => state.leaderboardData,
-  progressBarState(state) {
+  // leaderboard and user stats
+  getMaxPossibleScore: state => state.maxPossibleScore,
+  // progressbar in game view
+  progressBarState: state => {
     let fraction = 3
     let numbah = state.rollCount - fraction
     let percent = fraction * numbah * 11.075
-    let result = Math.round(Math.abs(percent))
+    const result = Math.round(Math.abs(percent))
     return result ? result : 0
   },
-  mainButtonIsRolling(state) {
+  // help page uses this to set dice icons
+  getDiceIds: state => {
+    const diceIdsContainer = state.scoreArray.slice(0, state.diceArray.length + 1)
+    let diceIds = []
+    for (let id of diceIdsContainer) {
+      diceIds.push(id.icon)
+    }
+    return diceIds
+  },
+  // dice box
+  getDiceArray: state => state.diceArray,
+  mainButtonIsRolling: state => {
     if (!state.newTurn
       && state.rollCount === 2
       || state.rollCount === 1) {
@@ -29,52 +58,23 @@ export default {
       return false
     }
   },
-  getDiceIds(state) {
-    const diceIdsContainer = state.scoreArray.slice(0, state.diceArray.length + 1)
-    let diceIds = []
-    for (let id of diceIdsContainer) {
-      diceIds.push(id.icon)
-    }
-    return diceIds
-  },
-  getDiceArray: (state) => state.diceArray,
-  getSchoolArray(state) {
+  // game view
+  getSchoolArray: state => {
     const schoolArray = state.scoreArray.slice(0, state.diceArray.length + 1)
     return schoolArray
   },
-  isGameEnded: (state) => state.gameOver,
-  isNewTurn: (state) => state.newTurn,
-  isLastResultSaved: (state) => state.user.lastResultSaved,
-  isGameInProgress (state) {
-    if (state.currentGameTurn === 1 && state.rollCount === 3) {
-      return false
-    } else return true
-  },
-  getCombinationArray(state) {
+  // game view combinations display
+  getCombinationArray: state => {
     // another one for export
     const combinationArray = state.scoreArray.slice(state.diceArray.length + 1, state.scoreArray.length)
     return combinationArray
   },
-  getMaxPossibleScore: (state) => state.maxPossibleScore,
-  userData: state => state.userData,
-  getTotalScore(state) {
-    return state.schoolScoreTotal + state.gameTotal
-  },
-  getSchoolScore(state) {
-    return state.schoolScoreTotal
-  },
-  getDefaultUserName(state) {
-    return state.defaultUserName
-  },
-  schoolFinished(state) {
-    return state.schoolCompleted
-  },
-  errorIsSet: state => state.error,
-  getCurrentNonZeroCombinations(state) {
-    // console.log(`Getting current non zero combinations.`)
+  // collect all combinations that
+  // are set during current game
+  // to save to user stats: localstorage
+  // and firestore at the end of the game
+  getCurrentNonZeroCombinations: state => {
     let arrayWithResults = state.scoreArray.slice(state.diceArray.length + 1, state.scoreArray.length)
-    // console.log(`From this -->`)
-    // console.log(arrayWithResults)
     let combinationsFavsArray = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     for (let index in arrayWithResults) {
       let currentSavedValues = arrayWithResults[index].displayValues

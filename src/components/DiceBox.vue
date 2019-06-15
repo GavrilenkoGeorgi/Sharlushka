@@ -1,7 +1,7 @@
 <template>
   <!-- Dice box -->
   <v-layout
-    v-if="!isGameEnded && !isLastResultSaved"
+    v-if="!getCurrentGameState.gameOver && !getCurrentGameState.isLastResultSaved"
     class="dice-box-container"
     align-center
   >
@@ -49,7 +49,7 @@
         @click.prevent="handleMainGameButtonClick"
       >
         <v-flex
-          v-if="getCurrentGameState.currentRollCount === 3 && !isGameEnded"
+          v-if="getCurrentGameState.currentRollCount === 3 && !getCurrentGameState.gameOver"
           xs2
           class="play-arrow animated slow fadeIn"
         />
@@ -63,7 +63,7 @@
             justify-center
           >
             <div
-              v-for="(value, index) in getCurrentGameState.rollsCountForButton"
+              v-for="(value, index) in getCurrentGameState.currentRollCount"
               :key="index"
               class="roll-circle animated slow fadeIn"
             />
@@ -90,7 +90,7 @@
       xs6
     >
       <v-btn
-        v-if="!isLastResultSaved"
+        v-if="!getCurrentGameState.isLastResultSaved"
         flat
         outline
         ripple
@@ -108,7 +108,7 @@
         ripple
         color="orange"
         class="button"
-        @click="restartGame()"
+        @click="restart()"
       >
         <restartIcon class="chosen button-icon-margin" />
         Restart
@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import store from '../store/store'
 import diceOnes from '../assets/icons/diceOnes.svg'
 import diceTwos from '../assets/icons/diceTwos.svg'
@@ -150,10 +150,7 @@ export default {
     ...mapGetters([
       `getDiceArray`,
       `getCurrentGameState`,
-      `isGameEnded`,
-      `isNewTurn`,
-      `mainButtonIsRolling`,
-      `isLastResultSaved`
+      `mainButtonIsRolling`
     ]),
     mainButtonStateCheck:() => store.state.rollCount === 0 ? true : false
   },
@@ -166,9 +163,14 @@ export default {
     })
   },
   methods: {
-    restartGame() {
-      console.log(`Restarting game.`)
-      store.commit(`resetState`)
+    ...mapActions([
+      `restartGame`,
+      `rollDice`,
+      `setDiceChosenState`,
+      `computeScore`
+    ]),
+    restart() {
+      this.restartGame()
     },
     vibrate() {
       if (this.navigatorSupported) {
@@ -190,26 +192,23 @@ export default {
       }
     },
     handleMainGameButtonClick() {
-      if (this.$store.state.rollCount > 0) {
-        store.commit(`rollDice`)
-        this.animateDice()
-      } else if (this.$store.state.rollCount === 0) {
+      if (this.getCurrentGameState.currentRollCount > 0) {
+        this.rollDice().then(() => this.animateDice())
+      } else if (this.getCurrentGameState.currentRollCount === 0) {
         this.vibrate()
       }
     },
     selectDice(id) {
       // id of a dice e.g. `ones` or `sixes`
-      if (!this.isNewTurn) {
-        this.$store.commit(`setDiceChosenState`, id)
-        this.$store.dispatch(`computeScore`, id)
-        // then save chosen dice value to favs
-        // this.$store.dispatch(`saveFavDiceValue`, id)
+      if (!this.getCurrentGameState.newTurn) {
+        this.setDiceChosenState(id)
         const dice = document.getElementById(id)
         const diceBox = dice.parentElement
         // get chosen dice quantity if any,
         // to add or remove dice on user click
         let chosenDiceQuantity = diceBox.querySelectorAll(`.chosen`).length
         diceBox.insertBefore(dice, diceBox.childNodes[chosenDiceQuantity])
+        this.computeScore(id)
       } else {
         console.log(`Roll some dice, duh.`)
       }

@@ -25,14 +25,14 @@
         class="message-school text-xs-center"
       >
         <h3>You can't even finish the school.</h3>
-        <h2>Your score is <span class="highlighted">{{ getTotalScore }}</span></h2>
+        <h2>Your score is <span class="highlighted">{{ getCurrentGameState.totalScore }}</span></h2>
       </v-flex>
       <!-- Game message v-else actually -->
       <v-flex
         v-if="getCurrentGameState.schoolCompleted"
         class="message-game text-xs-center"
       >
-        <h2>Your score is <span class="highlighted">{{ getTotalScore }}</span></h2>
+        <h2>Your score is <span class="highlighted">{{ getCurrentGameState.totalScore }}</span></h2>
       </v-flex>
       <!-- Buttons -->
       <v-layout
@@ -51,7 +51,7 @@
             outline
             color="orange"
             class="button"
-            @click="restartGame()"
+            @click="restart()"
           >
             <restartIcon class="highlighted button-icon-margin" />
             restart
@@ -129,8 +129,6 @@ export default {
   },
   computed: {
     ...mapGetters([
-      `getTotalScore`,
-      `getSchoolScore`,
       `getCurrentGameState`,
       `getUserData`,
       `getUserStats`,
@@ -150,8 +148,8 @@ export default {
           // set new dice value favs to localStorage
           localStorage.setItem(`diceValuesFavs`, updatedFavs)
           // save game and school results
-          appendToStorage(`lastScoresArray`, `${this.getTotalScore}`)
-          appendToStorage(`schoolScores`, `${this.getSchoolScore}`)
+          appendToStorage(`lastScoresArray`, `${this.getCurrentGameState.totalScore}`)
+          appendToStorage(`schoolScores`, `${this.getCurrentGameState.schoolScore}`)
           // and non zero combinations stats
           let currentCombinationsFavs = localStorage.getItem(`combinationsFavs`).split(`,`).map(Number)
           let newCombinationsFavs = this.getCurrentNonZeroCombinations
@@ -160,17 +158,14 @@ export default {
         } else {
           // school not finished
           // save only school result
-          appendToStorage(`schoolScores`, `${this.getSchoolScore},`)
+          appendToStorage(`schoolScores`, `${this.getCurrentGameState.schoolScore}`)
         }
-        // this really could be one action
-        this.resetDiceValueFavs()
-        this.setLastSave(true)
-        this.resetGameOver(false)
+        this.setGameEnd()
         // and save to db if user is authenticated and we are online
         if (this.getUserData.isAuthenticated) {
           console.log(`User auth is ${this.getUserData.isAuthenticated}`)
           gatherDataFromLocalStorage().then((data) => {
-            new firestoreConnection().sync(this.getUserData.uid, data)
+            new firestoreConnection().syncStats(this.getUserData.uid, data)
           })
         } else {
           console.log(`User auth is ${this.getUserData.isAuthenticated}, no need to update firestore`)
@@ -182,14 +177,11 @@ export default {
   },
   methods: {
     ...mapActions([
-      `resetGameOver`,
-      `setLastSave`,
-      `resetDiceValueFavs`,
-      `resetGameState`
+      `restartGame`,
+      `setGameEnd`
     ]),
-    restartGame() {
-      console.log(`Restarting game.`)
-      this.resetGameState()
+    restart() {
+      this.restartGame()
       this.$router.push(`/game`)
     },
     toggleNetworkProblemDialog () {

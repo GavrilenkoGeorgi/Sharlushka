@@ -52,7 +52,7 @@
           type="button"
           @click="clearDiceSelection"
         >
-          {{ getTotalScore }}
+          {{ getCurrentGameState.totalScore }}
         </v-flex>
       </v-layout>
     </v-toolbar>
@@ -88,7 +88,7 @@
             </v-flex>
           </v-list-tile-action>
           <v-list-tile-content class="drawer-menu-item pa-0 user-name">
-            {{ userName }}.
+            {{ userName }}
           </v-list-tile-content>
         </v-list-tile>
         <!-- Nav drawer links -->
@@ -120,8 +120,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-
+import { mapGetters, mapActions, mapState } from 'vuex'
 import NetworkCheck from '../components/NetworkCheck.vue'
 import settingsIcon from '../assets/icons/baseline-menu-24px.svg'
 import userStatsIcon from '../assets/icons/baseline-equalizer-24px.svg'
@@ -145,7 +144,7 @@ export default {
   },
   data: () => ({
     navDrawer: false,
-    userName: undefined,
+    userName: `undefined`,
     navDrawerLinks: [
       {
         path: `/game`,
@@ -183,23 +182,39 @@ export default {
   }),
   computed: {
     ...mapGetters([
-      `getTotalScore`
+      `getCurrentGameState`,
+      `getCurrentUserName`
+    ]),
+    ...mapState([
+      `userData`
     ])
+  },
+  watch: {
+    userData(data) {
+      if (data.name) {
+        this.setCurrentName(data.name)
+      } else {
+        this.setCurrentName(`Anonymous`)
+      }
+    }
   },
   mounted () {
     this.$nextTick(() => {
-      this.userName = localStorage.getItem(`userName`)
+      this.setCurrentName(this.getCurrentUserName)
     })
   },
   methods: {
     ...mapActions([
       `clearResultBox`
     ]),
+    setCurrentName(name) {
+      this.userName = name
+    },
     manipulateDrawer() {
       this.navDrawer = !this.navDrawer
     },
     clearDiceSelection() {
-      this.$store.commit(`clearResultBox`)
+      this.clearResultBox()
     }
   }
 }

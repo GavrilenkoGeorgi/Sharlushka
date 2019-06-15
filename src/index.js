@@ -9,7 +9,8 @@ import fireBaseAuthPlugin from './services/firebaseAuthPlugin'
 Vue.config.productionTip = true
 Vue.config.errorHandler = (err, vm, info) => {
   console.log(`Error: ${err.toString()}\nInfo: ${info}`)
-  console.log(`!---Setting error in store---!.`)
+  // console.log(`!---Setting error in store---!.`)
+  store.commit(`setErrorMessage`, err.toString())
 }
 
 Vue.use(fireBaseAuthPlugin)

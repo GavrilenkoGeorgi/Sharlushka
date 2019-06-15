@@ -11,88 +11,56 @@ Vue.use(Vuex)
 const state = getDefaultState()
 
 const actions = {
-  setCurrentUser: async ({ commit }, userData) => {
-    commit(`setCurrentUser`, userData)
-  },
-  clearUserStats: async ({ commit }) => {
-    commit(`clearUserStats`)
-  },
-  setLeaderboardStats: async ( { commit }, stats) => {
-    commit(`setLeaderboardStats`, stats)
-  },
-  setAnonymousDiceFavs: async ({ commit }, favs) => {
-    commit(`setAnonymousDiceFavs`, favs)
-  },
-  resetDiceValueFavs: async ({ commit }) => {
-    commit(`resetDiceValueFavs`)
-  },
-  setCurrentIcon: ({
-    commit
-  }) => commit(`setCurrentIcon`),
-  setLastSave ({ commit }, value) {
-    return new Promise((resolve) => {
-      commit(`setLastSave`, value)
-      resolve()
-    })
-  },
-  setUserName ({ commit }, value) {
-    return new Promise((resolve) => {
-      commit(`setUserName`, value)
-      resolve()
-    })
-  },
-  resetGameOver ({ commit }, value) {
-    return new Promise((resolve) => {
-      commit(`resetGameOver`, value)
-      resolve()
-    })
-  },
-  setGameOverDialog ({ commit }, value) {
-    return new Promise((resolve) => {
-      commit(`setGameOverDialog`, value)
-      resolve()
-    })
-  },
-  clearResultBox ({ commit }) {
-    return new Promise((resolve) => {
-      commit(`clearResultBox`)
-      resolve()
-    })
-  },
+  // after login
+  setCurrentUser: async ({ commit }, userData) =>
+    commit(`setCurrentUser`, userData),
+
+  // after log out
+  clearUserStats: async ({ commit }) =>
+    commit(`clearUserStats`),
+
+  // user stats view
+  setLeaderboardStats: async ( { commit }, stats) =>
+    commit(`setLeaderboardStats`, stats),
+
+  // end game view
+  setGameEnd: async ({ commit }) =>
+    commit(`setGameEnd`),
+
+  // restart buttons
+  restartGame: async ({ commit }) =>
+    commit(`restartGame`),
+
+  // after saving result
+  nextTurn: async ({ commit }) =>
+    commit(`nextTurn`),
+
+  // dice box component
+  rollDice: async ({ commit }) =>
+    commit(`rollDice`),
+  setDiceChosenState: async ({ commit }, id) =>
+    commit(`setDiceChosenState`, id),
+
+  // navbar click spot
+  clearResultBox: async ({ commit }) =>
+    commit(`clearResultBox`),
+
+  // game view
   saveResultInStore ({ commit }, id) {
     return new Promise((resolve) => {
       commit(`saveResultInStore`, id)
+      // should move this to component
       commit(`clearResultBox`, id)
       resolve()
     })
   },
-  computeScore ({ commit }) {
-    return new Promise((resolve) => {
-      commit(`computeScore`)
-      resolve()
-    })
-  },
-  setErrorMessage ({ commit }, error ) {
-    return new Promise((resolve) => {
-      commit(`setErrorMessage`, error)
-      resolve()
-    })
-  },
-  saveFavDiceValue ({ commit }, id ) {
-    return new Promise((resolve) => {
-      commit(`saveFavDiceValue`, id)
-      resolve()
-    })
-  },
-  resetGameState: async ({ commit }) => {
-    commit(`resetGameState`)
-  },
-  rollDice: ({
-    commit
-  }) => commit(`rollDice`),
-  nextTurn: ({
-    commit
-  }) => commit(`nextTurn`)
+
+  // after chosing dice
+  computeScore: async ({ commit }) =>
+    commit(`computeScore`),
+
+  setErrorMessage: async ({ commit }, error ) =>
+    commit(`setErrorMessage`, error)
 }
 
 export default new Vuex.Store({

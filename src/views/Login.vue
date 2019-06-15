@@ -84,7 +84,7 @@
           <v-btn
             :type="'submit'"
             :loading="loggingIn"
-            :disabled="userData.isAuthenticated || !email || !password"
+            :disabled="getUserData.isAuthenticated || !email || !password"
             outline
             ripple
             class="white--text button"
@@ -130,7 +130,7 @@
         >
           <v-btn
             :loading="loggingOut"
-            :disabled="!userData.isAuthenticated"
+            :disabled="!getUserData.isAuthenticated"
             outline
             ripple
             class="white--text button"
@@ -194,20 +194,17 @@ export default {
   }),
   computed: {
     ...mapGetters([
-      `userData`
+      `getUserData`
     ])
   },
   methods: {
     ...mapActions([
-      `setUserAuthState`,
-      `clearUserStats`,
-      `setErrorMessage`
+      `clearUserStats`
     ]),
     async login () {
       this.loggingIn = !this.loggingIn
       await this.$auth.login(this.email, this.password)
         .then(() => {
-          // console.log(response.user.uid)
           this.clearForm()
         }).catch(error => {
           console.error(error)
