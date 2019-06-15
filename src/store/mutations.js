@@ -1,4 +1,5 @@
 import Vue from 'vue'
+const MersenneTwister = require(`mersenne-twister`)
 
 export default {
   computeScore(state) {
@@ -321,10 +322,12 @@ export default {
     }
   },
   rollDice(state) {
+    const generator = new MersenneTwister()
+
     state.rollCount--
     state.newTurn = false
     function getRandomInt(max) {
-      return Math.floor(Math.random() * Math.floor(max))
+      return Math.floor(generator.random() * Math.floor(max))
     }
     // let counter = 0
     // let numbah = undefined
@@ -352,11 +355,11 @@ export default {
 
       // ----------- Pseudo random numbers -----------
       if (!dice.chosen) {
-        const numbah = getRandomInt(6) + 1 // shifting stuff
+        const numbah = getRandomInt(6) // shifting stuff
         // set dice value
-        dice.value = numbah
+        dice.value = numbah + 1
         // set dice icon svg image
-        dice.currentIcon = state.scoreArray[numbah - 1].icon
+        dice.currentIcon = state.scoreArray[numbah].icon
       }
       // ----------------------------------------------
     }
